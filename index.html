@@ -88,6 +88,13 @@ button{font-family:inherit;}
 .course-seg button{background:#101010;border:1px solid var(--border);color:#999;padding:10px 12px;border-radius:7px;font-size:12.5px;cursor:pointer;text-align:left;}
 .course-seg button:hover{color:#fff;border-color:#444;}
 .course-seg button.on{background:#1c1c1c;color:#fff;border-color:var(--green);}
+.seg-term{font-size:10px;color:#555;letter-spacing:.14em;margin:10px 0 4px;text-transform:uppercase;}
+.seg-term:first-child{margin-top:0;}
+.seg-off{display:block;font-size:11.5px;color:#3d3d3d;padding:4px 12px;line-height:1.5;}
+.cv-on{display:inline-block;color:var(--green);border:1px solid #24402c;background:#101a12;border-radius:6px;padding:3px 10px;margin:0 8px 6px 0;font-size:12px;text-decoration:none;}
+.cv-on:hover{border-color:var(--green);}
+.cv-on i{font-style:normal;color:#5f7a66;font-size:10px;margin-left:6px;}
+.cv-off{display:inline-block;color:#4a4a4a;border:1px solid #1e1e1e;border-radius:6px;padding:3px 10px;margin:0 8px 6px 0;font-size:12px;}
 
 /* 表格 */
 .tbl{width:100%;border-collapse:collapse;}
@@ -191,14 +198,11 @@ window.MathJax = {
     南开大学 · 物理科学学院
   </div>
 
-  <div class="course-seg" id="courseSeg">
-    <button class="on" onclick="setCourse('qm')">量子力学（一）</button>
-    <button onclick="setCourse('qm2')">量子力学（二）</button>
-    <button onclick="setCourse('em')">电动力学</button>
-    <button onclick="setCourse('hq')">高等量子力学</button>
-  </div>
+  <div class="course-seg" id="courseSeg"></div>
 
   <div class="nav">
+    <div class="nav-label">培养方案</div>
+    <button data-page="curriculum" onclick="showPage('curriculum',this)">课程体系</button>
     <div class="nav-label">系统</div>
     <button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">总览</button>
     <div class="nav-label">知识</div>
@@ -223,6 +227,7 @@ window.MathJax = {
 </div>
 
 <!-- 总览 -->
+<section id="curriculum" class="page" style="display:none"></section>
 <section id="dashboard" class="page"></section>
 <!-- 章节结构 -->
 <section id="chapters" class="page" style="display:none"></section>
@@ -970,12 +975,13 @@ const COURSE_EM = {
   textbook:'郭硕鸿《电动力学》（第三版）',
   teachers:'杨茂志、蔡卫',
   examLen:'（杨茂志卷）8 题 / 100 分',
+  grade:'平时成绩 30% ＋ 期末考试 70%',
   refs:['郭硕鸿,《电动力学》（第三版），高等教育出版社',
         'Jackson,《经典电动力学》',
         'Griffiths,《Introduction to Electrodynamics》',
         '费恩曼物理学讲义 第 2 卷',
         '俞允强,《电动力学简明教程》'],
-  src:'教材与参考书取自杨茂志讲义第 1 章首页；章节来自杨茂志（第 1–7 章）与蔡卫（第 0 章矢量分析 + 第 1–6 章）两套讲义；真题来自 4 份考卷（蔡卫 2023、2024×2；杨茂志 2025–2026）'
+  src:'教材与参考书取自杨茂志讲义第 1 章首页；章节来自杨茂志（第 1–7 章）与蔡卫（第 0 章矢量分析 + 第 1–6 章）两套讲义；真题来自 4 份考卷（蔡卫 2023、2024×2；杨茂志 2025–2026）；成绩构成（平时 30% + 期末 70%）按用户说明补充'
 };
 
 const EM_CHAPTERS = [
@@ -2065,26 +2071,506 @@ const HQ_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   培养方案（按学期）
+   ============================================================ */
+const CURRICULUM = [
+ {term:'大一上', courses:['高等数学（上）','线性代数','力学']},
+ {term:'大一下', courses:['高等数学（下）','电磁学','电路']},
+ {term:'大二上', courses:['光学','理论力学','热学']},
+ {term:'大二下', courses:['数学物理方法','原子物理','计算物理']},
+ {term:'大三上', courses:['量子力学（一）','电动力学','专业英语']},
+ {term:'大三下', courses:['固体物理（一）','量子力学（二）','热力学与统计物理','材料物理']},
+ {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
+];
+/* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
+const COURSE_NAME = { lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+
+/* ============================================================
+   理论力学
+   ============================================================ */
+const COURSE_LM = {
+  name:'理论力学',
+  school:'南开大学 · 物理科学学院',
+  semester:'大二上',
+  textbook:'金尚年《理论力学》（第三版）/ Goldstein《Classical Mechanics》/ Arnold《Mathematical Methods of Classical Mechanics》',
+  teachers:'杨望（物理学院）',
+  examLen:'4 道大题 / 100 分',
+  refs:['金尚年,《理论力学》（第三版），高等教育出版社',
+        'H. Goldstein, C. Poole, J. Safko,《Classical Mechanics》',
+        'V. I. Arnold,《Mathematical Methods of Classical Mechanics》'],
+  src:'课程信息与章节取自《2024秋理论力学讲义》（杨望，南开大学物理学院，2025-09-25 整理，基于 2023 及 2024 秋季学期授课内容）；真题来自 2025–2026 期末（含解析）、2025 回忆版、2024 三套'
+};
+
+const LM_CHAPTERS = [
+{no:'1', title:'多元函数的导数与微分', en:'第一章', file:'理论力学讲义合订本2025.pdf 第 1 章',
+ sections:['单变量函数的导数与微分','多变量函数的偏导数及微分','链式法则'],
+ concepts:[
+  ['导数与微分','差商极限定义导数；微分是自变量微小增量下函数值的线性主部，两者互相确定。'],
+  ['偏导数','固定其余变量，函数对某一变量的变化率。'],
+  ['全微分与链式法则','df=Σᵢ(∂f/∂xᵢ)dxᵢ；∂f/∂xⱼ=Σᵢ(∂f/∂yᵢ)(∂yᵢ/∂xⱼ)。']
+ ],
+ formulas:[
+  ['导数定义', R`\frac{df}{dx}=\lim_{\epsilon\to0}\frac{f(x+\epsilon)-f(x)}{\epsilon}`],
+  ['微分与高阶小量', R`f(x+\epsilon)=f(x)+\frac{df}{dx}\epsilon+O(\epsilon^{2})`],
+  ['全微分', R`df=\sum_{i=1}^{n}\frac{\partial f}{\partial x_i}dx_i`],
+  ['链式法则', R`\frac{\partial f}{\partial x_j}=\sum_{i=1}^{m}\frac{\partial f}{\partial y_i}\frac{\partial y_i}{\partial x_j}`]
+ ]},
+
+{no:'2', title:'完整约束及理想约束', en:'第二章', file:'理论力学讲义合订本2025.pdf 第 2 章',
+ sections:['约束（单摆、球形碗、轻杆、刚体）','完整约束的定义','广义坐标','微分流形的概念','非完整约束','虚位移','理想约束'],
+ concepts:[
+  ['约束','对运动的限制，是纯运动学概念（单摆 x²+y²=L²、球形碗 x²+y²+z²=R² 等）。'],
+  ['完整约束','约束条件只与各质点坐标 rᵢ 及时间 t 有关；可消去 k 个不独立坐标，自由度由 3n 减为 3n−k。'],
+  ['广义坐标','确定体系构型所需的独立坐标；选取不唯一。'],
+  ['微分流形','由欧氏开集到 M 的参数化映射（图册）覆盖而成的 n 维流形。'],
+  ['非完整约束','形如 f(rᵢ,ṙᵢ,t)=0 且不可积分为坐标形式（如水平面纯滚动圆盘），不能减少独立坐标数。'],
+  ['虚位移','固定时刻、约束允许的无穷小位移；张成构型点的切空间，维数 3n−k。'],
+  ['理想约束','约束力虚功和恒为零：ΣF_Ni·δrᵢ=0。']
+ ],
+ formulas:[
+  ['完整约束方程', R`f_j(\vec r_1,\dots,\vec r_n,t)=0,\qquad 1\le j\le k`],
+  ['非完整约束（纯滚动圆盘）', R`dx=r\sin\theta\,d\phi,\qquad dy=-r\cos\theta\,d\phi`],
+  ['完整约束（线性）的充要条件', R`\omega\wedge d\omega=0`],
+  ['理想约束条件', R`\sum_{i=1}^{n}\vec F_{Ni}\cdot\delta\vec r_i=0`],
+  ['独立广义坐标下的虚位移', R`\delta\vec r_i=\sum_{\alpha=1}^{s}\frac{\partial\vec r_i}{\partial q_\alpha}\delta q_\alpha,\qquad s=3n-k`]
+ ]},
+
+{no:'3', title:'拉格朗日方程', en:'第三章', file:'理论力学讲义合订本2025.pdf 第 3 章',
+ sections:['有约束的牛顿动力学方程','达朗贝尔方程','理想、完整约束体系的拉格朗日方程','欧拉-拉格朗日方程的性质（不唯一性 / 坐标不变性 / 循环坐标）'],
+ concepts:[
+  ['达朗贝尔方程','由虚功原理导出，可消去约束力；理想完整约束下给出 3n−k 个独立方程。'],
+  ['广义力','Q_α=ΣᵢFᵢ·∂rᵢ/∂q_α。'],
+  ['拉格朗日方程','以独立广义坐标表述的动力学方程；保守力下为 d/dt(∂L/∂q̇_α)−∂L/∂q_α=0，L=T−V。'],
+  ['经典拉格朗日关系','∂ṙᵢ/∂q̇_α=∂rᵢ/∂q_α 与 d/dt(∂rᵢ/∂q_α)=∂ṙᵢ/∂q_α，是推导的关键工具。'],
+  ['拉格朗日函数的不唯一性','L′=L+df/dt 导出相同的方程。'],
+  ['循环坐标','L 不显含的广义坐标 q₀；其广义动量 P₀=∂L/∂q̇₀ 守恒。']
+ ],
+ formulas:[
+  ['达朗贝尔方程', R`\sum_i\big(\vec F_i-m_i\ddot{\vec r}_i\big)\cdot\delta\vec r_i=0`],
+  ['广义力', R`Q_\alpha=\sum_{i=1}^{n}\vec F_i\cdot\frac{\partial\vec r_i}{\partial q_\alpha}`],
+  ['经典拉格朗日关系', R`\frac{\partial\dot{\vec r}_i}{\partial\dot q_\alpha}=\frac{\partial\vec r_i}{\partial q_\alpha},\qquad \frac{d}{dt}\Big(\frac{\partial\vec r_i}{\partial q_\alpha}\Big)=\frac{\partial\dot{\vec r}_i}{\partial q_\alpha}`],
+  ['拉格朗日方程（一般形式）', R`\frac{d}{dt}\Big(\frac{\partial T}{\partial\dot q_\alpha}\Big)-\frac{\partial T}{\partial q_\alpha}=Q_\alpha`],
+  ['欧拉-拉格朗日方程（保守力）', R`\frac{d}{dt}\Big(\frac{\partial L}{\partial\dot q_\alpha}\Big)-\frac{\partial L}{\partial q_\alpha}=0,\qquad L=T-V`],
+  ['拉格朗日函数不唯一性', R`L'=L+\frac{df(q_\alpha,t)}{dt}`],
+  ['循环坐标与广义动量守恒', R`P_0=\frac{\partial L}{\partial\dot q_0},\qquad \frac{dP_0}{dt}=0\quad(\partial L/\partial q_0=0)`]
+ ]},
+
+{no:'4', title:'泛函及其变分', en:'第四章', file:'理论力学讲义合订本2025.pdf 第 4 章',
+ sections:['泛函的定义','泛函可用多元函数近似表达','泛函的导数与变分','狄拉克 δ 函数'],
+ concepts:[
+  ['泛函','函数之函数：从函数空间到实数集的映射 F: 函数空间 → R。'],
+  ['泛函导数','以 δ 函数给出自变函数在 t′ 处的单位增量，再取差商极限。'],
+  ['泛函变分','增量中线性依赖于 δx(t′) 的项，是全微分在泛函情形的推广。'],
+  ['与求导可交换','δ(dy/dx)=d(δy)/dx、δ(dx)=0。']
+ ],
+ formulas:[
+  ['泛函与作用量例', R`S[x(t)]=\int_{t_1}^{t_2}dt\Big[\tfrac12 m\dot x^{2}-V(x(t))\Big]`],
+  ['泛函导数定义', R`\frac{\delta F[x(t)]}{\delta x(t')}=\lim_{\epsilon\to0}\frac{F[x(t)+\epsilon\delta(t-t')]-F[x(t)]}{\epsilon}`],
+  ['泛函变分', R`\delta F[x(t)]=\int dt'\,\frac{\delta F[x(t)]}{\delta x(t')}\delta x(t')`],
+  ['δ 函数积分公式', R`\int_D dt\,g(t)\,\delta(t-t')=g(t')`],
+  ['变分算符性质', R`\delta(dx)=0,\qquad \delta(dy)=d(\delta y),\qquad \delta\Big(\frac{dy}{dx}\Big)=\frac{d}{dx}(\delta y)`]
+ ]},
+
+{no:'5', title:'最小作用量原理', en:'第五章', file:'理论力学讲义合订本2025.pdf 第 5 章',
+ sections:['最速落径问题','欧拉-拉格朗日方程','旋轮线的证明','最小作用量原理','路径积分'],
+ concepts:[
+  ['欧拉-拉格朗日方程（变分法）','使 J[y]=∫dx f(y,y′,x) 取极值的 y(x) 满足 d/dx(∂f/∂y′)−∂f/∂y=0。'],
+  ['Beltrami 恒等式','f 不显含 x 时 f−y′(∂f/∂y′)=常数。'],
+  ['最小作用量原理（哈密顿原理）','真实运动使作用量 S=∫dt L 取极值，变分即给出拉格朗日方程。'],
+  ['最速落径','竖直平面内下滑最快的曲线为旋轮线（摆线）。'],
+  ['路径积分','量子概率幅由所有路径相位 e^{iS/ħ} 叠加；ħ→0 时只剩经典路径。']
+ ],
+ formulas:[
+  ['最速落径泛函', R`J[y]=\int_{x_A}^{x_B}dx\sqrt{\frac{1+y'^{2}}{2gy}}`],
+  ['欧拉-拉格朗日方程', R`\frac{d}{dx}\Big(\frac{\partial f}{\partial y'}\Big)-\frac{\partial f}{\partial y}=0`],
+  ['Beltrami 恒等式', R`f-y'\frac{\partial f}{\partial y'}=\text{const}`],
+  ['旋轮线解', R`x-C_2=\frac{C_1}{2}(2\theta-\sin2\theta),\qquad y=\frac{C_1}{2}(1-\cos2\theta)`],
+  ['作用量泛函与变分', R`S[q_\alpha]=\int_{t_1}^{t_2}dt\,L(q_\alpha,\dot q_\alpha,t),\qquad \delta S=0\ \Rightarrow\ \frac{d}{dt}\frac{\partial L}{\partial\dot q_\alpha}-\frac{\partial L}{\partial q_\alpha}=0`],
+  ['路径积分（传播子）', R`K=\int\mathcal D[\vec r(t)]\,e^{\frac{i}{\hbar}\int dt\,L}`]
+ ]},
+
+{no:'6', title:'带电粒子在电磁场中的拉格朗日函数', en:'第六章', file:'理论力学讲义合订本2025.pdf 第 6 章',
+ sections:['广义势能','带电粒子在电磁场中的广义势能','拉格朗日函数的规范变换'],
+ concepts:[
+  ['广义势能 U(q,q̇,t)','显含广义速度的势能，使洛伦兹力等速度相关力仍可纳入 L=T−U 框架。'],
+  ['标势与矢势','E=−∇φ−∂A/∂t、B=∇×A。'],
+  ['规范变换','(A,φ)→(A+∇f, φ−∂f/∂t) 保持 E、B 不变，拉氏量相差时间全导数。'],
+  ['列维-奇维塔符号','ε_ijk 统一表示叉乘与矢量恒等式。']
+ ],
+ formulas:[
+  ['洛伦兹力', R`\vec F=q(\vec E+\vec v\times\vec B)`],
+  ['广义力（含广义势能）', R`Q_\alpha=-\frac{\partial U}{\partial q_\alpha}+\frac{d}{dt}\frac{\partial U}{\partial\dot q_\alpha},\qquad L=T-U`],
+  ['标势与矢势', R`\vec E=-\nabla\phi-\frac{\partial\vec A}{\partial t},\qquad \vec B=\nabla\times\vec A`],
+  ['带电粒子的广义势能与拉氏量', R`U=q\phi-q\dot{\vec r}\cdot\vec A,\qquad L=\tfrac12 m\dot{\vec r}^{2}-q\phi+q\vec A\cdot\dot{\vec r}`],
+  ['规范变换', R`\vec A'=\vec A+\nabla f,\quad \phi'=\phi-\frac{\partial f}{\partial t};\qquad L'=L+q\frac{df}{dt}`],
+  ['ε 恒等式', R`\varepsilon_{ijk}\varepsilon_{kmn}=\delta_{im}\delta_{jn}-\delta_{in}\delta_{jm}`]
+ ]},
+
+{no:'7', title:'拉格朗日力学中的诺特定理', en:'第七章', file:'理论力学讲义合订本2025.pdf 第 7 章',
+ sections:['质点系的动量、角动量、能量定理','对称性变换与无穷小变换','简化版诺特定理','一般诺特定理','例子（动量 / 能量 / 角动量 / 伽利略 / 洛伦兹）'],
+ concepts:[
+  ['诺特定理','系统的每一连续对称性都对应一个守恒量。'],
+  ['对称性变换','在相差一个边界项（时间全导数）的意义下保持作用量不变的变换；把真实运动映射为真实运动。'],
+  ['无穷小变换','连续参量 ε_T 一阶的变换生成元 Δ_T t、Δ_T q_α。'],
+  ['三大定理','动量定理、角动量定理、动能定理。'],
+  ['空间/时间/转动不变性','分别对应动量守恒、能量守恒、角动量守恒。']
+ ],
+ formulas:[
+  ['动量与角动量定理', R`\frac{d\vec P_s}{dt}=\vec F^{(e)},\qquad \frac{d\vec L}{dt}=\sum_i\vec r_i\times\vec F_i^{(e)}`],
+  ['能量定理', R`E=T+V,\qquad \frac{dE}{dt}=\frac{\partial V}{\partial t}`],
+  ['对称性变换定义', R`S[q']=S[q]+\int_{t_i}^{t_f}dt\,\frac{dF}{dt}`],
+  ['简化版诺特定理守恒量', R`Q_T=\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\Delta_Tq_\alpha,\qquad \frac{dQ_T}{dt}=0`],
+  ['一般诺特定理守恒量', R`Q_T=\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\Delta_Tq_\alpha+\Delta_Tt\Big(L-\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\dot q_\alpha\Big)-F_T`],
+  ['时间平移 → 能量', R`Q=L-\sum_i\frac{\partial L}{\partial\dot{\vec r}_i}\cdot\dot{\vec r}_i=-H,\qquad H=T+V`],
+  ['伽利略 / 洛伦兹守恒量', R`\vec Q=\vec Pt-M\vec R;\qquad \vec Q=\vec pt-m\vec r`]
+ ]},
+
+{no:'8', title:'非惯性系及傅科摆', en:'第八章', file:'理论力学讲义合订本2025.pdf 第 8 章',
+ sections:['非惯性系与加速参考系','转动参考系与科里奥利力','离心力','傅科摆'],
+ concepts:[
+  ['惯性力','参考系加速/转动时运动方程中出现由参考系加速度引起的额外项。'],
+  ['科里奥利力','−2mω×ṙ′，转动系中因相对速度产生的偏转力。'],
+  ['离心力','−mω×(ω×r′)，沿径向向外的惯性力。'],
+  ['傅科摆','用拉格朗日方法在转动地球上求解，摆面绕竖直轴以角速度 −ω sinλ₀ 缓慢转动。']
+ ],
+ formulas:[
+  ['转动参考系速度关系', R`\dot{\vec r}=R\big(\dot{\vec r}'+\vec\omega\times\vec r'\big)`],
+  ['转动参考系运动方程', R`m\ddot{\vec r}'=-m\dot{\vec\omega}\times\vec r'-2m\vec\omega\times\dot{\vec r}'-m\vec\omega\times(\vec\omega\times\vec r')-\nabla_{\vec r'}V`],
+  ['傅科摆拉氏量（直角坐标）', R`L'=\tfrac12 m(\dot x^{2}+\dot y^{2})-m\frac{g}{2L}(x^{2}+y^{2})+m\omega\sin\lambda_0(x\dot y-y\dot x)`],
+  ['傅科摆守恒量', R`P_\phi=mr^{2}\dot\phi+mr^{2}\omega\sin\lambda_0=\text{const}`],
+  ['摆面转动角速度', R`\dot\phi=-\omega\sin\lambda_0`]
+ ]},
+
+{no:'9', title:'微振动与简正坐标', en:'第九章', file:'理论力学讲义合订本2025.pdf 第 9 章',
+ sections:['平衡位置','平衡的分类与勒襄–狄利克雷定理','双单摆与简正坐标','寻找简正坐标的一般方法'],
+ concepts:[
+  ['平衡位置','动力学方程的定常解，等价于广义力为零 ∂U/∂q|q₀=0。'],
+  ['勒襄–狄利克雷定理','保守体系势能的严格极小值点是稳定平衡位置（B 正定是充分条件）。'],
+  ['动能/势能矩阵','小振动近似下 T=½q̇ᵀAq̇、V=½qᵀBq。'],
+  ['简正坐标','使耦合振动方程解耦的新坐标；每个简正模式只含单一频率。'],
+  ['广义特征值问题','由 A、B 联合确定简正频率与简正坐标。']
+ ],
+ formulas:[
+  ['动能二次型', R`T=\tfrac12\sum_{\alpha,\beta}A_{\alpha\beta}\dot q_\alpha\dot q_\beta,\qquad A_{\alpha\beta}=\sum_i m_i\frac{\partial\vec r_i}{\partial q_\alpha}\cdot\frac{\partial\vec r_i}{\partial q_\beta}`],
+  ['平衡条件与势能矩阵', R`\frac{\partial U}{\partial\vec q}\Big|_{\vec q_0}=0,\qquad B_{\alpha\beta}=\frac{\partial^{2}U}{\partial q_\alpha\partial q_\beta}\Big|_{\vec q_0}`],
+  ['小振动势能', R`V=\tfrac12\sum_{\alpha,\beta}B_{\alpha\beta}\Delta q_\alpha\Delta q_\beta=\tfrac12(\Delta\vec q)^{T}B\,\Delta\vec q`],
+  ['双单摆简正频率', R`\omega_1^{2}=\frac{g\sqrt2}{L(\sqrt2+1)},\qquad \omega_2^{2}=\frac{g\sqrt2}{L(\sqrt2-1)}`],
+  ['简正坐标下解耦', R`L=\sum_i\Big(\tfrac12\mu_i\dot z_i^{2}-\tfrac12 z_i^{2}\Big),\qquad \mu_i\ddot z_i+z_i=0`]
+ ]},
+
+{no:'10', title:'哈密顿正则方程', en:'第十章', file:'理论力学讲义合订本2025.pdf 第 10 章',
+ sections:['勒让德变换的定义与几何意义','正则变量与哈密顿量','正则方程'],
+ concepts:[
+  ['勒让德变换','由下凸函数 f(x) 与斜率 p=f′(x) 定义 g(p)=xp−f(x)，实现自变量与函数的同步替换；几何意义是切线在纵轴上的截距。'],
+  ['正则变量','q_α 与 p_α 统称正则变量，在哈密顿框架内可自由互换。'],
+  ['哈密顿量','H=Σp_αq̇_α−L，守恒时即系统能量。'],
+  ['哈密顿正则方程','2s 个一阶方程，与拉格朗日方程完全等价。']
+ ],
+ formulas:[
+  ['广义动量与勒让德变换', R`p_\alpha=\frac{\partial L}{\partial\dot q_\alpha},\qquad H=\sum_\alpha p_\alpha\dot q_\alpha-L`],
+  ['哈密顿正则方程', R`\dot q_\alpha=\frac{\partial H}{\partial p_\alpha},\qquad \dot p_\alpha=-\frac{\partial H}{\partial q_\alpha}`],
+  ['带电粒子在电磁场中', R`H=\frac{(\vec p-q\vec A)^{2}}{2m}+q\phi`],
+  ['一维谐振子', R`H=\frac{p^{2}}{2m}+\tfrac12 m\omega^{2}x^{2}`],
+  ['单摆', R`H=\frac{p_\theta^{2}}{2mR^{2}}-mgR\cos\theta`]
+ ]},
+
+{no:'11', title:'泊松括号', en:'第十一章', file:'理论力学讲义合订本2025.pdf 第 11 章',
+ sections:['相空间与哈密顿流','泊松括号','辛形式','泊松括号的性质','正则量子化'],
+ concepts:[
+  ['相空间','由正则坐标 q_α 与正则动量 p_α 张成的 2s 维空间。'],
+  ['哈密顿流','相空间中全部流线的集合；任一标量函数都生成一个哈密顿流。'],
+  ['泊松括号','相空间两标量函数的反对称双线性运算，等于 f 沿 g 生成流的变化率。'],
+  ['辛形式','ω(u,v)=uᵀJv；泊松括号可写成辛内积 {f,g}=(∇f)ᵀJ∇g。'],
+  ['正则量子化','{f,g} → (1/iħ)[f,g]。']
+ ],
+ formulas:[
+  ['泊松括号定义', R`\{f,g\}=\sum_{\alpha=1}^{s}\Big(\frac{\partial f}{\partial q_\alpha}\frac{\partial g}{\partial p_\alpha}-\frac{\partial f}{\partial p_\alpha}\frac{\partial g}{\partial q_\alpha}\Big)`],
+  ['力学量时间演化', R`\frac{df}{dt}=\{f,g\}+\frac{\partial f}{\partial t}`],
+  ['辛形式与正则方程', R`\omega(u,v)=u^{\mathrm T}Jv,\quad J=\begin{pmatrix}0&I_s\\-I_s&0\end{pmatrix};\qquad \dot\xi=J\nabla_\xi H`],
+  ['泊松括号四性质', R`\{f,g\}=-\{g,f\};\quad \{fg,h\}=f\{g,h\}+\{f,h\}g;\quad \{f,\{g,h\}\}+\{g,\{h,f\}\}+\{h,\{f,g\}\}=0`],
+  ['基本括号', R`\{q_\alpha,q_\beta\}=\{p_\alpha,p_\beta\}=0,\qquad \{q_\alpha,p_\beta\}=\delta_{\alpha\beta}`],
+  ['正则量子化', R`\{f,g\}\to\frac{1}{i\hbar}[f,g],\qquad [q_\alpha,p_\beta]=i\hbar\delta_{\alpha\beta}`]
+ ]},
+
+{no:'12', title:'正则变换', en:'第十二章', file:'理论力学讲义合订本2025.pdf 第 12 章',
+ sections:['正则变换的概念','充要条件（辛变换 / 泊松括号）','变换后的哈密顿量','例子'],
+ concepts:[
+  ['正则变换','保持正则方程形式不变的变换 (q,p)→(Q,P)，要求对任意 H 成立。'],
+  ['辛变换','满足 MJMᵀ=J 的矩阵，即保持辛形式不变的变换。'],
+  ['保泊松括号判据','{Q,P}=1（等价条件）。'],
+  ['单价正则变换','|det M|=1。']
+ ],
+ formulas:[
+  ['正则变换定义', R`\dot Q_\alpha=\frac{\partial\tilde H}{\partial P_\alpha},\qquad \dot P_\alpha=-\frac{\partial\tilde H}{\partial Q_\alpha}`],
+  ['保辛形式条件', R`MJM^{\mathrm T}=J,\qquad M_{ab}=\frac{\partial\xi_a}{\partial\eta_b}`],
+  ['保泊松括号条件', R`\{q_\alpha,p_\beta\}_{Q,P}=\delta_{\alpha\beta},\qquad \{Q,P\}=1`],
+  ['变换后哈密顿量', R`\tilde H(\vec\eta,t)=H(\vec\xi(\vec\eta,t),t)+F(\vec\eta,t)`]
+ ]},
+
+{no:'13', title:'正则变换的母函数', en:'第十三章', file:'理论力学讲义合订本2025.pdf 第 13 章',
+ sections:['哈密顿最小作用量原理','第一类母函数','四类母函数'],
+ concepts:[
+  ['哈密顿最小作用量原理','S=∫dt(p_αq̇_α−H) 固定端点取极值 ⟺ 正则方程。'],
+  ['母函数','q,p 与 Q,P 之间的"桥梁"函数，按变量组合分四类；存在母函数 ⟺ 正则变换。'],
+  ['四类母函数','F₁(q,Q)、F₂(q,P)、F₃(p,Q)、F₄(p,P)，由勒让德变换相互联系。']
+ ],
+ formulas:[
+  ['哈密顿最小作用量原理', R`S=\int_{t_i}^{t_f}dt\,\big[p_\alpha\dot q_\alpha-H\big]\ \text{取极值}`],
+  ['四类母函数的正则变换', R`F_1(q,Q):\ p=\frac{\partial F_1}{\partial q},\ P=-\frac{\partial F_1}{\partial Q};\qquad F_2(q,P):\ p=\frac{\partial F_2}{\partial q},\ Q=\frac{\partial F_2}{\partial P}`],
+  ['F₃ / F₄', R`F_3(p,Q):\ q=-\frac{\partial F_3}{\partial p},\ P=-\frac{\partial F_3}{\partial Q};\qquad F_4(p,P):\ q=-\frac{\partial F_4}{\partial p},\ Q=\frac{\partial F_4}{\partial P}`],
+  ['变换后哈密顿量', R`\tilde H=H+\frac{\partial F}{\partial t}`],
+  ['母函数相互关系', R`F_3=F_1-\sum_\alpha p_\alpha q_\alpha,\qquad F_4=F_1-\sum_\alpha p_\alpha q_\alpha+\sum_\alpha P_\alpha Q_\alpha`]
+ ]},
+
+{no:'14', title:'哈密顿-雅科比方程', en:'第十四章', file:'理论力学讲义合订本2025.pdf 第 14 章',
+ sections:['哈密顿-雅科比方程','解的不唯一性与完全解','分离变量法','初值问题'],
+ concepts:[
+  ['哈密顿-雅科比方程','一阶偏微分方程 H(q,∂S/∂q,t)+∂S/∂t=0，其完全解即为使 H̃=0 的母函数。'],
+  ['完全解','含与变量数目相等的可调常数。'],
+  ['分离变量法','当 xᵢ 与 ∂S/∂xᵢ 总以 φᵢ(xᵢ,∂S/∂xᵢ) 形式出现时 xᵢ 可分离。'],
+  ['哈密顿特征函数','不含时下 S=−Et+W(q)，W 满足 H(q,∂W/∂q)=E。']
+ ],
+ formulas:[
+  ['哈密顿-雅科比方程', R`H\Big(q,\frac{\partial S}{\partial q},t\Big)+\frac{\partial S}{\partial t}=0`],
+  ['不含时分离（特征函数）', R`S=-Et+W(q_1,\dots,q_s),\qquad H\Big(q,\frac{\partial W}{\partial q}\Big)=E`],
+  ['完全解', R`S=-Et+W(q_1,\dots,q_s,\nu_1,\dots,\nu_{s-1},E)+A`],
+  ['分离变量一般形式', R`S=S_1(x_1;c_1)+S_2(x_2;c_1,c_2)+\dots+S_n(x_n;c_1,\dots,c_n)`]
+ ]},
+
+{no:'15', title:'中心势场中的两体问题', en:'第十五章', file:'理论力学讲义合订本2025.pdf 第 15 章',
+ sections:['两体问题的单体分解','中心势场与平面运动','哈密顿-雅科比方程解开普勒问题','拉格朗日力学解开普勒问题'],
+ concepts:[
+  ['两体问题的单体分解','引入相对坐标与质心坐标，把两体问题分解为质心运动与相对运动两个独立单体问题。'],
+  ['约化质量','m_r=m₁m₂/(m₁+m₂)。'],
+  ['中心势场','V=V(r)，力矩为零、角动量守恒，运动限制在垂直于 L 的固定平面内。'],
+  ['开普勒问题','−α/r 势的两体问题；轨道为圆锥曲线。']
+ ],
+ formulas:[
+  ['两体动能分解与约化质量', R`T=\tfrac12(m_1+m_2)\dot{\vec r}_{0c}^{2}+\tfrac12\frac{m_1m_2}{m_1+m_2}\dot{\vec r}^{2},\qquad m_r=\frac{m_1m_2}{m_1+m_2}`],
+  ['开普勒问题拉氏量与哈密顿量', R`L=\tfrac12 m(\dot r^{2}+r^{2}\dot\theta^{2})+\frac{\alpha}{r},\qquad H=\frac{1}{2m}\Big(p_r^{2}+\frac{p_\theta^{2}}{r^{2}}\Big)-\frac{\alpha}{r}`],
+  ['母函数（完全解）', R`F_2=-Et+J\theta+\int dr\sqrt{2m\Big(E+\frac{\alpha}{r}\Big)-\frac{J^{2}}{r^{2}}}`],
+  ['开普勒轨道方程', R`r=\frac{p}{1+e\cos(\theta-\theta_0)},\quad p=\frac{J^{2}}{m\alpha},\quad e=\sqrt{1+\frac{2EJ^{2}}{m\alpha^{2}}}`],
+  ['轨道类型判据', R`E<0,e<1\ \text{椭圆};\quad E=0,e=1\ \text{抛物线};\quad E>0,e>1\ \text{双曲线}`]
+ ]},
+
+{no:'16', title:'无穷小正则变换与生成元', en:'第十六章', file:'理论力学讲义合订本2025.pdf 第 16 章',
+ sections:['无穷小正则变换','连续变换的生成元','哈密顿流与连续正则变换的等价性','例子（平移 / 转动 / 时间 / 伽利略 / 洛伦兹）'],
+ concepts:[
+  ['无穷小正则变换','η_a=ξ_a+ε_TΔ_Tξ_a；为正则变换的充要条件 {Δ_Tξ_a,ξ_b}+{ξ_a,Δ_Tξ_b}=0。'],
+  ['哈密顿流与生成元','以标量函数 f 为哈密顿量写出正则方程，其解给出以 ε 为参数的连续变换，f 即生成元。'],
+  ['哈密顿流 ⟺ 连续正则变换','由任一标量函数生成的流是连续正则变换，反之亦然（条件 ∇G=J⁻¹Δξ 可解）。'],
+  ['基本变换的生成元','动量↔空间平移；角动量↔空间转动；H↔时间平移；pt−mr↔伽利略/洛伦兹。']
+ ],
+ formulas:[
+  ['无穷小正则变换与条件', R`\eta_a=\xi_a+\varepsilon_T\Delta_T\xi_a+O(\varepsilon_T^{2}),\qquad \{\Delta_T\xi_a,\xi_b\}+\{\xi_a,\Delta_T\xi_b\}=0`],
+  ['哈密顿流与生成元', R`\dot{\vec\xi}=J\nabla_\xi f,\qquad \Delta_T\xi_a=\{\xi_a,f\}`],
+  ['等价性条件', R`\Delta_T\xi_a=\{\xi_a,G\}\ \Leftrightarrow\ \nabla_\xi G=J^{-1}\Delta_T\vec\xi`],
+  ['各基本变换生成元', R`\vec G=\vec p;\quad \vec G=\vec r\times\vec p;\quad G=H;\quad \vec G=\vec pt-m\vec r`]
+ ]},
+
+{no:'17', title:'哈密顿力学中的诺特定理', en:'第十七章', file:'理论力学讲义合订本2025.pdf 第 17 章',
+ sections:['连续对称性变换','生成元与守恒量','与拉格朗日诺特定理的关系','对称性代数（李代数、隐藏 SO(4)）'],
+ concepts:[
+  ['哈密顿版的对称性变换','在相差边界项意义上保持 S=∫dt(Σp_αq̇_α−H) 不变；一定是正则变换。'],
+  ['哈密顿诺特定理','连续对称性变换的（恰当选取后的）生成元是守恒量。'],
+  ['守恒量判据','∂G/∂t+{G,H}=0。'],
+  ['对称性代数','守恒量集合对线性组合与泊松括号封闭，构成李代数。'],
+  ['隐藏 SO(4)','−α/r 势中龙格—楞次矢量亦守恒，{L,B} 同构于 SO(4)。']
+ ],
+ formulas:[
+  ['生成元关系与守恒条件', R`\Delta_Tq_\alpha=\{q_\alpha,G_T\},\qquad \frac{\partial G_T}{\partial t}+\{G_T,H\}=\frac{dF_T}{dt}`],
+  ['拉氏守恒量即生成元', R`Q_T=\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\Delta_Tq_\alpha+\Delta_Tt\Big(L-\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\dot q_\alpha\Big)-F_T,\qquad G_T=Q_T`],
+  ['李代数定义', R`[x,y]=-[y,x],\qquad [x,[y,z]]+[y,[z,x]]+[z,[x,y]]=0`],
+  ['角动量代数与隐藏 SO(4)', R`\{L_a,L_b\}=\sum_c\varepsilon_{abc}L_c,\qquad \{B_a,B_b\}=-\frac{2H}{m}\sum_c\varepsilon_{abc}L_c`],
+  ['龙格—楞次矢量', R`\vec B=\frac{1}{m}\vec p\times\vec L-\frac{\alpha}{r}\vec r`]
+ ]},
+
+{no:'18', title:'作用量-角度变量', en:'第十八章', file:'理论力学讲义合订本2025.pdf 第 18 章',
+ sections:['相空间中的环面','刘维尔-阿诺尔德定理','作用量-角度变量（单自由度）','多自由度体系'],
+ concepts:[
+  ['相空间中的环面','n 个独立对合守恒量使轨迹位于 n 维环面 Tⁿ 上。'],
+  ['刘维尔-阿诺尔德定理','n 自由度不含时系统若有 n 个独立对合守恒量，则有界连通的等值面必为 n 维环面 Tⁿ。'],
+  ['作用量变量','I_i=(1/2π)∮γ_i p·dq，只依赖守恒量。'],
+  ['角度变量','环面上的角度坐标 θ_i，Δ_jθ_i=2πδ_ij。']
+ ],
+ formulas:[
+  ['刘维尔-阿诺尔德定理', R`\{F_i,F_j\}=0,\ \nabla F_i\ \text{线性无关},\ M_{\vec f}\ \text{有界连通}\ \Rightarrow\ M_{\vec f}=T^{n}`],
+  ['单自由度作用量变量', R`I=\frac{1}{2\pi}\oint_{M_h}p\,dq=\frac{1}{2\pi}\oint\sqrt{2m(h-V(q))}\,dq`],
+  ['母函数与角度变量', R`S(q,I)=\int_{q_0}^{q}p\,dq',\qquad p=\frac{\partial S}{\partial q},\qquad \theta=\frac{\partial S}{\partial I}`],
+  ['多自由度周期条件', R`I_i=\frac{1}{2\pi}\oint_{\gamma_i}\vec p\cdot d\vec q,\qquad \Delta_j\theta_i=2\pi\delta_{ij}`],
+  ['一维谐振子解', R`I=\frac{h}{\omega},\qquad q=\sqrt{\frac{2I}{m\omega}}\cos(\theta+\theta_0),\qquad p=\sqrt{2m\omega I}\sin(\theta+\theta_0)`]
+ ]},
+
+{no:'19', title:'刚体运动学', en:'第十九章', file:'理论力学讲义合订本2025.pdf 第 19 章',
+ sections:['刚体运动的自由度','欧拉角','刚体的角速度','欧拉运动学方程'],
+ concepts:[
+  ['刚体','任意两点距离不变的质点系，自由度 6 = 3 平动 + 3 转动。'],
+  ['定点转动与 SO(3)','位形空间为 SO(3)={R | RRᵀ=I₃, detR=1}。'],
+  ['欧拉角','进动角 φ、章动角 θ、自转角 ψ。'],
+  ['角速度','Ω=ṘR⁻¹ 为反对称矩阵，对应角速度矢量 ω，满足 ṙᵢ=ω×rᵢ。'],
+  ['欧拉运动学方程','ω=φ̇ẑ₀+θ̇(ON)+ψ̇ẑ。']
+ ],
+ formulas:[
+  ['刚体自由度与 SO(3)', R`3\times3-3=6,\qquad SO(3)=\{R\,|\,RR^{T}=R^{T}R=I_3,\ \det R=1\}`],
+  ['角速度矩阵', R`\Omega=\dot RR^{-1},\qquad \Omega^{T}=-\Omega,\qquad \Omega\vec r=\vec\omega\times\vec r`],
+  ['欧拉运动学方程（矢量）', R`\vec\omega=\dot\phi\,\hat z_0+\dot\theta\,\widehat{ON}+\dot\psi\,\hat z`],
+  ['随动系分量', R`\omega_x=\dot\phi\sin\theta\sin\psi+\dot\theta\cos\psi,\quad \omega_y=\dot\phi\sin\theta\cos\psi-\dot\theta\sin\psi,\quad \omega_z=\dot\phi\cos\theta+\dot\psi`]
+ ]},
+
+{no:'20', title:'刚体动力学', en:'第二十章', file:'理论力学讲义合订本2025.pdf 第 20 章',
+ sections:['转动惯量张量','惯量主轴','欧拉动力学方程','拉格朗日陀螺','欧拉陀螺（惯量椭球、潘索描述）'],
+ concepts:[
+  ['转动惯量张量','I=Σmᵢ(rᵢ²I₃−rᵢrᵢᵀ)，实对称正定；L=Iω。'],
+  ['惯量主轴','I 可正交对角化；主轴系中动能对角化。'],
+  ['欧拉动力学方程','随动主轴系中由角动量定理导出的三个分量方程，含陀螺项。'],
+  ['拉格朗日陀螺','重力下的对称陀螺（I₁=I₂）；φ、ψ 为循环坐标，约化为 θ 的单自由度问题。'],
+  ['欧拉陀螺','绕定点自由转动（外力矩为零），可积；惯量椭球在垂直 L 的平面上纯滚动（潘索描述）。']
+ ],
+ formulas:[
+  ['转动惯量张量与角动量', R`I=\sum_i m_i\big(\vec r_i^{2}I_3-\vec r_i\vec r_i^{T}\big),\qquad \vec L=I\vec\omega`],
+  ['主轴对角化与动能', R`UIU^{T}=\mathrm{diag}(I_1,I_2,I_3),\qquad T=\tfrac12\big(I_1\omega_1^{2}+I_2\omega_2^{2}+I_3\omega_3^{2}\big)`],
+  ['欧拉动力学方程', R`I_1\dot\omega_x-(I_2-I_3)\omega_y\omega_z=M_x,\quad I_2\dot\omega_y-(I_3-I_1)\omega_z\omega_x=M_y,\quad I_3\dot\omega_z-(I_1-I_2)\omega_x\omega_y=M_z`],
+  ['拉格朗日陀螺拉氏量与守恒量', R`L=\frac{I_1}{2}(\dot\theta^{2}+\dot\phi^{2}\sin^{2}\theta)+\frac{I_3}{2}(\dot\psi+\dot\phi\cos\theta)^{2}-mgL\cos\theta`],
+  ['有效势能与 u=cosθ 方程', R`V_{\mathrm{eff}}=\frac{(L_{z_0}-L_z\cos\theta)^{2}}{2I_1\sin^{2}\theta}+mgL\cos\theta,\qquad \dot u^{2}=(\alpha-\beta u)(1-u^{2})-(a-bu)^{2}`],
+  ['惯量椭球与潘索', R`I_1x^{2}+I_2y^{2}+I_3z^{2}=1,\qquad \overrightarrow{OP}=\frac{\vec\omega}{\sqrt{2E}}`],
+  ['对称欧拉陀螺解', R`\dot\phi=\frac{L}{I_1},\qquad \dot\theta=0,\qquad \dot\psi=-\frac{I_3-I_1}{I_1}\omega_z`]
+ ]}
+];
+
+const LM_TOPICS = [
+ {name:'拉格朗日量与守恒量（约束/柱坐标）', ch:'第2–3章', pri:'S', stars:5, ev:[['2025–2026','一'],['2025','1'],['2024','1']], note:'自由度、柱坐标下拉氏量、循环坐标与广义动量守恒——每套第一题'},
+ {name:'耦合振子与简正频率', ch:'第9章', pri:'S', stars:5, ev:[['2025–2026','二'],['2025','2'],['2024','2']], note:'写运动方程 + 求简正频率（行列式为零）'},
+ {name:'勒让德变换与哈密顿量', ch:'第10章', pri:'S', stars:5, ev:[['2025–2026','三(1)'],['2025','3.1'],['2024','3(1)']], note:'由 L 求广义动量再作勒让德变换'},
+ {name:'哈密顿-雅可比方程与分离变量', ch:'第14章', pri:'S', stars:5, ev:[['2025–2026','三(3)(4)'],['2025','3.3/3.4'],['2024','4(3)(4)']], note:'写 H-J 方程并用分离变量法求解（分值最高的小问）'},
+ {name:'诺特定理求守恒量', ch:'第7章', pri:'S', stars:5, ev:[['2025–2026','四(1)(3)(5)'],['2025','4.1/4.3/4.5'],['2024','3(3)–(6)']], note:'验证作用量差边界项不变并求守恒量 Q'},
+ {name:'哈密顿正则方程', ch:'第10章', pri:'A', stars:4, ev:[['2025–2026','三(2)'],['2025','3.2'],['2024','3(2)']], note:'由 H 写正则方程'},
+ {name:'守恒量作为变换的生成元', ch:'第16–17章', pri:'A', stars:4, ev:[['2025–2026','四(4)(6)'],['2025','4.4/4.6'],['2024','3(7)']], note:'验证守恒量生成给定的无穷小变换'},
+ {name:'泊松括号与 SO(3) 李代数', ch:'第11/17章', pri:'A', stars:4, ev:[['2025–2026','四(2)(7)'],['2025','4.2/4.7'],['2024','4(1)']], note:'计算 {Qᵢ,Qⱼ} 与 {Q,H}，得到 SO(3) 李代数'},
+ {name:'正则变换的验证', ch:'第12章', pri:'B', stars:3, ev:[['2024','4(1)']], note:'用泊松括号验证变换为正则变换（P=−2√p sinq、Q=√p cosq）'},
+ {name:'作用量边界项与对称性变换', ch:'第5/7章', pri:'A', stars:4, ev:[['2025–2026','四(1)'],['2024','3(5)']], note:'证明 ΔL 为时间全导数、作用量不变'},
+ {name:'刚体与欧拉角', ch:'第19–20章', pri:'C', stars:2, ev:[], note:'讲义覆盖但近 3 套期末未单独命题'}
+];
+
+const LM_TYPES = [
+ {name:'拉格朗日量求解', cnt:3, topics:'约束·柱坐标·循环坐标', pri:'S', ex:'抛物面/斜面上的质点，写 L 并找出守恒量'},
+ {name:'简正频率', cnt:3, topics:'微振动', pri:'S', ex:'耦合振子由行列式为零解 ω'},
+ {name:'勒让德变换', cnt:3, topics:'哈密顿力学', pri:'S', ex:'由 L 求 p 与 H'},
+ {name:'H-J 方程与分离变量', cnt:3, topics:'哈密顿-雅可比', pri:'S', ex:'写方程并分离变量求完全解'},
+ {name:'诺特定理', cnt:3, topics:'对称性', pri:'S', ex:'验证作用量不变并求 Q'},
+ {name:'生成元与泊松括号', cnt:3, topics:'哈密顿力学', pri:'A', ex:'验证 Q 生成给定变换、计算 {Qᵢ,Qⱼ}'},
+ {name:'正则变换验证', cnt:1, topics:'正则变换', pri:'B', ex:'用泊松括号验证 [Q,P]=1'}
+];
+
+const LM_EXAMS = [
+{ id:'lm2025b', label:'理论力学 2025–2026 期末（含解析）',
+  meta:[['出题人','杨望'],['回忆','Z.kril'],['解析','lrx、南窗鹧鸪'],['结构','4 道大题 / 100 分'],['来源文件','2_2025-2026年理论力学期末考试(含解析).pdf']],
+  qs:[
+   {no:'一', title:'抛物面上的质点', topic:'约束·柱坐标', type:'计算 · 20 分', score:'每问 5 分',
+    stem:'质量 m 的质点约束在重力场中的抛物面 z=(x²+y²)/(2a²) 上运动，重力沿 z 负方向。求：(1) 自由度；(2) 柱坐标下的拉格朗日量；(3) 柱坐标下的循环坐标；(4) 循环坐标对应的守恒量。',
+    key:'自由度 = 2；取 x=rcosθ、y=rsinθ、z=r²/2a²，则 T=½m[ṙ²(1+r²/a⁴)+r²θ̇²]、V=mg r²/2a²；循环坐标为 θ；p_θ=mr²θ̇ 守恒。',
+    src:'第一大题'},
+   {no:'二', title:'含交叉项的耦合振子', topic:'微振动', type:'计算 · 20 分', score:'每问 10 分',
+    stem:'二维体系 L=½(m₁ẋ²+m₂ẏ²)+αẋẏ−½k(x²+y²)。求：(1) 拉格朗日方程；(2) 简正频率。',
+    key:'m₁ẍ+αÿ+kx=0、αẍ+m₂ÿ+ky=0；行列式为零给出 (m₁m₂−α²)ω⁴−k(m₁+m₂)ω²+k²=0，解得 ω²=[k(m₁+m₂)±√(k²[(m₁−m₂)²+4α²])]/[2(m₁m₂−α²)]。',
+    src:'第二大题'},
+   {no:'三', title:'勒让德变换与 H-J 方程', topic:'哈密顿力学', type:'计算 · 25 分', score:'前三问各 5 分，第四问 10 分',
+    stem:'二维体系 L=¼(ẋ²+ẏ²/x²)−x²y²。求：(1) 勒让德变换求 H；(2) 正则方程；(3) 哈密顿-雅可比方程；(4) 用分离变量法求解。',
+    key:'p_x=ẋ/2、p_y=ẏ/(2x²)；H=p_x²+x²p_y²+x²y²；H-J 方程 ∂S/∂t+(∂S/∂x)²+x²(∂S/∂y)²+x²y²=0；分离后 S=−Et±∫√(E−α²x²)dx±∫√(α²−y²)dy。',
+    src:'第三大题'},
+   {no:'四', title:'诺特定理、生成元与 SO(3) 李代数', topic:'对称性·泊松括号', type:'计算 · 35 分', score:'每问 5 分',
+    stem:'二维谐振子 L=½m(ẋ²+ẏ²)−½mω²(x²+y²)。(1) 变换 x′=x+yε、y′=y−xε，证作用量差边界项不变并证 Q₁=yp_x−xp_y 守恒；(2) 证 {Q₁,H}=0；(3) 变换 x′=x+ẏε、y′=y+ẋε，求 Q₂；(4) 证 Q₂ 为生成元；(5) 变换 x′=x+ẋε、y′=y−ẏε，求 Q₃；(6) 证 Q₃ 为生成元；(7) 计算 Q₁、Q₂、Q₃ 两两的泊松括号。',
+    key:'Q₂=p_xp_y/m+mω²xy；Q₃=(p_x²−p_y²)/2m+½mω²(x²−y²)；{Q₁,Q₂}=2Q₃、{Q₁,Q₃}=−2Q₂、{Q₂,Q₃}=2ω²Q₂；改写后满足 {Lᵢ,Lⱼ}=−ε_ijk Lₖ，即 SO(3) 李代数。',
+    src:'第四大题'}
+  ]},
+{ id:'lm2025a', label:'理论力学 2025 回忆版（杨望 2026-1-19）',
+  meta:[['回忆','杨望 2026-1-19'],['结构','4 道大题（20 / 20 / 25 / 35 分）'],['备注','与「含解析版」题目对应，个别系数/项不同'],['来源文件','lili.pdf']],
+  qs:[
+   {no:'1', title:'抛物面上的质点', topic:'约束·柱坐标', type:'计算 · 20 分', stem:'质点在抛物面 z=(x²+y²)/(2a) 上运动，z 轴竖直向上，受重力。1.1 写自由度；1.2 求柱坐标下的拉格朗日函数；1.3 指出循环坐标；1.4 求对应守恒量。', key:'同含解析版；注意此版抛物面系数写作 1/2a。', src:'第 1 题'},
+   {no:'2', title:'二维耦合振子', topic:'微振动', type:'计算 · 20 分', stem:'L=½m(ẋ²+ẏ²)−½k(x²+y²)。2.1 写欧拉-拉格朗日方程；2.2 求 2 个简正频率。', key:'等质量同等劲度、无交叉项（与含解析版不同）。', src:'第 2 题'},
+   {no:'3', title:'勒让德变换与 H-J 方程', topic:'哈密顿力学', type:'计算 · 25 分', stem:'L=¼(ẋ²+ẏ²/x²)−mω²(x²+y²)。3.1 作勒让德变换求 H；3.2 写正则方程；3.3 写哈密顿-雅可比方程；3.4 用分离变量法求解。', key:'势能项此版作 −mω²(x²+y²)（含解析版作 −x²y²），原文不一致。', src:'第 3 题'},
+   {no:'4', title:'诺特定理、生成元与泊松括号', topic:'对称性·泊松括号', type:'计算 · 35 分', stem:'L=½m(ẋ²+ẏ²)−½mω²(x²+y²)。4.1–4.7 用诺特定理求 Q₁、Q₂、Q₃，验证其为生成元，并求两两泊松括号（提示：SO(3) 对称性）。', key:'Q₁=yp_x−xp_y；Q₂=p_xp_y/m+mω²xy；Q₃=½(mẋ²−mẏ²+mω²(x²−y²))。', src:'第 4 题'}
+  ]},
+{ id:'lm2024', label:'理论力学 2024（杨望）',
+  meta:[['出题人','杨望'],['结构','4 道大题（原文件未标分值）'],['来源文件','理论力学回忆.pdf']],
+  qs:[
+   {no:'1', title:'斜面上的质点', topic:'约束', type:'计算', stem:'约束在光滑平面 x+y+z=0 上、质量为 m 的质点，重力加速度沿 −g 方向。(1) 自由度；(2) 拉氏量。', key:'自由度 = 2；L=½m(ẋ²+ẏ²+ż²)−mgz，用约束消去一个坐标。', src:'第 1 题'},
+   {no:'2', title:'三自由度耦合振子', topic:'微振动', type:'计算', stem:'L=½(ẋ²+ẏ²+ż²)+aẋẏ−½k(x²+y²+z²)。(1) 导出运动方程；(2) 求 3 个简正频率。', key:'由 x±y 组合分组，行列式为零求三个 ω。', src:'第 2 题'},
+   {no:'3', title:'抛物线坐标下的匀强电场', topic:'哈密顿·诺特定理', type:'计算', stem:'L=½(u²+v²)(u̇²+v̇²)−½Eq(u²−v²)。(1) 勒让德变换求 H；(2) 正则方程；(3)–(6) 用诺特定理证明变换是对称性变换并求守恒量 Q=(p_u u−p_v v)/(u²+v²)+Eqt；(7) 验证 Q 生成该变换。', key:'H=(p_u²+p_v²)/[2m(u²+v²)]−½Eq(u²−v²)；变换 u′=u+uε/(u²+v²)、v′=v−vε/(u²+v²)。', src:'第 3 题'},
+   {no:'4', title:'正则变换与 H-J 方程', topic:'正则变换', type:'计算', stem:'H=−p sin2q，变换 P=−2√p sinq、Q=√p cosq。(1) 用泊松括号验证这是正则变换；(2) 证明 H̃(Q,P)=PQ；(3) 写出 H̃ 的哈密顿-雅可比方程；(4) 用分离变量法求解。', key:'[Q,P]=1；H̃=PQ；分离变量后 S=−Et+E lnQ+…。', src:'第 4 题'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseOf(){ return CID==='em'?COURSE_EM : CID==='qm2'?COURSE_QM2 : CID==='hq'?COURSE_HQ : COURSE; }
-function chaptersOf(){ if(CID==='em') return EM_CHAPTERS; if(CID==='qm2') return QM2_CHAPTERS; if(CID==='hq') return HQ_CHAPTERS; return TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS; }
-function topicsOf(){ return CID==='em'?EM_TOPICS : CID==='qm2'?QM2_TOPICS : CID==='hq'?HQ_TOPICS : TOPICS; }
-function typesOf(){ return CID==='em'?EM_TYPES : CID==='qm2'?QM2_TYPES : CID==='hq'?HQ_TYPES : TYPES; }
-function examsOf(){ return CID==='em'?EM_EXAMS : CID==='qm2'?QM2_EXAMS : CID==='hq'?HQ_EXAMS : EXAMS.concat(KY_EXAMS); }
+function courseOf(){ return CID==='em'?COURSE_EM : CID==='qm2'?COURSE_QM2 : CID==='hq'?COURSE_HQ : CID==='lm'?COURSE_LM : COURSE; }
+function chaptersOf(){ if(CID==='em') return EM_CHAPTERS; if(CID==='qm2') return QM2_CHAPTERS; if(CID==='hq') return HQ_CHAPTERS; if(CID==='lm') return LM_CHAPTERS; return TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS; }
+function topicsOf(){ return CID==='em'?EM_TOPICS : CID==='qm2'?QM2_TOPICS : CID==='hq'?HQ_TOPICS : CID==='lm'?LM_TOPICS : TOPICS; }
+function typesOf(){ return CID==='em'?EM_TYPES : CID==='qm2'?QM2_TYPES : CID==='hq'?HQ_TYPES : CID==='lm'?LM_TYPES : TYPES; }
+function examsOf(){ return CID==='em'?EM_EXAMS : CID==='qm2'?QM2_EXAMS : CID==='hq'?HQ_EXAMS : CID==='lm'?LM_EXAMS : EXAMS.concat(KY_EXAMS); }
+/* 按培养方案的学期顺序渲染课程切换器：只列出已收录的课程，按学期分组 */
+function renderCourseSeg(){
+  const order = ['lm','qm','em','qm2','hq'];
+  let html = '';
+  CURRICULUM.forEach(sec=>{
+    const avail = sec.courses
+      .map(name=>({name, id: order.find(k=>COURSE_NAME[k]===name)}))
+      .filter(o=>o.id);
+    if(!avail.length) return;
+    html += `<div class="seg-term">${esc(sec.term)}</div>`;
+    html += avail.map(o=>`<button data-course="${o.id}" onclick="setCourse('${o.id}')">${esc(o.name)}</button>`).join('');
+  });
+  $('#courseSeg').innerHTML = html;
+}
 function setCourse(c){ CID = c; renderAll(); }
 function renderAll(){
+  renderCourseSeg();
+  renderCurriculum();
   renderDashboard(); renderChapters(); renderFormulas(); renderHigh();
   renderTypes(); renderExams(); renderSprint(); renderMistakes(); renderAbout();
-  document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on', b.getAttribute('onclick').indexOf("'"+CID+"'")>=0));
+  document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on', b.dataset.course===CID));
   $('#pageTitle').innerText = PAGE_NAMES[CURPAGE] || '';
   typeset();
 }
 let CURPAGE = 'dashboard';
+
+/* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
+function renderCurriculum(){
+  const order = ['lm','qm','em','qm2','hq'];
+  const rows = CURRICULUM.map(sec=>{
+    const items = sec.courses.map(name=>{
+      const id = order.find(k=>COURSE_NAME[k]===name);
+      if(!id) return `<span class="cv-off">${esc(name)}</span>`;
+      const C = id==='lm'?COURSE_LM : id==='qm2'?COURSE_QM2 : id==='em'?COURSE_EM : id==='hq'?COURSE_HQ : COURSE;
+      const n = (id==='qm') ? 2 : 1;
+      return `<a class="cv-on" href="#" onclick="setCourse('${id}');showPage('dashboard');return false">${esc(name)}<i>已收录</i></a>`;
+    }).join('');
+    return `<tr>
+      <td style="white-space:nowrap;vertical-align:top"><b>${esc(sec.term)}</b></td>
+      <td style="line-height:2.1">${items}</td>
+    </tr>`;
+  }).join('');
+  const done = CURRICULUM.reduce((a,s)=>a+s.courses.filter(n=>Object.values(COURSE_NAME).indexOf(n)>=0).length,0);
+  const total = CURRICULUM.reduce((a,s)=>a+s.courses.length,0);
+  $('#curriculum').innerHTML = `
+  <div class="hero">
+    <div class="hero-label">培养方案 · 按学期</div>
+    <h1>课程体系。</h1>
+    <p>Equimophysics 按学期组织课程：左侧切换器只列出<b>已收录</b>的课程（按学期分组），本页给出完整的四年培养方案，并标明哪些课程已经做好复习页。已收录 ${done} / ${total} 门。</p>
+  </div>
+  <div class="card">
+    <div class="card-title">南开大学物理科学学院 · 课程体系</div>
+    <table class="tbl">
+      <thead><tr><th>学期</th><th>课程（绿色＝已收录，点开即可复习）</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+  <div class="note">课程归属学期由用户提供；同一门课若不同年级开课学期不同，以用户提供的方案为准。课程内容页的数据来自各科讲义与真题 PDF，详见「数据说明」。</div>`;
+}
 
 function renderDashboard(){
   const top = topicsOf().slice(0,5).map((t,i)=>`
@@ -2100,14 +2586,16 @@ function renderDashboard(){
   const em = (CID==='em');
   const qm2 = (CID==='qm2');
   const hq = (CID==='hq');
+  const lmc = (CID==='lm');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
       : hq ? '本站把《高等量子力学》（金亮）的 10 章讲义（希尔伯特空间 / 态和薛定谔方程 / 密度矩阵 / 自旋 / 二次量子化 / 相干态 / Bloch 方程 / 相对论量子力学 / 时间反演 / 量子信息）整理为结构化资料，并汇总 4 份考题回忆。按考点频率排出优先级。'
+      : lmc ? '本站把《理论力学》（杨望 · 大二上）的 20 章讲义整理为结构化资料，并汇总 3 套期末真题（2025–2026 含解析、2025 回忆版、2024）。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -2143,6 +2631,8 @@ function renderDashboard(){
       ? '提示：真题来自《量子力学（二）真题汇编》（学生整理），覆盖 2017–2022、按章节编排；另有《量子力学考研真题》经核查全部属于量子力学（一），已归入该课程。'
       : hq
       ? '提示：4 份考题中，2017–2018、2022–2023、2025 为<b>回忆版</b>（内容可靠）；2018–2019 那份 PDF 字体编码损坏、OCR 为乱码，仅保留了题量结构说明。'
+      : lmc
+      ? '提示：3 套真题中，2025–2026 一套<b>含完整解析</b>（最可靠），另两套为回忆版；2025 的两版在个别系数/项上不一致，已在「历年真题」页标注。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -2153,6 +2643,9 @@ function COURSE_INFO_ROWS(){
   const rows = [];
   rows.push(`<div class="kv"><b>课程</b><span>${esc(C.name)}</span></div>`);
   rows.push(`<div class="kv"><b>学校</b><span>${esc(C.school)}</span></div>`);
+  const cn = COURSE_NAME[CID];
+  const term = cn ? (CURRICULUM.find(s=>s.courses.indexOf(cn)>=0)||{}).term : null;
+  if(term) rows.push(`<div class="kv"><b>开课学期</b><span>${esc(term)}${cn?'（物理科学学院 · '+esc(cn)+'）':''}</span></div>`);
   if(CID==='qm'){
     rows.push(`<div class="kv"><b>课时</b><span>${esc(C.hours)}</span></div>`);
     rows.push(`<div class="kv"><b>考试用时</b><span>${esc(C.examLen)}</span></div>`);
@@ -2163,6 +2656,7 @@ function COURSE_INFO_ROWS(){
     rows.push(`<div class="kv"><b>教材</b><span>${esc(C.textbook)}</span></div>`);
     rows.push(`<div class="kv"><b>任课教师</b><span>${esc(C.teachers)}</span></div>`);
     rows.push(`<div class="kv"><b>考试</b><span>${esc(C.examLen)}</span></div>`);
+    if(C.grade) rows.push(`<div class="kv"><b>成绩构成</b><span>${esc(C.grade)}</span></div>`);
   }
   rows.push(`<div class="kv"><b>参考教材</b><span>${C.refs.map(esc).join('；')}</span></div>`);
   rows.push(`<div class="kv"><b>来源</b><span style="color:#777">${esc(C.src)}</span></div>`);
@@ -2213,6 +2707,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 10 章：希尔伯特空间、态和薛定谔方程、密度矩阵、自旋、二次量子化、相干态、Bloch 方程、相对论量子力学、时间反演、量子信息。参考书为曾谨言、喀兴林、张永德《高等量子力学》及 Scully & Zubairy、Walls & Milburn《Quantum optics》。</p>
     </div>`;
+  } else if(CID==='lm'){
+    html = LM_CHAPTERS.map((c,i)=> chCard(c, i<3, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">讲义结构 · 理论力学（杨望 · 大二上）</div>
+      <h1>章节结构。</h1>
+      <p>共 20 章，从数学准备（多元函数微分、约束与广义坐标）出发，经拉格朗日力学（变分、最小作用量、诺特定理、非惯性系、微振动），进入哈密顿力学（正则方程、泊松括号、正则变换、母函数、H-J 方程），最后是两体问题、生成元与诺特定理、作用量-角度变量与刚体。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -2252,6 +2753,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='lm'){
+    html = LM_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -2277,11 +2784,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq');
-    const total = em ? 4 : qm2 ? 33 : 3;
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm');
+    const total = (em||lm) ? (em?4:3) : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=>`${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> lm ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -2295,7 +2802,8 @@ function renderHigh(){
   const em = (CID==='em');
   const qm2 = (CID==='qm2');
   const hq = (CID==='hq');
-  const total = em ? 4 : qm2 ? 33 : 3;
+  const lmc = (CID==='lm');
+  const total = em ? 4 : (lmc ? 3 : (qm2 ? 33 : 3));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -2304,10 +2812,12 @@ function renderHigh(){
         ? '“出现次数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
         : hq
         ? '“出现次数”统计的是该考点在 4 份考题回忆中出现的次数（同一份卷内多题出现会分别计入）。每一行都列出了它出现的具体题型与题号。'
+        : lmc
+        ? '“出现卷数”统计的是该考点在近 3 套理论力学期末卷中出现的卷数。杨望老师的考题结构高度稳定（4 道大题、按板块递进），因此每一行都列出了它出现的具体题号。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${qm2?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -2331,7 +2841,7 @@ function renderTypes(){
       <p>同一个考点往往以固定题型反复出现。掌握题型，比零散背知识点更接近分数。</p>
     </div>
     <div class="card">
-      <div class="card-title">${CID==='em'?'电动力学':CID==='qm2'?'量子力学（二）':CID==='hq'?'高等量子力学':'量子力学（一）'} · 高频题型</div>
+      <div class="card-title">${CID==='em'?'电动力学':CID==='qm2'?'量子力学（二）':CID==='hq'?'高等量子力学':CID==='lm'?'理论力学':'量子力学（一）'} · 高频题型</div>
       <table class="tbl">
         <thead><tr><th>题型</th><th>出现题数</th><th>对应考点</th><th>典型题</th><th>优先级</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -2382,8 +2892,38 @@ function renderExams(){
 
 function renderSprint(){
   const em = (CID==='em');
-  if(em){
+  if(CID==='lm'){
     $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>你有多少时间，决定你复习什么。理论力学的卷面结构极其稳定：4 道大题 = 拉氏量 → 简正频率 → 勒让德+H-J → 诺特定理+泊松括号，按这个顺序复习效率最高。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>S＋A＋B 级全部考点；20 章公式速查过一遍；3 套真题按题型归类做完。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练四大板块：拉氏量与守恒量、简正频率、勒让德变换＋H-J 方程、诺特定理＋生成元＋泊松括号。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背 H-J 方程与分离变量套路、诺特定理守恒量公式、{Q,H}=0 与 {Qᵢ,Qⱼ} 的计算。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：勒让德变换三式、正则方程、H-J 方程、诺特守恒量公式、泊松括号定义与基本括号。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>给定约束/曲面写自由度、柱坐标下拉氏量、找循环坐标与守恒量</td><td>拉氏量与守恒量</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>耦合振子：写运动方程、令行列式为零求简正频率</td><td>简正频率</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>由 L 求 p 与 H（勒让德变换）、写正则方程</td><td>哈密顿力学</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>写 H-J 方程，用分离变量法求完全解 S</td><td>H-J 方程</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>诺特定理：证 ΔL 为全导数 → 求守恒量 Q</td><td>对称性</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>验证 Q 为生成元、计算 {Qᵢ,Qⱼ} 并认出 SO(3)</td><td>生成元·泊松括号</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>用泊松括号验证正则变换（[Q,P]=1）</td><td>正则变换</td><td>${priTag('B')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
+  if(em){
+  $('#sprint').innerHTML = `
     <div class="hero">
       <div class="hero-label">分数最大化</div>
       <h1>冲刺方案。</h1>
@@ -2631,6 +3171,45 @@ function renderAbout(){
     </div>`;
     return;
   }
+  if(CID==='lm'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《理论力学》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义（20 章）</td><td>理论力学讲义合订本2025.pdf（267 页）</td><td>章节结构、核心概念、重要公式</td></tr>
+          <tr><td>期末（含解析）</td><td>2_2025-2026年理论力学期末考试(含解析).pdf</td><td>真题 + 参考答案（4 大题 / 100 分）</td></tr>
+          <tr><td>期末回忆版</td><td>lili.pdf（杨望 2026-1-19）</td><td>真题回忆（4 题）</td></tr>
+          <tr><td>期末回忆版</td><td>理论力学回忆.pdf（杨望 2024）</td><td>真题回忆（4 题）</td></tr>
+          <tr><td>真题讲解</td><td>理论力学真题讲解（2023 级）.pdf</td><td>手写稿，OCR 质量差，仅作旁证（题目与 2024 一致）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>原始文件不改动</b>：所有 PDF 均保持原样，仅在其上做提取与分析。</div>
+      <div class="concept"><b>可回溯</b>：每个考点都标注它出现的年份与题号，可回到真题核对。</div>
+      <div class="concept"><b>不编造</b>：不凭空声称某考点“必考”；频率只基于实际拿到的 3 套真题统计。</div>
+      <div class="concept"><b>恢复公式</b>：讲义为 LaTeX 排版但 PDF 提取会丢失偏导、积分号、矢量箭头等符号，已按物理语境还原为 LaTeX。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>两版回忆题面不一致</b>：2025 的两版（含解析版 vs 回忆版）在第 1 题抛物面系数（1/2a² vs 1/2a）、第 2 题是否含交叉项、第 3 题势能项（−x²y² vs −mω²(x²+y²)）上不一致，本站均保留原文并标注。</div>
+      <div class="concept"><b>分值信息不完整</b>：仅 2025–2026（含解析）与 2025 回忆版标注了分值，2024 那套未标。</div>
+      <div class="concept"><b>成绩构成未知</b>：讲义与试卷均未给出平时/期末比例，故留空待补。</div>
+      <div class="concept"><b>2023 级讲解为手写 OCR</b>：识别质量很差，仅在「历年真题」页作为旁证列出，未据其改写任何题目。</div>
+    </div>`;
+    return;
+  }
   $('#about').innerHTML = `
     <div class="hero">
       <div class="hero-label">数据说明</div>
@@ -2672,7 +3251,7 @@ function renderAbout(){
 }
 
 /* ============ 页面切换 ============ */
-const PAGE_NAMES = {dashboard:'总览',chapters:'章节结构',formulas:'公式速查',high:'高频考点',
+const PAGE_NAMES = {curriculum:'课程体系',dashboard:'总览',chapters:'章节结构',formulas:'公式速查',high:'高频考点',
   types:'高频题型',exams:'历年真题',sprint:'冲刺方案',mistakes:'错题本',about:'数据说明'};
 
 function showPage(id, btn){

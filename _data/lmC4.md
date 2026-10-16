@@ -1,0 +1,135 @@
+# 理论力学 · 第 15–20 章
+> 来源：理论力学讲义合订本2025.pdf（杨望，第 15–20 章）
+> （南开大学物理学院《2024 秋理论力学讲义》，参考金尚年《理论力学》、Goldstein《Classical Mechanics》）
+
+## 小节
+- 第 15 章 中心势场中的两体问题
+  - 15.1 两体问题
+    - 15.1.1 两体问题的单体分解（相对坐标与质心坐标、动能分解、约化质量）
+    - 15.1.2 中心势场（势只依赖 $r$、平面运动与角动量守恒）
+  - 15.2 哈密顿—雅科比方程解开普勒问题（极坐标哈密顿量、分离变量、母函数、轨道方程）
+  - 15.3 拉格朗日力学求解开普勒问题（能量与角动量守恒、$\mathrm d\theta/\mathrm dr$、$\mathrm dt$ 积分、与 15.2 一致）
+- 第 16 章 无穷小正则变换与生成元
+  - 16.1 无穷小正则变换（变换的无穷小展开 $\eta_a=\xi_a+\varepsilon_T\Delta_T\xi_a$、保泊松括号条件）
+  - 16.2 连续正则变换的生成元
+    - 16.2.1 连续变换的生成元（哈密顿流、生成元定义；例：动量生成平移、角动量生成转动）
+    - 16.2.2 哈密顿流与连续正则变换（等价性「哈密顿流 $\Leftrightarrow$ 连续正则变换」的证明）
+    - 16.2.3 几个例子（空间平移、空间转动、时间平移、伽利略变换、洛伦兹变换）
+- 第 17 章 哈密顿力学中的诺特定理
+  - 17.1 连续对称性变换
+    - 17.1.1 对称性变换（保作用量相差边界项的定义）
+    - 17.1.2 对称性变换是正则变换（$\sum P_\alpha\mathrm dQ_\alpha-H\,\mathrm dt$ 形式、生成元 $G_T$）
+  - 17.2 连续对称性变换生成元与守恒量（生成元与守恒量、$\partial_tG_T+\{G_T,H\}=\mathrm dF_T/\mathrm dt$）
+  - 17.3 与拉格朗日力学中诺特定理的关系（$\Leftrightarrow$ 证明拉氏守恒量 $Q_T$ 即生成元）
+  - 17.4 对称性代数（守恒量对泊松括号封闭、李代数、隐藏的 SO(4)/SO(3,1) 对称性）
+  - 17.5 附录：诺特定理的几何证明（用哈密顿流几何图像证明生成元守恒）
+- 第 18 章 作用量—角度变量
+  - 18.1 相空间中的环面（一维/二维/$n$ 维谐振子、等能面、$T^n=S^1\times\cdots\times S^1$、"视为等同"构造）
+  - 18.2 刘维尔—阿诺尔德定理
+    - 18.2.1 刘维尔—阿诺尔德定理（$n$ 个对合守恒量、$M_{\vec f}$ 为 $n$ 维环面；引理 1–3）
+  - 18.3 作用量—角度变量
+    - 18.3.1 单自由度体系（$I=\frac{1}{2\pi}\oint p\,\mathrm dq$、母函数 $S(q,I)$、一维谐振子例）
+    - 18.3.2 多自由度体系（$I_i(\vec f)$、多值母函数、$\Delta_j\theta_i=2\pi\delta_{ij}$）
+- 第 19 章 刚体运动学
+  - 19.1 刚体运动的自由度（刚体定义、自由度 6 = 3 平动 + 3 转动、定点转动、位形空间 SO(3)）
+  - 19.2 欧拉角（进动角 $\phi$、章动角 $\theta$、自转角 $\psi$；两种三步转动定义）
+  - 19.3 刚体的角速度（$\Omega=\dot RR^{-1}$ 反对称、角速度矢量 $\vec\omega$、$\dot{\vec r}_i=\vec\omega\times\vec r_i$、定轴转动）
+  - 19.4 欧拉运动学方程（转动矩阵引理、$\vec\omega=\dot\phi\hat z_0+\dot\theta\widehat{ON}+\dot\psi\hat z$、实验室系/随动系分量）
+- 第 20 章 刚体动力学
+  - 20.1 转动惯量张量（角动量 $\vec L=I\vec\omega$、$I$ 矩阵元、连续情形）
+  - 20.2 惯量主轴（$I$ 实对称可对角化、主轴 $\hat e_1,\hat e_2,\hat e_3$、$I$ 正定、动能对角化）
+  - 20.3 欧拉动力学方程（随动系基矢变化 $\dot{\hat x}=\vec\omega\times\hat x$、欧拉方程）
+  - 20.4 拉格朗日陀螺（对称陀螺 $I_1=I_2$、循环坐标 $\phi,\psi$、有效势能、$u=\cos\theta$、章动与进动分类）
+  - 20.5 欧拉陀螺
+    - 20.5.1 欧拉陀螺的解析解（$L^2$ 与 $E$ 守恒、$\omega_x(\omega_z),\omega_y(\omega_z)$）
+    - 20.5.2 惯量椭球（$I_1x^2+I_2y^2+I_3z^2=1$、能量 $\frac12$ 角速度集合）
+    - 20.5.3 欧拉陀螺运动的潘索描述（惯量椭球在垂直 $\vec L$ 的固定平面上纯滚动）
+    - 20.5.4 对称欧拉陀螺（$\omega_z$ 常数的进动解、$\dot\phi,\dot\theta,\dot\psi$、自洽性检查）
+
+## 核心概念
+- **两体问题的单体分解**：引入相对坐标 $\vec r=\vec r_{01}-\vec r_{02}$ 与质心坐标 $\vec r_{0c}$，可将两体问题分解为质心运动（质量 $m_1+m_2$）与相对运动（约化质量 $m_r$）两个相互独立的单体问题；总拉氏量 $L=L^{(c)}+L^{(i)}$。
+- **约化质量（折合质量）**：$m_r=\dfrac{m_1m_2}{m_1+m_2}$，相对运动等效为以 $m_r$ 在相互作用势 $V^{(i)}(\vec r)$ 中运动的单体问题。开普勒问题中常记为 $m$。
+- **中心势场**：势只依赖 $|\vec r|=r$ 的场，具有空间转动不变性；其重要性质是力矩 $\vec M=\vec r\times\vec F=0$，角动量守恒，故运动被限制在垂直于角动量的固定平面内。
+- **开普勒问题**：以 $-\alpha/r$ 势相互吸引的两体问题（如引力/库仑势）；质心做惯性运动，只需求相对运动的单体问题。
+- **圆锥曲线轨道**：由轨道方程 $r=\dfrac{p}{1+e\cos(\theta-\theta_0)}$ 描述；$E<0,\ e<1$ 为椭圆，$E=0,\ e=1$ 为抛物线，$E>0,\ e>1$ 为双曲线。
+- **无穷小正则变换**：由连续参量 $\varepsilon_T$ 刻画的变换 $\eta_a=\eta_a(\vec\xi,\varepsilon_T)$，展开 $\eta_a=\xi_a+\varepsilon_T\Delta_T\xi_a+O(\varepsilon_T^2)$；其为正则变换的充要条件是 $\{\Delta_T\xi_a,\xi_b\}+\{\xi_a,\Delta_T\xi_b\}=0$。
+- **哈密顿流与生成元**：以标量函数 $f$ 为哈密顿量写出正则方程 $\dot{\vec\xi}=J\nabla_\xi f$，其解给出以 $\varepsilon$ 为参数的相空间连续变换，称由 $f$ 生成的哈密顿流/连续变换，$f$ 称生成元（"连续"指参数可取连续值）。
+- **哈密顿流 $\Leftrightarrow$ 连续正则变换**：由任一标量函数生成的哈密顿流一定是连续正则变换；反之任一连续正则变换必可由某标量函数 $G$ 生成（条件 $\nabla_\xi G=J^{-1}\Delta_T\vec\xi$ 可解，即 $J^{-1}\Delta_T\vec\xi$ 无旋）。结论只对拓扑平凡的辛流形（单连通）成立。
+- **各基本变换的生成元**：动量 $\vec G=\vec p$ 生成空间平移；角动量 $\vec G=\vec r\times\vec p$ 生成空间转动；哈密顿量 $H$ 生成时间平移；$\vec G=\vec pt-m\vec r$ 生成伽利略变换；洛伦兹变换生成元亦为 $\vec Q=\vec pt-m\vec r$（与诺特定理结果一致）。
+- **对称性变换**：在相差一个边界项 $\int\mathrm dt\,\mathrm dF/\mathrm dt$ 的意义上保持作用量泛函 $S=\int\mathrm dt\left[\sum_\alpha p_\alpha\dot q_\alpha-H\right]$ 不变的变换；哈密顿力学中边界项可含 $p$（较拉氏力学放宽，后者边界项只能是 $q,t$ 的函数）。
+- **对称性变换是正则变换**：由 $\sum_\alpha P_\alpha\mathrm dQ_\alpha-H(Q,P,t)\mathrm dt=\sum_\alpha p_\alpha\mathrm dq_\alpha-H\mathrm dt+\mathrm dF$ 知对称性变换一定是正则变换（要求 $H$ 函数形式相同）。
+- **哈密顿力学中的诺特定理**：连续对称性变换的（恰当选取后的）生成元是守恒量。生成元与守恒量本为两个独立概念：任一连续变换都有生成元，只有当变换是对称性变换时生成元恰好守恒，故哈密顿版诺特定理含义更丰富——守恒量不仅是守恒的，还是变换的生成元。
+- **守恒量判据**：$G$ 守恒 $\Leftrightarrow\dfrac{\partial G}{\partial t}+\{G,H\}=0$；可重新定义 $G'_T=G_T-F_T(t)$ 使其满足该式而不改变生成元性质。
+- **拉氏诺特定理与哈密顿生成元的关系**：拉格朗日力学诺特定理给出的守恒量 $Q_T=\sum_\alpha p_\alpha\Delta_Tq_\alpha-F_T$ 正是对应点变换的生成元，即 $G_T=Q_T+g(t)\Rightarrow G_T=Q_T$。
+- **对称性代数**：所有守恒量构成的集合 $\mathcal G$ 对线性组合封闭（线性空间）且在泊松括号下封闭，故构成一个代数（实为李代数）——系统的对称性代数。
+- **李代数**：域 $\mathbb F$ 上线性空间配以二元运算 $[\cdot,\cdot]$，满足双线性、反对称性 $[x,y]=-[y,x]$、雅科比恒等式 $[x,[y,z]]+[y,[z,x]]+[z,[x,y]]=0$。
+- **隐藏的 SO(4) 对称性**：$-\alpha/r$ 势中除 $\vec L$ 外，龙格—楞次矢量 $\vec B=\frac1m\vec p\times\vec L-\frac\alpha r\vec r$ 亦守恒；$\{\vec L,\vec B\}$ 张成的空间在李代数意义上同构于 SO(4)，即开普勒问题具有比 SO(3) 更大的隐藏 SO(4) 对称性（量子力学中导致氢原子能级只依赖主量子数）。
+- **相对论性粒子（自由空间）**：具有空间转动与洛伦兹不变性，$\{\vec L,\vec Q\}$ 张成洛伦兹群 SO(3,1) 的李代数。
+- **相空间中的环面**：哈密顿量不含时时运动限制在等能面；$n$ 个独立对合守恒量使轨迹位于 $n$ 维环面 $T^n=S^1\times\cdots\times S^1$ 上。即使各 $q_i,p_i$ 时间依赖都周期，一般运动并非周期（频率比无理时轨迹可填满环面），环面是不可再约化的最小单元。
+- **刘维尔—阿诺尔德定理（不变环面定理）**：$n$ 自由度不含时系统若有 $n$ 个相互独立且两两泊松括号为零（对合）的守恒量 $F_i$，则等值面 $M_{\vec f}=\{\xi|F_i(\xi)=f_i\}$ 在相空间中若有界且连通，必为 $n$ 维环面 $T^n$。
+- **作用量变量与角度变量**：在满足刘维尔—阿诺尔德条件的系统中可构造一组正则变量 $(I_i,\theta_i)$；$I_i=\frac{1}{2\pi}\oint_{\gamma_i}\vec p\cdot\mathrm d\vec q$ 只依赖守恒量 $\vec f$（作用量量纲），$\theta_i$ 为环面角度坐标，母函数为第一类 $S(\vec I,\vec q)=\int_{\gamma\subset M_{\vec f}}\vec p\cdot\mathrm d\vec q$。
+- **刚体**：任意两点距离固定不变的物体，是理想、完整约束的质点系；运动自由度数目为 6（3 平动 + 3 转动）。
+- **定点转动与 SO(3)**：刚体运动过程中若有一点位置不变，则只剩转动自由度；三维转动由正交矩阵 $R$ 刻画（$RR^T=R^TR=I_3,\ \det R=1$），位形空间为 $SO(3)=\{R|RR^T=R^TR=I_3,\det R=1\}$。
+- **欧拉角**：进动角 $\phi$、章动角 $\theta$、自转角 $\psi$，取值 $\phi\in(0,2\pi),\ \theta\in(0,\pi),\ \psi\in(0,2\pi)$；用于将固定坐标系转到随动（主轴）坐标系，便于利用循环坐标 $\phi,\psi$。
+- **角速度**：$\Omega(t)=\dot R(t)R^{-1}(t)$ 为反对称矩阵，对应角速度矢量 $\vec\omega$，满足 $\Omega\vec r=\vec\omega\times\vec r$ 及 $\dot{\vec r}_i=\vec\omega\times\vec r_i$；$\vec\omega$ 是矢量（对应沿各方向转动的单位角速度 $J_\alpha$ 的线性组合）。
+- **欧拉运动学方程**：用欧拉角及其时间导数表示角速度，$\vec\omega=\dot\phi\hat z_0+\dot\theta\widehat{ON}+\dot\psi\hat z$，给出 $\vec\omega$ 在实验室系与随动系中的分量。
+- **转动惯量张量**：$I=\sum_i m_i(\vec r_i^{\,2}I_3-\vec r_i\vec r_i^T)$，是实对称（正定）矩阵，与角动量关系 $\vec L=I\vec\omega$；在随动系中 $I$ 为常量，在实验室系中随时间变化。
+- **惯量主轴**：$I$ 可经正交矩阵 $U$ 对角化 $UIU^T=\mathrm{diag}(I_1,I_2,I_3)$；对应的正交坐标轴 $\hat e_1,\hat e_2,\hat e_3$ 称惯量主轴，在主轴系中动能对角化为 $T=\frac12(I_1\omega_1^2+I_2\omega_2^2+I_3\omega_3^2)$。
+- **欧拉动力学方程**：在随动主轴系中由角动量定理导出的三个分量方程，含 $(I_1-I_2)\omega_x\omega_y$ 等陀螺项；结合欧拉运动学方程可化为关于欧拉角的二阶常微分方程。
+- **拉格朗日陀螺**：重力作用下绕地面定点 $O$ 转动的对称陀螺，旋转对称轴过 $O$，$I_1=I_2$；$\phi,\psi$ 为循环坐标，分别给出守恒量 $L_{z_0},L_z$，问题可约化为关于 $\theta$ 的单自由度问题。
+- **欧拉陀螺**：绕定点做自由转动（外力矩为零）的刚体；含三个守恒量（角动量三分量），自由度同为 3，是可积系统，原则上可求解析解。可通过潘索方法（惯量椭球）直观描述。
+- **惯量椭球**：满足 $I_1x^2+I_2y^2+I_3z^2=1$ 的点集；物理意义是能量 $\frac12$ 的所有角速度之集合，其位形与刚体位形一一对应，形状在某种程度上反映刚体形状（主轴延展越长、转动惯量越小、椭球在该方向交点越远）。
+- **潘索描述**：欧拉陀螺的惯量椭球在垂直于角动量 $\vec L$ 的固定平面内做纯滚动（接触点瞬时静止），由此给出定性运动图像。
+- **对称欧拉陀螺**：具有绕某一方向转动不变性（$I_1=I_2$）的欧拉陀螺，其解为 $\phi,\theta,\psi$ 的匀速运动：$\dot\phi=L/I_1,\ \dot\theta=0,\ \dot\psi=-\frac{I_3-I_1}{I_1}\omega_z$，与潘索纯滚动图像自洽。
+
+## 重要公式
+- **相对坐标与质心坐标**： `\vec r=\vec r_{01}-\vec r_{02},\qquad \vec r_{0c}=\frac{m_1\vec r_{01}+m_2\vec r_{02}}{m_1+m_2}`
+- **两体动能分解**： `T=\tfrac12(m_1+m_2)\dot{\vec r}_{0c}^{\,2}+\tfrac12\frac{m_1m_2}{m_1+m_2}\dot{\vec r}^{\,2},\qquad L=L^{(c)}+L^{(i)}`
+- **约化质量（折合质量）**： `m_r=\frac{m_1m_2}{m_1+m_2}`
+- **中心势场与平面运动**： `V^{(i)}(\vec r)=V(r),\qquad \vec M=\vec r\times\vec F=0\ \Rightarrow\ \dot{\vec L}=0,\quad \vec r(t)\cdot\vec L=0`
+- **开普勒问题相对运动拉氏量与哈密顿量**： `L=\tfrac12 m(\dot r^2+r^2\dot\theta^2)+\frac{\alpha}{r},\qquad H=\frac{1}{2m}\left(p_r^2+\frac{p_\theta^2}{r^2}\right)-\frac{\alpha}{r}`
+- **广义动量与角动量**： `p_r=m\dot r,\qquad p_\theta=mr^2\dot\theta=J\ (\text{角动量})`
+- **哈密顿—雅科比方程与完全解（母函数）**： `S=-Et+W(r,\theta),\qquad F_2(r,\theta,t,E,J)=-Et+J\theta+\int\! \mathrm dr\sqrt{2m\!\left(E+\frac{\alpha}{r}\right)-\frac{J^2}{r^2}}`
+- **开普勒轨道方程与椭圆参数**： `r=\frac{p}{1+e\cos(\theta-\theta_0)},\qquad p=\frac{J^2}{m\alpha},\qquad e=\sqrt{1+\frac{2EJ^2}{m\alpha^2}}`
+- **轨道类型判据**： `E<0,\ e<1\ \text{椭圆};\qquad E=0,\ e=1\ \text{抛物线};\qquad E>0,\ e>1\ \text{双曲线}`
+- **拉格朗日力学求得的守恒量与时间积分**： `E=\tfrac12 m(\dot r^2+r^2\dot\theta^2)-\frac{\alpha}{r},\qquad J=mr^2\dot\theta,\qquad t-t_0=\int\frac{m\,\mathrm dr}{\sqrt{2m\!\left(E+\frac{\alpha}{r}\right)-\frac{J^2}{r^2}}}`
+- **无穷小正则变换与正则性条件**： `\eta_a=\xi_a+\varepsilon_T\Delta_T\xi_a+O(\varepsilon_T^2),\qquad \{\Delta_T\xi_a,\xi_b\}+\{\xi_a,\Delta_T\xi_b\}=0`
+- **哈密顿流与生成元**： `\dot{\vec\xi}=J\nabla_\xi f,\qquad \Delta_T\xi_a=\{\xi_a,f\},\qquad \vec\eta(\vec\xi,\epsilon)\ \text{由}\ \frac{\mathrm d\vec\mu}{\mathrm d\epsilon}=J\nabla_\mu f(\vec\mu,\epsilon)\ \text{给出}`
+- **哈密顿流与连续正则变换的等价性**： `\text{哈密顿流}\iff\text{连续正则变换},\qquad \Delta_T\xi_a=\{\xi_a,G\}\ \Leftrightarrow\ \nabla_\xi G=J^{-1}\Delta_T\vec\xi`
+- **平移/转动/时间/伽利略/洛伦兹生成元**： `\vec G=\vec p;\qquad \vec G=\vec r\times\vec p;\qquad G=H;\qquad \vec G=\vec p\,t-m\vec r;\qquad \vec Q=\vec p\,t-m\vec r`
+- **对称性变换定义（哈密顿版）**： `S[Q_\alpha,P_\alpha]=S[q_\alpha,p_\alpha]+\int_{t_i}^{t_f}\!\mathrm dt\,\frac{\mathrm dF(q,p,t)}{\mathrm dt},\qquad S=\int\!\mathrm dt\left[\sum_\alpha p_\alpha\dot q_\alpha-H(q,p,t)\right]`
+- **对称性变换的生成元关系**： `\Delta_Tq_\alpha=\{q_\alpha,G_T\},\qquad \Delta_Tp_\alpha=\{p_\alpha,G_T\}`
+- **生成元守恒的条件**： `\frac{\partial G_T}{\partial t}+\{G_T,H\}=\frac{\mathrm dF_T}{\mathrm dt},\qquad G'_T=G_T-F_T(t)\ \Rightarrow\ \frac{\partial G'_T}{\partial t}+\{G'_T,H\}=0`
+- **拉氏诺特定理守恒量（即生成元）**： `Q_T=\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\Delta_Tq_\alpha+\Delta_Tt\!\left(L-\sum_\alpha\frac{\partial L}{\partial\dot q_\alpha}\dot q_\alpha\right)-F_T,\qquad G_T=Q_T`
+- **守恒量对泊松括号封闭**： `\{G_a,G_b,H\}\ \text{守恒},\qquad \frac{\partial\{G_a,G_b\}}{\partial t}+\{\{G_a,G_b\},H\}=0`
+- **李代数定义（双线性、反对称、雅科比）**： `[ax+by,z]=a[x,z]+b[y,z],\qquad [x,y]=-[y,x],\qquad [x,[y,z]]+[y,[z,x]]+[z,[x,y]]=0`
+- **角动量代数与隐藏 SO(4)**： `\{L_a,L_b\}=\sum_c\varepsilon_{abc}L_c,\qquad \{L_a,B_b\}=\sum_c\varepsilon_{abc}B_c,\qquad \{B_a,B_b\}=-\frac{2H}{m}\sum_c\varepsilon_{abc}L_c`
+- **龙格—楞次矢量**： `\vec B=\frac{1}{m}\vec p\times\vec L-\frac{\alpha}{r}\vec r`
+- **洛伦兹生成元代数（SO(3,1)）**： `\{L_a,Q_b\}=\sum_c\varepsilon_{abc}Q_c,\qquad \{Q_a,Q_b\}=-\frac{1}{c^2}\sum_c\varepsilon_{abc}L_c`
+- **李括号与同态**： `J\nabla\{f,g\}=[J\nabla f,J\nabla g]`
+- **单自由度作用量变量**： `I=\frac{1}{2\pi}\oint_{M_h}p\,\mathrm dq=\frac{1}{2\pi}\oint_{M_h}\!\sqrt{2m(h-V(q))}\,\mathrm dq,\qquad \oint_{M_h}p\,\mathrm dq=2\pi I`
+- **母函数与角度变量（单自由度）**： `S(q,I)=\int_{q_0}^{q}p(q',I)\,\mathrm dq',\qquad p=\frac{\partial S}{\partial q},\qquad \theta=\frac{\partial S}{\partial I},\qquad h(I)=H\!\left(\frac{\partial S}{\partial q},q\right)`
+- **多自由度作用量变量与角度变量周期**： `I_i(\vec f)=\frac{1}{2\pi}\oint_{\gamma_i}\vec p\cdot\mathrm d\vec q,\qquad \theta_i=\frac{\partial S}{\partial I_i},\qquad \Delta_j\theta_i=\oint_{\gamma_j}\mathrm d\theta_i=2\pi\delta_{ij}`
+- **一维谐振子作用量—角度变量解**： `I=\frac{h}{\omega}=\frac{1}{\omega}\left(\frac{p^2}{2m}+\frac12 m\omega^2q^2\right),\qquad q=\sqrt{\frac{2I}{m\omega}}\cos(\theta+\theta_0),\qquad p=\sqrt{2m\omega I}\sin(\theta+\theta_0)`
+- **刘维尔—阿诺尔德定理**： `\{F_i,F_j\}=0,\ \nabla_\xi F_1,\dots,\nabla_\xi F_n\ \text{处处线性无关},\ M_{\vec f}=\{\xi|F_i(\xi)=f_i\}\ \text{有界连通}\ \Rightarrow\ M_{\vec f}=T^n`
+- **刚体自由度**： `\text{自由度}=3\times3-3=6=3\ \text{平动}+3\ \text{转动},\qquad SO(3)=\{R\,|\,RR^T=R^TR=I_3,\ \det R=1\}`
+- **欧拉角总转动矩阵**： `R(\phi,\theta,\psi)=R(\hat z'',\psi)R(\hat x',\theta)R(\hat z_0,\phi)=R(\hat z_0,\phi)R(\hat x_0,\theta)R(\hat z_0,\psi)`
+- **角速度矩阵与角速度矢量**： `\Omega(t)=\dot R(t)R^{-1}(t),\quad \Omega^T=-\Omega,\quad \Omega\vec r=\vec\omega\times\vec r,\quad \dot{\vec r}_i=\vec\omega\times\vec r_i`
+- **反对称矩阵基与角速度**： `\Omega=\sum_{\alpha=1}^{3}\omega_\alpha J_\alpha,\qquad J_x=\begin{pmatrix}0&0&0\\0&0&-1\\0&1&0\end{pmatrix},\ J_y=\begin{pmatrix}0&0&1\\0&0&0\\-1&0&0\end{pmatrix},\ J_z=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix}`
+- **转动矩阵引理与对易关系**： `KR(\hat n,\phi)K^T=R(K\hat n,\phi),\qquad K(\hat n\cdot\vec J)K^{-1}=(K\hat n)\cdot\vec J`
+- **欧拉运动学方程（矢量形式）**： `\vec\omega=\dot\phi\,\hat z_0+\dot\theta\,\widehat{ON}+\dot\psi\,\hat z`
+- **欧拉运动学方程（实验室系分量）**： `\omega_{x_0}=\dot\psi\sin\theta\sin\phi+\dot\theta\cos\phi,\quad \omega_{y_0}=-\dot\psi\sin\theta\cos\phi+\dot\theta\sin\phi,\quad \omega_{z_0}=\dot\psi\cos\theta+\dot\phi`
+- **欧拉运动学方程（随动系分量）**： `\omega_x=\dot\phi\sin\theta\sin\psi+\dot\theta\cos\psi,\quad \omega_y=\dot\phi\sin\theta\cos\psi-\dot\theta\sin\psi,\quad \omega_z=\dot\phi\cos\theta+\dot\psi`
+- **转动惯量张量与角动量**： `I=\sum_i m_i\left(\vec r_i^{\,2}I_3-\vec r_i\vec r_i^{T}\right),\qquad \vec L=I\vec\omega,\qquad I=\int\mathrm d^3\vec r\,\rho(\vec r)\left(\vec r^{\,2}I_3-\vec r\vec r^{T}\right)`
+- **转动惯量矩阵元**： `I_{11}=\sum_i m_i(y_i^2+z_i^2),\quad I_{22}=\sum_i m_i(z_i^2+x_i^2),\quad I_{33}=\sum_i m_i(x_i^2+y_i^2),\quad I_{12}=\sum_i m_i x_iy_i,\ \dots`
+- **惯量主轴对角化与动能**： `UIU^T=\mathrm{diag}(I_1,I_2,I_3),\qquad \vec L=I_1\omega_1\hat e_1+I_2\omega_2\hat e_2+I_3\omega_3\hat e_3,\qquad T=\tfrac12\omega\cdot\vec L=\tfrac12\left(I_1\omega_1^2+I_2\omega_2^2+I_3\omega_3^2\right)`
+- **欧拉动力学方程**： `I_1\dot\omega_x-(I_2-I_3)\omega_y\omega_z=M_x,\qquad I_2\dot\omega_y-(I_3-I_1)\omega_z\omega_x=M_y,\qquad I_3\dot\omega_z-(I_1-I_2)\omega_x\omega_y=M_z`
+- **拉格朗日陀螺拉氏量与守恒量**： `L=\frac{I_1}{2}\left(\dot\theta^2+\dot\phi^2\sin^2\theta\right)+\frac{I_3}{2}\left(\dot\psi+\dot\phi\cos\theta\right)^2-mgL\cos\theta`
+- **拉格朗日陀螺的循环守恒量**： `\frac{\partial L}{\partial\dot\phi}=\left(I_1\sin^2\theta+I_3\cos^2\theta\right)\dot\phi+I_3\cos\theta\,\dot\psi=L_{z_0},\qquad \frac{\partial L}{\partial\dot\psi}=I_3\left(\dot\psi+\dot\phi\cos\theta\right)=L_z`
+- **拉格朗日陀螺有效势能与 $f(u)$**： `V_{\mathrm{eff}}(\theta)=\frac{(L_{z_0}-L_z\cos\theta)^2}{2I_1\sin^2\theta}+mgL\cos\theta,\qquad E'=\frac{I_1}{2}\dot\theta^2+V_{\mathrm{eff}}(\theta)`
+- **拉格朗日陀螺 $u=\cos\theta$ 方程**： `u=\cos\theta,\quad \dot u^2=f(u)=( \alpha-\beta u)(1-u^2)-(a-bu)^2,\quad a=\frac{L_{z_0}}{I_1},\ b=\frac{L_z}{I_1},\ \alpha=\frac{2E'}{I_1},\ \beta=\frac{2mgL}{I_1}`
+- **欧拉陀螺守恒量与解**： `L^2=I_1^2\omega_x^2+I_2^2\omega_y^2+I_3^2\omega_z^2,\qquad E=\tfrac12\left(I_1\omega_x^2+I_2\omega_y^2+I_3\omega_z^2\right),\qquad I_3\dot\omega_z-(I_1-I_2)\omega_x(\omega_z)\omega_y(\omega_z)=0`
+- **惯量椭球**： `I_1x^2+I_2y^2+I_3z^2=1`
+- **潘索描述的引理**： `\overrightarrow{OP}=\frac{\vec\omega}{\sqrt{2E}},\qquad \overrightarrow{OP}\cdot\frac{\vec L}{L}=\frac{\sqrt{2E}}{L}`
+- **对称欧拉陀螺的解**： `\dot\phi=\frac{L}{I_1},\qquad \dot\theta=0,\qquad \dot\psi=-\frac{I_3-I_1}{I_1}\omega_z,\qquad \Omega=\frac{I_3-I_1}{I_1}\omega_z`
+- **对称欧拉陀螺角速度分量**： `\omega_x=\omega_0\cos(\Omega t+\varepsilon_0),\qquad \omega_y=\omega_0\sin(\Omega t+\varepsilon_0),\qquad \omega_z=\mathrm{const}`
