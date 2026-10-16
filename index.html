@@ -3,2120 +3,965 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equimophysics · 物理考试智能系统</title>
+<title>Equimophysics · 量子力学（一）期末复习</title>
 
 <style>
-:root {
-    --bg: #080808;
-    --panel: #111111;
-    --panel2: #161616;
-    --border: #272727;
-    --text: #f2f2f2;
-    --muted: #858585;
-    --green: #b7ff4a;
-    --yellow: #ffd84d;
-    --red: #ff6464;
-    --blue: #65a7ff;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "PingFang SC",
-        "Microsoft YaHei",
-        Arial,
-        sans-serif;
-}
-
-button {
-    font-family: inherit;
-}
-
-.app {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* =========================
-   侧边栏
-========================= */
-
-.sidebar {
-    width: 235px;
-    border-right: 1px solid var(--border);
-    padding: 28px 20px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    background: #090909;
-    overflow-y: auto;
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.8px;
-    margin-bottom: 8px;
-}
-
-.logo span {
-    color: var(--green);
-}
-
-.tagline {
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 1.8px;
-    margin-bottom: 38px;
-}
-
-.nav-label {
-    color: #555;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    margin: 22px 0 10px;
-}
-
-.nav button {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    color: #888;
-    padding: 11px 10px;
-    text-align: left;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    margin-bottom: 3px;
-}
-
-.nav button:hover,
-.nav button.active {
-    background: #171717;
-    color: white;
-}
-
-.nav button.active {
-    border-left: 2px solid var(--green);
-}
-
-/* =========================
-   主区域
-========================= */
-
-.main {
-    margin-left: 235px;
-    width: calc(100% - 235px);
-    padding: 38px 50px 80px;
-    max-width: 1500px;
-}
-
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 45px;
-}
-
-.page-title {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-}
-
-.profile {
-    width: 31px;
-    height: 31px;
-    border: 1px solid #333;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-}
-
-/* =========================
-   标题区
-========================= */
-
-.hero {
-    margin-bottom: 42px;
-}
-
-.hero-label {
-    color: var(--green);
-    font-size: 10px;
-    letter-spacing: 2px;
-    margin-bottom: 14px;
-}
-
-.hero h1 {
-    font-size: clamp(34px, 5vw, 62px);
-    line-height: 1.0;
-    letter-spacing: -2px;
-    margin: 0 0 20px;
-    max-width: 850px;
-}
-
-.hero p {
-    color: #777;
-    max-width: 660px;
-    font-size: 14px;
-    line-height: 1.75;
-}
-
-/* =========================
-   网格与卡片
-========================= */
-
-.grid {
-    display: grid;
-    grid-template-columns: 1.45fr 1fr;
-    gap: 18px;
-    margin-bottom: 18px;
-}
-
-.card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 18px;
-}
-
-.card-title {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    color: #777;
-    margin-bottom: 20px;
-}
-
-/* =========================
-   考试卡片
-========================= */
-
-.exam-card {
-    min-height: 260px;
-}
-
-.course-name {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.exam-date {
-    color: #666;
-    font-size: 12px;
-}
-
-.countdown {
-    font-size: 52px;
-    font-weight: 600;
-    letter-spacing: -2px;
-    margin: 35px 0 8px;
-}
-
-.countdown span {
-    color: var(--green);
-}
-
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: #666;
-    margin-top: 20px;
-}
-
-.progress {
-    height: 4px;
-    background: #242424;
-    margin-top: 8px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress div {
-    height: 100%;
-    width: 68%;
-    background: var(--green);
-}
-
-/* =========================
-   优先级列表
-========================= */
-
-.priority-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 1px solid #202020;
-}
-
-.priority-item:last-child {
-    border-bottom: none;
-}
-
-.rank {
-    width: 24px;
-    color: #555;
-    font-size: 11px;
-}
-
-.topic {
-    flex: 1;
-    font-size: 13px;
-}
-
-.stars {
-    color: var(--yellow);
-    font-size: 10px;
-    letter-spacing: 1px;
-}
-
-.topic-meta {
-    font-size: 9px;
-    color: #555;
-    margin-top: 4px;
-}
-
-/* =========================
-   按钮
-========================= */
-
-.primary {
-    background: var(--green);
-    color: #080808;
-    border: none;
-    padding: 12px 19px;
-    border-radius: 5px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.primary:hover {
-    opacity: .85;
-}
-
-.secondary {
-    background: #191919;
-    color: #ddd;
-    border: 1px solid #2c2c2c;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 11px;
-    cursor: pointer;
-}
-
-.secondary:hover {
-    border-color: #444;
-}
-
-/* =========================
-   课程
-========================= */
-
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.course {
-    border: 1px solid var(--border);
-    background: var(--panel);
-    padding: 22px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: .15s;
-}
-
-.course:hover {
-    border-color: #555;
-    transform: translateY(-2px);
-}
-
-.course.active {
-    border-color: var(--green);
-}
-
-.course-code {
-    color: #555;
-    font-size: 9px;
-    letter-spacing: 1px;
-}
-
-.course h3 {
-    font-size: 18px;
-    margin: 18px 0 8px;
-}
-
-.course p {
-    color: #666;
-    font-size: 11px;
-    line-height: 1.6;
-}
-
-/* =========================
-   冲刺
-========================= */
-
-.sprint {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.sprint-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 22px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.sprint-card:hover {
-    border-color: #555;
-}
-
-.time {
-    color: var(--green);
-    font-size: 25px;
-    font-weight: 600;
-}
-
-.sprint-card h3 {
-    font-size: 13px;
-    margin: 15px 0 6px;
-}
-
-.sprint-card p {
-    color: #666;
-    font-size: 10px;
-    line-height: 1.6;
-}
-
-/* =========================
-   表格
-========================= */
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th,
-.table td {
-    text-align: left;
-    border-bottom: 1px solid #222;
-    padding: 14px 8px;
-    font-size: 12px;
-}
-
-.table th {
-    color: #555;
-    font-weight: 400;
-    letter-spacing: 1px;
-    font-size: 10px;
-}
-
-.table td {
-    color: #ccc;
-}
-
-.high {
-    color: var(--green) !important;
-}
-
-.medium {
-    color: var(--yellow) !important;
-}
-
-/* =========================
-   流程 / 架构
-========================= */
-
-.flow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.flow-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-}
-
-.flow-node {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 13px 20px;
-    font-size: 12px;
-    text-align: center;
-    flex: 1;
-    min-width: 130px;
-}
-
-.flow-node.accent {
-    border-color: rgba(183,255,74,.4);
-    background: rgba(183,255,74,.06);
-    color: var(--green);
-}
-
-.flow-arrow {
-    color: #444;
-    font-size: 15px;
-    line-height: 1;
-    padding: 8px 0;
-}
-
-/* 分层 */
-.layers {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.layer {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px 26px;
-}
-
-.layer-no {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--green);
-    opacity: .8;
-    line-height: 1;
-}
-
-.layer h3 {
-    margin: 0 0 8px;
-    font-size: 16px;
-}
-
-.layer p {
-    margin: 0;
-    color: #888;
-    font-size: 12px;
-    line-height: 1.7;
-}
-
-.layer ul {
-    margin: 10px 0 0;
-    padding-left: 16px;
-    color: #777;
-    font-size: 12px;
-    line-height: 1.9;
-}
-
-.layer ul li::marker {
-    color: var(--green);
-}
-
-/* 等级徽章 */
-.badge {
-    display: inline-block;
-    padding: 2px 9px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.badge.s { background: rgba(183,255,74,.12); color: var(--green); border: 1px solid rgba(183,255,74,.35); }
-.badge.a { background: rgba(255,216,77,.12); color: var(--yellow); border: 1px solid rgba(255,216,77,.30); }
-.badge.b { background: rgba(101,167,255,.12); color: var(--blue); border: 1px solid rgba(101,167,255,.30); }
-.badge.c { background: #1c1c1c; color: #999; border: 1px solid #2c2c2c; }
-.badge.d { background: #141414; color: #666; border: 1px solid #242424; }
-
-/* 代码 / 目录树 */
-pre.tree,
-pre.code {
-    background: #0c0c0c;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px 22px;
-    overflow: auto;
-    font-size: 12px;
-    line-height: 1.7;
-    color: #b6b6b6;
-    font-family: "SFMono-Regular", "JetBrains Mono", Consolas, "Courier New", monospace;
-    margin: 0;
-}
-
-pre.code {
-    color: #cfe6ac;
-}
-
-.cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    align-items: start;
-}
-
-/* 证据 */
-.evidence {
-    border-left: 2px solid var(--green);
-    padding-left: 16px;
-    margin: 14px 0;
-}
-
-.evidence div {
-    font-size: 12px;
-    color: #bbb;
-    margin-bottom: 6px;
-}
-
-.evidence small {
-    color: #555;
-    font-size: 10px;
-}
-
-/* =========================
-   移动端
-========================= */
-
-@media (max-width: 980px) {
-
-    .sidebar {
-        width: 70px;
-        padding: 25px 10px;
-    }
-
-    .logo {
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .tagline,
-    .nav-label {
-        display: none;
-    }
-
-    .nav button {
-        text-align: center;
-        font-size: 12px;
-        padding: 11px 4px;
-    }
-
-    .main {
-        margin-left: 70px;
-        width: calc(100% - 70px);
-        padding: 25px;
-    }
-
-    .grid,
-    .cols {
-        grid-template-columns: 1fr;
-    }
-
-    .course-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .sprint {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .layer {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-}
-
-@media (max-width: 620px) {
-
-    .hero h1 {
-        letter-spacing: -1.5px;
-    }
-
-    .course-grid,
-    .sprint {
-        grid-template-columns: 1fr;
-    }
-
-    .main {
-        padding: 20px;
-    }
+:root{
+  --bg:#080808; --panel:#111; --panel2:#161616; --border:#272727;
+  --text:#f2f2f2; --muted:#8a8a8a; --green:#b7ff4a; --yellow:#ffd84d;
+  --red:#ff6464; --blue:#65a7ff;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;}
+.app{display:flex;min-height:100vh;}
+
+/* 侧边栏 */
+.sidebar{
+  width:240px;border-right:1px solid var(--border);padding:26px 18px;
+  position:fixed;top:0;bottom:0;background:#090909;overflow-y:auto;
+}
+.logo{font-size:21px;font-weight:700;letter-spacing:-0.8px;margin-bottom:6px;}
+.logo span{color:var(--green);}
+.tagline{font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-bottom:30px;line-height:1.6;}
+.nav-label{color:#555;font-size:9px;letter-spacing:1.5px;margin:20px 0 8px;}
+.nav button{
+  display:block;width:100%;background:none;border:none;color:#8a8a8a;
+  padding:10px 10px;text-align:left;border-radius:6px;cursor:pointer;font-size:13px;margin-bottom:2px;
+}
+.nav button:hover{background:#161616;color:#fff;}
+.nav button.active{background:#171717;color:#fff;border-left:2px solid var(--green);}
+
+/* 主区 */
+.main{margin-left:240px;width:calc(100% - 240px);padding:34px 46px 90px;max-width:1420px;}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px;}
+.page-title{font-size:11px;color:var(--muted);letter-spacing:2px;}
+.profile{width:30px;height:30px;border:1px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;}
+
+.hero{margin-bottom:32px;}
+.hero-label{color:var(--green);font-size:10px;letter-spacing:2px;margin-bottom:12px;}
+.hero h1{font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-1.5px;margin:0 0 16px;max-width:880px;}
+.hero p{color:#8a8a8a;max-width:760px;font-size:13.5px;line-height:1.8;margin:0;}
+
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:22px;margin-bottom:16px;}
+.card-title{font-size:10px;letter-spacing:1.5px;color:#777;margin-bottom:16px;}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+
+/* 信息表 */
+.kv{display:flex;font-size:12.5px;padding:8px 0;border-bottom:1px solid #1d1d1d;}
+.kv:last-child{border-bottom:none;}
+.kv b{color:#777;font-weight:400;width:96px;flex:none;}
+.kv span{color:#ddd;}
+
+/* 标签 */
+.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:5px;border:1px solid #2c2c2c;color:#aaa;margin:2px 4px 2px 0;background:#161616;}
+.tag.t-s{color:var(--green);border-color:rgba(183,255,74,.35);background:rgba(183,255,74,.07);}
+.tag.t-a{color:var(--yellow);border-color:rgba(255,216,77,.3);background:rgba(255,216,77,.07);}
+.tag.t-b{color:var(--blue);border-color:rgba(101,167,255,.3);background:rgba(101,167,255,.07);}
+.tag.t-c{color:#999;}
+.tag.t-d{color:#666;}
+
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+.badge.s{background:rgba(183,255,74,.12);color:var(--green);border:1px solid rgba(183,255,74,.35);}
+.badge.a{background:rgba(255,216,77,.12);color:var(--yellow);border:1px solid rgba(255,216,77,.3);}
+.badge.b{background:rgba(101,167,255,.12);color:var(--blue);border:1px solid rgba(101,167,255,.3);}
+.badge.c{background:#1c1c1c;color:#999;border:1px solid #2c2c2c;}
+.badge.d{background:#141414;color:#666;border:1px solid #242424;}
+
+.stars{color:var(--yellow);font-size:11px;letter-spacing:1px;}
+
+/* 表格 */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th,.tbl td{text-align:left;border-bottom:1px solid #1f1f1f;padding:12px 8px;font-size:12.5px;vertical-align:top;}
+.tbl th{color:#666;font-weight:400;font-size:10px;letter-spacing:1px;}
+.tbl td{color:#ccc;}
+.tbl tr:hover td{background:#131313;}
+
+/* 章节手风琴 */
+details.ch{background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+details.ch>summary{
+  cursor:pointer;padding:18px 22px;list-style:none;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+details.ch>summary::-webkit-details-marker{display:none;}
+details.ch>summary::before{content:"▸";color:var(--green);font-size:12px;transition:.15s;}
+details.ch[open]>summary::before{transform:rotate(90deg);}
+details.ch>summary h3{margin:0;font-size:15px;font-weight:600;}
+details.ch>summary .en{color:#5a5a5a;font-size:11px;}
+details.ch>summary .src{margin-left:auto;color:#555;font-size:10px;}
+.ch-body{padding:4px 22px 22px;border-top:1px solid #1e1e1e;}
+.sub-h{color:var(--green);font-size:10px;letter-spacing:1.5px;margin:18px 0 10px;}
+
+.section-list{display:flex;flex-wrap:wrap;gap:6px;}
+.section-list span{font-size:11px;color:#999;background:#151515;border:1px solid #222;padding:3px 9px;border-radius:5px;}
+
+.concept{font-size:12.5px;line-height:1.75;color:#b8b8b8;padding:7px 0;border-bottom:1px solid #1a1a1a;}
+.concept b{color:#e6e6e6;font-weight:600;}
+.concept:last-child{border-bottom:none;}
+
+.fml{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid #1a1a1a;align-items:baseline;}
+.fml:last-child{border-bottom:none;}
+.fml .fn{font-size:11.5px;color:#8a8a8a;line-height:1.6;}
+.fml .ft{font-size:13px;color:#ddd;overflow-x:auto;overflow-y:hidden;}
+
+/* 真题 */
+.exam-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.exam-head h3{margin:0;font-size:16px;}
+.q{border-top:1px solid #1e1e1e;padding:16px 0;}
+.q-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px;}
+.q-no{color:var(--green);font-size:12px;font-weight:700;flex:none;}
+.q-title{font-size:13.5px;font-weight:600;}
+.q-stem{font-size:12.5px;color:#b0b0b0;line-height:1.75;}
+.q-key{font-size:12px;color:#7f9a5f;line-height:1.7;margin-top:6px;}
+.q-src{font-size:10.5px;color:#555;margin-top:8px;}
+
+/* 冲刺 */
+.plan .t{color:var(--green);font-size:22px;font-weight:700;}
+.plan h3{font-size:13px;margin:12px 0 8px;}
+.plan p{font-size:11.5px;color:#888;line-height:1.7;margin:0;}
+
+/* 提示 */
+.note{border-left:2px solid var(--green);padding:10px 16px;margin:14px 0;color:#9a9a9a;font-size:12px;line-height:1.75;}
+.ev{border-left:2px solid #333;padding-left:14px;margin:8px 0;}
+.ev div{font-size:11.5px;color:#aaa;margin-bottom:4px;}
+
+@media (max-width:1000px){
+  .sidebar{width:72px;padding:22px 8px;}
+  .logo{font-size:15px;text-align:center;} .logo span{display:none;}
+  .tagline,.nav-label{display:none;}
+  .nav button{text-align:center;font-size:11px;padding:10px 3px;}
+  .main{margin-left:72px;width:calc(100% - 72px);padding:22px;}
+  .grid2,.cols,.grid4{grid-template-columns:1fr;}
+  .grid3{grid-template-columns:1fr 1fr;}
+  .fml{grid-template-columns:1fr;}
+}
+@media (max-width:640px){
+  .grid3,.grid4{grid-template-columns:1fr;}
+  .main{padding:16px;}
 }
 </style>
+
+<script>
+window.MathJax = {
+  tex: {inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$'],['\\[','\\]']]},
+  options: {skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+  svg: {fontCache:'global'}
+};
+(function(){
+  var urls=[
+    "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js",
+    "https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-svg.js",
+    "https://unpkg.com/mathjax@3/es5/tex-svg.js"
+  ], i=0;
+  function load(){
+    if(i>=urls.length) return;
+    var s=document.createElement('script');
+    s.src=urls[i++]; s.async=true; s.onerror=load;
+    document.head.appendChild(s);
+  }
+  load();
+})();
+</script>
 </head>
 
 <body>
-
 <div class="app">
 
-<!-- =========================
-     侧边栏
-========================= -->
-
 <aside class="sidebar">
-
-    <div class="logo">
-        Equimo<span>physics</span>
-    </div>
-
-    <div class="tagline">
-        物理考试智能系统
-    </div>
-
-    <div class="nav">
-
-        <div class="nav-label">系统</div>
-
-        <button class="active" onclick="showPage('dashboard', this)">
-            总览
-        </button>
-
-        <button onclick="showPage('courses', this)">
-            课程
-        </button>
-
-        <div class="nav-label">考试分析</div>
-
-        <button onclick="showPage('high', this)">
-            高频考点
-        </button>
-
-        <button onclick="showPage('types', this)">
-            高频题型
-        </button>
-
-        <button onclick="showPage('exams', this)">
-            历年真题
-        </button>
-
-        <div class="nav-label">备考</div>
-
-        <button onclick="showPage('training', this)">
-            训练系统
-        </button>
-
-        <button onclick="showPage('mistakes', this)">
-            错题本
-        </button>
-
-        <button onclick="showPage('sprint', this)">
-            冲刺系统
-        </button>
-
-        <div class="nav-label">底层架构</div>
-
-        <button onclick="showPage('architecture', this)">
-            系统架构
-        </button>
-
-        <button onclick="showPage('data', this)">
-            数据体系
-        </button>
-
-    </div>
-
+  <div class="logo">Equimo<span>physics</span></div>
+  <div class="tagline">
+    量子力学（一）<br>南开大学 · 期末复习
+  </div>
+  <div class="nav">
+    <div class="nav-label">系统</div>
+    <button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">总览</button>
+    <div class="nav-label">知识</div>
+    <button data-page="chapters" onclick="showPage('chapters',this)">章节结构</button>
+    <button data-page="formulas" onclick="showPage('formulas',this)">公式速查</button>
+    <div class="nav-label">考试数据</div>
+    <button data-page="high" onclick="showPage('high',this)">高频考点</button>
+    <button data-page="types" onclick="showPage('types',this)">高频题型</button>
+    <button data-page="exams" onclick="showPage('exams',this)">历年真题</button>
+    <div class="nav-label">备考</div>
+    <button data-page="sprint" onclick="showPage('sprint',this)">冲刺方案</button>
+    <button data-page="mistakes" onclick="showPage('mistakes',this)">错题本</button>
+    <div class="nav-label">说明</div>
+    <button data-page="about" onclick="showPage('about',this)">数据说明</button>
+  </div>
 </aside>
 
-
-<!-- =========================
-     主区域
-========================= -->
-
 <main class="main">
-
 <div class="topbar">
-    <div class="page-title" id="pageTitle">
-        总览
-    </div>
-
-    <div class="profile">
-        物
-    </div>
+  <div class="page-title" id="pageTitle">总览</div>
+  <div class="profile">物</div>
 </div>
 
-
-<!-- =========================
-     总览
-========================= -->
-
-<section id="dashboard" class="page">
-
-<div class="hero">
-
-    <div class="hero-label">
-        南开大学物理系 · 期末考试智能分析
-    </div>
-
-    <h1>
-        少学一点，<br>
-        多考几分。
-    </h1>
-
-    <p>
-        Equimophysics 依据真实课程资料与历年考试数据，
-        识别高频考点、题型与分值分布，
-        在考试之前告诉你——哪些内容真正值得投入时间。
-    </p>
-
-</div>
-
-
-<div class="grid">
-
-    <!-- 当前考试 -->
-
-    <div class="card exam-card">
-
-        <div class="card-title">
-            当前考试
-        </div>
-
-        <div class="course-name">
-            量子力学
-        </div>
-
-        <div class="exam-date">
-            期末考试 · 2026 年
-        </div>
-
-        <div class="countdown">
-            <span>06</span> 天
-        </div>
-
-        <div class="progress-label">
-            <span>备考进度</span>
-            <span>68%</span>
-        </div>
-
-        <div class="progress">
-            <div></div>
-        </div>
-
-        <button class="primary"
-                onclick="showPage('training', document.querySelectorAll('.nav button')[5])">
-            开始今日训练
-        </button>
-
-    </div>
-
-
-    <!-- 最高优先级 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            最高优先级考点
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">01</div>
-
-            <div class="topic">
-                角动量
-                <div class="topic-meta">
-                    高频计算 · 高频理论 · 连续 5 年出现
-                </div>
-            </div>
-
-            <div class="stars">
-                ★★★★★
-            </div>
-
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">02</div>
-
-            <div class="topic">
-                一维势阱
-                <div class="topic-meta">
-                    高频计算 · 连续 5 年出现
-                </div>
-            </div>
-
-            <div class="stars">
-                ★★★★★
-            </div>
-
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">03</div>
-
-            <div class="topic">
-                谐振子
-                <div class="topic-meta">
-                    高频计算
-                </div>
-            </div>
-
-            <div class="stars">
-                ★★★★☆
-            </div>
-
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">04</div>
-
-            <div class="topic">
-                微扰理论
-                <div class="topic-meta">
-                    常考综合题
-                </div>
-            </div>
-
-            <div class="stars">
-                ★★★★☆
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- 冲刺入口 -->
-
-<div class="card">
-
-    <div class="card-title">
-        冲刺入口
-    </div>
-
-    <div class="sprint">
-
-        <div class="sprint-card"
-             onclick="showPage('sprint', document.querySelectorAll('.nav button')[7])">
-
-            <div class="time">7 天</div>
-
-            <h3>完整备考</h3>
-
-            <p>
-                高频考点 → 题型 → 真题 → 模拟
-            </p>
-
-        </div>
-
-        <div class="sprint-card"
-             onclick="showPage('sprint', document.querySelectorAll('.nav button')[7])">
-
-            <div class="time">3 天</div>
-
-            <h3>高收益模式</h3>
-
-            <p>
-                只学习最高收益内容
-            </p>
-
-        </div>
-
-        <div class="sprint-card"
-             onclick="showPage('sprint', document.querySelectorAll('.nav button')[7])">
-
-            <div class="time">24 小时</div>
-
-            <h3>紧急模式</h3>
-
-            <p>
-                必考内容 + 高频题型
-            </p>
-
-        </div>
-
-        <div class="sprint-card"
-             onclick="showPage('sprint', document.querySelectorAll('.nav button')[7])">
-
-            <div class="time">2 小时</div>
-
-            <h3>最后机会</h3>
-
-            <p>
-                公式 + 模板 + 必做题
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     课程
-========================= -->
-
-<section id="courses" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            南开大学 · 物理科学学院
-        </div>
-
-        <h1>课程。</h1>
-
-        <p>
-            选择你正在备考的课程。
-            Equimophysics 会按照考试优先级，
-            重新组织该课程的全部内容。
-        </p>
-
-    </div>
-
-    <div class="course-grid">
-
-        <div class="course active" onclick="selectCourse('力学')">
-            <div class="course-code">专业基础课</div>
-            <h3>力学</h3>
-            <p>运动、牛顿定律、能量、动量、刚体、振动。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('电磁学')">
-            <div class="course-code">专业基础课</div>
-            <h3>电磁学</h3>
-            <p>静电场、磁场、电磁感应、电磁波。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('光学')">
-            <div class="course-code">专业基础课</div>
-            <h3>光学</h3>
-            <p>几何光学、干涉、衍射、偏振。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('热学')">
-            <div class="course-code">专业基础课</div>
-            <h3>热学</h3>
-            <p>热力学、气体、循环、熵。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('数学物理方法')">
-            <div class="course-code">专业核心课</div>
-            <h3>数学物理方法</h3>
-            <p>复变、Fourier、微分方程、特殊函数。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('量子力学')">
-            <div class="course-code">专业核心课</div>
-            <h3>量子力学</h3>
-            <p>波函数、算符、角动量、谐振子、微扰。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('理论力学')">
-            <div class="course-code">专业核心课</div>
-            <h3>理论力学</h3>
-            <p>拉格朗日力学、Hamilton 力学、正则变换。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('电动力学')">
-            <div class="course-code">专业核心课</div>
-            <h3>电动力学</h3>
-            <p>Maxwell 方程、势、波动、电磁辐射。</p>
-        </div>
-
-        <div class="course" onclick="selectCourse('热力学与统计物理')">
-            <div class="course-code">专业核心课</div>
-            <h3>统计物理</h3>
-            <p>系综、分布、热力学势、相变。</p>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     高频考点
-========================= -->
-
-<section id="high" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            考试分析
-        </div>
-
-        <h1>高频考点。</h1>
-
-        <p>
-            反复出现的内容，才是真正值得投入时间的内容。
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            量子力学 · 高频考点
-        </div>
-
-        <table class="table">
-
-            <thead>
-                <tr>
-                    <th>考点</th>
-                    <th>出现频率</th>
-                    <th>累计分值</th>
-                    <th>主要题型</th>
-                    <th>优先级</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>角动量</td>
-                    <td>5 / 5</td>
-                    <td>65 分</td>
-                    <td>计算 · 理论</td>
-                    <td class="high">★★★★★</td>
-                </tr>
-
-                <tr>
-                    <td>一维势阱</td>
-                    <td>5 / 5</td>
-                    <td>58 分</td>
-                    <td>计算</td>
-                    <td class="high">★★★★★</td>
-                </tr>
-
-                <tr>
-                    <td>谐振子</td>
-                    <td>4 / 5</td>
-                    <td>42 分</td>
-                    <td>计算</td>
-                    <td class="high">★★★★★</td>
-                </tr>
-
-                <tr>
-                    <td>微扰理论</td>
-                    <td>4 / 5</td>
-                    <td>38 分</td>
-                    <td>综合</td>
-                    <td class="high">★★★★☆</td>
-                </tr>
-
-                <tr>
-                    <td>自旋</td>
-                    <td>3 / 5</td>
-                    <td>26 分</td>
-                    <td>理论 · 计算</td>
-                    <td class="medium">★★★☆☆</td>
-                </tr>
-
-                <tr>
-                    <td>散射</td>
-                    <td>1 / 5</td>
-                    <td>8 分</td>
-                    <td>计算</td>
-                    <td>★★☆☆☆</td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     高频题型
-========================= -->
-
-<section id="types" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            题型稳定性分析
-        </div>
-
-        <h1>高频题型。</h1>
-
-        <p>
-            同一个考点，往往以固定的题型反复出现。
-            掌握题型，比掌握零散知识点更接近分数。
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            量子力学 · 高频题型
-        </div>
-
-        <table class="table">
-
-            <thead>
-                <tr>
-                    <th>题型</th>
-                    <th>对应考点</th>
-                    <th>近 5 年出现</th>
-                    <th>稳定度</th>
-                    <th>优先级</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>求本征值</td>
-                    <td>角动量 · 一维势阱</td>
-                    <td>5 次</td>
-                    <td class="high">极高</td>
-                    <td class="high">★★★★★</td>
-                </tr>
-
-                <tr>
-                    <td>求本征态</td>
-                    <td>角动量</td>
-                    <td>4 次</td>
-                    <td class="high">高</td>
-                    <td class="high">★★★★★</td>
-                </tr>
-
-                <tr>
-                    <td>对易关系与算符运算</td>
-                    <td>形式理论 · 角动量</td>
-                    <td>4 次</td>
-                    <td class="high">高</td>
-                    <td class="high">★★★★☆</td>
-                </tr>
-
-                <tr>
-                    <td>角动量耦合</td>
-                    <td>角动量 · 自旋</td>
-                    <td>3 次</td>
-                    <td class="medium">中</td>
-                    <td class="medium">★★★★☆</td>
-                </tr>
-
-                <tr>
-                    <td>微扰计算</td>
-                    <td>微扰理论</td>
-                    <td>4 次</td>
-                    <td class="medium">中</td>
-                    <td class="medium">★★★☆☆</td>
-                </tr>
-
-                <tr>
-                    <td>证明题</td>
-                    <td>形式理论</td>
-                    <td>2 次</td>
-                    <td>低</td>
-                    <td>★★☆☆☆</td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     历年真题
-========================= -->
-
-<section id="exams" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            原始真题档案
-        </div>
-
-        <h1>历年真题。</h1>
-
-        <p>
-            原始真题是识别考试规律的唯一证据源。
-            Equimophysics 的一切结论，都必须能够回到真题。
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            量子力学 · 历年真题
-        </div>
-
-        <table class="table">
-
-            <thead>
-                <tr>
-                    <th>年份</th>
-                    <th>课程</th>
-                    <th>题量</th>
-                    <th>覆盖考点</th>
-                    <th>分析</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>2025</td>
-                    <td>量子力学</td>
-                    <td>8</td>
-                    <td>角动量 · 势阱 · 微扰</td>
-                    <td>
-                        <button class="secondary" onclick="alert('打开 2025 期末真题分析')">
-                            查看
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>2024</td>
-                    <td>量子力学</td>
-                    <td>7</td>
-                    <td>角动量 · 谐振子 · 自旋</td>
-                    <td>
-                        <button class="secondary" onclick="alert('打开 2024 期末真题分析')">
-                            查看
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>2023</td>
-                    <td>量子力学</td>
-                    <td>8</td>
-                    <td>势阱 · 角动量 · 形式理论</td>
-                    <td>
-                        <button class="secondary" onclick="alert('打开 2023 期末真题分析')">
-                            查看
-                        </button>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- 证据链 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            证据链 · 角动量
-        </div>
-
-        <p style="color:#888;font-size:12px;line-height:1.7;margin-top:0">
-            出现 5 / 5 次。以下每一条结论，都可以回溯到原始真题文件。
-        </p>
-
-        <div class="evidence">
-            <div>2025 真题 · 第 3 题 · 15 分 <small>来源：2025_期末真题.pdf 第 4 页</small></div>
-            <div>2024 真题 · 第 4 题 · 12 分 <small>来源：2024_期末真题.pdf 第 5 页</small></div>
-            <div>2023 真题 · 第 5 题 · 14 分 <small>来源：2023_期末真题.pdf 第 3 页</small></div>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     训练系统
-========================= -->
-
-<section id="training" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            训练生成系统
-        </div>
-
-        <h1>训练。</h1>
-
-        <p>
-            针对每一个高频考点，系统不会给你一篇长理论，
-            而是生成一条从真题到掌握的完整训练路径。
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            训练路径 · 角动量
-        </div>
-
-        <div class="flow">
-
-            <div class="flow-row">
-                <div class="flow-node accent">真题</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">标准题</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">同型变式</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">错误分析</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">再次训练</div>
-            </div>
-
-        </div>
-
-        <button class="primary" onclick="alert('开始角动量专项训练')">
-            开始训练
-        </button>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            可训练考点
-        </div>
-
-        <div class="priority-item">
-            <div class="rank">01</div>
-            <div class="topic">
-                角动量
-                <div class="topic-meta">出现 5/5 · 累计 65 分 · 主要题型：求本征值 / 求本征态 / 对易关系 / 角动量耦合</div>
-            </div>
-            <div class="stars">★★★★★</div>
-        </div>
-
-        <div class="priority-item">
-            <div class="rank">02</div>
-            <div class="topic">
-                一维势阱
-                <div class="topic-meta">出现 5/5 · 累计 58 分 · 主要题型：本征值 / 概率计算</div>
-            </div>
-            <div class="stars">★★★★★</div>
-        </div>
-
-        <div class="priority-item">
-            <div class="rank">03</div>
-            <div class="topic">
-                谐振子
-                <div class="topic-meta">出现 4/5 · 累计 42 分 · 主要题型：能级 / 升降算符</div>
-            </div>
-            <div class="stars">★★★★☆</div>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     错题本
-========================= -->
-
-<section id="mistakes" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            错误数据库
-        </div>
-
-        <h1>错题本。</h1>
-
-        <p>
-            每一次错误，都会成为下一次复习的目标。
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="card-title">
-            最近错误
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">01</div>
-
-            <div class="topic">
-                角动量本征值
-                <div class="topic-meta">
-                    错误次数：2 · 高优先级复习
-                </div>
-            </div>
-
-            <div class="stars">
-                待复习
-            </div>
-
-        </div>
-
-        <div class="priority-item">
-
-            <div class="rank">02</div>
-
-            <div class="topic">
-                无限深势阱概率
-                <div class="topic-meta">
-                    错误次数：1
-                </div>
-            </div>
-
-            <div class="stars">
-                待复习
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     冲刺系统
-========================= -->
-
-<section id="sprint" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            分数最大化
-        </div>
-
-        <h1>冲刺。</h1>
-
-        <p>
-            你有多少时间，决定你复习什么。
-            Equimophysics 会自动删除一切考试价值较低的内容。
-        </p>
-
-    </div>
-
-    <div class="sprint">
-
-        <div class="sprint-card">
-            <div class="time">7 天</div>
-            <h3>完整备考</h3>
-            <p>S 级 + A 级 + B 级 + 全部高频题型 + 近 5 年真题。</p>
-        </div>
-
-        <div class="sprint-card">
-            <div class="time">3 天</div>
-            <h3>高收益模式</h3>
-            <p>S 级 + A 级 + 近 3 年真题。</p>
-        </div>
-
-        <div class="sprint-card">
-            <div class="time">24 小时</div>
-            <h3>紧急模式</h3>
-            <p>S 级 + 最高频题型 + 公式 + 模板。</p>
-        </div>
-
-        <div class="sprint-card">
-            <div class="time">2 小时</div>
-            <h3>最后机会</h3>
-            <p>★★★★★ 必背公式 + 必做题 + 最常见题型 + 最后一套真题。</p>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     系统架构
-========================= -->
-
-<section id="architecture" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            系统总架构
-        </div>
-
-        <h1>系统架构。</h1>
-
-        <p>
-            整个系统的核心不是知识，而是考试数据。
-            新增任何课程，都不需要重新设计系统，只需要往系统里加入课程数据。
-        </p>
-
-    </div>
-
-    <!-- 总架构流向 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            总架构
-        </div>
-
-        <div class="flow">
-
-            <div class="flow-row">
-                <div class="flow-node">原始课程资料</div>
-                <div class="flow-node">学生学习数据</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">内容解析引擎</div>
-                <div class="flow-node">学习状态引擎</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">考试智能分析引擎</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">考点 · 题型 · 规律</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">优先级计算</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">训练生成系统</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">复习调度系统</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">用户界面</div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- 七层架构 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            七层架构
-        </div>
-
-        <div class="layers">
-
-            <div class="layer">
-                <div class="layer-no">1</div>
-                <div>
-                    <h3>原始资料层</h3>
-                    <p>你提供给系统的一切原始文件。原文件是整个系统的证据源，绝对不可修改。</p>
-                    <ul>
-                        <li>课程大纲、PPT、教材</li>
-                        <li>作业、课堂资料、教师重点</li>
-                        <li>历年真题、历年答案、考试说明</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">2</div>
-                <div>
-                    <h3>内容数据库</h3>
-                    <p>系统读取原始文件后，把内容拆成结构化数据。这一层只回答“课程有什么”，不判断“什么重要”。</p>
-                    <ul>
-                        <li>课程 → 章节 → 知识点</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">3</div>
-                <div>
-                    <h3>考试数据库</h3>
-                    <p>这是 Equimophysics 的核心。每一道历年真题都成为独立的数据对象。</p>
-                    <ul>
-                        <li>年份 · 课程 · 题号 · 分值</li>
-                        <li>考点 · 题型 · 难度</li>
-                        <li>来源文件 · 页码</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">4</div>
-                <div>
-                    <h3>考试智能层</h3>
-                    <p>系统在这里开始真正发挥作用，从真题数据中提炼考试规律。</p>
-                    <ul>
-                        <li>考点频率</li>
-                        <li>分值权重</li>
-                        <li>时间趋势</li>
-                        <li>题型稳定性</li>
-                        <li>真题重复模式（识别同一考试母题）</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">5</div>
-                <div>
-                    <h3>优先级系统</h3>
-                    <p>把考试数据变成 S / A / B / C / D 等级。关键原则：不是主观决定，而是根据考试数据计算。</p>
-                    <ul>
-                        <li>S 级：必须掌握</li>
-                        <li>A 级：高优先级</li>
-                        <li>B 级：建议掌握</li>
-                        <li>C 级：时间充足再学</li>
-                        <li>D 级：极低优先级</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">6</div>
-                <div>
-                    <h3>训练系统</h3>
-                    <p>进入学生端。针对高频考点生成训练路径，而不是给一篇长理论。</p>
-                    <ul>
-                        <li>真题 → 标准题 → 同型变式 → 错误分析 → 再次训练</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="layer">
-                <div class="layer-no">7</div>
-                <div>
-                    <h3>冲刺系统</h3>
-                    <p>系统的最后一环。根据距离考试还有多久，自动减少需要复习的内容。</p>
-                    <ul>
-                        <li>7 天 / 3 天 / 24 小时 / 2 小时</li>
-                        <li>时间越少，内容越聚焦于最高频、最高分值部分</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- 优先级算法 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            优先级算法
-        </div>
-
-        <div class="flow">
-
-            <div class="flow-row">
-                <div class="flow-node">出现频率</div>
-                <div class="flow-node">分值权重</div>
-                <div class="flow-node">时间衰减</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">题型稳定性</div>
-                <div class="flow-node">难度</div>
-                <div class="flow-node">学生正确率</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">优先级得分</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">学习队列</div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- 闭环 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            完整闭环
-        </div>
-
-        <div class="flow">
-
-            <div class="flow-row">
-                <div class="flow-node">你的资料</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">PPT</div>
-                <div class="flow-node">教材</div>
-                <div class="flow-node">作业</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">AI 解析</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">课程知识</div>
-                <div class="flow-node">历年真题</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">考试数据层</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">考点</div>
-                <div class="flow-node">题型</div>
-                <div class="flow-node">分值</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">考试权重</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">S / A / B / C / D</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">Equimophysics</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node">高频</div>
-                <div class="flow-node">真题</div>
-                <div class="flow-node">训练</div>
-                <div class="flow-node">冲刺</div>
-            </div>
-            <div class="flow-arrow">↓</div>
-
-            <div class="flow-row">
-                <div class="flow-node accent">期末考试</div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     数据体系
-========================= -->
-
-<section id="data" class="page" style="display:none">
-
-    <div class="hero">
-
-        <div class="hero-label">
-            数据结构
-        </div>
-
-        <h1>数据体系。</h1>
-
-        <p>
-            不要只把 PDF 交给系统。
-            原始资料经解析后，应生成一整套可计算、可追溯的结构化数据。
-        </p>
-
-    </div>
-
-    <!-- 目录结构 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            标准目录结构
-        </div>
-
-        <pre class="tree">Equimophysics_Data/
-│
-├── README.md
-│
-├── courses/
-│   │
-│   ├── quantum_mechanics/
-│   │   ├── raw/                    原始资料（不可修改）
-│   │   │   ├── course_info.md      课程信息
-│   │   │   ├── syllabus/           课程大纲
-│   │   │   ├── ppt/                课件
-│   │   │   ├── textbook/           教材
-│   │   │   ├── homework/           作业
-│   │   │   ├── exam_info/          考试说明
-│   │   │   ├── exams/              历年真题
-│   │   │   └── answers/            历年答案
-│   │   │
-│   │   └── processed/              结构化数据
-│   │       ├── course.json
-│   │       ├── chapters.json
-│   │       ├── topics.json
-│   │       ├── question_types.json
-│   │       ├── questions.json
-│   │       ├── exams.json
-│   │       ├── formulas.json
-│   │       ├── solution_templates.json
-│   │       ├── statistics.json
-│   │       └── source_map.json
-│   │
-│   ├── mechanics/
-│   ├── electromagnetism/
-│   ├── optics/
-│   ├── mathematical_physics/
-│   ├── theoretical_mechanics/
-│   ├── electrodynamics/
-│   └── statistical_physics/
-│
-└── website/
-    └── index.html</pre>
-
-    </div>
-
-    <!-- 数据文件说明 -->
-
-    <div class="cols">
-
-        <div class="card">
-            <div class="card-title">topics.json · 考点</div>
-<pre class="code">{
-  "id": "qm_angular_momentum",
-  "name": "角动量",
-  "chapter": "第三章",
-  "priority": "S"
-}</pre>
-        </div>
-
-        <div class="card">
-            <div class="card-title">questions.json · 题目</div>
-<pre class="code">{
-  "id": "qm_2025_q3",
-  "exam": "2025_final",
-  "number": 3,
-  "score": 15,
-  "topic": "qm_angular_momentum",
-  "type": "eigenvalue_calculation",
-  "source": { "file": "2025_期末真题.pdf", "page": 4 }
-}</pre>
-        </div>
-
-        <div class="card">
-            <div class="card-title">statistics.json · 统计</div>
-<pre class="code">{
-  "topic": "qm_angular_momentum",
-  "appearances": 5,
-  "total_score": 65,
-  "years": [2021, 2022, 2023, 2024, 2025],
-  "priority": "S"
-}</pre>
-        </div>
-
-        <div class="card">
-            <div class="card-title">source_map.json · 证据映射</div>
-<pre class="code">{
-  "topic": "qm_angular_momentum",
-  "evidence": [
-    { "exam": "2025_final", "question": 3, "page": 4 },
-    { "exam": "2024_final", "question": 4, "page": 5 },
-    { "exam": "2023_final", "question": 5, "page": 3 }
-  ]
-}</pre>
-        </div>
-
-    </div>
-
-    <!-- 数据原则 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            数据优先级与原则
-        </div>
-
-        <div class="layer" style="border:none;padding:0;grid-template-columns:1fr">
-            <div>
-                <h3>数据优先级</h3>
-                <ul>
-                    <li>教师真实考试资料</li>
-                    <li>教师提供的参考答案</li>
-                    <li>教师课件</li>
-                    <li>教师作业</li>
-                    <li>教材</li>
-                    <li>其他资料</li>
-                    <li>系统推断</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="layer" style="border:none;padding:0;grid-template-columns:1fr">
-            <div>
-                <h3>重要原则</h3>
-                <ul>
-                    <li>系统不得凭空声称某知识点“必考”</li>
-                    <li>所有“高频 / 重要 / 必考 / 常考 / 分值 / 考试规律”必须有真实资料支持</li>
-                    <li>无法确定的信息必须标记为：未知</li>
-                    <li>系统推断必须明确标记为：推断</li>
-                    <li>原始资料不得修改，所有分析结果必须能够追溯到原始文件</li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- 等级说明 -->
-
-    <div class="card">
-
-        <div class="card-title">
-            优先级等级
-        </div>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>等级</th>
-                    <th>含义</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><span class="badge s">S</span></td><td>必须掌握</td></tr>
-                <tr><td><span class="badge a">A</span></td><td>高优先级</td></tr>
-                <tr><td><span class="badge b">B</span></td><td>建议掌握</td></tr>
-                <tr><td><span class="badge c">C</span></td><td>时间充足再学</td></tr>
-                <tr><td><span class="badge d">D</span></td><td>极低优先级</td></tr>
-            </tbody>
-        </table>
-
-    </div>
-
-</section>
+<!-- 总览 -->
+<section id="dashboard" class="page"></section>
+<!-- 章节结构 -->
+<section id="chapters" class="page" style="display:none"></section>
+<!-- 公式速查 -->
+<section id="formulas" class="page" style="display:none"></section>
+<!-- 高频考点 -->
+<section id="high" class="page" style="display:none"></section>
+<!-- 高频题型 -->
+<section id="types" class="page" style="display:none"></section>
+<!-- 历年真题 -->
+<section id="exams" class="page" style="display:none"></section>
+<!-- 冲刺方案 -->
+<section id="sprint" class="page" style="display:none"></section>
+<!-- 错题本 -->
+<section id="mistakes" class="page" style="display:none"></section>
+<!-- 数据说明 -->
+<section id="about" class="page" style="display:none"></section>
 
 </main>
-
 </div>
 
-
 <script>
+/* ============ 工具 ============ */
+const R = String.raw;
+const $ = (s)=>document.querySelector(s);
+const esc = (s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-/* =========================
-   页面切换
-========================= */
+/* ============ 课程信息（来自讲义第 I 章与真题卷面） ============ */
+const COURSE = {
+  name:'量子力学（一）',
+  school:'南开大学 · 物理科学学院',
+  hours:'48 学时',
+  examLen:'100 分钟',
+  teachers:'胡金牛、胡毅',
+  grade:'平时（小测 + 作业）40% ＋ 期末考试 60%',
+  refs:['Sakurai & Napolitano,《Modern Quantum Mechanics》',
+        'Weinberg,《Lectures on Quantum Mechanics》',
+        'Griffiths & Schroeter,《Introduction to Quantum Mechanics》'],
+  src:'课程信息取自讲义 chapter01.pdf（成绩构成）与 2023–2024 期末试卷卷面（课时、时长、任课教师）'
+};
 
-function showPage(page, button) {
+/* ============ 章节数据 ============ */
+const CHAPTERS = [
+{no:'I', title:'绪论', en:'Introduction', file:'chapter01.pdf',
+ sections:['量子力学的起源','大事年表','黑体辐射','宇宙微波背景','光电效应','康普顿效应','物质的波动性','玻尔量子化条件','电子散射与布拉格定律','波动与波包','不确定度原理','电子双缝实验','概率与波函数','导出薛定谔方程','概率密度与连续性方程'],
+ concepts:[
+  ['量子力学的四条修正','宇宙不再决定论（只给概率）；光与物质都具波粒二象性；某些物理量只能取分立值（量子化）；观察者总会影响实验。'],
+  ['黑体辐射','吸收所有入射辐射的理想物体（空心腔壁小孔）。经典瑞利–金斯公式在高频端发散（紫外灾难），普朗克以能量子 E=nhf 假设解决。'],
+  ['光电效应','电子最大动能只依赖光频率与材料功函数，与光强无关，且存在阈值频率；hν=φ+Ek。'],
+  ['康普顿效应','X 射线被静止自由电子散射后波长变长，是光子粒子性的定量证据。'],
+  ['德布罗意物质波','粒子本身具有波动性，λ=h/p；戴维孙–革末电子衍射实验直接验证。'],
+  ['波包与群速度','大量平面波叠加成空间局域脉冲；相速度 v_ph=ω/k，群速度 v_g=dω/dk 描述粒子整体传播。'],
+  ['不确定度原理','无法同时精确测知同一粒子的位置与动量，Δx·Δp ≥ ħ/2。'],
+  ['波函数与概率','Ψ(r,t) 为概率幅，模方 |Ψ|² 为概率密度；局域概率守恒满足连续性方程。']
+ ],
+ formulas:[
+  ['维恩位移定律', R`\lambda_{\max}T=2.898\times10^{-3}\ \mathrm{m\cdot K}`],
+  ['斯特藩–玻尔兹曼定律', R`e_{\text{总}}=\sigma T^{4},\quad \sigma=5.67\times10^{-8}\ \mathrm{W\,m^{-2}K^{-4}}`],
+  ['瑞利–金斯公式', R`u(\lambda,T)\,d\lambda=\frac{8\pi}{\lambda^{4}}k_BT\,d\lambda`],
+  ['普朗克黑体辐射公式', R`u(f,T)=\frac{8\pi h f^{3}}{c^{3}}\frac{1}{e^{hf/k_BT}-1}`],
+  ['谐振子能量量子化', R`E=nhf,\qquad \Delta E=hf`],
+  ['光电效应方程', R`h\nu=\phi+\tfrac12 mv_{\max}^{2},\qquad eV_0=h(\nu-\nu_0)`],
+  ['康普顿波长移动', R`\lambda'-\lambda=\frac{h}{m_ec}(1-\cos\theta)`],
+  ['德布罗意关系', R`\lambda=\frac{h}{p}`],
+  ['玻尔量子化条件', R`n\lambda=2\pi r\ \Rightarrow\ L=n\hbar`],
+  ['布拉格定律', R`n\lambda=2d\sin\theta`],
+  ['波包展开', R`\Psi(x,t)=\frac{1}{\sqrt{2\pi}}\int \phi(k)e^{i(kx-\omega t)}\,dk`],
+  ['相速度与群速度', R`v_{ph}=\frac{\omega}{k},\qquad v_g=\frac{d\omega}{dk}`],
+  ['海森堡不确定度关系', R`\Delta x\,\Delta p_x\ge \frac{\hbar}{2}`],
+  ['算符形式', R`\hat p=-i\hbar\frac{\partial}{\partial x},\qquad \hat E=i\hbar\frac{\partial}{\partial t}`],
+  ['薛定谔方程（含势）', R`\Big[-\frac{\hbar^{2}}{2m}\nabla^{2}+V(r)\Big]\psi=i\hbar\frac{\partial\psi}{\partial t}`],
+  ['连续性方程与概率流', R`\frac{\partial P}{\partial t}+\nabla\cdot \vec S=0,\qquad \vec S=\frac{i\hbar}{2m}(\psi\nabla\psi^{*}-\psi^{*}\nabla\psi)`]
+ ]},
 
-    document.querySelectorAll(".page").forEach(function (p) {
-        p.style.display = "none";
-    });
+{no:'II', title:'量子力学的代数表述', en:'Algebraic Formulation of Quantum Mechanics', file:'chapter02.pdf / 02a / 02b',
+ sections:['线性矢量空间','希尔伯特空间','平方可积函数与波函数','狄拉克符号','可观测量与算符','厄米共轭','投影算符','对易代数','不确定度关系','算符的函数','逆算符与幺正算符','本征值与本征矢','矩阵表示','幺正变换','本征值问题的矩阵表示','连续基中的表示（位置/动量表象）'],
+ concepts:[
+  ['线性无关与基','一组矢量的线性组合 Σaᵢφᵢ=0 只在全部 aᵢ=0 时成立；n 维空间中任意 n 个线性无关矢量构成一组基。'],
+  ['右矢与左矢','|ψ⟩ 为右矢（列矢量），⟨ψ|=(|ψ⟩)† 为左矢（行矢量）；内积 ⟨φ|ψ⟩ 满足 ⟨φ|ψ⟩=⟨ψ|φ⟩*。'],
+  ['正交归一与完备性','⟨φᵢ|φⱼ⟩=δᵢⱼ；离散基 Σᵢ|φᵢ⟩⟨φᵢ|=Î，连续基 ∫dα|φ(α)⟩⟨φ(α)|=Î。'],
+  ['厄米共轭','⟨ψ|Â†|χ⟩=⟨χ|Â|ψ⟩*；规则为循环反序因子并作常数取复共轭、右矢↔左矢、算符取共轭三处替换。'],
+  ['厄米/反厄米算符','Â†=Â 为厄米算符（本征值实、本征矢正交）；B̂†=−B̂ 为反厄米算符（本征值纯虚）。'],
+  ['投影算符','满足 P̂†=P̂ 且 P̂²=P̂；|φ⟩⟨φ|（|φ⟩ 归一）即投影算符。'],
+  ['对易子与反对易子','[A,B]=AB−BA；{A,B}=AB+BA。满足反对称性、线性、Leibniz 法则 [A,BC]=[A,B]C+B[A,C] 与 Jacobi 恒等式。'],
+  ['不确定度关系','ΔA·ΔB ≥ ½|⟨[A,B]⟩|；由 [X,P]=iħ 即得 ΔxΔpₓ ≥ ħ/2。'],
+  ['幺正算符','U†=U⁻¹（UU†=U†U=I），其本征值模为 1。'],
+  ['本征值问题','Â|ψ⟩=a|ψ⟩；简并指多个线性无关本征矢对应同一本征值。'],
+  ['矩阵表示','正交归一基下 Aₙₘ=⟨φₙ|Â|φₘ⟩；迹 Tr(Â)=ΣAₙₙ=Σaₙ 与基无关。'],
+  ['幺正变换与久期方程','Uₘₙ=⟨φₘ|φ′ₙ⟩，|ψ′⟩=U|ψ⟩、Â′=UÂU†；本征值由 det(Aₘₙ−aδₘₙ)=0 定出。'],
+  ['连续表象','⟨r|r′⟩=δ³(r−r′)、∫d³r|r⟩⟨r|=Î；⟨r|p⟩=(2πħ)^(−3/2)e^{ip·r/ħ}，位置与动量波函数互为傅里叶变换。']
+ ],
+ formulas:[
+  ['内积', R`\langle\phi|\psi\rangle=\sum_i \phi_i^{*}\psi_i`],
+  ['左矢定义', R`\langle\psi|=(|\psi\rangle)^{\dagger}`],
+  ['正交归一', R`\langle\phi_i|\phi_j\rangle=\delta_{ij}`],
+  ['完备性（离散/连续）', R`\sum_i|\phi_i\rangle\langle\phi_i|=\hat I,\qquad \int d\alpha\,|\phi(\alpha)\rangle\langle\phi(\alpha)|=\hat I`],
+  ['施瓦茨不等式', R`|\langle\psi|\phi\rangle|^{2}\le\langle\psi|\psi\rangle\langle\phi|\phi\rangle`],
+  ['厄米共轭', R`\langle\psi|\hat A^{\dagger}|\chi\rangle=\langle\chi|\hat A|\psi\rangle^{*},\qquad (\hat A\hat B)^{\dagger}=\hat B^{\dagger}\hat A^{\dagger}`],
+  ['投影算符', R`\hat P^{\dagger}=\hat P,\qquad \hat P^{2}=\hat P`],
+  ['对易子定义', R`[\hat A,\hat B]=\hat A\hat B-\hat B\hat A,\qquad \{\hat A,\hat B\}=\hat A\hat B+\hat B\hat A`],
+  ['Leibniz 法则与 Jacobi 恒等式', R`[\hat A,\hat B\hat C]=[\hat A,\hat B]\hat C+\hat B[\hat A,\hat C],\qquad [\hat A,[\hat B,\hat C]]+[\hat B,[\hat C,\hat A]]+[\hat C,[\hat A,\hat B]]=0`],
+  ['不确定度关系', R`\Delta A\,\Delta B\ge \tfrac12\big|\langle[\hat A,\hat B]\rangle\big|`],
+  ['算符函数与指数', R`F(\hat A)=\sum_n a_n\hat A^{n},\qquad e^{a\hat A}=\hat I+a\hat A+\frac{a^{2}}{2!}\hat A^{2}+\cdots`],
+  ['逆与幺正算符', R`\hat A^{-1}\hat A=\hat I,\qquad \hat U^{\dagger}=\hat U^{-1}`],
+  ['本征值方程', R`\hat A|\psi\rangle=a|\psi\rangle,\qquad \hat A^{n}|\psi\rangle=a^{n}|\psi\rangle`],
+  ['厄米算符本征值实、本征矢正交', R`a_n\in\mathbb R,\qquad \langle\phi_m|\phi_n\rangle=\delta_{mn}`],
+  ['算符的矩阵元与矩阵表示', R`A_{nm}=\langle\phi_n|\hat A|\phi_m\rangle,\qquad \hat A=\sum_{nm}A_{nm}|\phi_n\rangle\langle\phi_m|`],
+  ['迹', R`\mathrm{Tr}(\hat A)=\sum_n A_{nn}=\sum_n a_n,\qquad \mathrm{Tr}(\hat A\hat B)=\mathrm{Tr}(\hat B\hat A)`],
+  ['幺正变换', R`|\phi'_n\rangle=\sum_m U_{mn}|\phi_m\rangle,\qquad |\psi'\rangle=U|\psi\rangle,\qquad \hat A'=U\hat A U^{\dagger}`],
+  ['久期（特征）方程', R`\det\big(A_{mn}-a\,\delta_{mn}\big)=0`],
+  ['正则对易关系', R`[\hat X,\hat P_x]=i\hbar,\qquad [\hat R_j,\hat P_k]=i\hbar\,\delta_{jk}`],
+  ['幂次与函数对易关系', R`[\hat X^{n},\hat P_x]=i\hbar\,n\hat X^{n-1},\qquad [f(\hat X),\hat P_x]=i\hbar\frac{\partial f}{\partial \hat X}`],
+  ['变换函数（核）与傅里叶关系', R`\langle r|p\rangle=\frac{1}{(2\pi\hbar)^{3/2}}e^{i p\cdot r/\hbar},\qquad \psi(r)=\frac{1}{(2\pi\hbar)^{3/2}}\int d^{3}p\,e^{ip\cdot r/\hbar}\psi(p)`],
+  ['位置表象中的动量算符', R`\hat P=-i\hbar\nabla,\qquad \hat R=i\hbar\nabla_p`]
+ ]},
 
-    document.getElementById(page).style.display = "block";
+{no:'III', title:'一维问题', en:'One Dimension Problem', file:'chapter03.pdf',
+ sections:['量子力学基本公设','三种绘景','定态薛定谔方程','一维定态方程','束缚态与散射态','自由粒子解','无限深势阱','不连续势与边界条件','δ 势','有限深方势阱','宇称解','一维简谐振子','阶跃势','势垒与隧穿','周期势与布洛赫定理'],
+ concepts:[
+  ['六条基本公设','态矢量、可观测量对应厄米算符、测量结果为本征值、概率由投影给出、态按含时薛定谔方程演化、全同费米子总波函数反对称。'],
+  ['期望值与厄伦费斯特定理','d⟨Â⟩/dt=(1/iħ)⟨[Â,Ĥ]⟩；形式上与经典运动方程对应。'],
+  ['三种绘景','薛定谔绘景（态演化）、海森堡绘景（算符演化）、相互作用绘景（态与算符均演化，适用于 Ĥ=Ĥ₀+Ŵ(t)）。'],
+  ['无限深势阱','能量分立、存在零点能；E_n=n²π²ħ²/(2ma²)，波函数为 sin 型。'],
+  ['束缚态与散射态','E 低于势的渐近值时为束缚态（分立、可非简并）；高于时为散射态（连续谱）。'],
+  ['有限深势阱','阱外波函数指数衰减，穿透深度 η=1/k₂；束缚态数目有限，由宇称超越方程定出。'],
+  ['简谐振子','V=½mω²x²，能级等间距并含零点能 E₀=½ħω；波函数为埃尔米特多项式乘高斯。'],
+  ['隧穿效应','E<V₀ 时粒子仍以有限概率穿过势垒，纯量子效应；低能时 T 随势垒宽度指数衰减。'],
+  ['布洛赫定理','周期势中解 ψ(x)=e^{iκx}u_κ(x)，能谱呈能带结构。']
+ ],
+ formulas:[
+  ['含时薛定谔方程（公设5）', R`i\hbar\frac{\partial}{\partial t}|\psi(t)\rangle=\hat H|\psi(t)\rangle`],
+  ['测量概率（公设4）', R`P_n=\frac{|\langle a_n|\psi\rangle|^{2}}{\langle\psi|\psi\rangle}`],
+  ['算符期望值的时间导数', R`\frac{d\langle\hat A\rangle}{dt}=\frac{1}{i\hbar}\langle[\hat A,\hat H]\rangle`],
+  ['厄伦费斯特定理', R`\frac{d\langle\hat x\rangle}{dt}=\frac{\langle\hat p_x\rangle}{m},\qquad \frac{d\langle\hat p_x\rangle}{dt}=-\Big\langle\frac{\partial V}{\partial x}\Big\rangle`],
+  ['时间演化算符', R`|\psi(t)\rangle=\hat U(t,t_0)|\psi(t_0)\rangle,\qquad \hat U(t,t_0)=e^{-\frac{i}{\hbar}(t-t_0)\hat H}`],
+  ['海森堡运动方程', R`\frac{d\hat A_H}{dt}=\frac{1}{i\hbar}[\hat A_H,\hat H],\qquad \hat A_H(t)=\hat U^{\dagger}\hat A_S\hat U`],
+  ['一维定态方程', R`-\frac{\hbar^{2}}{2m}\frac{d^{2}\phi}{dx^{2}}+V(x)\phi=E\phi`],
+  ['自由粒子解', R`\phi(x)=A_+e^{ikx}+A_-e^{-ikx},\qquad E=\frac{\hbar^{2}k^{2}}{2m}`],
+  ['无限深势阱能级与波函数', R`E_n=\frac{n^{2}\pi^{2}\hbar^{2}}{2ma^{2}},\qquad \phi_n(x)=\sqrt{\frac{2}{a}}\sin\!\Big(\frac{n\pi x}{a}\Big)`],
+  ['任意态展开', R`\psi(x)=\sum_n c_n\phi_n(x),\qquad c_n=\int_0^{a}\phi_n^{*}(x)\psi(x)\,dx`],
+  ['δ 势束缚态', R`k=\frac{m\alpha}{\hbar^{2}},\qquad E=-\frac{m\alpha^{2}}{2\hbar^{2}},\qquad \phi(x)=\sqrt{k}\,e^{-k|x|}`],
+  ['有限深势阱宇称超越方程', R`\xi\tan\xi=\sqrt{R^{2}-\xi^{2}}\ (\text{偶}),\qquad -\xi\cot\xi=\sqrt{R^{2}-\xi^{2}}\ (\text{奇})`],
+  ['有限阱束缚态数目', R`(n-1)\frac{\pi}{2}<R<n\frac{\pi}{2}\ \Rightarrow\ n\ \text{个束缚态}`],
+  ['简谐振子能级', R`E_n=\hbar\omega\Big(n+\tfrac12\Big),\qquad E_0=\tfrac12\hbar\omega`],
+  ['简谐振子波函数', R`\phi_n(\xi)=N_n e^{-\xi^{2}/2}H_n(\xi),\qquad \xi=\sqrt{\alpha}\,x,\quad \alpha=\frac{m\omega}{\hbar}`],
+  ['埃尔米特多项式', R`H_{n+1}(\xi)=2\xi H_n(\xi)-2nH_{n-1}(\xi),\qquad H_n(\xi)=(-1)^{n}e^{\xi^{2}}\frac{d^{n}e^{-\xi^{2}}}{d\xi^{n}}`],
+  ['量子隧穿透射系数（E<V₀）', R`T=\Big[1+\frac{(k_1^{2}+k_2^{2})^{2}}{4k_1^{2}k_2^{2}}\sinh^{2}(k_2a)\Big]^{-1},\qquad R+T=1`],
+  ['低能隧穿近似（E≪V₀）', R`T\approx 16\frac{E}{V_0}\Big(1-\frac{E}{V_0}\Big)e^{-\frac{2a}{\hbar}\sqrt{2m(V_0-E)}}`],
+  ['WKB 近似', R`T\approx\exp\!\Big[-\frac{2}{\hbar}\int_{x_1}^{x_2}\sqrt{2m(V(x)-E)}\,dx\Big]`],
+  ['布洛赫定理', R`\psi(x+c)=e^{i\kappa c}\psi(x),\qquad \psi(x)=e^{i\kappa x}u_\kappa(x)`]
+ ]},
 
-    document.querySelectorAll(".nav button").forEach(function (b) {
-        b.classList.remove("active");
-    });
+{no:'IV', title:'角动量理论', en:'Angular Momentum Theory', file:'chapter04.pdf',
+ sections:['轨道角动量算符','角动量对易关系','L² 与 L_z 的本征值','球坐标中的角动量算符','L_z 本征函数与球谐函数','角动量矩阵表示','空间量子化','磁矩','斯特恩–格拉赫实验','自旋','自旋算符与对易关系','泡利矩阵','角动量相加','CG 系数','轨道–自旋耦合'],
+ concepts:[
+  ['角动量算符','L̂=r̂×p̂，各分量均为厄米算符；分量之间不对易，但 L̂² 与每个分量对易。'],
+  ['升降算符','L̂±=L̂x±iL̂y，满足 [L̂z,L̂±]=±ħL̂±、[L̂²,L̂±]=0，是本征值的升/降算符。'],
+  ['本征值与量子数','L̂² 与 L̂z 共同本征函数由 l、m 标记：本征值 l(l+1)ħ²、mħ；m 取 (2l+1) 个值。'],
+  ['球谐函数','Y_lm(θ,φ) 是 L̂²、L̂z 的共同本征函数，构成正交归一完备基。'],
+  ['矩阵表示','以 {Y_lm} 为基，L̂²、L̂z 为对角矩阵，L̂±、L̂x、L̂y 为非对角矩阵（l=1 为例）。'],
+  ['空间量子化与磁矩','角动量在空间的方向量子化；带电粒子的轨道运动产生轨道磁矩，电子自旋磁矩约为经典值的两倍。'],
+  ['自旋','粒子的内禀自由度，无经典对应；自旋量子数 s 可整数（玻色子）或半整数（费米子）。'],
+  ['泡利矩阵','在 S_z 表象下自旋用 2×2 泡利矩阵表示，满足 [σx,σy]=2iσz 与反对易 {σi,σj}=0（i≠j）。'],
+  ['角动量相加','J=L₁+L₂，j 从 |l₁−l₂| 到 l₁+l₂，m=m₁+m₂；由 CG 系数连接直积基与耦合基。'],
+  ['轨道–自旋耦合','J=L+S，l 与 s=½ 耦合给出 j=l±½；两个自旋 ½ 耦合给出三重态（S=1）与单态（S=0）。']
+ ],
+ formulas:[
+  ['角动量算符分量', R`\hat L=\hat r\times\hat p,\qquad \hat L_x=\hat y\hat p_z-\hat z\hat p_y,\ \hat L_y=\hat z\hat p_x-\hat x\hat p_z,\ \hat L_z=\hat x\hat p_y-\hat y\hat p_x`],
+  ['角动量对易关系', R`[\hat L_i,\hat L_j]=i\hbar\,\varepsilon_{ijk}\hat L_k,\qquad [\hat L^{2},\hat L_i]=0`],
+  ['矢量形式', R`i\hbar\,\hat{\vec L}=\hat{\vec L}\times\hat{\vec L}`],
+  ['升降算符', R`\hat L_\pm=\hat L_x\pm i\hat L_y,\qquad [\hat L_z,\hat L_\pm]=\pm\hbar\hat L_\pm,\qquad [\hat L^{2},\hat L_\pm]=0`],
+  ['本征方程', R`\hat L^{2}\psi_{lm}=l(l+1)\hbar^{2}\psi_{lm},\qquad \hat L_z\psi_{lm}=m\hbar\,\psi_{lm}`],
+  ['量子数取值', R`l=0,\tfrac12,1,\tfrac32,\dots;\qquad m=-l,\dots,l\ \ (2l+1\ \text{个})`],
+  ['升降算符对球谐函数的作用', R`\hat L_\pm Y_{lm}=\hbar\sqrt{(l\mp m)(l\pm m+1)}\,Y_{l,m\pm1}`],
+  ['球坐标中的角动量算符', R`\hat L_z=-i\hbar\frac{\partial}{\partial\phi},\qquad \hat L^{2}=-\hbar^{2}\Big[\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial}{\partial\theta}\Big)+\frac{1}{\sin^{2}\theta}\frac{\partial^{2}}{\partial\phi^{2}}\Big]`],
+  ['球谐函数', R`Y_{lm}(\theta,\phi)=(-1)^{m}\sqrt{\frac{(2l+1)}{4\pi}\frac{(l-m)!}{(l+m)!}}\,P_l^{m}(\cos\theta)\,e^{im\phi}`],
+  ['勒让德多项式', R`P_l(x)=\frac{1}{2^{l}l!}\frac{d^{l}}{dx^{l}}(x^{2}-1)^{l},\qquad P_l^{m}(x)=(-1)^{m}(1-x^{2})^{m/2}\frac{d^{m}}{dx^{m}}P_l(x)`],
+  ['前几个球谐函数', R`Y_{00}=\sqrt{\tfrac{1}{4\pi}},\quad Y_{10}=\sqrt{\tfrac{3}{4\pi}}\cos\theta,\quad Y_{1\pm1}=\mp\sqrt{\tfrac{3}{8\pi}}\sin\theta\,e^{\pm i\phi}`],
+  ['l=1 的矩阵表示', R`L_z=\hbar\!\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix},\quad L_+=\sqrt2\hbar\!\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix}`],
+  ['自旋算符对易关系', R`[\hat S_i,\hat S_j]=i\hbar\,\varepsilon_{ijk}\hat S_k,\qquad \hat S^{2}|s,m_s\rangle=\hbar^{2}s(s+1)|s,m_s\rangle`],
+  ['电子自旋', R`s=\tfrac12,\quad m_s=\pm\tfrac12,\qquad |\hat S|=\frac{\sqrt3}{2}\hbar`],
+  ['自旋磁矩与能移', R`\hat{\vec\mu}_s=-\frac{e}{m_e}\hat{\vec S},\qquad \Delta W=-\hat{\vec\mu}_s\cdot\vec B=\frac{e\hbar B}{m_e}m_s`],
+  ['泡利矩阵', R`\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\ \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\ \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}`],
+  ['泡利矩阵性质', R`\sigma_k^{2}=I,\qquad \sigma_x\sigma_y=i\sigma_z,\qquad \sigma_x\sigma_y\sigma_z=iI`],
+  ['任意方向自旋本征值', R`\hat S_n=\frac{\hbar}{2}\hat\sigma_n,\qquad S_n=\pm\frac{\hbar}{2}`],
+  ['角动量相加', R`\hat{\vec J}=\hat{\vec L}_1+\hat{\vec L}_2,\qquad |l_1-l_2|\le j\le l_1+l_2,\qquad m=m_1+m_2`],
+  ['耦合基与 CG 系数', R`|j,m\rangle=\sum_{m_1m_2}C^{jm}_{l_1m_1l_2m_2}\,|l_1l_2m_1m_2\rangle,\qquad C=\langle l_1l_2m_1m_2|j,m\rangle`],
+  ['两自旋 ½ 耦合（三重态/单态）', R`|1,0\rangle=\tfrac{1}{\sqrt2}(|\!\uparrow\downarrow\rangle+|\!\downarrow\uparrow\rangle),\qquad |0,0\rangle=\tfrac{1}{\sqrt2}(|\!\uparrow\downarrow\rangle-|\!\downarrow\uparrow\rangle)`]
+ ]},
 
-    if (button) {
-        button.classList.add("active");
-    }
+{no:'V', title:'三维空间的量子力学', en:'Quantum Mechanics in Three Spatial Dimensions', file:'chapter05.pdf',
+ sections:['三维薛定谔方程（笛卡尔）','自由粒子解','无限深矩形势阱','各向异性谐振子','球坐标','球对称势与分离变量','角向部分求解','径向部分求解','球坐标自由粒子解','有限深球形势阱','氢原子','各向同性谐振子','数值方法'],
+ concepts:[
+  ['三维薛定谔方程','Ĥ=p̂²/2m+V(r)，其中 p̂=−iħ∇；笛卡尔坐标下 ∇²=∂ₓ²+∂ᵧ²+∂_z²。'],
+  ['分离变量','当 V=V₁(x)+V₂(y)+V₃(z) 时，三维问题分解为三个独立一维问题，E=E₁+E₂+E₃。'],
+  ['立方势阱简并','不同量子数组合给出相同能量，出现简并（如 (211)(121)(112) 三重简并）。'],
+  ['中心势与有效势','V(r) 只依赖径向距离；引入离心势 V_eff=V(r)+ħ²l(l+1)/(2mr²)。'],
+  ['径向方程','以 u_nl(r)=rR_nl(r) 化为一维形式；边界条件 r→0 时 u→0。'],
+  ['氢原子','能级只依赖主量子数 n，简并度 g=n²；l=0,1,…,n−1，n=n_r+l+1。'],
+  ['玻尔半径','a₀=4πε₀ħ²/(μe²)，表征原子尺度；基态 ⟨r⟩=³⁄₂a₀。'],
+  ['各向同性谐振子','E_n=ħω(n+³⁄₂)，简并度 g_n=(n+1)(n+2)/2。']
+ ],
+ formulas:[
+  ['三维定态方程', R`-\frac{\hbar^{2}}{2m}\nabla^{2}\varphi+V(\vec r)\varphi=E\varphi`],
+  ['分离变量解', R`\varphi=X(x)Y(y)Z(z),\qquad V=V_1+V_2+V_3,\qquad E=E_1+E_2+E_3`],
+  ['无限深矩形势阱波函数', R`\psi_{n_1n_2n_3}=\sqrt{\frac{8}{abc}}\sin\frac{n_1\pi x}{a}\sin\frac{n_2\pi y}{b}\sin\frac{n_3\pi z}{c}`],
+  ['无限深矩形势阱能级', R`E_{n_1n_2n_3}=\frac{\hbar^{2}\pi^{2}}{2m}\Big(\frac{n_1^{2}}{a^{2}}+\frac{n_2^{2}}{b^{2}}+\frac{n_3^{2}}{c^{2}}\Big)`],
+  ['各向异性谐振子能级', R`E=\Big(n_x+\tfrac12\Big)\hbar\omega_x+\Big(n_y+\tfrac12\Big)\hbar\omega_y+\Big(n_z+\tfrac12\Big)\hbar\omega_z`],
+  ['球坐标下拉普拉斯算符', R`\nabla^{2}=\frac{1}{r^{2}}\frac{\partial}{\partial r}\Big(r^{2}\frac{\partial}{\partial r}\Big)+\frac{1}{r^{2}\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial}{\partial\theta}\Big)+\frac{1}{r^{2}\sin^{2}\theta}\frac{\partial^{2}}{\partial\phi^{2}}`],
+  ['径向方程', R`-\frac{\hbar^{2}}{2m}\frac{d^{2}u_{nl}}{dr^{2}}+V_{\text{eff}}(r)u_{nl}=E\,u_{nl},\qquad V_{\text{eff}}=V(r)+\frac{\hbar^{2}l(l+1)}{2mr^{2}}`],
+  ['氢原子库仑势与能级', R`V(r)=-\frac{e^{2}}{4\pi\varepsilon_0 r},\qquad E_n=-\frac{\mu}{2\hbar^{2}}\Big(\frac{e^{2}}{4\pi\varepsilon_0}\Big)^{2}\frac{1}{n^{2}}`],
+  ['量子数关系与简并度', R`n=n_r+l+1,\quad l=0,\dots,n-1;\qquad g=\sum_{l=0}^{n-1}(2l+1)=n^{2}`],
+  ['玻尔半径', R`a_0=\frac{4\pi\varepsilon_0\hbar^{2}}{\mu e^{2}}`],
+  ['氢原子径向波函数（前几个）', R`R_{10}=\frac{2}{a_0^{3/2}}e^{-r/a_0},\quad R_{21}=\frac{1}{\sqrt{24}\,a_0^{3/2}}\frac{r}{a_0}e^{-r/2a_0}`],
+  ['氢原子示例波函数', R`\varphi_{210}=\frac{1}{4\sqrt{2\pi}\,a_0^{3/2}}\frac{r}{a_0}e^{-r/2a_0}\cos\theta`],
+  ['径向概率密度', R`P_{nl}(r)\,dr=|R_{nl}(r)|^{2}r^{2}\,dr`],
+  ['辐射跃迁能量', R`E_\gamma=E_1\Big(\frac{1}{n_f^{2}}-\frac{1}{n_i^{2}}\Big)`],
+  ['各向同性谐振子', R`E_n=\hbar\omega\Big(n+\tfrac32\Big),\qquad g_n=\frac{(n+1)(n+2)}{2}`]
+ ]},
 
-    const names = {
-        dashboard:    "总览",
-        courses:      "课程",
-        high:         "高频考点",
-        types:        "高频题型",
-        exams:        "历年真题",
-        training:     "训练系统",
-        mistakes:     "错题本",
-        sprint:       "冲刺系统",
-        architecture: "系统架构",
-        data:         "数据体系"
-    };
+{no:'VI', title:'多粒子系统', en:'Many-Particle Systems', file:'chapter06.pdf',
+ sections:['一般理论','独立可分辨粒子系统','全同粒子系统','交换简并','泡利不相容原理','二次量子化','占据数表示','单粒子与双粒子算符'],
+ concepts:[
+  ['多粒子波函数','ψ(r₁,…,r_N,t) 依赖所有粒子坐标；哈密顿量为各粒子动能与总相互作用势之和。'],
+  ['可分辨独立粒子','分离变量后总波函数为单粒子波函数之积，总能量为各单粒子能量之和。'],
+  ['全同粒子','物理属性完全相同的粒子本质不可分辨；交换任意两粒子波函数只能对称或反对称。'],
+  ['玻色子与费米子','整数自旋→对称波函数（玻色–爱因斯坦统计）；半整数自旋→反对称波函数（费米–狄拉克统计）。'],
+  ['交换简并','[Ĥ,P̂_jk]=0，不同排列给出相同能量。'],
+  ['泡利不相容原理','没有两个费米子能占据同一单粒子态；N 粒子反对称波函数即 Slater 行列式。'],
+  ['二次量子化','用产生/湮灭算符处理多粒子：玻色算符满足对易关系，费米算符满足反对易关系。'],
+  ['占据数与福克空间','|n₁,n₂,…⟩ 描述各单粒子态占据数；玻色子 n 取非负整数，费米子 n=0 或 1。']
+ ],
+ formulas:[
+  ['N 粒子哈密顿量', R`\hat H=-\sum_{j=1}^{N}\frac{\hbar^{2}}{2m_j}\nabla_j^{2}+V(\vec r_1,\dots,\vec r_N)`],
+  ['可分辨粒子总波函数与能量', R`\psi=\prod_{j=1}^{N}\varphi_j(\vec r_j)\,e^{-\frac{i}{\hbar}Et},\qquad E=\sum_{j=1}^{N}E_j`],
+  ['置换算符与哈密顿量对易', R`[\hat H,\hat P_{jk}]=0`],
+  ['两粒子对称/反对称波函数', R`\varphi_s=\frac{1}{\sqrt2}\big[\varphi_{n_1}(\xi_1)\varphi_{n_2}(\xi_2)+\varphi_{n_1}(\xi_2)\varphi_{n_2}(\xi_1)\big],\qquad \varphi_a=\frac{1}{\sqrt2}\big[\varphi_{n_1}\varphi_{n_2}-\varphi_{n_1}\varphi_{n_2}(\text{交换})\big]`],
+  ['斯莱特行列式', R`\varphi_a(\xi_1,\dots,\xi_N)=\frac{1}{\sqrt{N!}}\det\big[\varphi_{n_i}(\xi_j)\big]`],
+  ['自旋单态与三重态', R`\chi_a=\frac{1}{\sqrt2}(\uparrow_1\downarrow_2-\uparrow_2\downarrow_1),\qquad \chi_s=\frac{1}{\sqrt2}(\uparrow_1\downarrow_2+\uparrow_2\downarrow_1)\ (m_s=0)`],
+  ['谐振子阶梯算符', R`\hat a=\frac{1}{\sqrt{2m\hbar\omega}}(i\hat p+m\omega\hat x),\qquad [\hat a,\hat a^{\dagger}]=1`],
+  ['谐振子哈密顿量与能级', R`\hat H=\hbar\omega\Big(\hat a^{\dagger}\hat a+\tfrac12\Big),\qquad E_n=\Big(n+\tfrac12\Big)\hbar\omega`],
+  ['数算符', R`\hat N=\hat a^{\dagger}\hat a,\qquad \hat a|n\rangle=\sqrt{n}|n-1\rangle,\qquad \hat a^{\dagger}|n\rangle=\sqrt{n+1}|n+1\rangle`],
+  ['本征态构造', R`|n\rangle=\frac{1}{\sqrt{n!}}\big(\hat a^{\dagger}\big)^{n}|0\rangle,\qquad \langle n'|n\rangle=\delta_{n'n}`],
+  ['玻色产生/湮灭算符作用', R`\hat a_\alpha^{\dagger}|n_\alpha\rangle=\sqrt{n_\alpha+1}\,|n_\alpha+1\rangle,\qquad \hat a_\alpha|n_\alpha\rangle=\sqrt{n_\alpha}\,|n_\alpha-1\rangle`],
+  ['玻色/费米（反）对易关系', R`[\hat a_\alpha,\hat a_\beta^{\dagger}]=\delta_{\alpha\beta},\qquad \{\hat c_\alpha,\hat c_\beta^{\dagger}\}=\delta_{\alpha\beta}`],
+  ['占据数限制', R`\text{玻色子：}n_\alpha=0,1,2,\dots;\qquad \text{费米子：}n_\alpha=0,1`],
+  ['单/双粒子算符（二次量子化）', R`\hat F_1=\sum_{ll'}\langle l|\hat f_1|l'\rangle\,\hat a_l^{\dagger}\hat a_{l'},\qquad \hat F_2=\frac12\sum \langle l_1l_2|\hat f_2|l_3l_4\rangle\,\hat a_{l_1}^{\dagger}\hat a_{l_2}^{\dagger}\hat a_{l_4}\hat a_{l_3}`]
+ ]},
 
-    document.getElementById("pageTitle").innerText = names[page] || "";
+{no:'VII', title:'近似方法（微扰论 · 变分法）', en:'Approximation Methods', file:'⚠ 讲义未提供（据第 IX 章总结与真题推断）',
+ sections:['定态微扰论（非简并）','定态微扰论（简并）','变分法','Hartree–Fock 近似','含时微扰论'],
+ concepts:[
+  ['重要提醒','本章在整个课程包中【没有对应讲义文件】，但其内容据第 IX 章总结确认存在，且三套期末卷全部考到微扰论——它是本课程期末最高频的考点。以下内容整理自第 IX 章总结与三套真题题干，属“推断/补充”来源。'],
+  ['定态微扰（非简并）','Ĥ=Ĥ₀+Ĥ₁，能量一阶修正为本征值期望，二阶修正由态之间的非对角元给出；波函数一阶修正为非对角求和。'],
+  ['定态微扰（简并）','需先解久期方程 det(h_ij−E⁽¹⁾δ_ij)=0 确定一阶能量分裂，再在简并子空间内对 Ĥ₁ 对角化。'],
+  ['变分法','对归一化试探波函数 φ，⟨H⟩=⟨φ|Ĥ|φ⟩ 恒为基态能量上界 E_g，调节变分参数取极小即得近似基态。'],
+  ['含时微扰论','把态按未微扰本征态展开，一阶振幅由 ⟨m|H₁|n⟩ 决定，可导出跃迁概率与费米黄金规则。']
+ ],
+ formulas:[
+  ['能量一阶修正', R`E_n^{(1)}=\langle\psi_n^{(0)}|H_1|\psi_n^{(0)}\rangle`],
+  ['能量二阶修正', R`E_n^{(2)}=\sum_{m\neq n}\frac{|\langle\psi_m^{(0)}|H_1|\psi_n^{(0)}\rangle|^{2}}{E_n^{(0)}-E_m^{(0)}}`],
+  ['波函数一阶修正', R`|\psi_n^{(1)}\rangle=\sum_{m\neq n}\frac{\langle\psi_m^{(0)}|H_1|\psi_n^{(0)}\rangle}{E_n^{(0)}-E_m^{(0)}}|\psi_m^{(0)}\rangle`],
+  ['简并微扰久期方程', R`\det\big(h_{ij}-E^{(1)}\delta_{ij}\big)=0,\qquad h_{ij}=\langle\psi_{n_i}^{(0)}|H_1|\psi_{n_j}^{(0)}\rangle`],
+  ['变分原理', R`E_g\le\langle H\rangle=\frac{\langle\phi|\hat H|\phi\rangle}{\langle\phi|\phi\rangle}`],
+  ['含时微扰一阶振幅', R`c_m^{(1)}(t)=\frac{1}{i\hbar}\int_0^{t} h_{mn}(t')\,e^{i\omega_{mn}t'}\,dt',\qquad h_{mn}=\langle\varphi_m|H_1|\varphi_n\rangle`]
+ ]},
 
-    window.scrollTo(0, 0);
+{no:'VIII', title:'散射理论', en:'Scattering Theory', file:'chapter08.pdf',
+ sections:['散射与截面','实验室系与质心系','散射振幅','微分截面','玻恩近似','库仑散射与卢瑟福公式','分波法','低能散射与束缚态','硬球散射','非弹性散射的分波分析','光学定理','全同粒子散射'],
+ concepts:[
+  ['微分散射截面','dσ/dΩ=(1/J_inc)dN/dΩ，具有面积量纲；总截面为对全立体角的积分。'],
+  ['散射振幅','大 r 处波函数渐近形式含 f(θ,φ)e^{ikr}/r；弹性散射下 dσ/dΩ=|f(θ,φ)|²。'],
+  ['玻恩近似','势足够弱时用入射平面波近似，散射振幅为势的傅里叶变换；迭代即玻恩级数。'],
+  ['动量转移','q=k₀−k，弹性散射时 q=2k·sin(θ/2)。'],
+  ['卢瑟福公式','库仑势玻恩近似给出 dσ/dΩ ∝ 1/sin⁴(θ/2)。'],
+  ['分波法与相移','按角动量本征态展开，δ_l 度量势造成的畸变；无势时 δ_l=0。'],
+  ['光学定理','Im f(0)=(k/4π)σ_tot，源于概率守恒，对弹性与非弹性均成立。'],
+  ['全同粒子散射','波函数须对称/反对称，振幅叠加 f(θ)±f(π−θ)，出现干涉项。']
+ ],
+ formulas:[
+  ['微分散射截面', R`\frac{d\sigma}{d\Omega}=\frac{1}{J_{\text{inc}}}\frac{dN}{d\Omega},\qquad \sigma=\int\frac{d\sigma}{d\Omega}\,d\Omega`],
+  ['渐近波函数', R`\psi(r)\to A\Big[e^{i k_0\cdot r}+f(\theta,\phi)\frac{e^{ikr}}{r}\Big]`],
+  ['弹性散射截面—振幅关系', R`\frac{d\sigma}{d\Omega}=|f(\theta,\phi)|^{2}`],
+  ['玻恩近似散射振幅', R`f(\theta)=-\frac{2m}{4\pi\hbar^{2}}\int e^{i q\cdot r'}V(r')\,d^{3}r',\qquad q=k_0-k`],
+  ['球对称势的玻恩振幅', R`f(\theta)=-\frac{2m}{\hbar^{2}q}\int_0^{\infty}rV(r)\sin(qr)\,dr,\qquad q=2k\sin\frac{\theta}{2}`],
+  ['卢瑟福公式', R`\frac{d\sigma}{d\Omega}=\frac{Z_1^{2}Z_2^{2}e^{4}}{16E^{2}\sin^{4}(\theta/2)}`],
+  ['平面波分波展开', R`e^{ikr\cos\theta}=\sum_l i^{l}(2l+1)j_l(kr)P_l(\cos\theta)`],
+  ['分波振幅与相移', R`f(\theta)=\frac{1}{k}\sum_l(2l+1)e^{i\delta_l}\sin\delta_l\,P_l(\cos\theta),\qquad f_l=\frac{1}{k}e^{i\delta_l}\sin\delta_l`],
+  ['总截面分波展开', R`\sigma=\frac{4\pi}{k^{2}}\sum_l(2l+1)\sin^{2}\delta_l`],
+  ['光学定理', R`\mathrm{Im}\,f(0)=\frac{k}{4\pi}\sigma_{\text{tot}}`],
+  ['硬球散射（低能 s 波）', R`\tan\delta_0=-\tan(ka),\quad \delta_0\approx -ka,\qquad \sigma_0\approx 4\pi a^{2}`],
+  ['全同粒子散射', R`\Big(\frac{d\sigma}{d\Omega}\Big)_{\text{boson}}=|f(\theta)+f(\pi-\theta)|^{2},\qquad \Big(\frac{d\sigma}{d\Omega}\Big)_{\text{fermi, triplet}}=|f(\theta)-f(\pi-\theta)|^{2}`]
+ ]},
+
+{no:'IX', title:'总结（全课复习）', en:'Summary', file:'chapter09.pdf',
+ sections:['第 I 章回顾','第 II 章回顾','第 III 章回顾','第 IV 章回顾','第 V 章回顾','第 VI 章回顾','第 VII 章：定态微扰 / 变分法 / Hartree–Fock / 含时微扰','第 VIII 章回顾'],
+ concepts:[
+  ['全课主线','量子论起源 → 代数表述（算符·对易·矩阵·表象）→ 一维问题 → 角动量与自旋 → 三维与氢原子 → 多粒子统计 → 近似方法 → 散射。'],
+  ['必背主线 1','算符与对易：正则对易关系、角动量对易关系、不确定度关系。'],
+  ['必背主线 2','本征值问题：矩阵本征值、久期方程、表象变换。'],
+  ['必背主线 3','一维标准模型：无限深势阱、谐振子、隧穿。'],
+  ['必背主线 4','角动量与自旋：升降算符、球谐函数、泡利矩阵、角动量相加。'],
+  ['必背主线 5','氢原子与全同粒子：E_n、简并度 n²、Slater 行列式、泡利原理。'],
+  ['必背主线 6','近似方法：定态微扰一二阶修正、简并久期方程、变分原理、含时微扰。']
+ ],
+ formulas:[
+  ['正则对易与不确定度', R`[\hat X,\hat P]=i\hbar,\qquad \Delta A\,\Delta B\ge\tfrac12|\langle[\hat A,\hat B]\rangle|`],
+  ['时间演化算符', R`\hat U(t,t_0)=e^{-\frac{i}{\hbar}\hat H(t-t_0)}`],
+  ['厄伦费斯特定理', R`\frac{d\langle\hat A\rangle}{dt}=\frac{1}{i\hbar}\langle[\hat A,\hat H]\rangle`],
+  ['一维无限深势阱', R`E_n=\frac{n^{2}\pi^{2}\hbar^{2}}{2ma^{2}},\qquad \psi_n=\sqrt{\frac{2}{a}}\sin\frac{n\pi x}{a}`],
+  ['谐振子（代数法）', R`\hat H=\hbar\omega(\hat a^{\dagger}\hat a+\tfrac12),\qquad E_n=(n+\tfrac12)\hbar\omega`],
+  ['角动量对易与球谐函数', R`[\hat L_x,\hat L_y]=i\hbar\hat L_z,\qquad \hat L^{2}Y_l^{m}=\hbar^{2}l(l+1)Y_l^{m}`],
+  ['自旋与泡利矩阵', R`[\hat S_x,\hat S_y]=i\hbar\hat S_z,\qquad \{\sigma_i,\sigma_j\}=2\delta_{ij}`],
+  ['氢原子能级与简并度', R`E_n=-\frac{\mu e^{4}}{2(4\pi\varepsilon_0)^{2}\hbar^{2}}\frac{1}{n^{2}},\qquad g=n^{2}`],
+  ['斯莱特行列式', R`\varphi_a(\xi_1,\dots,\xi_N)=\frac{1}{\sqrt{N!}}\det[\varphi_{n_i}(\xi_j)]`],
+  ['定态微扰（一阶/二阶）', R`E_n^{(1)}=\langle\psi_n^{0}|H_1|\psi_n^{0}\rangle,\qquad E_n^{(2)}=\sum_{m\neq n}\frac{|H_{1,mn}|^{2}}{E_n^{0}-E_m^{0}}`],
+  ['简并微扰久期方程', R`\det\big(h_{ij}-E^{(1)}\delta_{ij}\big)=0`],
+  ['变分原理', R`E_g\le\frac{\langle\phi|\hat H|\phi\rangle}{\langle\phi|\phi\rangle}`],
+  ['散射截面与玻恩近似', R`\frac{d\sigma}{d\Omega}=|f(\theta)|^{2},\qquad f^{(1)}(\theta)=-\frac{2m}{4\pi\hbar^{2}}\int e^{-iq\cdot r'}V(r')\,d^{3}r'`]
+ ]}
+];
+
+/* ============ 考点数据（据三套期末回忆卷统计） ============ */
+const TOPICS = [
+ {name:'定态微扰论', ch:'VII', pri:'S', stars:5, ev:[['2023–2024',6],['2024–2025',6],['2025',6]], note:'三套卷全部出现，且常与势阱、谐振子、全同粒子结合命题'},
+ {name:'算符与对易关系', ch:'II / IV', pri:'S', stars:5, ev:[['2023–2024',2],['2024–2025',2],['2025',1]], note:'对易子计算是基础解法，几乎每套必考'},
+ {name:'无限深势阱', ch:'III', pri:'A', stars:5, ev:[['2023–2024',4],['2024–2025',6],['2025',2]], note:'常与微扰、态叠加、概率求解结合'},
+ {name:'角动量理论', ch:'IV', pri:'A', stars:5, ev:[['2025',1],['2023–2024',2],['2024–2025',2]], note:'对易关系、升降算符、含 L 的算符运算'},
+ {name:'矩阵表示与本征值问题', ch:'II', pri:'A', stars:4, ev:[['2023–2024',3],['2024–2025',3]], note:'给矩阵求本征值/本征态，再算某量的测量值与不确定度'},
+ {name:'表象与幺正变换', ch:'II', pri:'A', stars:4, ev:[['2023–2024',3],['2025',3]], note:'A/B 表象互化、幺正矩阵、对角化'},
+ {name:'自旋与泡利矩阵', ch:'IV', pri:'A', stars:4, ev:[['2024–2025',5],['2025',4]], note:'自旋哈密顿量本征值、磁场中的自旋、翻转概率'},
+ {name:'氢原子', ch:'V', pri:'A', stars:4, ev:[['2024–2025',4],['2025',5]], note:'波函数叠加、L_z 期望值、径向概率密度、量子数判定'},
+ {name:'全同粒子与统计', ch:'VI', pri:'B', stars:4, ev:[['2023–2024',5],['2025',7]], note:'费米反对称/玻色对称波函数、Slater 行列式、基态能量'},
+ {name:'简谐振子', ch:'III / VI', pri:'B', stars:3, ev:[['2023–2024',6],['2025',7]], note:'升降算符代数解法、能级与零点能'},
+ {name:'量子论起源（光电效应 · 康普顿散射）', ch:'I', pri:'B', stars:3, ev:[['2023–2024',1],['2024–2025',1]], note:'基础送分题：光电方程与康普顿公式'},
+ {name:'三维问题（球坐标）', ch:'V', pri:'C', stars:2, ev:[], note:'讲义覆盖；近三套期末未单独命题'},
+ {name:'散射理论', ch:'VIII', pri:'D', stars:1, ev:[], note:'讲义覆盖；近三套期末未考，属了解内容'}
+];
+
+/* ============ 题型数据 ============ */
+const TYPES = [
+ {name:'算符 / 对易子计算', cnt:3, topics:'算符与对易关系 · 角动量', pri:'S', ex:'[px,1/r]、[p²,r]、[Ly,Kz]、[Jz,J±] 等'},
+ {name:'定态微扰计算', cnt:3, topics:'微扰论', pri:'S', ex:'基态能量二阶修正、波函数一阶修正、久期方程'},
+ {name:'态叠加与含时演化', cnt:4, topics:'势阱 · 氢原子 · 本征值概率', pri:'S', ex:'求 ψ(x,t)、能量取值概率、L_z 期望值'},
+ {name:'矩阵本征值问题', cnt:2, topics:'矩阵表示', pri:'A', ex:'求 H 本征值与本征态，再算测量值与不确定度'},
+ {name:'表象 / 幺正变换', cnt:2, topics:'表象与幺正变换', pri:'A', ex:'A、B 表象互化与对角化'},
+ {name:'自旋与磁场本征值', cnt:2, topics:'自旋', pri:'A', ex:'自旋哈密顿量本征值、自旋翻转概率'},
+ {name:'全同粒子波函数构造', cnt:2, topics:'全同粒子', pri:'B', ex:'Slater 行列式、玻色对称态'},
+ {name:'光电 / 康普顿计算', cnt:2, topics:'量子论起源', pri:'B', ex:'逸出功、截止频率、波长移动'}
+];
+
+/* ============ 真题数据 ============ */
+const EXAMS = [
+{ id:'e2324',
+  label:'2023–2024 学年第一学期期末考试（回忆版）',
+  meta:[['课程','量子力学'],['试卷代码','1004203463A'],['课时 / 时长','48 学时 / 100 分钟'],
+        ['任课教师','胡金牛、胡毅'],['回忆人','岑泽昊'],['来源文件','2023-2024学年第一学期量子力学期末考试（回忆版修改后）.pdf']],
+  qs:[
+   {no:'一', title:'光电效应', topic:'量子论起源', type:'计算题 · 光电',
+    stem:'使用两种光照射光电门。第一次照射的遏止电压为 3.2 V；第二次使用的光波长为第一次的两倍，遏止电压为 0.8 V。求：(1) 光电门的逸出功；(2) 截止频率。',
+    key:'由 eV₀=hν−φ、ν=c/λ 两次联立求解 φ 与 ν₀。',
+    src:'第 1 页 第一题'},
+   {no:'二', title:'算符对易子', topic:'算符与对易关系', type:'计算题 · 对易子',
+    stem:'设 $\\hat A=\\tfrac12(\\hat p\\times\\hat L+\\hat L\\times\\hat p)$，请求解以下分量：[Ax,Ay]、[x,Ax]、[px,Az]、[Lx,Ax]。',
+    key:'展开叉乘与对易子代数（Leibniz 法则、Jacobi 恒等式）。',
+    src:'第 1 页 第二题'},
+   {no:'三', title:'厄米算符与表象变换', topic:'矩阵表示与本征值问题 · 表象与幺正变换', type:'计算题 · 算符/表象',
+    stem:'厄米算符 Â、B̂ 满足 Â²=B̂²=1、ÂB̂+B̂Â=0。(1) 在 Â 表象下求 Â、B̂ 的矩阵表示；(2) 在 Â 表象下求 B̂ 的本征态与本征矢；(3) 在 Â 表象下求幺正变换矩阵 S 转换到 B̂ 表象，并将 B̂ 对角化。',
+    key:'类比自旋 1/2 的泡利矩阵（σz、σx 满足同样代数）。',
+    src:'第 1 页 第三题'},
+   {no:'四', title:'无限深方势阱', topic:'无限深势阱', type:'计算题 · 态叠加',
+    stem:'无限深方势阱的波函数满足 Ψ(x)=A sin(πx/a)+2A sin(3πx/a)。(1) 求正实数 A；(2) 在 t 时刻求解 Ψ(x,t)；(3) 求解能量的可能取值及其对应概率；(4) 在 t 时刻求解对应概率，并判断概率是否守恒。',
+    key:'按本征函数展开、用正交归一定 A，再逐项乘 e^(−iE_nt/ħ)。',
+    src:'第 1–2 页 第四题'},
+   {no:'五', title:'全同粒子波函数', topic:'全同粒子与统计', type:'构造题 · 全同粒子',
+    stem:'5.1 有三个费米子，分别处于 ψ₁、ψ₂、ψ₃，写出交换反对称态。5.2 有三个玻色子，写出对应波函数：(1) 全部处于 ψ₁；(2) 两个处于 ψ₁、一个处于 ψ₂；(3) 三个粒子分别处于 ψ₁、ψ₂、ψ₃。',
+    key:'费米子用 Slater 行列式；玻色子用对称化求和。',
+    src:'第 2 页 第五题'},
+   {no:'六', title:'谐振子微扰', topic:'定态微扰论 · 简谐振子', type:'计算题 · 微扰',
+    stem:'质量 m、电荷 e 的一维谐振子势场 V(x)=½mω²x²，受到沿 x 正方向的微小电场 ε 作用。用代数法求解体系能量的一阶、二阶修正与波函数的一阶修正。',
+    key:'微扰 H′=−eεx，用升降算符表示 x，代入微扰公式。',
+    src:'第 2 页 第六题'}
+  ]},
+
+{ id:'e2425',
+  label:'2024–2025 学年《量子力学（一）》期末',
+  meta:[['课程','量子力学（一）'],['题量','6 题'],['备注','题目为学生回忆整理，个别系数可能不准'],
+        ['来源文件','2024-2025量子力学一.pdf']],
+  qs:[
+   {no:'1', title:'康普顿散射', topic:'量子论起源', type:'计算题 · 康普顿',
+    stem:'康普顿散射，光子散射角度为 60°，波长改变量为入射波长的 3 倍，求入射波长及电子能量。',
+    key:'λ′−λ=(h/m_ec)(1−cos60°)；再求反冲电子能量。',
+    src:'第 1 页 第 1 题'},
+   {no:'2', title:'对易子计算', topic:'算符与对易关系 · 角动量', type:'计算题 · 对易子',
+    stem:'计算对易子 $K=\\dfrac{\\vec L\\times\\vec p-\\vec p\\times\\vec L}{2}+\\dfrac{\\vec r}{r}$。求：[px, 1/r]、[p², r]、[Ly, Kz]。',
+    key:'用到 [f(X),P]=iħ∂f/∂X 与角动量对易关系。（原题符号可能有误）',
+    src:'第 1 页 第 2 题'},
+   {no:'3', title:'哈密顿量本征值问题', topic:'矩阵表示与本征值问题', type:'计算题 · 矩阵本征值',
+    stem:'$H=\\varepsilon_0\\begin{pmatrix}3&2&0\\\\2&3&0\\\\0&0&-1\\end{pmatrix}$，$A=a\\begin{pmatrix}0&4&0\\\\4&0&1\\\\0&1&0\\end{pmatrix}$（H 的形式可能与原卷有出入，主要求基态）。(a) 求 H 的本征值和对应的本征态；(b) 求在能量基态下 A 的测量结果；(c) 求在能量基态下 A 的不确定度。',
+    key:'3×3 矩阵求本征值 → 取基态 → 用基态算 ⟨A⟩ 与 ΔA。',
+    src:'第 1 页 第 3 题'},
+   {no:'4', title:'氢原子波函数的演化', topic:'氢原子', type:'计算题 · 态叠加',
+    stem:'氢原子波函数 $\\psi(r,0)=A(\\sqrt5\\,\\varphi_{210}-\\sqrt3\\,\\varphi_{211}+\\sqrt2\\,\\varphi_{200}+\\varphi_{311})$。(a) 求含时演化；(b) 求能量本征值及其概率；(c) 求 L_z 的本征值及其概率。（系数细节记不清，题意大致如此）',
+    key:'ψ(t)=Σcₙφₙe^(−iE_nt/ħ)；能量概率 |cₙ|²；L_z 概率按 m 归并。',
+    src:'第 1 页 第 4 题'},
+   {no:'5', title:'两粒子自旋相互作用', topic:'自旋与泡利矩阵', type:'计算题 · 自旋',
+    stem:'两个孤立的非全同粒子，哈密顿量只有自旋相互作用 $H=a(S_x^{(1)}S_x^{(2)}+S_y^{(1)}S_y^{(2)}-S_z^{(1)}S_z^{(2)})$。(a) 求能量本征值及其简并度；(b) 若初态（t=0）第一个自旋沿 z 向上、另一个沿 x 方向，求第一个粒子在 t>0 时自旋反转的概率。',
+    key:'用 S₁·S₂ 表示 H，在单态/三重态基础上求解；再作时间演化求翻转概率。',
+    src:'第 1 页 第 5 题'},
+   {no:'6', title:'势阱微扰', topic:'定态微扰论 · 无限深势阱', type:'计算题 · 微扰',
+    stem:'一维无限深方势阱（0<x<a）引入一个微扰 $H\'=\\cos(\\pi x/a)$，求基态能量的二阶修正和基态波函数的一阶修正。',
+    key:'把 cos(πx/a) 用势阱本征函数展开，求矩阵元后代入微扰公式。',
+    src:'第 1 页 第 6 题'}
+  ]},
+
+{ id:'e2025',
+  label:'2025 年期末考试（回忆版）',
+  meta:[['课程','量子力学'],['题量','7 题'],['备注','题目为学生回忆整理'],
+        ['来源文件','量子力学2025.pdf']],
+  qs:[
+   {no:'1', title:'角动量对易关系', topic:'角动量理论', type:'计算题 · 对易子',
+    stem:'计算对易关系 [Jz,J+]、[Jz,J−]、[J+,J−]。',
+    key:'用 J±=Jx±iJy 与 [Jx,Jy]=iħJz 展开。',
+    src:'第 1 页 第 1 题'},
+   {no:'2', title:'一维势场中的粒子', topic:'无限深势阱', type:'计算题 · 态叠加',
+    stem:'设粒子在一维势场（|x|<a/2 内 V=0，|x|>a/2 时 V=∞）中运动，初始态 ψ(x,0)=A cos(πx/a)（|x|<a/2），ψ=0（|x|>a/2）。(1) 求 A；(2) 写出定态薛定谔方程、本征值、本征函数；(3) 写出 ψ(x,t) 和 ρ(x,t)=|ψ(x,t)|²。',
+    key:'注意这里阱宽为 a、居中，需重新写出该势阱的本征函数与能级。',
+    src:'第 1 页 第 2 题'},
+   {no:'3', title:'表象变换', topic:'表象与幺正变换', type:'计算题 · 表象',
+    stem:'A 表象下 $|a_1\\rangle=\\binom{1}{0}$ 对应本征值 a₁，$|a_2\\rangle=\\binom{0}{1}$ 对应 a₂；$|b_1\\rangle=\\tfrac{1}{\\sqrt2}\\binom{1}{1}$ 对应 b₁，$|b_2\\rangle=\\tfrac{1}{\\sqrt2}\\binom{1}{-1}$ 对应 b₂。(1) 求 A 在 B 表象下的矩阵形式；(2) A 表象下 $|\\psi\\rangle=\\binom{\\cos\\theta}{\\sin\\theta}$，求其在 B 表象下的形式。',
+    key:'构造幺正变换矩阵 U（由两组基的关系）并代入 Â′=UÂU†。',
+    src:'第 1 页 第 3 题'},
+   {no:'4', title:'磁场中的电子自旋', topic:'自旋与泡利矩阵', type:'计算题 · 自旋',
+    stem:'电子在磁场 $\\vec B=B_0\\vec e_z$ 中运动，$H=-\\dfrac{e\\hbar}{2m_ec}\\,\\vec\\sigma\\cdot\\vec B$，求能量本征值和本征自旋。',
+    key:'Ĥ=−(eħB₀/2m_ec)σ_z，本征值为 ±(eħB₀/2m_ec)，本征态为自旋上下。',
+    src:'第 2 页 第 4 题'},
+   {no:'5', title:'氢原子波函数', topic:'氢原子', type:'计算题 · 氢原子',
+    stem:'氢原子的定态波函数为 ψ_nlm(x,t)。(1) ψ₃₁₀+ψ₂₁₁，求 L_z 的期望值；(2) ψ₂₁₀ 在 r 到 r+dr 间的概率密度 P(r)dr（仅需写出公式）；(3) 电子轨道角动量为 √6 ħ，求 l 和可能态中能量最低的态的 n。',
+    key:'L_z 期望值按 m 加权；P(r)dr=|R_nl|²r²dr；√(l(l+1))ħ=√6ħ→l=2。',
+    src:'第 2 页 第 5 题'},
+   {no:'6', title:'二阶微扰', topic:'定态微扰论', type:'计算题 · 微扰',
+    stem:'$H_0=\\begin{pmatrix}E_{10}&0\\\\0&E_{20}\\end{pmatrix}$，$H\'=\\begin{pmatrix}a&b^*\\\\b&c\\end{pmatrix}$，E₁₀≠E₂₀，a、c 为实数，b 为复数，H=H₀+H′，本征态为 |φ₁⟩、|φ₂⟩。(1) 求能量的一级和二级修正 E_n⁽¹⁾、E_n⁽²⁾（n=1,2）；(2) 求态的一级修正 |φ_n⁽¹⁾⟩（n=1,2）。',
+    key:'非简并微扰公式（注意 b 的复共轭）。',
+    src:'第 2 页 第 6 题'},
+   {no:'7', title:'全同粒子在谐振子势中', topic:'全同粒子与统计 · 简谐振子', type:'构造/计算 · 全同粒子',
+    stem:'无相互作用的全同粒子处于势场 V(x)=½mω²x² 中。(1) 自旋 1/2 的费米子系统，求单粒子能级和基态波函数；(2) 费米子系统的基态总能量；(3) 全同玻色子系统，求第一激发态能量和波函数。',
+    key:'谐振子能级 (n+½)ħω + 自旋自由度；费米子用 Slater 行列式、玻色子用对称态。',
+    src:'第 2 页 第 7 题'}
+  ]}
+];
+
+/* ============ 渲染 ============ */
+const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
+
+function renderDashboard(){
+  const top = TOPICS.slice(0,5).map((t,i)=>`
+    <div class="kv" style="align-items:flex-start">
+      <b style="width:26px">${String(i+1).padStart(2,'0')}</b>
+      <span style="flex:1">
+        ${esc(t.name)}
+        <div style="font-size:10.5px;color:#666;margin-top:3px">${esc(t.note)}</div>
+      </span>
+      <span style="width:76px;text-align:right"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></span>
+    </div>`).join('');
+  const info = COURSE_INFO_ROWS();
+  $('#dashboard').innerHTML = `
+  <div class="hero">
+    <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
+    <h1>量子力学（一）<br>期末复习系统</h1>
+    <p>本站把《量子力学（一）》的 8 章讲义与 3 套期末真题整理为结构化复习资料：按考点频率排出优先级，并把每个考点回溯到它出现的真题。仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">课程信息</div>
+      ${info}
+    </div>
+    <div class="card">
+      <div class="card-title">最高优先级考点</div>
+      ${top}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">冲刺入口</div>
+    <div class="grid4">
+      <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
+        <div class="t">7 天</div><h3>完整备考</h3><p>S 级 + A 级 + B 级 + 全部高频题型</p></div>
+      <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
+        <div class="t">3 天</div><h3>高收益模式</h3><p>S 级 + A 级考点 + 近三套真题</p></div>
+      <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
+        <div class="t">24 小时</div><h3>紧急模式</h3><p>S 级 + 最高频题型 + 公式速查</p></div>
+      <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
+        <div class="t">2 小时</div><h3>最后机会</h3><p>必背公式 + 必做真题</p></div>
+    </div>
+  </div>
+
+  <div class="note">
+    提示：真题为<b>回忆版</b>，个别系数可能与原卷有出入；考点频率由 3 套期末卷统计，样本有限，仅供复习排序参考。
+    <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
+  </div>`;
 }
 
-
-/* =========================
-   课程选择
-========================= */
-
-function selectCourse(name) {
-
-    alert(
-        "已选择：" + name +
-        "\n\n下一版本将自动加载该课程的：\n" +
-        "高频考点 · 高频题型 · 历年真题 · 冲刺计划"
-    );
+function COURSE_INFO_ROWS(){
+  return `
+  <div class="kv"><b>课程</b><span>${COURSE.name}</span></div>
+  <div class="kv"><b>学校</b><span>${COURSE.school}</span></div>
+  <div class="kv"><b>课时</b><span>${COURSE.hours}</span></div>
+  <div class="kv"><b>考试用时</b><span>${COURSE.examLen}</span></div>
+  <div class="kv"><b>任课教师</b><span>${COURSE.teachers}</span></div>
+  <div class="kv"><b>成绩构成</b><span>${COURSE.grade}</span></div>
+  <div class="kv"><b>参考教材</b><span>${COURSE.refs.map(esc).join('；')}</span></div>
+  <div class="kv"><b>来源</b><span style="color:#777">${esc(COURSE.src)}</span></div>`;
 }
 
+function renderChapters(){
+  const html = CHAPTERS.map((c,i)=>`
+  <details class="ch" ${i<3?'open':''}>
+    <summary>
+      <h3>第 ${c.no} 章 · ${esc(c.title)}</h3>
+      <span class="en">${esc(c.en)}</span>
+      <span class="src">${esc(c.file)}</span>
+    </summary>
+    <div class="ch-body">
+      <div class="sub-h">小节</div>
+      <div class="section-list">${c.sections.map(s=>`<span>${esc(s)}</span>`).join('')}</div>
+      <div class="sub-h">核心概念</div>
+      ${c.concepts.map(([t,d])=>`<div class="concept"><b>${esc(t)}</b>：${esc(d)}</div>`).join('')}
+      <div class="sub-h">重要公式</div>
+      ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+    </div>
+  </details>`).join('');
+  $('#chapters').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">讲义结构 · 共 8 章</div>
+      <h1>章节结构。</h1>
+      <p>按讲义顺序整理的知识体系。每章给出小节、核心概念与重要公式（公式保留 LaTeX 原符号）。<b>注意：第七章“近似方法”没有讲义文件，但据第九章总结与三套真题，它是期末最高频的考点。</b></p>
+    </div>
+    ${html}`;
+}
+
+function renderFormulas(){
+  const html = CHAPTERS.map(c=>`
+    <div class="card">
+      <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+      ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+    </div>`).join('');
+  $('#formulas').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">公式速查</div>
+      <h1>公式速查。</h1>
+      <p>把全部章节的重要公式集中到一页，适合考前快速过一遍。</p>
+    </div>
+    ${html}`;
+}
+
+function renderHigh(){
+  const rows = TOPICS.map(t=>{
+    const ev = t.ev.length ? t.ev.map(([y,q])=>`${y} 第 ${q} 题`).join('、') : '近三套期末未涉及';
+    return `<tr>
+      <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">第 ${esc(t.ch)} 章</div></td>
+      <td style="white-space:nowrap">${t.ev.length} / 3</td>
+      <td style="color:#8a8a8a">${esc(ev)}</td>
+      <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
+      <td>${priTag(t.pri)}</td>
+      <td style="color:#7a7a7a;font-size:11.5px">${esc(t.note)}</td>
+    </tr>`;
+  }).join('');
+  $('#high').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">考点频率 · 基于 3 套期末真题</div>
+      <h1>高频考点。</h1>
+      <p>“出现次数”统计的是该考点在近三套期末回忆卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">量子力学（一） · 考点频率</div>
+      <table class="tbl">
+        <thead><tr><th>考点</th><th>出现卷数</th><th>证据（年份·题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="note">S 级＝每套必考；A 级＝两套以上考到；B 级＝两套考到（偏基础）；C／D 级＝讲义覆盖但近三套期末未单独命题。</div>`;
+}
+
+function renderTypes(){
+  const rows = TYPES.map(t=>`<tr>
+      <td><b>${esc(t.name)}</b></td>
+      <td style="white-space:nowrap">${t.cnt} 题</td>
+      <td style="color:#8a8a8a">${esc(t.topics)}</td>
+      <td style="color:#7a7a7a;font-size:11.5px">${esc(t.ex)}</td>
+      <td>${priTag(t.pri)}</td>
+    </tr>`).join('');
+  $('#types').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">题型稳定性</div>
+      <h1>高频题型。</h1>
+      <p>同一个考点往往以固定题型反复出现。掌握题型，比零散背知识点更接近分数。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">量子力学（一） · 高频题型</div>
+      <table class="tbl">
+        <thead><tr><th>题型</th><th>出现题数</th><th>对应考点</th><th>典型题</th><th>优先级</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderExams(){
+  const html = EXAMS.map(e=>{
+    const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
+    const qs = e.qs.map(q=>`
+      <div class="q">
+        <div class="q-head">
+          <span class="q-no">第 ${esc(q.no)} 题</span>
+          <span class="q-title">${esc(q.title)}</span>
+          <span class="tag">${esc(q.type)}</span>
+          <span class="tag">考点：${esc(q.topic)}</span>
+        </div>
+        <div class="q-stem">${q.stem}</div>
+        <div class="q-key">解题要点：${esc(q.key)}</div>
+        <div class="q-src">来源：${esc(q.src)} · ${esc(e.meta[e.meta.length-1][1])}</div>
+      </div>`).join('');
+    return `<div class="card">
+      <div class="exam-head"><h3>${esc(e.label)}</h3><span class="tag">共 ${e.qs.length} 题</span></div>
+      ${meta}
+      <div style="margin-top:14px">${qs}</div>
+    </div>`;
+  }).join('');
+  $('#exams').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">原始真题档案</div>
+      <h1>历年真题。</h1>
+      <p>三套期末真题全文（含题干与解题要点）。真题是识别考试规律的唯一证据源，本页所有内容都可回溯到原始 PDF。</p>
+    </div>
+    ${html}
+    <div class="note">另有一份《南开大学量子力学历年考研真题及答案.pdf》为扫描件（无文字层，共 30 页），本次未做 OCR，故未收录。如需，可另行处理。</div>`;
+}
+
+function renderSprint(){
+  $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>你有多少时间，决定你复习什么。时间越少，越聚焦于最高频、最高分值的内容。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>S＋A＋B 级全部考点；8 章公式速查过一遍；三套真题全部做一遍。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>S＋A 级考点（微扰论、对易子、势阱、角动量、自旋、氢原子、矩阵本征值）；只做三套真题的这七类题。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>S 级考点 + 最高频题型（微扰计算、对易子、态叠加含时演化、矩阵本征值）；公式速查全过一遍。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背公式：微扰一二阶、势阱能级、谐振子、角动量对易、氢原子能级、Slater 行列式；背三套真题的解题套路。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>练熟定态微扰一阶/二阶能量与波函数一阶修正（配对势阱、谐振子）</td><td>定态微扰论</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>练熟对易子计算（[x,p]、[f(X),P]、角动量对易、[Jz,J±]）</td><td>算符与对易关系</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>无限深势阱：归一化、展开、ψ(x,t)、能量取值概率</td><td>无限深势阱</td><td>${priTag('A')}</td></tr>
+          <tr><td>4</td><td>矩阵本征值与表象变换（含 3×3 与 2×2）</td><td>矩阵表示 / 表象</td><td>${priTag('A')}</td></tr>
+          <tr><td>5</td><td>自旋哈密顿量本征值、磁场中自旋、翻转概率</td><td>自旋与泡利矩阵</td><td>${priTag('A')}</td></tr>
+          <tr><td>6</td><td>氢原子：L_z 期望值、径向概率密度、量子数判定</td><td>氢原子</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>费米/玻色波函数构造（Slater 行列式、对称态）</td><td>全同粒子与统计</td><td>${priTag('B')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderMistakes(){
+  $('#mistakes').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">错误数据库</div>
+      <h1>错题本。</h1>
+      <p>目前尚未录入你的错题记录。系统会根据你的练习自动汇总错误、生成复习队列（此功能需要学习数据）。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">最近错误</div>
+      <div style="color:#666;font-size:12.5px;padding:18px 0">暂无记录。</div>
+    </div>`;
+}
+
+function renderAbout(){
+  $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明本站数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义</td><td>chapter01 / 02·02a·02b / 03 / 04 / 05 / 06 / 08 / 09.pdf</td><td>章节结构、核心概念、重要公式</td></tr>
+          <tr><td>期末真题</td><td>2023-2024…（回忆版修改后）.pdf</td><td>6 题，考点与题型统计</td></tr>
+          <tr><td>期末真题</td><td>2024-2025量子力学一.pdf</td><td>6 题，考点与题型统计</td></tr>
+          <tr><td>期末真题</td><td>量子力学2025.pdf</td><td>7 题，考点与题型统计</td></tr>
+          <tr><td>补充（未解析）</td><td>南开大学量子力学历年考研真题及答案.pdf</td><td>扫描件、无文字层，本次未 OCR</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>原始文件不改动</b>：所有 PDF 均保持原样，仅在其上做提取与分析。</div>
+      <div class="concept"><b>可回溯</b>：每个考点都标注它出现的年份与题号，可回到真题核对。</div>
+      <div class="concept"><b>区分来源等级</b>：讲义内容来自课程文件；第七章“近似方法”无讲义，内容取自第九章总结与真题，已明确标注为“推断/补充”。</div>
+      <div class="concept"><b>不编造</b>：不凭空声称某考点“必考”；频率统计只基于实际拿到的真题。</div>
+      <div class="concept"><b>区分不确定信息</b>：三套真题均为“回忆版”，个别系数或题干表述可能与原卷有出入，已在题面中标注。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>样本有限</b>：频率仅由 3 套期末卷统计，样本小，优先级排序仅供复习参考，不代表真实命题概率。</div>
+      <div class="concept"><b>扫描件未收录</b>：考研真题 PDF 为图片扫描，未做 OCR。</div>
+      <div class="concept"><b>讲义缺失</b>：课程包中没有第七章讲义，但该章（微扰等）是期末高频考点，建议向老师/同学补齐讲义。</div>
+    </div>`;
+}
+
+/* ============ 页面切换 ============ */
+const PAGE_NAMES = {dashboard:'总览',chapters:'章节结构',formulas:'公式速查',high:'高频考点',
+  types:'高频题型',exams:'历年真题',sprint:'冲刺方案',mistakes:'错题本',about:'数据说明'};
+
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  const el=document.getElementById(id); if(el) el.style.display='block';
+  const target = btn || document.querySelector('.nav button[data-page="'+id+'"]');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(target) target.classList.add('active');
+  $('#pageTitle').innerText = PAGE_NAMES[id]||'';
+  window.scrollTo(0,0);
+  typeset();
+}
+
+/* ============ MathJax 排版 ============ */
+function typeset(){
+  if(window.MathJax && window.MathJax.typesetPromise){
+    window.MathJax.typesetPromise().catch(()=>{});
+  }
+}
+
+/* ============ 初始化 ============ */
+renderDashboard();
+renderChapters();
+renderFormulas();
+renderHigh();
+renderTypes();
+renderExams();
+renderSprint();
+renderMistakes();
+renderAbout();
+
+(function waitMJ(){
+  if(window.MathJax && window.MathJax.typesetPromise){
+    window.MathJax.typesetPromise().catch(()=>{});
+  } else {
+    setTimeout(waitMJ, 250);
+  }
+})();
 </script>
 
 </body>
