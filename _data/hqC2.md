@@ -1,0 +1,147 @@
+# 高等量子力学 · 第 3 章 密度矩阵 / 第 4 章 自旋
+> 来源：3.密度矩阵.pdf、4.自旋.pdf
+
+## 小节
+- 算符的迹（Trace）及其性质
+- 投影算符
+- 密度矩阵与密度算符（纯态）
+- 密度算符的四条基本性质
+- 算符的平均值
+- 表象变换下力学量平均值不变
+- 密度矩阵的矩阵元
+- 电子自旋算符本征态的密度矩阵（σz 与 σx 表象互变）
+- 纯态
+- 混态
+- 混态密度算符的测量概率
+- 混态与纯态（相干叠加）的区别
+- 相干与非相干叠加（双动量态例子）
+- 推广的密度矩阵算符
+- 纯态 / 部分混合态 / 完全混合态的判据
+- 自旋 1/2 系统的密度矩阵
+- 几率与相干
+- 混态密度算符的平方及其迹
+- 密度算符随时间的演化（刘维尔方程）
+- 约化密度矩阵
+- 约化密度矩阵的性质
+- 测量过程中的约化密度矩阵与波函数统计诠释
+- 量子态与密度矩阵描述对照
+- 斯特恩-盖拉赫（Stern-Gerlach）实验
+- 原子磁矩的起源
+- 自旋态的描述（旋量波函数）
+- sz 的本征态与基矢
+- 泡利算符
+- 泡利矩阵
+- 2×2 厄米矩阵的泡利算符表示
+- 泡利算符的对易关系
+- 泡利算符的反对易关系
+- 泡利算符的求迹
+- 自旋 1/2 的算符与对易关系
+- 泡利矢量
+- 指数展开
+- 单比特量子态的表示（极坐标、球坐标）
+- 布洛赫球（Bloch sphere）
+- 旋转算符
+- 绕任意轴旋转
+- 自旋进动
+- 幺正操作
+- Hadamard 门
+- 自旋为 1 / 3/2 / 2 的泡利矩阵
+
+## 核心概念
+- **算符的迹**：对一组正交完备基矢求算符对角元之和，$\mathrm{Tr}(F)=\sum_n\langle n|F|n\rangle$；迹具有循环不变性，可与表象选择无关。
+- **投影算符**：$P_n=|n\rangle\langle n|$ 是沿 $|n\rangle$ 方向的投影算符，满足幂等与完备性，作用在态上给出该方向的振幅（分量大小与相位）。
+- **密度算符（纯态）**：将投影算符推广到量子态 $|\psi\rangle$，定义 $\rho=|\psi\rangle\langle\psi|$；对纯态密度矩阵描述与波函数描述等价。
+- **密度算符的基本性质**：$\rho^2=\rho$（幂等）、$\rho^\dagger=\rho$（厄米）、$\mathrm{Tr}\rho=1$（归一）、任意态下期望值非负，且 $0<\rho_{nn}\le 1$。
+- **密度矩阵求平均值**：任何算符 $F$ 在态下的平均值可由 $\langle F\rangle=\mathrm{Tr}(\rho F)$ 计算，是量子态描述的通用工具。
+- **表象变换**：幺正变换 $S$ 下 $\rho'=S\rho S^{-1}$，物理结果（力学量平均值）在表象变换下不变。
+- **密度矩阵的矩阵元**：$F$ 表象中 $\rho_{nn'}(t)=C_n(t)C_{n'}^*(t)$；对角元 $\rho_{nn}=|C_n(t)|^2$ 为测得 $F_n$ 的概率，非对角元反映态中两基矢分量的相干。
+- **纯态**：系综中所有系统都处在同一个波函数 $|\psi\rangle$ 所描述的状态。
+- **混态**：系综中系统并非都处于同一态，无法用单一波函数描述，只能用密度算符描述；$P_i$ 是系统处于 $|\psi_i\rangle$ 的概率，$\sum_i P_i=1$。
+- **混态密度算符**：$\rho=\sum_j P_j|\psi_j\rangle\langle\psi_j|$ 代替波函数描述系统状态；$\{|\psi_j\rangle\}$ 只需归一化、不必彼此正交。
+- **测量概率的求迹形式**：测量可观测量得到结果 $a_n$ 的概率为 $P(a_n)=\mathrm{Tr}\{\rho|a_n\rangle\langle a_n|\}$。
+- **混态与相干叠加的区别**：混态是非相干叠加（不是 a 就是 b，无干涉效应）；而 $|\psi\rangle=c_1|\psi_1\rangle+c_2|\psi_2\rangle$ 是相干叠加（是 a、b 的叠加，有量子相干效应），仍为纯态。
+- **相干条纹判据**：双动量态 $|k\rangle,|-k\rangle$ 的混态给出位置分布无相干条纹，纯态（相干叠加）给出 $P(x)=1+\cos(2kx)$ 的相干条纹。
+- **纯态/混合态的判据**：纯态满足 $\rho_{mn}\rho_{nm}=\rho_{mm}\rho_{nn}$（相干最大）；部分混合态满足 $0\le\rho_{mn}\rho_{nm}<\rho_{mm}\rho_{nn}$；完全混合态 $\rho_{mn}=\rho_{nm}=0$（$m\ne n$）。纯态密度矩阵有唯一非零本征值 1。
+- **对角元与非对角元的含义**：给定基中，对角元对应相应态的几率，非对角元表征两基态间的相干。
+- **刘维尔方程**：密度算符随时间演化满足 $i\hbar\dfrac{d}{dt}\rho(t)=[H,\rho(t)]$（纯态与混态均成立）。
+- **约化密度矩阵**：复合体系 $A+B$ 只观测子体系 $A$ 的可观测量时，用 $\rho_A=\mathrm{Tr}_B(\rho_{AB})$ 描述，$\langle Q_A\rangle=\mathrm{Tr}(\rho_A Q_A)$。
+- **约化密度矩阵的性质**：$\rho_A=\rho_A^\dagger$；$\mathrm{Tr}_A(\rho_A)=1$；对角元 $(\rho_A)_{nn}\ge 0$。
+- **测量与波函数统计诠释**：测量时把待测体系 $A$ 与测量装置 $B$ 看成复合体系，对 $B$ 求迹得 $\rho_A=\sum_n|C_n|^2|n\rangle\langle n|$，非对角元全部消失，只剩对角元 $p_n=|C_n|^2$，正是波函数统计诠释。
+- **Stern-Gerlach 实验**：中性银原子束经非均匀磁场在 z 方向因磁矩受力而分离；实验只得到两个偏转位置，说明自旋投影是量子化的，是电子自旋角动量沿轴投影量子化的直接证据。
+- **自旋 1/2 与不可兼容观测量**：自旋投影只能取 $\pm\hbar/2$，称自旋 1/2 系统；$S_x,S_z$ 不可兼容，态不能同时具有两个方向投影的确定值（叠加态示例：经第二块 SG 后原 $|+\rangle$ 态"消失"，末态各占 50%）。
+- **原子磁矩起源**：带电粒子运动形成环形电流产生磁矩，内禀角动量（自旋）也对应环形电流，内禀磁矩与角动量关系类似轨道情形，旋磁比为 $g$。
+- **旋量波函数**：自旋取 $\pm\hbar/2$ 两值，用二分量波函数 $\psi(\mathbf{r},s_z)$ 描述电子状态，其分量的模方分别是相应自旋取向的概率密度。
+- **泡利算符**：自旋无经典对应，引入满足与轨道角动量相同对易关系的自旋算符 $\mathbf{s}$，并引入无量纲泡利算符 $\boldsymbol{\sigma}$，$\mathbf{s}=\dfrac{\hbar}{2}\boldsymbol{\sigma}$；$\boldsymbol{\sigma}$ 沿任意方向投影只能取 $\pm1$。
+- **泡利矩阵**：σz 表象下三矩阵为 $\sigma_x,\sigma_y,\sigma_z$，满足 $\det(\sigma_i)=-1$、$\mathrm{Tr}(\sigma_i)=0$。
+- **泡利矢量与指数展开**：任意方向 $\mathbf{a}\cdot\boldsymbol{\sigma}$ 有 $\det(\mathbf{a}\cdot\boldsymbol{\sigma})=-|\mathbf{a}|^2$；单位矢量 $\mathbf{n}$ 满足 $(\mathbf{n}\cdot\boldsymbol{\sigma})^2=I$，从而 $e^{i a\,\mathbf{n}\cdot\boldsymbol{\sigma}}=I\cos a+i(\mathbf{n}\cdot\boldsymbol{\sigma})\sin a$。
+- **单比特态与布洛赫球**：任意单比特态 $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$，全局相位无观测效应，仅剩 $\theta,\phi$ 两参数，可与布洛赫球面一一对应；球上中心对称两点所对应的态正交。
+- **旋转算符**：绕 $\mathbf{n}$ 轴转 $\theta$ 的算符 $R_n(\theta)=e^{-i\theta\,\mathbf{n}\cdot\boldsymbol{\sigma}/2}$；$\sigma_x$ 的操作等效于绕 x 轴旋转 180°（差 −i 相位）。
+- **自旋进动**：磁场中 $H=\omega s_z$，$\omega=-eB/(mc)$；时间演化算符与绕 z 轴旋转算符相同，自旋平均值 $\langle s_x\rangle,\langle s_y\rangle$ 随时间振荡，$\langle s_z\rangle$ 恒为 0，进动周期 $T=2\pi/\omega$。
+- **幺正操作与 Hadamard 门**：任意幺正操作可写为 $U=e^{i\alpha}R_n(\theta)$；取特定 $\alpha,\theta,\mathbf{n}$ 即得 Hadamard 门 $H=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$。
+
+## 重要公式
+- **算符的迹**： `\mathrm{Tr}(F)=\sum_n \langle n|F|n\rangle`
+- **正交完备性**： `\sum_n |n\rangle\langle n|=I,\qquad \langle m|n\rangle=\delta_{mn}`
+- **外积算符的迹**： `F=|\varphi\rangle\langle\psi| \;\Rightarrow\; \mathrm{Tr}(F)=\langle\psi|\varphi\rangle`
+- **迹的循环性**： `\mathrm{Tr}(ABC)=\mathrm{Tr}(BCA)=\mathrm{Tr}(CAB)`
+- **投影算符**： `P_n=|n\rangle\langle n|,\qquad P_n^2=P_n,\qquad \sum_n P_n=I`
+- **密度算符（纯态）**： `\rho=|\psi\rangle\langle\psi|`
+- **密度算符性质**： `\rho^2=\rho,\qquad \rho^\dagger=\rho,\qquad \mathrm{Tr}(\rho)=1,\qquad \langle\varphi|\rho|\varphi\rangle\ge 0,\qquad 0<\rho_{nn}\le 1`
+- **算符的平均值**： `\langle F\rangle=\langle\psi|F|\psi\rangle=\mathrm{Tr}(\rho F)`
+- **表象变换**： `\rho'=S\rho S^{-1},\qquad \mathrm{Tr}(\rho'F')=\mathrm{Tr}(\rho F)`
+- **密度矩阵的矩阵元**： `\rho_{nn'}(t)=\langle n|\rho(t)|n'\rangle=C_n(t)C_{n'}^*(t),\qquad \rho_{nn}(t)=|C_n(t)|^2`
+- **归一化迹**： `\mathrm{Tr}\rho=\sum_n |C_n(t)|^2=1`
+- **σz 本征态的密度矩阵**： `\rho_{z,+}=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad \rho_{z,-}=\begin{pmatrix}0&0\\0&1\end{pmatrix}`
+- **σx 及本征态密度矩阵**： `\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad \rho_{x,\pm}=\frac{1}{2}\begin{pmatrix}1&\pm1\\\pm1&1\end{pmatrix}`
+- **σx 到 σz 的幺正变换**： `S=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix},\qquad S\sigma_x S^{-1}=\sigma_z`
+- **系综概率**： `P_i=\frac{N_i}{N},\qquad \sum_i P_i=1`
+- **混态密度算符**： `\rho=\sum_j P_j|\psi_j\rangle\langle\psi_j|=\sum_j P_j\rho_j^{\text{pure}}`
+- **测量概率的求迹形式**： `P(a_n)=\mathrm{Tr}\{\rho\,|a_n\rangle\langle a_n|\}=\sum_m |\langle a_n|\psi_m\rangle|^2 P_m`
+- **混态/纯态密度矩阵对比**： `\rho_{\text{mix}}=\begin{pmatrix}|c_1|^2&0\\0&|c_2|^2\end{pmatrix},\qquad \rho_\psi=\begin{pmatrix}|c_1|^2&c_1c_2^*\\c_2c_1^*&|c_2|^2\end{pmatrix}`
+- **相干条纹（双动量态）**： `\rho=\tfrac12(|k\rangle\langle k|+|-k\rangle\langle -k|)\ \Rightarrow\ P(x)=1;\qquad \rho=\tfrac12(|k\rangle+|-k\rangle)(\langle k|+\langle -k|)\ \Rightarrow\ P(x)=1+\cos(2kx)`
+- **纯态判据**： `\rho_{mn}\rho_{nm}=\rho_{mm}\rho_{nn}`
+- **部分混合态判据**： `0\le \rho_{mn}\rho_{nm}<\rho_{mm}\rho_{nn}`
+- **完全混合态判据**： `\rho_{mn}=\rho_{nm}=0\ (m\ne n)`
+- **混态密度算符的平方**： `\rho_{\text{mix}}^2=\sum_i p_i^2|\psi_i\rangle\langle\psi_i|\ne\rho_{\text{mix}}`
+- **混态密度矩阵平方的迹**： `\mathrm{Tr}(\rho_{\text{mix}}^2)=\sum_i p_i^2\le\sum_i p_i=1`
+- **刘维尔方程**： `i\hbar\frac{d}{dt}\rho(t)=[\,H,\rho(t)\,]`
+- **约化密度矩阵**： `\rho_A=\mathrm{Tr}_B(\rho_{AB})=\sum_{i,j}\sum_\mu a_{i\mu}a_{j\mu}^*\,|i\rangle_A{}_A\langle j|`
+- **约化密度矩阵求平均值**： `\langle Q_A\rangle=\mathrm{Tr}(\rho_A Q_A)`
+- **约化密度矩阵性质**： `\rho_A=\rho_A^\dagger,\qquad \mathrm{Tr}_A(\rho_A)=1,\qquad (\rho_A)_{nn}\ge 0`
+- **测量后的约化密度矩阵**： `\rho_A=\mathrm{Tr}_B(\rho_{AB})=\sum_n |C_n|^2|n\rangle_A{}_A\langle n|=\sum_n p_n\rho_n`
+- **Stern-Gerlach 受力**： `E=-\boldsymbol{\mu}\cdot\mathbf{B},\qquad F_z=\frac{\partial}{\partial z}(\boldsymbol{\mu}\cdot\mathbf{B})\approx \mu_z\frac{\partial B_z}{\partial z}`
+- **自旋投影量子化**： `S_z=\pm\frac{\hbar}{2}`
+- **轨道磁矩**： `\boldsymbol{\mu}=\frac{q}{2mc}\mathbf{L}`
+- **自旋磁矩与受力**： `\boldsymbol{\mu}=g\frac{q}{2mc}\mathbf{S},\qquad \boldsymbol{\mu}=-\frac{eg}{2m_ec}\mathbf{S},\qquad F_z=-\frac{eg}{2m_ec}S_z\frac{\partial B_z}{\partial z}`
+- **旋量波函数**： `\psi(\mathbf{r},s_z)=\begin{pmatrix}\psi(\mathbf{r},\hbar/2)\\\psi(\mathbf{r},-\hbar/2)\end{pmatrix}`
+- **旋量归一化**： `\sum_{s_z=\pm\hbar/2}\int d^3x\,|\psi(\mathbf{r},s_z)|^2=1`
+- **自旋基矢**： `\alpha=\begin{pmatrix}1\\0\end{pmatrix}\ (\chi_{1/2}),\qquad \beta=\begin{pmatrix}0\\1\end{pmatrix}\ (\chi_{-1/2})`
+- **泡利算符定义**： `\mathbf{s}=\frac{\hbar}{2}\boldsymbol{\sigma},\qquad \sigma_x^2=\sigma_y^2=\sigma_z^2=1`
+- **泡利矩阵**： `\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}`
+- **泡利矩阵性质**： `\mathrm{Tr}(\sigma_i)=0,\qquad \det(\sigma_i)=-1\ (i=x,y,z)`
+- **泡利矩阵本征态**： `|{+}_z\rangle=\begin{pmatrix}1\\0\end{pmatrix},\ |{-}_z\rangle=\begin{pmatrix}0\\1\end{pmatrix},\quad |{+}_x\rangle=\frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix},\ |{-}_x\rangle=\frac{1}{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix},\quad |{+}_y\rangle=\frac{1}{\sqrt2}\begin{pmatrix}1\\i\end{pmatrix},\ |{-}_y\rangle=\frac{1}{\sqrt2}\begin{pmatrix}1\\-i\end{pmatrix}`
+- **2×2 厄米矩阵的泡利表示**： `H=\begin{pmatrix}a&c-id\\c+id&b\end{pmatrix}=\frac{a+b}{2}I+\frac{a-b}{2}\sigma_z+c\,\sigma_x+d\,\sigma_y`
+- **对易关系**： `[\sigma_a,\sigma_b]=2i\varepsilon_{abc}\sigma_c`
+- **反对易关系**： `\{\sigma_a,\sigma_b\}=2\delta_{ab}I`
+- **对易反对易合并**： `\sigma_a\sigma_b=\delta_{ab}I+i\varepsilon_{abc}\sigma_c,\qquad \sigma_x\sigma_y=i\sigma_z,\ \sigma_y\sigma_z=i\sigma_x,\ \sigma_z\sigma_x=i\sigma_y`
+- **泡利矩阵的迹**： `\mathrm{Tr}(\sigma_a)=0,\qquad \mathrm{Tr}(\sigma_a\sigma_b)=2\delta_{ab},\qquad \mathrm{Tr}(\sigma_a\sigma_b\sigma_c)=2i\varepsilon_{abc}`
+- **自旋算符平方**： `S^2=\frac{3}{4}\hbar^2 I=\hbar^2 s(s+1)I\bigg|_{s=1/2}`
+- **自旋角动量对易关系**： `[S_x,S_y]=i\hbar S_z,\qquad [S_y,S_z]=i\hbar S_x,\qquad [S_z,S_x]=i\hbar S_y`
+- **泡利矢量**： `\mathbf{a}\cdot\boldsymbol{\sigma}=a_x\sigma_x+a_y\sigma_y+a_z\sigma_z=\begin{pmatrix}a_z&a_x-ia_y\\a_x+ia_y&-a_z\end{pmatrix},\qquad \det(\mathbf{a}\cdot\boldsymbol{\sigma})=-|\mathbf{a}|^2`
+- **幂次规律**： `(\mathbf{n}\cdot\boldsymbol{\sigma})^{2m}=I,\qquad (\mathbf{n}\cdot\boldsymbol{\sigma})^{2m+1}=\mathbf{n}\cdot\boldsymbol{\sigma}\quad(|\mathbf{n}|=1)`
+- **指数展开**： `e^{ia\,\mathbf{n}\cdot\boldsymbol{\sigma}}=I\cos a+i(\mathbf{n}\cdot\boldsymbol{\sigma})\sin a,\qquad e^{i(\mathbf{a}\cdot\boldsymbol{\sigma})}=I\cos a+i(\mathbf{n}\cdot\boldsymbol{\sigma})\sin a\ (\mathbf{n}=\mathbf{a}/a)`
+- **单比特态（球坐标）**： `|\psi\rangle=\cos\theta\,|0\rangle+e^{i\phi}\sin\theta\,|1\rangle`
+- **布洛赫球态表示**： `|\psi\rangle=\cos\frac{\theta}{2}\,|0\rangle+e^{i\phi}\sin\frac{\theta}{2}\,|1\rangle,\qquad 0\le\theta\le\pi,\ 0\le\phi\le2\pi`
+- **球上中心对称两点正交**： `\langle\psi'|\psi\rangle=\cos\frac{\pi}{2}=0`
+- **旋转算符**： `R_n(\theta)=e^{-i\theta\,\mathbf{n}\cdot\boldsymbol{\sigma}/2}=I\cos\frac{\theta}{2}-i\sin\frac{\theta}{2}(\mathbf{n}\cdot\boldsymbol{\sigma})`
+- **绕 x / y / z 轴旋转算符**： `R_x(\theta)=\begin{pmatrix}\cos\frac{\theta}{2}&-i\sin\frac{\theta}{2}\\-i\sin\frac{\theta}{2}&\cos\frac{\theta}{2}\end{pmatrix},\quad R_y(\theta)=\begin{pmatrix}\cos\frac{\theta}{2}&-\sin\frac{\theta}{2}\\\sin\frac{\theta}{2}&\cos\frac{\theta}{2}\end{pmatrix},\quad R_z(\theta)=\begin{pmatrix}e^{-i\theta/2}&0\\0&e^{i\theta/2}\end{pmatrix}`
+- **σx 等效 180° 旋转**： `R_x(\pi)=\begin{pmatrix}0&-i\\-i&0\end{pmatrix}=-i\sigma_x,\qquad R_y(\pi)=-i\sigma_y`
+- **自旋进动哈密顿量**： `H=\omega s_z,\qquad \omega=-\frac{eB}{mc}`
+- **时间演化算符**： `e^{-iHt/\hbar}=\begin{pmatrix}e^{-i\omega t/2}&0\\0&e^{i\omega t/2}\end{pmatrix}=R_z(\omega t),\qquad e^{-iHt/\hbar}\big|_{t=4\pi/\omega}=I`
+- **自旋平均值进动**： `\langle s_x\rangle_t=\frac{\hbar}{2}\cos(\omega t),\qquad \langle s_y\rangle_t=\frac{\hbar}{2}\sin(\omega t),\qquad \langle s_z\rangle_t=0,\qquad T=\frac{2\pi}{\omega}`
+- **幺正操作**： `U=e^{i\alpha}R_n(\theta)`
+- **Hadamard 门**： `H=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix},\qquad \alpha|0\rangle+\beta|1\rangle\ \xrightarrow{H}\ (\alpha+\beta)|0\rangle+(\alpha-\beta)|1\rangle`
+- **自旋 1 的算符**： `S_x=\frac{\hbar}{\sqrt2}\begin{pmatrix}0&1&0\\1&0&1\\0&1&0\end{pmatrix},\quad S_y=\frac{\hbar}{\sqrt2}\begin{pmatrix}0&-i&0\\i&0&-i\\0&i&0\end{pmatrix},\quad S_z=\hbar\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix}`
+- **自旋 1 的升降算符**： `S_+=\hbar\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix},\qquad S_-=\hbar\begin{pmatrix}0&0&0\\1&0&0\\0&1&0\end{pmatrix}`
+- **作业：泡利矩阵恒等式**： `(\mathbf{a}\cdot\boldsymbol{\sigma})(\mathbf{b}\cdot\boldsymbol{\sigma})=(\mathbf{a}\cdot\mathbf{b})I+i(\mathbf{a}\times\mathbf{b})\cdot\boldsymbol{\sigma}`
+- **作业：四泡利矩阵之迹**： `\mathrm{Tr}(\sigma_a\sigma_b\sigma_c\sigma_d)=2(\delta_{ab}\delta_{cd}-\delta_{ac}\delta_{bd}+\delta_{ad}\delta_{bc})`

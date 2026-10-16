@@ -195,6 +195,7 @@ window.MathJax = {
     <button class="on" onclick="setCourse('qm')">量子力学（一）</button>
     <button onclick="setCourse('qm2')">量子力学（二）</button>
     <button onclick="setCourse('em')">电动力学</button>
+    <button onclick="setCourse('hq')">高等量子力学</button>
   </div>
 
   <div class="nav">
@@ -1718,17 +1719,363 @@ const KY_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   高等量子力学
+   ============================================================ */
+const COURSE_HQ = {
+  name:'高等量子力学',
+  school:'南开大学 · 物理科学学院',
+  textbook:'曾谨言《量子力学 I,II》/ 喀兴林、张永德《高等量子力学》/ Scully & Zubairy、Walls & Milburn《Quantum optics》',
+  teachers:'金亮（物理学院 · 现代物理系；助教 张添寅）',
+  examLen:'（据考题回忆）10 道简答 + 计算题',
+  refs:['曾谨言,《量子力学 I, II》','喀兴林,《高等量子力学》','张永德,《高等量子力学》',
+        'Scully & Zubairy,《Quantum optics》','Walls & Milburn,《Quantum optics》'],
+  src:'课程信息取自《高等量子力学-课程介绍.pdf》（金亮，现代物理系）；章节来自 1–10 号讲义 PDF；真题来自 4 份考题（2017–2018 回忆、2018–2019 试题、2022–2023、2025）'
+};
+
+const HQ_CHAPTERS = [
+{no:'1', title:'希尔伯特空间', en:'第一章', file:'1.希尔伯特空间.pdf',
+ sections:['希尔伯特空间的引入（由 R³ 推广）','R³ 与 C 中的内积','矢量空间公理与内积空间','正交性、模、Cauchy–Schwarz 与三角不等式','基矢、线性无关、完全集与维度','Schmidt 正交化','正交归一矢量组的四个等价命题','右矢与左矢（狄拉克记号）'],
+ concepts:[
+  ['希尔伯特空间','定义了内积的（复）矢量空间，使距离与角度可测量；是完备的复内积空间（三维欧氏空间矢量代数的推广）。'],
+  ['内积公理','共轭对称 ⟨x,y⟩=⟨y,x⟩*、对右因子线性、对左因子反线性、正定 ⟨x,x⟩≥0。'],
+  ['模与归一化','模方 |ψ|²=⟨ψ,ψ⟩，模 |ψ|=√⟨ψ,ψ⟩；模为 1 的矢量称归一化矢量。'],
+  ['线性无关与完全集','Σψᵢaᵢ=0 只在全部 aᵢ=0 时成立即线性无关；线性无关且能张成整个空间者为完全集。'],
+  ['维度与基矢','有限维空间中不同完全集所含矢量数目相同，即为维度；正交归一的完全集称基矢。'],
+  ['Schmidt 正交化','由任意完全集，逐步归一化并扣除投影，可构造正交归一基矢。'],
+  ['四个等价命题','「是基」「态可展开」「内积可分解」「Parseval 关系」四者相互等价。'],
+  ['右矢与左矢','|ψ⟩ 为右矢、⟨ψ| 为左矢；内积对右因子线性、对左因子反线性，故同一矢量作左右因子地位不同。']
+ ],
+ formulas:[
+  ['内积四条件', R`\langle\psi,\phi\rangle=\langle\phi,\psi\rangle^{*},\quad \langle\psi,\phi+\chi\rangle=\langle\psi,\phi\rangle+\langle\psi,\chi\rangle,\quad \langle\psi,\phi a\rangle=\langle\psi,\phi\rangle a,\quad \langle\psi,\psi\rangle\ge0`],
+  ['模方与模', R`\langle\psi,\psi\rangle=|\psi|^{2},\qquad |\psi|=\sqrt{\langle\psi,\psi\rangle}`],
+  ['Cauchy–Schwarz 不等式', R`|\langle\psi,\phi\rangle|\le|\psi|\cdot|\phi|`],
+  ['三角不等式', R`|\psi+\phi|\le|\psi|+|\phi|`],
+  ['线性无关与完全集', R`\sum_{i=1}^{n}\psi_i a_i=0\ \Leftrightarrow\ a_i=0;\qquad \psi=\sum_{i=1}^{n}\lambda_i a_i`],
+  ['正交归一基矢', R`\langle v_i,v_j\rangle=\delta_{ij}`],
+  ['Schmidt 正交化', R`v_{m+1}=\frac{v'_{m+1}}{|v'_{m+1}|},\qquad v'_{m+1}=\lambda_{m+1}-\sum_{i=1}^{m}v_i\langle v_i,\lambda_{m+1}\rangle`],
+  ['四个等价命题', R`\psi=\sum_i v_i\langle v_i,\psi\rangle;\qquad \langle\phi,\psi\rangle=\sum_i\langle\phi,v_i\rangle\langle v_i,\psi\rangle;\qquad |\psi|^{2}=\sum_i|\langle v_i,\psi\rangle|^{2}`],
+  ['狄拉克记号', R`\langle\phi|\psi\rangle=\langle\psi|\phi\rangle^{*},\qquad |\psi\rangle=\sum_i|v_i\rangle\langle v_i|\psi\rangle,\qquad \langle v_i|v_j\rangle=\delta_{ij}`]
+ ]},
+
+{no:'2', title:'态和薛定谔方程', en:'第二章', file:'2.态和薛定谔方程.pdf',
+ sections:['德布罗意物质波与角动量量子化','无限深方势阱','波粒二象性与双缝干涉','波恩概率诠释与归一化','态的叠加原理','不确定关系','薛定谔方程与概率守恒','不含时薛定谔方程与定态','算符、厄米算符与本征值','对易关系与角动量代数','表象变换、投影与完备性','时间演化与矩阵形式','均匀环 / 均匀链与离散散射'],
+ concepts:[
+  ['德布罗意关系','ν=E/h、λ=h/p；据驻波条件可解释角动量量子化。'],
+  ['波恩概率诠释','波函数模方为概率密度；ψ 与 Cψ 描述相同相对概率分布。'],
+  ['态的叠加原理','波的相干叠加意味着态的叠加；波包是多个动量本征态的线性叠加。'],
+  ['不确定关系','ΔA·ΔB ≥ ½|⟨[A,B]⟩|；坐标-动量给出 ΔxΔp ≥ ħ/2。'],
+  ['薛定谔方程','iħ∂ψ/∂t=Ĥψ；概率守恒满足连续性方程 ∂ρ/∂t+∇·j=0。'],
+  ['定态','不含时方程 Ĥψ=Eψ；定态演化只带动力学相位 e^{−iEt/ħ}，概率密度不随时间改变。'],
+  ['算符与厄米算符','力学量算符是线性算符；厄米算符 Â†=Â，平均值必为实数，不同本征值本征函数正交。'],
+  ['表象变换','L′=SLS†=SLS⁻¹，S_{k′k}=⟨ψ′_{k′}|ψ_k⟩；物理结果不变。'],
+  ['时间演化','|Ψ(t)⟩=e^{−iHt/ħ}|Ψ(0)⟩=Σ_k C_k e^{−iε_k t/ħ}|k⟩。'],
+  ['均匀环/链','环用周期性边界、链用开放边界；本征值与波矢呈余弦/正弦形式。']
+ ],
+ formulas:[
+  ['德布罗意与驻波', R`\nu=E/h,\quad \lambda=h/p;\qquad n\lambda/2=a\ \Rightarrow\ E_n=\frac{n^{2}\pi^{2}\hbar^{2}}{2ma^{2}}`],
+  ['归一化条件', R`\int_{-\infty}^{+\infty}|\psi(x)|^{2}dx=1`],
+  ['不确定关系', R`\Delta A\cdot\Delta B\ge\frac12\big|\langle[A,B]\rangle\big|,\qquad \Delta x\,\Delta p\ge\frac{\hbar}{2}`],
+  ['薛定谔方程与概率守恒', R`i\hbar\frac{\partial\psi}{\partial t}=\hat H\psi,\qquad \frac{\partial\rho}{\partial t}+\nabla\cdot j=0,\quad j=-\frac{i\hbar}{2m}(\psi^{*}\nabla\psi-\psi\nabla\psi^{*})`],
+  ['不含时方程与定态演化', R`\hat H\psi=E\psi;\qquad \psi(r,t)=\psi_E(r)e^{-iEt/\hbar}`],
+  ['算符平均值', R`\langle O\rangle=\int\psi^{*}O\psi\,d^{3}x=\langle\psi|O|\psi\rangle`],
+  ['角动量对易关系', R`[l_\alpha,l_\beta]=\varepsilon_{\alpha\beta\gamma}i\hbar l_\gamma,\qquad [r_\alpha,p_\beta]=i\hbar\delta_{\alpha\beta}`],
+  ['表象变换与完备性', R`L'=SLS^{-1},\quad S_{k'k}=\langle\psi'_{k'}|\psi_k\rangle;\qquad \sum_k|\psi_k\rangle\langle\psi_k|=I`],
+  ['时间演化', R`|\Psi(t)\rangle=e^{-iHt/\hbar}|\Psi(0)\rangle=\sum_k C_k e^{-i\varepsilon_k t/\hbar}|k\rangle`],
+  ['离散散射（单势）', R`T=\frac{4\sin^{2}k}{4\sin^{2}k+V^{2}},\qquad R=\frac{V^{2}}{4\sin^{2}k+V^{2}},\qquad R+T=1`]
+ ]},
+
+{no:'3', title:'密度矩阵', en:'第三章', file:'3.密度矩阵.pdf',
+ sections:['算符的迹及其性质','投影算符','密度算符（纯态）与四条基本性质','平均值与表象变换','密度矩阵的矩阵元','纯态、混态与相干/非相干叠加','纯态、部分混合、完全混合的判据','刘维尔方程','约化密度矩阵','测量与波函数统计诠释'],
+ concepts:[
+  ['密度算符（纯态）','ρ=|ψ⟩⟨ψ|；对纯态，密度矩阵描述与波函数描述等价。'],
+  ['密度算符四性质','ρ²=ρ（幂等）、ρ†=ρ（厄米）、Trρ=1、任意态期望值非负。'],
+  ['平均值求迹公式','⟨F⟩=Tr(ρF)，是量子态描述的通用工具。'],
+  ['混态','系综中系统不处于同一态，只能用 ρ=ΣⱼPⱼ|ψⱼ⟩⟨ψⱼ| 描述；{Pⱼ} 为概率且 ΣPⱼ=1。'],
+  ['混态与相干叠加的区别','混态是非相干叠加（无干涉）；|ψ⟩=c₁|ψ₁⟩+c₂|ψ₂⟩ 是相干叠加（有量子相干），仍为纯态。'],
+  ['纯态判据','ρ_mnρ_nm=ρ_mmρ_nn（相干最大）；完全混合态非对角元为 0；Tr(ρ²)≤1。'],
+  ['刘维尔方程','iħ dρ/dt=[H,ρ]（纯态、混态均成立）。'],
+  ['约化密度矩阵','ρ_A=Tr_B(ρ_AB)，⟨Q_A⟩=Tr(ρ_AQ_A)；测量后非对角元消失，只剩 p_n=|C_n|²。']
+ ],
+ formulas:[
+  ['算符的迹与循环性', R`\mathrm{Tr}(F)=\sum_n\langle n|F|n\rangle,\qquad \mathrm{Tr}(ABC)=\mathrm{Tr}(BCA)=\mathrm{Tr}(CAB)`],
+  ['投影算符与完备性', R`P_n=|n\rangle\langle n|,\qquad P_n^{2}=P_n,\qquad \sum_n P_n=I`],
+  ['密度算符性质', R`\rho^{2}=\rho,\qquad \rho^{\dagger}=\rho,\qquad \mathrm{Tr}\rho=1,\qquad \langle\varphi|\rho|\varphi\rangle\ge0`],
+  ['平均值', R`\langle F\rangle=\langle\psi|F|\psi\rangle=\mathrm{Tr}(\rho F)`],
+  ['密度矩阵元', R`\rho_{nn'}(t)=C_n(t)C_{n'}^{*}(t),\qquad \rho_{nn}(t)=|C_n(t)|^{2}`],
+  ['混态密度算符与测量概率', R`\rho=\sum_j P_j|\psi_j\rangle\langle\psi_j|,\qquad P(a_n)=\mathrm{Tr}\{\rho|a_n\rangle\langle a_n|\}`],
+  ['纯态 / 完全混合判据', R`\rho_{mn}\rho_{nm}=\rho_{mm}\rho_{nn}\ (\text{纯});\qquad \rho_{mn}=0\ (m\neq n)\ (\text{完全混合})`],
+  ['刘维尔方程', R`i\hbar\frac{d}{dt}\rho(t)=[H,\rho(t)]`],
+  ['约化密度矩阵', R`\rho_A=\mathrm{Tr}_B(\rho_{AB}),\qquad \langle Q_A\rangle=\mathrm{Tr}(\rho_AQ_A),\qquad \mathrm{Tr}_A\rho_A=1`]
+ ]},
+
+{no:'4', title:'自旋', en:'第四章', file:'4.自旋.pdf',
+ sections:['Stern–Gerlach 实验','原子磁矩与旋量波函数','泡利算符与泡利矩阵','泡利算符的对易与反对易关系','泡利算符的求迹','泡利矢量与指数展开','单比特态与布洛赫球','旋转算符','自旋进动','幺正操作与 Hadamard 门','自旋 1 / 3/2 / 2 的泡利矩阵'],
+ concepts:[
+  ['Stern–Gerlach 实验','中性银原子束经非均匀磁场分离，只得到两个偏转位置，直接证明自旋投影的量子化（S_z=±ħ/2）。'],
+  ['旋量波函数','自旋取 ±ħ/2 两值，用二分量波函数描述，各分量模方为相应自旋取向的概率密度。'],
+  ['泡利算符','s=(ħ/2)σ，σ 沿任意方向投影只能取 ±1；σx²=σy²=σz²=1。'],
+  ['泡利矢量与指数展开','单位矢量 n 满足 (n·σ)²=I，故 e^{ia n·σ}=I cos a + i(n·σ) sin a。'],
+  ['布洛赫球','单比特态 |ψ⟩=cos(θ/2)|0⟩+e^{iφ}sin(θ/2)|1⟩，与球面点一一对应；中心对称两点正交。'],
+  ['旋转算符','R_n(θ)=e^{−iθn·σ/2}=I cos(θ/2)−i sin(θ/2)(n·σ)。'],
+  ['自旋进动','H=ωs_z，ω=−eB/mc；⟨s_x⟩、⟨s_y⟩ 随时间振荡，⟨s_z⟩=0，周期 T=2π/ω。'],
+  ['自旋 1 的算符','3×3 的 S_x、S_y、S_z 及升降算符形式。']
+ ],
+ formulas:[
+  ['Stern–Gerlach 受力', R`F_z=-\frac{eg}{2m_ec}S_z\frac{\partial B_z}{\partial z},\qquad S_z=\pm\frac{\hbar}{2}`],
+  ['泡利矩阵', R`\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}`],
+  ['对易与反对易', R`[\sigma_a,\sigma_b]=2i\varepsilon_{abc}\sigma_c,\qquad \{\sigma_a,\sigma_b\}=2\delta_{ab}I`],
+  ['泡利矩阵的迹', R`\mathrm{Tr}(\sigma_a)=0,\qquad \mathrm{Tr}(\sigma_a\sigma_b)=2\delta_{ab},\qquad \mathrm{Tr}(\sigma_a\sigma_b\sigma_c)=2i\varepsilon_{abc}`],
+  ['指数展开', R`e^{ia\,\mathbf n\cdot\boldsymbol\sigma}=I\cos a+i(\mathbf n\cdot\boldsymbol\sigma)\sin a`],
+  ['布洛赫球', R`|\psi\rangle=\cos\frac{\theta}{2}|0\rangle+e^{i\phi}\sin\frac{\theta}{2}|1\rangle,\qquad 0\le\theta\le\pi,\ 0\le\phi\le2\pi`],
+  ['旋转算符与 180° 旋转', R`R_n(\theta)=e^{-i\theta\,\mathbf n\cdot\boldsymbol\sigma/2},\qquad R_x(\pi)=-i\sigma_x,\quad R_y(\pi)=-i\sigma_y`],
+  ['自旋进动', R`H=\omega s_z,\ \omega=-\frac{eB}{mc};\qquad \langle s_x\rangle_t=\frac{\hbar}{2}\cos\omega t,\ \langle s_y\rangle_t=\frac{\hbar}{2}\sin\omega t,\ \langle s_z\rangle_t=0`],
+  ['Hadamard 门', R`H=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}`],
+  ['自旋 1 的算符', R`S_z=\hbar\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix},\qquad S_+=\hbar\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix}`]
+ ]},
+
+{no:'5', title:'二次量子化', en:'第五章', file:'5.二次量子化.pdf',
+ sections:['一次量子化与二次量子化','全同粒子与交换对称性','玻色子与费米子','全同粒子波函数（对称/反对称、Slater 行列式、反对称化算符）','Fock 表象（占据数表象）','产生与湮灭算符','玻色子对易关系与粒子数表象','费米子反对易关系','紧束缚模型','Bose-Hubbard / Fermi-Hubbard / XX 模型'],
+ concepts:[
+  ['一次量子化','把力学量转为算符：r→r̂、p→p̂=−iħ∇、E→Ê=iħ∂/∂t，得到非对易代数。'],
+  ['二次量子化','把波函数本身也用产生/湮灭算符表达，用于描述多体系统；置换对称性自动满足。'],
+  ['交换对称性','全同粒子哈密顿量对交换不变（[P₁₂,H]=0），态具确定对称性，P₁₂ 本征值为 ±1。'],
+  ['玻色子与费米子','整数自旋为玻色子（对称、玻色–爱因斯坦统计）；半奇数自旋为费米子（反对称、费米–狄拉克统计、泡利原理）。'],
+  ['Slater 行列式','N 个费米子的反对称波函数写成行列式；等价于反对称化算符 A=Σ_P δ_P P/N!。'],
+  ['Fock 表象','用各单粒子态的占据数 (n₁n₂…) 描述态，避免对粒子编号。'],
+  ['Bose-Hubbard 模型','格点玻色子跳跃项 + 接触相互作用 U n(n−1)/2；是真题中的高频大题。']
+ ],
+ formulas:[
+  ['量子化对应规则', R`\mathbf r\to\hat{\mathbf r},\quad \mathbf p\to\hat{\mathbf p}=-i\hbar\nabla,\quad E\to\hat E=i\hbar\frac{\partial}{\partial t}`],
+  ['对称与反对称波函数', R`\psi^{S}=\frac{1}{\sqrt2}(1+P_{12})\psi_{k_1}(q_1)\psi_{k_2}(q_2),\qquad \psi^{A}=\frac{1}{\sqrt2}(1-P_{12})\psi_{k_1}(q_1)\psi_{k_2}(q_2)`],
+  ['Slater 行列式与反对称化算符', R`\psi^{A}=\frac{1}{\sqrt{N!}}\det[\psi_{k_i}(q_j)],\qquad A=\frac{1}{N!}\sum_P\delta_P P`],
+  ['产生/湮灭算符与对易关系', R`[a,a^{\dagger}]=1,\qquad H=a^{\dagger}a+\frac12=\hat N+\frac12,\qquad a|n\rangle=\sqrt n|n-1\rangle,\quad a^{\dagger}|n\rangle=\sqrt{n+1}|n+1\rangle`],
+  ['粒子数表象基矢', R`|n_1n_2\cdots\rangle=\frac{1}{\sqrt{\prod_i n_i!}}(a_1^{\dagger})^{n_1}(a_2^{\dagger})^{n_2}\cdots|0\rangle`],
+  ['玻色子对易关系', R`[a_i,a_j^{\dagger}]=\delta_{ij},\qquad [a_i,a_j]=[a_i^{\dagger},a_j^{\dagger}]=0`],
+  ['费米子反对易关系', R`\{a_\alpha,a_\beta^{\dagger}\}=\delta_{\alpha\beta},\qquad \{a_\alpha,a_\beta\}=\{a_\alpha^{\dagger},a_\beta^{\dagger}\}=0`],
+  ['紧束缚模型', R`H=-J\sum_i\big(a_i^{\dagger}a_{i+1}+a_{i+1}^{\dagger}a_i\big)`],
+  ['Bose-Hubbard 模型', R`H=\sum_i\Big[-J\big(a_i^{\dagger}a_{i+1}+a_{i+1}^{\dagger}a_i\big)+\frac{U}{2}n_i(n_i-1)\Big]`],
+  ['XX 自旋模型', R`H=-J\sum_i\big(s_i^{+}s_{i+1}^{-}+s_i^{-}s_{i+1}^{+}\big)`]
+ ]},
+
+{no:'6', title:'相干态', en:'第六章', file:'6.相干态.pdf',
+ sections:['一维谐振子（无量纲化、Hermite 多项式、能谱）','谐振子本征态与波函数','相干态（平移的高斯波包）','平移算符 D(x₀)','相干态的时间演化','湮灭算符的本征态','相干态展开系数','完备性、非正交性与超完备性','相干态的期待值与方差','最小不确定度'],
+ concepts:[
+  ['相干态','湮灭算符的本征态 a|α⟩=α|α⟩；是平移的高斯波包，最接近经典的准经典态，演化中不扩散。'],
+  ['平移算符','D(x₀)=e^{α(a†−a)} 作用于基态 |0⟩ 得相干态。'],
+  ['展开系数','C_n=e^{−|α|²/2}αⁿ/√(n!)。'],
+  ['超完备性','(1/π)∫|z⟩⟨z|d²z=I；不同相干态彼此不正交，集合线性相关，故超完备。'],
+  ['非正交性','|⟨z|z′⟩|²=e^{−|z−z′|²}，即不同相干态只是近似正交。'],
+  ['最小不确定度','Δx·Δp=ħ/2，是使不确定度取等号的最小不确定度波包。'],
+  ['时间演化','α(t)=α₀e^{−iωt}；波包中心按经典振子规律 ⟨x⟩(t)=x₀cos ωt+(p₀/mω)sin ωt 运动。']
+ ],
+ formulas:[
+  ['谐振子能谱与波函数', R`E_n=\Big(n+\frac12\Big)\hbar\omega,\qquad \psi_n(x)=\frac{1}{\sqrt{L\sqrt\pi\,2^{n}n!}}e^{-x^{2}/2L^{2}}H_n(x/L),\qquad L=\sqrt{\hbar/m\omega}`],
+  ['相干态（湮灭算符本征态）', R`a|\alpha\rangle=\alpha|\alpha\rangle,\qquad |\alpha\rangle=e^{-|\alpha|^{2}/2}\sum_{n=0}^{\infty}\frac{\alpha^{n}}{\sqrt{n!}}|n\rangle`],
+  ['平移算符与展开系数', R`D(x_0)=e^{\alpha(a^{\dagger}-a)},\qquad C_n=e^{-|\alpha|^{2}/2}\frac{\alpha^{n}}{\sqrt{n!}}`],
+  ['完备性（超完备）', R`\frac{1}{\pi}\int|z\rangle\langle z|\,d^{2}z=I,\qquad |\psi\rangle=\frac{1}{\pi}\int|z\rangle\langle z|\psi\rangle\,d^{2}z`],
+  ['非正交性', R`\langle z|z'\rangle=e^{-\frac12|z-z'|^{2}+\frac i2(z^{*}z'-zz^{*})},\qquad |\langle z|z'\rangle|^{2}=e^{-|z-z'|^{2}}`],
+  ['谐振子不确定度', R`\Delta x=L\sqrt{n+\frac12},\qquad \Delta p=\frac{\hbar}{L}\sqrt{n+\frac12},\qquad \Delta x\,\Delta p=\Big(n+\frac12\Big)\hbar`],
+  ['相干态最小不确定度', R`\Delta x=\frac{L}{\sqrt2},\qquad \Delta p=\frac{\hbar}{L\sqrt2},\qquad \Delta x\,\Delta p=\frac{\hbar}{2}`],
+  ['相干态时间演化', R`\alpha(t)=\alpha_0e^{-i\omega t},\qquad |\psi(t)\rangle=e^{-i\omega t/2}|\alpha_0e^{-i\omega t}\rangle`],
+  ['平均位置/动量演化', R`\langle x\rangle(t)=x_0\cos\omega t+\frac{p_0}{m\omega}\sin\omega t,\qquad \langle p\rangle(t)=p_0\cos\omega t-m\omega x_0\sin\omega t`]
+ ]},
+
+{no:'7', title:'Bloch 方程', en:'第七章', file:'7.Bloch equation.pdf',
+ sections:['两能级系统','算符与对易/反对易关系','原子偶极矩','旋转波近似（RWA）与拉比频率','拉比震荡','密度算符与运动方程','能量与相位弛豫（T1、T2）','T2*（磁场不均匀性）','光学 Bloch 方程（Maxwell–Bloch）','Jaynes–Cummings 模型与暗态'],
+ concepts:[
+  ['两能级系统','|e⟩、|g⟩ 张成二维态空间；只有 4 个独立算符，取 I、σ_x、σ_y、σ_z（或 I、σ_z、σ_±）。'],
+  ['σ_± 与 σ_z','σ_+=|e⟩⟨g| 使原子跃迁到激发态（非厄米）；σ_z 的期待值给出反转数。'],
+  ['平均偶极矩','仅当原子处在叠加态（c_e、c_g 均不为零）时才存在平均偶极矩。'],
+  ['旋转波近似（RWA）','只保留近似能量守恒的慢变项，忽略双产生/双湮灭项。'],
+  ['拉比震荡','恒定光场下占据数差与平均偶极矩周期震荡，周期 T_r=π/Ω_r。'],
+  ['T1、T2、T2*','T1 为能量（纵向）弛豫时间，T2 为相位（横向）弛豫时间，T2* 为磁场不均匀导致的横向相干衰减时间；一般 T2≤2T1。'],
+  ['光学 Bloch 方程','含泵浦与弛豫的二能级反转数与偶极矩联立运动方程（Maxwell–Bloch）。'],
+  ['Jaynes–Cummings 模型','RWA 后只保留 σ₋a† 与 σ₊a，激发数守恒，哈密顿量块对角化，出现缀饰态。']
+ ],
+ formulas:[
+  ['升降算符与对易关系', R`\sigma_+=|e\rangle\langle g|,\quad \sigma_-=|g\rangle\langle e|;\qquad [\sigma_+,\sigma_-]=\sigma_z,\quad \{\sigma_+,\sigma_-\}=I`],
+  ['哈密顿量与反转数', R`H_A=\tfrac12\hbar\omega_{eg}\sigma_z,\qquad \langle\sigma_z\rangle=|c_e|^{2}-|c_g|^{2}`],
+  ['偶极算符与 RWA 微扰', R`\vec d=-(M^{*}\sigma_++M\sigma_-),\qquad H^{RWA}_{A\text-F}=\tfrac12 M^{*}E^{(+)}(t)\sigma_++h.c.`],
+  ['拉比频率与失谐', R`\Omega_r=\frac{M^{*}E(t)}{2\hbar},\qquad \Delta=\frac{\omega_{eg}-\omega}{2}`],
+  ['共振拉比震荡', R`|c_g(t)|^{2}=\cos^{2}(\Omega_r t),\qquad |c_e(t)|^{2}=\sin^{2}(\Omega_r t),\qquad T_r=\frac{\pi}{\Omega_r}`],
+  ['密度矩阵运动方程', R`\frac{d}{dt}\rho=\frac{1}{i\hbar}[H,\rho]`],
+  ['T1 / T2 关系', R`\dot w=-\frac{w-w_0}{T_1},\qquad \frac{1}{T_1}=\frac{2}{T_2}=\Gamma_e+\Gamma_g=\frac{2n_{th}+1}{\tau_{sp}}`],
+  ['横向/纵向弛豫', R`M_{xy}(t)=M_{xy}(0)e^{-t/T_2},\qquad M_z(t)=M_{z,eq}-[M_{z,eq}-M_z(0)]e^{-t/T_1}`],
+  ['光学 Bloch 方程', R`\dot w=-\frac{w-w_0}{T_1}-\frac{1}{i\hbar}(M^{*}E^{(-)}d^{*}-ME^{(+)}d),\qquad \dot d=\Big(i\omega_{eg}-\frac{1}{T_2}\Big)d+\frac{1}{2i\hbar}ME^{(+)}w`],
+  ['JC 哈密顿量与能级', R`\hat H=\frac{\hbar\omega_{eg}}{2}\sigma_z+\hbar\omega a^{\dagger}a+\hbar\Omega(\sigma_+a+\sigma_-a^{\dagger}),\qquad E_{n,\pm}=\hbar\omega(n+\tfrac12)\pm\frac{\hbar}{2}\sqrt{\Delta^{2}+4\Omega^{2}(n+1)}`],
+  ['暗态', R`|\text{Dark}\rangle=\frac{1}{\sqrt{\Omega_1^{2}+\Omega_2^{2}}}(\Omega_2|1\rangle-\Omega_1|3\rangle)`]
+ ]},
+
+{no:'8', title:'相对论量子力学', en:'第八章', file:'8.相对论量子力学.pdf',
+ sections:['Klein–Gordon 方程','流守恒与"负能量"问题','非相对论极限','存在电磁场的情形','KG 方程的协变形式','Dirac 方程','概率守恒与 α、β 的条件','电子速度算符与自旋','α、β 的矩阵表示','自由电子的平面波解'],
+ concepts:[
+  ['Klein–Gordon 方程','由 E²=c²p²+m²c⁴ 作算符替换得到，描述自旋 0 粒子，不适合自旋 1/2 粒子。'],
+  ['"负能量"问题','E=±√(c²p²+m²c⁴) 出现负能量解；量子力学中粒子可跃迁，负能量困难必须认真对待。'],
+  ['ρ 非正定困难','KG 方程含波函数对时间的二阶导数，ρ 可能为负，难以解释为概率密度；后由 Pauli–Weisskopf 重新解释为场方程（电荷密度）。'],
+  ['Dirac 方程','1928 年为克服 KG 困难提出：要求概率密度正定、概率守恒、Lorentz 不变；波函数为多分量、只含 P 的一次项。'],
+  ['自旋与总角动量','引入内禀角动量 s=(ħ/2)Σ，使总角动量 J=l+s 守恒；Σ 与泡利算符代数相同，自旋为 ħ/2。'],
+  ['α、β 的维数','由 α_iβ=−βα_i 取行列式得 N 为偶数，且 N≥4，取 N=4。'],
+  ['守恒量完全集','自由电子 (H,p) 不构成完全集；取 (H,p,Σ·p) 为一组对易守恒量完全集。']
+ ],
+ formulas:[
+  ['相对论能量-动量关系', R`E^{2}=c^{2}p^{2}+m^{2}c^{4}`],
+  ['Klein–Gordon 方程', R`-\hbar^{2}\frac{\partial^{2}}{\partial t^{2}}\psi=(-\hbar^{2}c^{2}\nabla^{2}+m^{2}c^{4})\psi`],
+  ['KG 连续性方程', R`\rho=\frac{i\hbar}{2mc^{2}}\Big(\psi^{*}\frac{\partial\psi}{\partial t}-\psi\frac{\partial\psi^{*}}{\partial t}\Big),\qquad j=-\frac{i\hbar}{2m}(\psi^{*}\nabla\psi-\psi\nabla\psi^{*})`],
+  ['非相对论极限分离静能', R`\psi=\varphi e^{-imc^{2}t/\hbar}\ \Rightarrow\ i\hbar\frac{\partial\varphi}{\partial t}=-\frac{\hbar^{2}}{2m}\nabla^{2}\varphi,\qquad \rho=\varphi^{*}\varphi\ge0`],
+  ['KG 协变形式', R`\partial_\mu\partial_\mu\psi=\frac{m^{2}c^{2}}{\hbar^{2}}\psi,\qquad \partial_\mu j_\mu=0`],
+  ['Dirac 方程', R`i\hbar\frac{\partial\psi}{\partial t}=H\psi,\qquad H=c\,\boldsymbol\alpha\cdot p+mc^{2}\beta`],
+  ['Dirac 概率守恒', R`\rho=\psi^{+}\psi,\qquad j=c\,\psi^{+}\boldsymbol\alpha\psi,\qquad \frac{\partial\rho}{\partial t}+\nabla\cdot j=0`],
+  ['α、β 的代数条件', R`\alpha_x^{2}=\alpha_y^{2}=\alpha_z^{2}=\beta^{2}=1,\qquad \alpha_i\alpha_k=-\alpha_k\alpha_i,\qquad \alpha_i\beta+\beta\alpha_i=0`],
+  ['速度算符与自旋', R`v=c\boldsymbol\alpha,\qquad s=\frac{\hbar}{2}\Sigma,\qquad [J,H]=0,\ J=l+s`],
+  ['Pauli–Dirac 表象', R`\beta=\begin{pmatrix}I&0\\0&-I\end{pmatrix},\qquad \alpha_i=\begin{pmatrix}0&\sigma_i\\\sigma_i&0\end{pmatrix},\qquad \Sigma=\begin{pmatrix}\boldsymbol\sigma&0\\0&\boldsymbol\sigma\end{pmatrix}`],
+  ['平面波解与色散关系', R`(c\boldsymbol\alpha\cdot p+mc^{2}\beta)u(p)=Eu(p),\qquad E=E_\pm=\pm\sqrt{m^{2}c^{4}+c^{2}\hbar^{2}k^{2}}`]
+ ]},
+
+{no:'9', title:'时间反演', en:'第九章', file:'9.时间反演.pdf',
+ sections:['反幺正变换','时间反演的概念与物理意义','无自旋粒子的时间反演','自旋 1/2 粒子的时间反演','时间反演不变性','T² 的本征值与统计性','Kramers 简并'],
+ concepts:[
+  ['反幺正变换','不保持内积不变而是取共轭；A² 为幺正变换。'],
+  ['反幺正算符的一般形式','T=UK（U 幺正、K 取复共轭）；最常见的反幺正变换即时间反演。'],
+  ['时间反演','不是时间倒流，而是运动方向倒转；时间反演算符是反线性算符，故不导致守恒量。'],
+  ['物理要求','时间反演态与原态相比，坐标平均值相同、动量与角动量平均值相反。'],
+  ['无自旋 / 自旋 1/2','无自旋 T=K（即 ψ_r=ψ*）；自旋 1/2 为 T=−iσ_yK。'],
+  ['时间反演不变性','存在幺正 U 使 U†HU=H*；无自旋时要求 H*=H。'],
+  ['T² 与统计性','T²=cI，c=±1；玻色子 c=+1、费米子 c=−1。'],
+  ['Kramers 简并','费米子 c=−1 时 φ 与 Tφ 正交且能量相同，时间反演不变时能级出现简并。']
+ ],
+ formulas:[
+  ['反幺正变换与一般形式', R`\langle A\phi|A\psi\rangle=\langle\psi|\phi\rangle;\qquad T=UK`],
+  ['时间反演态的物理要求', R`\langle\psi_r|\mathbf r|\psi_r\rangle=\langle\psi|\mathbf r|\psi\rangle,\qquad \langle\psi_r|\mathbf p|\psi_r\rangle=-\langle\psi|\mathbf p|\psi\rangle`],
+  ['无自旋粒子的时间反演', R`\psi_r=K\psi=\psi^{*}`],
+  ['自旋 1/2 粒子的时间反演', R`T=-i\sigma_yK,\qquad T\chi_{1/2}=\chi_{-1/2},\qquad T\chi_{-1/2}=-\chi_{1/2}`],
+  ['时间反演不变性条件', R`U^{\dagger}HU=H^{*}\qquad(\text{无自旋}:H^{*}=H)`],
+  ['T² 与统计性', R`T^{2}=cI,\quad c=\pm1;\qquad c=+1\ (\text{Bose}),\ c=-1\ (\text{Fermi}),\ c=(-1)^{N}`],
+  ['Kramers 简并', R`\langle T\phi|\phi\rangle=0,\qquad H(T\phi)=E(T\phi)`]
+ ]},
+
+{no:'10', title:'量子信息', en:'第十章', file:'10.量子信息.pdf',
+ sections:['量子比特与 Bloch 球','多量子比特系统','单量子比特门','多量子比特门（CNOT、Swap）','基于非计算基的测量','纠缠态与 Bell 态','两电子自旋单态与三重态','量子纠缠度（并发度）','GHZ 态与 W 态'],
+ concepts:[
+  ['量子比特','|ψ⟩=α|0⟩+β|1⟩，|0⟩、|1⟩ 为计算基态；物理载体可为光子偏振、电子自旋等。'],
+  ['量子并行性','N 个量子位可同时存储 2^N 个数，一次演化相当于 2^N 个数据的并行处理。'],
+  ['量子测量限制','一次测量只能给出 0 或 1，测量后态塌缩，只能获得一个比特信息。'],
+  ['量子门','对量子态的作用是线性的；任意幺正矩阵都是有效量子门（幺正性是唯一限制）。'],
+  ['CNOT 与 SWAP','CNOT：控制比特为 1 时翻转目标比特；SWAP 交换两比特。'],
+  ['纠缠态','不能写成两体直积形式的态；Bell 态是两比特最大纠缠态。'],
+  ['单态与三重态','S=1 为三重态（M_S=1,0,−1），S=0 为单态；M_S=0 的态为纠缠态，M_S=±1 可分离。'],
+  ['并发度 C','度量两自旋纠缠程度，0≤C≤1；用自旋反转算符 ρ̃ 计算。'],
+  ['GHZ 态与 W 态','两类不能互相转换的三量子比特纠缠态；断开一个粒子后的塌缩行为不同。']
+ ],
+ formulas:[
+  ['量子比特与 Bloch 球', R`|\psi\rangle=\alpha|0\rangle+\beta|1\rangle,\quad |\alpha|^{2}+|\beta|^{2}=1;\qquad |\psi\rangle=\cos\frac\theta2|0\rangle+e^{i\varphi}\sin\frac\theta2|1\rangle`],
+  ['单量子比特门', R`X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\quad R(\theta)=\begin{pmatrix}1&0\\0&e^{i\theta}\end{pmatrix},\quad H=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}`],
+  ['CNOT 与 SWAP', R`U_{\text{CNOT}}=\begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{pmatrix},\qquad \text{SWAP}=\begin{pmatrix}1&0&0&0\\0&0&1&0\\0&1&0&0\\0&0&0&1\end{pmatrix}`],
+  ['纠缠态与 Bell 态', R`|\psi\rangle\neq|\varphi_1\rangle\otimes|\varphi_2\rangle;\qquad \frac{1}{\sqrt2}(|00\rangle+|11\rangle)`],
+  ['单态与三重态', R`\chi_{11}=\alpha(1)\alpha(2),\quad \chi_{10}=\frac{1}{\sqrt2}(\alpha(1)\beta(2)+\beta(1)\alpha(2)),\quad \chi_{00}=\frac{1}{\sqrt2}(\alpha(1)\beta(2)-\beta(1)\alpha(2))`],
+  ['总自旋平方', R`S^{2}=\frac{3}{2}\hbar^{2}I+\frac{\hbar^{2}}{2}(\sigma_{1x}\sigma_{2x}+\sigma_{1y}\sigma_{2y}+\sigma_{1z}\sigma_{2z}),\qquad S^{2}\chi=S(S+1)\hbar^{2}\chi`],
+  ['并发度定义', R`C(\rho)=\max\{0,\lambda_1-\lambda_2-\lambda_3-\lambda_4\},\qquad \tilde\rho=(\sigma_y\otimes\sigma_y)\rho^{*}(\sigma_y\otimes\sigma_y)`]
+ ]}
+];
+
+const HQ_TOPICS = [
+ {name:'密度矩阵', ch:'第3章', pri:'S', stars:5, ev:[['2017–2018','计算1'],['2022–2023','小8/大3'],['2025','简3/计2']], note:'纯态/混态性质、测量后的密度矩阵、Trρ=1 与 ρ²=ρ 的证明——几乎每年必考'},
+ {name:'泡利矩阵与求迹', ch:'第4章', pri:'S', stars:5, ev:[['2017–2018','简5'],['2022–2023','小7/小8'],['2025','简2/简4']], note:'泡利矩阵、对易子、迹 Tr(σxσy)、Tr(σxσyσz)'},
+ {name:'自旋单态与三重态', ch:'第4/10章', pri:'S', stars:5, ev:[['2017–2018','简8'],['2022–2023','小6'],['2025','简9']], note:'两自旋 1/2 的单态/三重态与最大纠缠态'},
+ {name:'相干态', ch:'第6章', pri:'S', stars:5, ev:[['2017–2018','简6'],['2022–2023','小9'],['2025','简7']], note:'正交性、超完备性、用谐振子本征态展开、最小不确定度'},
+ {name:'Bose-Hubbard 模型', ch:'第5章', pri:'S', stars:5, ev:[['2017–2018','计算2'],['2022–2023','大1'],['2025','计4']], note:'三格点模型的单/双粒子基矢、矩阵形式与本征值——每年大题'},
+ {name:'Klein–Gordon 方程', ch:'第8章', pri:'A', stars:4, ev:[['2017–2018','简3'],['2022–2023','小1'],['2025','简8']], note:'由质能关系导出、自由电子是否满足、方程写法'},
+ {name:'纠缠态与 GHZ/W 态', ch:'第10章', pri:'A', stars:4, ev:[['2017–2018','简10'],['2022–2023','小2'],['2025','简9']], note:'纠缠定义、两/三比特最大纠缠态、GHZ 与 W 态'},
+ {name:'Bloch 方程与 T1/T2/T2*', ch:'第7章', pri:'A', stars:4, ev:[['2022–2023','小5'],['2025','简10']], note:'光学 Bloch 方程中 T1、T2、T2* 的物理意义'},
+ {name:'二次量子化与对易关系', ch:'第5章', pri:'A', stars:4, ev:[['2017–2018','简4'],['2022–2023','小10/大2'],['2025','简5']], note:'一次/二次量子化、玻色/费米对易与反对易关系'},
+ {name:'施密特正交化', ch:'第1章', pri:'A', stars:4, ev:[['2017–2018','计算3'],['2025','计1']], note:'由给定矢量组构造正交归一基矢（要求写过程）'},
+ {name:'时间反演算符', ch:'第9章', pri:'B', stars:3, ev:[['2017–2018','简9'],['2022–2023','小3']], note:'无自旋 T=K、自旋 1/2 T=−iσyK'},
+ {name:'自旋进动', ch:'第4章', pri:'B', stars:3, ev:[['2025','计3']], note:'H=ωSz 下的时间演化与自旋期望值'},
+ {name:'谐振子基态与不确定度', ch:'第2/6章', pri:'B', stars:3, ev:[['2017–2018','简1'],['2025','简6']], note:'能量本征值、零点能、Δx 与 Δp'}
+];
+
+const HQ_TYPES = [
+ {name:'概念简答', cnt:10, topics:'密度矩阵 · 相干态 · 纠缠 · KG · Bloch', pri:'S', ex:'每年 10 道简答，覆盖全部章节的基础结论'},
+ {name:'密度矩阵计算', cnt:3, topics:'密度矩阵', pri:'S', ex:'写 |↑⟩ 的密度矩阵、混合态、证明 Trρ=1/ρ²=ρ'},
+ {name:'泡利矩阵与求迹', cnt:4, topics:'自旋', pri:'S', ex:'写泡利矩阵、算 [σx+iσy,σz]、求 Tr(σxσyσz)'},
+ {name:'Bose-Hubbard 模型计算', cnt:3, topics:'二次量子化', pri:'S', ex:'三格点：单/双粒子基矢、H 矩阵、能级与本征态'},
+ {name:'施密特正交化', cnt:2, topics:'希尔伯特空间', pri:'A', ex:'由给定矢量组构造正交归一基矢'},
+ {name:'自旋进动与时间演化', cnt:1, topics:'自旋', pri:'B', ex:'H=ωSz、|ψ(0)⟩ 求 |ψ(t)⟩'},
+ {name:'证明题（密度矩阵性质）', cnt:2, topics:'密度矩阵', pri:'A', ex:'纯态下 ρ²=ρ、ρ†=ρ、⟨ρ⟩≥0，混合态哪些不满足'}
+];
+
+const HQ_EXAMS = [
+{ id:'hq2025', label:'高等量子力学 2025 回忆（原题使用往年记录）',
+  meta:[['任课教师','金亮'],['题量','10 简答 + 4 计算'],['备注','学生回忆版'],['来源文件','高等量子力学2025.pdf']],
+  qs:[
+   {no:'简1', title:'德布罗意关系与无限深势阱', topic:'德布罗意·势阱', type:'简答', stem:'(1) 由德布罗意关系写出能量 E、动量 p 的粒子的 ν 与 λ；(2) 质量 m 的粒子在宽 a 的一维无限深势阱中，写出能量本征态。', key:'ν=E/h、λ=h/p；E_n=n²π²ħ²/(2ma²)，ψ_n=√(2/a)sin(nπx/a)。', src:'简答第 1 题'},
+   {no:'简2', title:'泡利矩阵与对易子', topic:'自旋', type:'简答', stem:'(1) 写出 σ_z 表象自旋 1/2 的泡利矩阵；(2) 计算 [σ_x+iσ_y, σ_z]；(3) 写出 S_z 表象自旋 1 的自旋算符。', key:'[σ_x+iσ_y,σ_z]=−2(σ_x+iσ_y)；自旋 1 为 3×3 矩阵。', src:'简答第 2 题'},
+   {no:'简3', title:'写密度矩阵', topic:'密度矩阵', type:'简答', stem:'写出下面态的密度矩阵：(1) |↑⟩；(2) ½|↑⟩⟨↑| + ¼(|↑⟩+|↓⟩)(⟨↑|+⟨↓|)；(3) 自旋向上、向下概率各 ½ 的态。', key:'(1) diag(1,0)；(2) 混合态（含非对角元）；(3) ½I。', src:'简答第 3 题'},
+   {no:'简4', title:'求迹', topic:'自旋', type:'简答', stem:'计算迹：(1) Tr(σ_x)；(2) Tr(σ_xσ_y)；(3) Tr(σ_xσ_x)。', key:'0；0；2。', src:'简答第 4 题'},
+   {no:'简5', title:'玻色子与费米子波函数', topic:'二次量子化', type:'简答', stem:'从对称性的角度写出玻色子和费米子波函数满足的关系。', key:'玻色子交换对称、费米子交换反对称。', src:'简答第 5 题'},
+   {no:'简6', title:'谐振子基态与激发态', topic:'谐振子', type:'简答', stem:'写出谐振子基态和第一激发态的能量与 Δx、Δp。', key:'E_n=(n+½)ħω；Δx·Δp=(n+½)ħ。', src:'简答第 6 题'},
+   {no:'简7', title:'相干态', topic:'相干态', type:'简答', stem:'(1) 相干态是否正交？为什么说相干态具有超完备性？(2) 写出一个相干态，并用谐振子的本征态将它展开。', key:'|⟨z|z′⟩|²=e^{−|z−z′|²} 不正交；(1/π)∫|z⟩⟨z|d²z=I 超完备。', src:'简答第 7 题'},
+   {no:'简8', title:'Klein–Gordon 方程', topic:'相对论量子力学', type:'简答', stem:'写出 KG 方程。', key:'−ħ²∂²ψ/∂t²=(−ħ²c²∇²+m²c⁴)ψ。', src:'简答第 8 题'},
+   {no:'简9', title:'纠缠态与最大纠缠态', topic:'量子信息', type:'简答', stem:'(1) 描述纠缠态的概念；(2) 写出 4 个不同的两比特最大纠缠态。', key:'不可写成直积；4 个 Bell 态。', src:'简答第 9 题'},
+   {no:'简10', title:'T1 / T2 / T2* 的含义', topic:'Bloch 方程', type:'简答', stem:'布洛赫理论中 T1、T2 和 T2* 的含义。', key:'T1 能量弛豫、T2 相位弛豫、T2* 磁场不均匀导致的横向相干衰减。', src:'简答第 10 题'},
+   {no:'计1', title:'施密特正交化', topic:'希尔伯特空间', type:'计算', stem:'施密特正交化求正交归一基矢，要求写出计算过程（给出两组矢量）。', key:'逐步归一化并扣除投影。', src:'计算第 1 题'},
+   {no:'计2', title:'证明密度矩阵性质', topic:'密度矩阵', type:'证明', stem:'对纯态证明密度矩阵满足：(1) Trρ=1；(2) ρ²=ρ；(3) ρ†=ρ；(4) 任意本征态下 ⟨ρ⟩≥0。对混合态哪些不满足？', key:'混合态 ρ²≠ρ（其余仍满足）。', src:'计算第 2 题'},
+   {no:'计3', title:'自旋进动', topic:'自旋', type:'计算', stem:'(1) 哈密顿量为 H、初始态 |ψ(0)⟩，如何计算时间演化 |ψ(t)⟩？(2) H=ωS_z，|ψ(0)⟩=(|↑⟩+|↓⟩)/√2，求 |ψ(t)⟩。', key:'|ψ(t)⟩=e^{−iHt/ħ}|ψ(0)⟩。', src:'计算第 3 题'},
+   {no:'计4', title:'Bose-Hubbard 模型', topic:'二次量子化', type:'计算', stem:'H=−J(a₁†a₂+a₂†a₃+h.c.)+Σ U/2 nᵢ(nᵢ−1)，3 格点。(1) 写单粒子与双粒子基矢；(2) 求 H 在两基下的矩阵形式；(3) 求单粒子基下能量本征值与本征态，以及 U=0 时双粒子基下的能量本征值与本征态。', key:'6×6 矩阵对角化。', src:'计算第 4 题'}
+  ]},
+{ id:'hq2022', label:'高等量子力学 2022–2023（灰小免 整理）',
+  meta:[['整理者','灰小免'],['日期','2023 年 2 月 23 日'],['题量','10 小题（各 4 分）+ 3 大题（各 20 分）'],['来源文件','高量2022-2023.pdf']],
+  qs:[
+   {no:'小1', title:'推导 Klein–Gordon 方程', topic:'相对论量子力学', type:'简答 · 4 分', stem:'根据相对论质能关系推导 Klein–Gordon 方程。', key:'由 E²=c²p²+m²c⁴ 作 E→iħ∂_t、p→−iħ∇ 替换。', src:'小题 1'},
+   {no:'小2', title:'纠缠态与最大纠缠态', topic:'量子信息', type:'简答 · 4 分', stem:'描述纠缠态的概念，写出两个量子比特和三个量子比特的最大纠缠态。', key:'Bell 态、GHZ 态。', src:'小题 2'},
+   {no:'小3', title:'时间反演算符', topic:'时间反演', type:'简答 · 4 分', stem:'写出无自旋粒子和自旋 1/2 粒子的时间反演算符。', key:'T=K；T=−iσ_yK。', src:'小题 3'},
+   {no:'小4', title:'德布罗意关系', topic:'德布罗意', type:'简答 · 4 分', stem:'根据德布罗意关系，写出能量为 E、动量为 p 的粒子的 ν 和 λ。', key:'ν=E/h、λ=h/p。', src:'小题 4'},
+   {no:'小5', title:'T1/T2/T2* 的物理意义', topic:'Bloch 方程', type:'简答 · 4 分', stem:'解释光学 Bloch 方程中 T1、T2、T2* 的物理意义。', key:'纵向能量弛豫、横向相位弛豫、磁场不均匀导致的相干衰减。', src:'小题 5'},
+   {no:'小6', title:'单态与三重态', topic:'自旋', type:'简答 · 4 分', stem:'写出两个自旋 1/2 粒子的单态和三重态。', key:'χ_00 单态；χ_11、χ_10、χ_1−1 三重态。', src:'小题 6'},
+   {no:'小7', title:'泡利矩阵', topic:'自旋', type:'简答 · 4 分', stem:'写出自旋 1/2 粒子的自旋矩阵（泡利矩阵）。', key:'σx、σy、σz。', src:'小题 7'},
+   {no:'小8', title:'写密度矩阵', topic:'密度矩阵', type:'简答 · 4 分', stem:'写出下面态的密度矩阵：(1) |↑⟩；(2) ½|↑⟩⟨↑| + ¼(|↑⟩+|↓⟩)(⟨↑|+⟨↓|)；(3) 自旋向上、向下概率各 ½ 的完全混合态。', key:'diag(1,0)；混合态；½I。', src:'小题 8'},
+   {no:'小9', title:'相干态的正交性与超完备性', topic:'相干态', type:'简答 · 4 分', stem:'(1) 不同相干态之间是正交的吗？解释原因。为什么说相干态是超完备的？(2) 写出一个相干态，并用谐振子本征态展开。', key:'不正交；超完备；(1/π)∫|z⟩⟨z|d²z=I。', src:'小题 9'},
+   {no:'小10', title:'玻色/费米对称性与对易关系', topic:'二次量子化', type:'简答 · 4 分', stem:'(1) 描述玻色子和费米子波函数满足的交换对称性。(2) 写出玻色子和费米子满足的对易关系。', key:'玻色对易、费米反对易。', src:'小题 10'},
+   {no:'大1', title:'Bose-Hubbard 模型', topic:'二次量子化', type:'计算 · 20 分', stem:'H=−J(a₁†a₂+a₂†a₃+h.c.)+Σ U/2 nᵢ(nᵢ−1)。(1) 写单粒子与双粒子基矢；(2) 求 H 的矩阵形式；(3) 求单粒子基下能量本征值与本征态，以及 U=0 时双粒子基下的能量本征值与本征态。', key:'矩阵对角化；U=0 时双粒子为自由跳跃。', src:'大题 1'},
+   {no:'大2', title:'玻色子态构造与正交归一', topic:'二次量子化', type:'证明 · 20 分', stem:'(1) 使用算符 a† 作用在真空态上，写出有 n 个玻色子的态；(2) 证明这些态 {|n⟩} 是正交归一的。', key:'|n⟩=(a†)ⁿ/√(n!)|0⟩；由 [a,a†]=1 证明。', src:'大题 2'},
+   {no:'大3', title:'密度矩阵性质的证明', topic:'密度矩阵', type:'证明 · 20 分', stem:'对于纯态，证明密度矩阵满足：(1) Trρ=1；(2) ρ²=ρ；(3) ρ†=ρ；(4) 任意本征态下平均值 ⟨ρ⟩≥0。对混合态，哪些性质不满足？', key:'混合态 ρ²≠ρ。', src:'大题 3'}
+  ]},
+{ id:'hq2018', label:'高等量子力学 2017–2018 考题回忆（孙晓培、姜伟伦）',
+  meta:[['题量','10 简答（各 6 分）+ 3 计算（10+10+20 分）'],['备注','学生回忆版'],['来源文件','高等量子力学考题回忆2018.1.11.pdf']],
+  qs:[
+   {no:'简1', title:'势阱与谐振子能量本征值', topic:'基本模型', type:'简答 · 6 分', stem:'写出一维无限深势阱、一维谐振子能量本征值。', key:'n²π²ħ²/2ma²；(n+½)ħω。', src:'简答 1'},
+   {no:'简2', title:'自旋在 z 方向的投影值', topic:'自旋', type:'简答 · 6 分', stem:'自旋为 ½ħ、3/2ħ 的粒子在 z 方向投影值各有哪些？', key:'±ħ/2；±3ħ/2, ±ħ/2。', src:'简答 2'},
+   {no:'简3', title:'KG 方程与自由电子', topic:'相对论量子力学', type:'简答 · 6 分', stem:'写出 KG 方程，自由电子波函数是否满足 KG 方程？', key:'KG 描述自旋 0；自由电子（自旋 1/2）应由 Dirac 方程描述。', src:'简答 3'},
+   {no:'简4', title:'一次/二次量子化与不确定关系', topic:'二次量子化', type:'简答 · 6 分', stem:'解释一次量子化与二次量子化，写出位置与动量的不确定度关系以及海森堡算符不确定度关系。', key:'ΔxΔp≥ħ/2；ΔAΔB≥½|⟨[A,B]⟩|。', src:'简答 4'},
+   {no:'简5', title:'求迹', topic:'自旋', type:'简答 · 6 分', stem:'求迹：Tr(σ_xσ_y)、Tr(σ_xσ_yσ_z)、Tr(σ_zσ_xσ_y)。', key:'0；2i；2i。', src:'简答 5'},
+   {no:'简6', title:'相干态展开与不确定度', topic:'相干态', type:'简答 · 6 分', stem:'将相干态用谐振子本征态展开，并写出其位置动量不确定关系。', key:'|α⟩=e^{−|α|²/2}Σαⁿ/√(n!)|n⟩；ΔxΔp=ħ/2。', src:'简答 6'},
+   {no:'简7', title:'布洛赫球表示', topic:'量子信息', type:'简答 · 6 分', stem:'写出量子比特的布洛赫球表示。', key:'|ψ⟩=cos(θ/2)|0⟩+e^{iφ}sin(θ/2)|1⟩。', src:'简答 7'},
+   {no:'简8', title:'电子自旋单态与三重态', topic:'自旋', type:'简答 · 6 分', stem:'写出电子自旋的单态、三重态。', key:'见 §4 / §10 公式。', src:'简答 8'},
+   {no:'简9', title:'时间反演算符', topic:'时间反演', type:'简答 · 6 分', stem:'写出自旋为 0、½ħ 粒子的时间反演算符。', key:'T=K；T=−iσ_yK。', src:'简答 9'},
+   {no:'简10', title:'GHZ 态与 W 态', topic:'量子信息', type:'简答 · 6 分', stem:'写出量子纠缠 GHZ 态与 W 态。', key:'GHZ=(|000⟩+|111⟩)/√2；W=(|001⟩+|010⟩+|100⟩)/√3。', src:'简答 10'},
+   {no:'计1', title:'自旋 1/2 的密度矩阵', topic:'密度矩阵', type:'计算 · 10 分', stem:'对自旋 1/2 体系写出：(1) 态 |↑⟩ 的密度矩阵；(2) 密度矩阵 ½|↑⟩⟨↑|+¼(|↑⟩+|↓⟩)(⟨↑|+⟨↓|)；(3) 自旋向上、向下概率各 ½ 的密度矩阵。', key:'diag(1,0)；混合态；½I。', src:'计算 1'},
+   {no:'计2', title:'Bose-Hubbard 模型', topic:'二次量子化', type:'计算 · 10 分', stem:'H=−J(a₁†a₂+a₂†a₃+h.c.)+Σ U/2 nᵢ(nᵢ−1)。(1) 写单粒子与双粒子基矢；(2) 求 H 的矩阵形式；(3) 求能量本征值与本征态。', key:'6×6 矩阵求解。', src:'计算 2'},
+   {no:'计3', title:'施密特正交化', topic:'希尔伯特空间', type:'计算 · 20 分', stem:'利用施密特正交化方法求正交完备基矢（给出两组 4 维矢量）。', key:'逐步归一化并扣除投影。', src:'计算 3'}
+  ]},
+{ id:'hq2019', label:'高等量子力学 2018–2019 期末试题（金亮）',
+  meta:[['任课教师','金亮'],['日期','2019 年 1 月 9 日'],['题量','10 简答（60 分）+ 综合（20 分）+ 计算（20 分）'],
+        ['备注','⚠ 该 PDF 字体编码损坏，OCR 输出为乱码，仅能辨认题量结构与少数题眼'],['来源文件','高等量子力学2018-2019期末试题.pdf']],
+  qs:[
+   {no:'—', title:'（整卷文字乱码）', topic:'—', type:'—', stem:'该试卷 PDF 使用损坏的字体编码，提取出的文本为乱码，无法可靠还原题目。从残留字符可辨认出：第一部分为 10 道小题（共 60 分），第二部分为 1 道综合题（20 分），第三部分为 1 道计算题（20 分）；题眼疑似涉及「KG 方程、玻色/费米对易关系、求迹 Tr、密度矩阵、Fock 表象、Bloch 方程、布洛赫球、GHZ 态」等（与其余三套高度重合，但准确性无法保证）。', key:'建议以 2017–2018、2022–2023、2025 三套为准。', src:'整卷'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseOf(){ return CID==='em'?COURSE_EM : CID==='qm2'?COURSE_QM2 : COURSE; }
-function chaptersOf(){ if(CID==='em') return EM_CHAPTERS; if(CID==='qm2') return QM2_CHAPTERS; return TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS; }
-function topicsOf(){ return CID==='em'?EM_TOPICS : CID==='qm2'?QM2_TOPICS : TOPICS; }
-function typesOf(){ return CID==='em'?EM_TYPES : CID==='qm2'?QM2_TYPES : TYPES; }
-function examsOf(){ return CID==='em'?EM_EXAMS : CID==='qm2'?QM2_EXAMS : EXAMS.concat(KY_EXAMS); }
+function courseOf(){ return CID==='em'?COURSE_EM : CID==='qm2'?COURSE_QM2 : CID==='hq'?COURSE_HQ : COURSE; }
+function chaptersOf(){ if(CID==='em') return EM_CHAPTERS; if(CID==='qm2') return QM2_CHAPTERS; if(CID==='hq') return HQ_CHAPTERS; return TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS; }
+function topicsOf(){ return CID==='em'?EM_TOPICS : CID==='qm2'?QM2_TOPICS : CID==='hq'?HQ_TOPICS : TOPICS; }
+function typesOf(){ return CID==='em'?EM_TYPES : CID==='qm2'?QM2_TYPES : CID==='hq'?HQ_TYPES : TYPES; }
+function examsOf(){ return CID==='em'?EM_EXAMS : CID==='qm2'?QM2_EXAMS : CID==='hq'?HQ_EXAMS : EXAMS.concat(KY_EXAMS); }
 function setCourse(c){ CID = c; renderAll(); }
 function renderAll(){
   renderDashboard(); renderChapters(); renderFormulas(); renderHigh();
@@ -1752,13 +2099,15 @@ function renderDashboard(){
   const info = COURSE_INFO_ROWS();
   const em = (CID==='em');
   const qm2 = (CID==='qm2');
+  const hq = (CID==='hq');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
+      : hq ? '本站把《高等量子力学》（金亮）的 10 章讲义（希尔伯特空间 / 态和薛定谔方程 / 密度矩阵 / 自旋 / 二次量子化 / 相干态 / Bloch 方程 / 相对论量子力学 / 时间反演 / 量子信息）整理为结构化资料，并汇总 4 份考题回忆。按考点频率排出优先级。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -1792,6 +2141,8 @@ function renderDashboard(){
       ? '提示：4 套真题中，蔡卫的 3 套为<b>回忆版</b>（题干较简略），杨茂志 1 套为带分值的正式卷面；考点频率由 4 套卷统计，样本有限，仅供复习排序参考。'
       : qm2
       ? '提示：真题来自《量子力学（二）真题汇编》（学生整理），覆盖 2017–2022、按章节编排；另有《量子力学考研真题》经核查全部属于量子力学（一），已归入该课程。'
+      : hq
+      ? '提示：4 份考题中，2017–2018、2022–2023、2025 为<b>回忆版</b>（内容可靠）；2018–2019 那份 PDF 字体编码损坏、OCR 为乱码，仅保留了题量结构说明。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -1855,6 +2206,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 9 章：散射过程的物理描述、分波法、库仑势散射、共振散射、复势的散射、带自旋粒子的散射、玻恩近似、跃迁矩阵、量子力学的经典极限。</p>
     </div>`;
+  } else if(CID==='hq'){
+    html = HQ_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">讲义结构 · 高等量子力学（金亮）</div>
+      <h1>章节结构。</h1>
+      <p>共 10 章：希尔伯特空间、态和薛定谔方程、密度矩阵、自旋、二次量子化、相干态、Bloch 方程、相对论量子力学、时间反演、量子信息。参考书为曾谨言、喀兴林、张永德《高等量子力学》及 Scully & Zubairy、Walls & Milburn《Quantum optics》。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -1888,6 +2246,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='hq'){
+    html = HQ_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -1913,13 +2277,15 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2');
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq');
     const total = em ? 4 : qm2 ? 33 : 3;
-    const ev = t.ev.length ? t.ev.map(([y,q])=>`${y} 第 ${q} 题`).join('、') : (qm2?'真题汇编中未单独命题':'近'+total+'套期末未涉及');
+    const ev = t.ev.length
+      ? t.ev.map(([y,q])=>`${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
-      <td style="white-space:nowrap">${t.ev.length}${qm2?' 题':' / '+total}</td>
+      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq)?' 次':' / '+total}</td>
       <td style="color:#8a8a8a">${esc(ev)}</td>
       <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
       <td>${priTag(t.pri)}</td>
@@ -1928,19 +2294,22 @@ function renderHigh(){
   }).join('');
   const em = (CID==='em');
   const qm2 = (CID==='qm2');
+  const hq = (CID==='hq');
   const total = em ? 4 : qm2 ? 33 : 3;
   $('#high').innerHTML = `
     <div class="hero">
-      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':'考点频率 · 基于 '+total+' 套期末真题'}</div>
+      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
       <h1>高频考点。</h1>
       <p>${qm2
-        ? '“出现题数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
+        ? '“出现次数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
+        : hq
+        ? '“出现次数”统计的是该考点在 4 份考题回忆中出现的次数（同一份卷内多题出现会分别计入）。每一行都列出了它出现的具体题型与题号。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
-        <thead><tr><th>考点</th><th>${qm2?'出现题数':'出现卷数'}</th><th>${qm2?'证据（题号）':'证据（年份·题号）'}</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
+        <thead><tr><th>考点</th><th>${qm2?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
@@ -1962,7 +2331,7 @@ function renderTypes(){
       <p>同一个考点往往以固定题型反复出现。掌握题型，比零散背知识点更接近分数。</p>
     </div>
     <div class="card">
-      <div class="card-title">${CID==='em'?'电动力学':CID==='qm2'?'量子力学（二）':'量子力学（一）'} · 高频题型</div>
+      <div class="card-title">${CID==='em'?'电动力学':CID==='qm2'?'量子力学（二）':CID==='hq'?'高等量子力学':'量子力学（一）'} · 高频题型</div>
       <table class="tbl">
         <thead><tr><th>题型</th><th>出现题数</th><th>对应考点</th><th>典型题</th><th>优先级</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -2068,6 +2437,36 @@ function renderSprint(){
           <tr><td>5</td><td>WKB：适用条件、透射率、玻尔–索末菲量子化求能级</td><td>WKB</td><td>${priTag('A')}</td></tr>
           <tr><td>6</td><td>共振散射：冉绍尔–汤森效应、Breit–Wigner 公式</td><td>共振散射</td><td>${priTag('A')}</td></tr>
           <tr><td>7</td><td>复势的作用（吸收/非弹性散射）</td><td>复势散射</td><td>${priTag('B')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
+  if(CID==='hq'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>你有多少时间，决定你复习什么。高等量子力学题量大（10 简答 + 计算），时间越少越要抓「每年都考」的那几个。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>S＋A＋B 级全部考点；10 章公式速查过一遍；4 份考题按题型归类做完。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>S 级考点（密度矩阵、泡利矩阵与求迹、单态/三重态、相干态、Bose-Hubbard）；只做这五类题。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>10 道简答按章过一遍（KG 方程、T1/T2/T2*、纠缠态、时间反演、布洛赫球、GHZ/W 态）。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：ρ 的性质与 Tr 公式、泡利矩阵与迹、相干态展开、单态/三重态、KG 方程、Bell/GHZ/W 态。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>背熟密度矩阵四性质并会证明；会写 |↑⟩ 与混合态的密度矩阵</td><td>密度矩阵</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>默写泡利矩阵，会算对易子与 Tr(σxσyσz)</td><td>泡利矩阵与求迹</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>默写单态/三重态、4 个 Bell 态、GHZ 与 W 态</td><td>自旋与纠缠</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>相干态：不正交、超完备、用 |n⟩ 展开、ΔxΔp=ħ/2</td><td>相干态</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>练熟三格点 Bose-Hubbard：写基矢、列矩阵、对角化</td><td>Bose-Hubbard</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>施密特正交化（写全过程）</td><td>希尔伯特空间</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>KG 方程写法与 Dirac 方程、T1/T2/T2* 含义</td><td>相对论 / Bloch</td><td>${priTag('A')}</td></tr>
         </tbody>
       </table>
     </div>`;
@@ -2190,6 +2589,45 @@ function renderAbout(){
       <div class="concept"><b>样本有限</b>：频率仅由 33 道真题统计，且年份集中在 2017–2022，排序仅供复习参考。</div>
       <div class="concept"><b>课程信息不全</b>：讲义未标注任课教师与成绩构成，本站据《真题汇编》记为“李老师”，其余留空。</div>
       <div class="concept"><b>答案取舍</b>：真题汇编中部分题目给出了答案要点，部分标注“汇编未给答案”，本站照实呈现。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='hq'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《高等量子力学》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>课程介绍</td><td>高等量子力学-课程介绍.pdf（金亮）</td><td>课程信息、参考书、主要内容、考核方式</td></tr>
+          <tr><td>讲义（10 章）</td><td>1.希尔伯特空间 / 2.态和薛定谔方程 / 3.密度矩阵 / 4.自旋 / 5.二次量子化 / 6.相干态 / 7.Bloch equation / 8.相对论量子力学 / 9.时间反演 / 10.量子信息 .pdf</td><td>章节结构、核心概念、重要公式</td></tr>
+          <tr><td>考题</td><td>高等量子力学2025.pdf（回忆版）</td><td>10 简答 + 4 计算</td></tr>
+          <tr><td>考题</td><td>高量2022-2023.pdf（灰小免 整理）</td><td>10 小题 + 3 大题</td></tr>
+          <tr><td>考题</td><td>高等量子力学考题回忆2018.1.11.pdf（孙晓培、姜伟伦）</td><td>10 简答 + 3 计算</td></tr>
+          <tr><td>考题</td><td>高等量子力学2018-2019期末试题.pdf</td><td>字体编码损坏，仅保留题量结构说明</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>原始文件不改动</b>：所有 PDF 均保持原样，仅在其上做提取与分析。</div>
+      <div class="concept"><b>可回溯</b>：每个考点都标注它出现的年份与题型，可回到考题回忆核对。</div>
+      <div class="concept"><b>不编造</b>：不凭空声称某考点“必考”；频率统计只基于实际拿到的 4 份考题。</div>
+      <div class="concept"><b>恢复题眼</b>：讲义 PDF 导出时公式符号常丢失或错位（矩阵、根号、ħ、⊗ 等），已按物理语境还原为 LaTeX，并尽量不改动原意。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
+      <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
+      <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
     </div>`;
     return;
   }

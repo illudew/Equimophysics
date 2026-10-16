@@ -1,0 +1,161 @@
+# 高等量子力学 · 第 7 章 Bloch 方程 / 第 8 章 相对论量子力学
+> 来源：7.Bloch equation.pdf、8.相对论量子力学.pdf
+
+## 小节
+- 第 7 章 Bloch 方程
+- 两能级系统（Two-level system）
+- 算符与对易 / 反对易关系
+- 原子偶极矩（dipole moment）
+- 旋转波近似（RWA）
+- 薛定谔方程与拉比频率
+- 拉比震荡（Rabi Oscillation）
+- 密度算符与密度矩阵
+- 密度矩阵运动方程
+- 能量和相位弛豫（T1、T2）
+- T2*（磁场不均匀性）
+- 二能级原子与相干经典外场（光学 Bloch 方程 / Maxwell–Bloch 方程）
+- 稳态解
+- Jaynes–Cummings 模型
+- 暗态（Dark state）
+- 第 8 章 相对论量子力学
+- Klein–Gordon 方程
+- 流守恒与"负能量"问题
+- 非相对论极限
+- 存在电磁场
+- Klein–Gordon 方程的协变形式
+- Dirac 方程
+- 概率守恒
+- α、β 的限制条件
+- 电子的速度算符与电子自旋
+- α 与 β 的矩阵表示
+- 自由电子的平面波解
+
+## 核心概念
+- **两能级系统**：具有激发态 $|e\rangle$ 与基态 $|g\rangle$ 的原子，二者组成正交完备态空间，波函数为 $\psi_e,\psi_g$；在此二维态空间中只有 4 个独立算符。
+- **完备算符基**：$I,\sigma_x,\sigma_y,\sigma_z$（或 $I,\sigma_z,\sigma_+,\sigma_-$）张成二能级算符空间。
+- **$\sigma_+$ 与 $\sigma_-$**：$\sigma_+$ 使原子由基态跃迁到激发态，$\sigma_-$ 反向；二者非厄米。
+- **$\sigma_z$**：厄米算符，其期待值（乘原子数 $N$）给出原子反转数（粒子数反转）。
+- **反转对称性**：原子气体本征态对称或反对称，位置算符在本征态下平均值为 0（$\langle e|\vec x|e\rangle=\langle g|\vec x|g\rangle=0$），故原子无永久偶极矩；固体中原子排列破坏对称性，可有永久偶极矩并使矩阵元不为零，能级还可因线性斯塔克效应改变。
+- **平均偶极矩的来源**：仅当 $c_e,c_g\neq0$（原子处在叠加态）时才存在平均偶极矩。
+- **旋转波近似（RWA）**：当场频 $\omega=\omega_{eg}$ 时，仅保留相互作用哈密顿量中的慢变（能量近似守恒）项，忽略双产生 / 双湮灭项。
+- **拉比频率**：$\Omega_r=M^*E/(2\hbar)$ 表征驱动场与原子耦合强度；一般可取为实数（否则通过相位变换消除相位）。
+- **失谐**：$\Delta=(\omega_{eg}-\omega)/2$ 描述光场频率与原子能级共振的偏离。
+- **拉比震荡**：恒定光场下激发态与基态占据数差（及平均偶极矩）周期性震荡，周期 $T_r=\pi/\Omega_r$。
+- **密度算符**：$\rho=|\psi\rangle\langle\psi|$ 描述纯态；亦可描述混合态，任意算符平均值 $\langle A\rangle=Tr(\rho A)$。
+- **密度矩阵各元素的物理意义**：主对角元 $\rho_{ee},\rho_{gg}$ 为能级占据数；非对角元 $\rho_{eg},\rho_{ge}$ 为原子偶极矩正负频部分的期待值，对介质极化有贡献。
+- **孤立二能级原子**：无外场相互作用时占据数不变，偶极矩以频率 $\omega_{eg}$ 震荡。
+- **自发辐射速率**：$\tau_{sp}$ 为自发辐射时间，热场提供热光子数 $n_{th}$，使激发态衰变率 $\Gamma_e=(n_{th}+1)/\tau_{sp}$、基态泵浦率 $\Gamma_g=n_{th}/\tau_{sp}$。
+- **能量与相位弛豫**：$T_1$ 描述二能级系统能量的弛豫；$T_2$ 描述相位的弛豫（$c_e,c_g$ 的相干时间），受原子与环境相互作用影响。本模型中未考虑其他退相干机制时 $T_2=2T_1$；计入声子、碰撞等只破坏相位的过程后 $T_2\le 2T_1$。
+- **$T_2$（spin–spin relaxation time）**：描述磁化横向分量衰减的时间。
+- **$T_1$（spin–lattice relaxation time）**：描述磁化纵向分量指数恢复平衡值的时间。
+- **$T_2^*$**：考虑磁场不均匀性后核自旋相干衰减更快，横向衰减的特征时间记为 $T_2^*$。
+- **粒子数反转**：热光子使平衡态反转数为负（基态占据更多），不能实现反转；通过非相干泵浦（泵浦率 $\Lambda$）破坏相干可实现反转。
+- **光学 Bloch 方程（Maxwell–Bloch equations）**：包含泵浦、弛豫后，二能级系统反转数与偶极矩（极化）满足的联立运动方程。
+- **Jaynes–Cummings 模型**：光场与原子的相互作用哈密顿量含 4 项耦合（$\sigma_-a^\dagger,\sigma_+a,\sigma_-a,\sigma_+a^\dagger$）；近似共振下前两项近似能量守恒，对应拉比震荡慢变项，做 RWA 后保留 $\sigma_-a^\dagger$ 与 $\sigma_+a$，得到 JC 哈密顿量。
+- **激发数守恒**：RWA 下 $\hat N_e=\hat n+|e\rangle\langle e|$ 与哈密顿量对易，耦合只连接激发数相同的态 $|e\rangle|n\rangle$ 与 $|g\rangle|n+1\rangle$，哈密顿量块对角化。
+- **缀饰态（dressed states）**：$|e\rangle|n\rangle,|g\rangle|n+1\rangle$ 为裸态（bare state），$|n,+\rangle,|n,-\rangle$ 为缀饰态，由混合角 $\theta_n$ 描述。
+- **暗态（Dark state）**：三能级 $\Lambda$ 型耦合下某叠加态因干涉而不与光场耦合。
+- **Klein–Gordon 方程**：由相对论能量-动量关系 $E^2=c^2p^2+m^2c^4$ 作 $E\to i\hbar\partial_t$、$p\to-i\hbar\nabla$ 替换得到，是自由粒子满足相对论不变性的波动方程；用来描述自旋为 0 的粒子（如 $\pi$ 介子），不适合自旋 1/2 粒子。
+- **"负能量"问题**：相对论关系中 $E=\pm\sqrt{c^2p^2+m^2c^4}$ 出现负能量解；经典力学中能量连续变化（$E\ge mc^2>0$）不引起困难，但量子力学中粒子可跃迁，负能量困难必须认真对待。
+- **KG 的 ρ 非正定困难**：KG 方程含波函数对时间二阶导数，$\rho$ 不可避免地含 $\psi$ 与 $\partial_t\psi$，初始条件可任意给定，故 $\rho$ 可能在某些区域为正、另一些为负，难以解释为概率密度。
+- **Pauli–Weisskopf 重新解释**：1934 年把 KG 方程重新解释为场方程，$q\rho$ 与 $qj$ 分别解释为电荷密度与电流密度，$\frac{\partial}{\partial t}(q\rho)+\nabla\cdot(qj)=0$ 为局域电荷守恒（粒子数不一定守恒）；KG 方程现视为标量场方程，场量子自旋为 0。
+- **Dirac 方程的提出原则**：1928 年为克服 KG 困难提出电子相对论波动方程，要求 (1) 概率密度正定 $\rho\ge0$；(2) 概率守恒；(3) Lorentz 不变性。由 Pauli 二分量自旋理论出发，波函数取多分量 $N$ 分量形式。
+- **Dirac 方程与 Schrödinger 方程的区别**：Dirac 方程为多分量波函数、只含动量算符 $P$ 的一次项；Schrödinger 方程为单分量波函数、含 $P^2$ 项。
+- **电子速度算符**：由 $[x,H]$ 得 $v\equiv\dot r=c\alpha$，即 $c\alpha$ 可视为相对论电子的速度算符。
+- **轨道角动量不守恒**：自由电子轨道角动量 $l$ 不守恒，$[l,H]=i\hbar c(\alpha\times p)$。
+- **自旋与总角动量**：引入内禀角动量 $s=\frac{\hbar}{2}\Sigma$，令 $\vec J=\vec l+\vec s$ 使总角动量守恒 $[J,H]=0$；$\Sigma$ 与 Pauli 算符 $\sigma$ 有相同的代数性质，自旋值为 $\hbar/2$。
+- **α、β 的维数**：由 $\alpha_i\beta=-\beta\alpha_i$ 取行列式得 $(-1)^N=1$，故 $N$ 为偶数；无 2×2 非零矩阵能与 $\sigma_x,\sigma_y,\sigma_z$ 均反对易，故 $N\ge4$，取 $N=4$。
+- **Pauli–Dirac 表象**：$\beta$ 对角化的表象，$\beta=\mathrm{diag}(I,-I)$，$\beta$ 本征值可取 $\pm1$。
+- **守恒量完全集**：自由电子 $(H,p)$ 未构成守恒量完全集（因自旋自由度未定）；$\Sigma\cdot p$ 与 $p$ 对易且守恒，故取 $(H,p,\Sigma\cdot p)$ 为一组对易守恒量完全集，将定态解完全确定。
+- **正 / 负能量解**：$E=E_+=|E|$ 为正能量解（$\varphi$ 为大分量），$E=E_-=-|E|$ 为负能量解（情况相反）。
+
+## 重要公式
+- **原子哈密顿量**： `H_A=E_e|e\rangle\langle e|+E_g|g\rangle\langle g|`
+- **泡利算符定义**： `\sigma_x=|e\rangle\langle g|+|g\rangle\langle e|,\quad \sigma_y=-i|e\rangle\langle g|+i|g\rangle\langle e|,\quad \sigma_z=|e\rangle\langle e|-|g\rangle\langle g|`
+- **升降算符定义**： `\sigma_+=|e\rangle\langle g|,\qquad \sigma_-=|g\rangle\langle e|,\qquad \sigma_\pm=\tfrac12(\sigma_x\pm i\sigma_y)`
+- **算符矩阵表示**： `\sigma_+=\begin{pmatrix}0&1\\0&0\end{pmatrix},\ \sigma_-=\begin{pmatrix}0&0\\1&0\end{pmatrix},\ \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\ I=\begin{pmatrix}1&0\\0&1\end{pmatrix}`
+- **态矢量**： `|\psi\rangle=c_e|e\rangle+c_g|g\rangle=\begin{pmatrix}c_e\\c_g\end{pmatrix}`
+- **对易关系**： `[\sigma_+,\sigma_-]=\sigma_z,\quad [\sigma_+,\sigma_z]=-2\sigma_+,\quad [\sigma_-,\sigma_z]=2\sigma_-`
+- **反对易关系**： `\{\sigma_+,\sigma_-\}=I,\quad \{\sigma_+,\sigma_z\}=\{\sigma_-,\sigma_z\}=0,\quad \{\sigma_+,\sigma_+\}=\{\sigma_-,\sigma_-\}=0`
+- **算符作用**： `\sigma_+|\psi\rangle=c_g|e\rangle,\quad \sigma_-|\psi\rangle=c_e|g\rangle,\quad \sigma_z|\psi\rangle=c_e|e\rangle-c_g|g\rangle`
+- **反转数期待值**： `\langle\psi|\sigma_z|\psi\rangle=|c_e|^2-|c_g|^2`
+- **哈密顿量的自旋表示**： `H_A=\tfrac12\hbar\omega_{eg}\sigma_z+\tfrac12\hbar\omega_0 I,\quad \omega_{eg}=\tfrac{E_e-E_g}{\hbar},\quad \omega_0=\tfrac{E_e+E_g}{\hbar}`
+- **能量零点调整后**： `H_A=\tfrac12\hbar\omega_{eg}\sigma_z`
+- **偶极矩与偶极算符**： `\vec d=-e_0\vec x`
+- **偶极矩期待值（一般）**： `\langle\psi|\vec d|\psi\rangle=-e_0\big(|c_e|^2\langle e|\vec x|e\rangle+c_ec_g^*\langle g|\vec x|e\rangle+c_gc_e^*\langle e|\vec x|g\rangle+|c_g|^2\langle g|\vec x|g\rangle\big)`
+- **反转对称下的偶极矩**： `\langle\psi|\vec d|\psi\rangle=-e_0\big(c_ec_g^*\langle g|\vec x|e\rangle+c_gc_e^*\langle e|\vec x|g\rangle\big)=-\langle\psi|(\sigma_+M+\sigma_-M^*)|\psi\rangle,\quad M=e_0\langle g|\vec x|e\rangle`
+- **偶极矩算符**： `\vec d=-(M^*\sigma_++M\sigma_-)=\vec d_++\vec d_-`
+- **偶极在电场中的能量**： `H_{A-F}=-\vec d\cdot\vec E(x_A,t),\qquad \vec E(x_A,t)=\tfrac12\big(\vec E^{(+)}+\vec E^{(-)}\big)=\tfrac12\big(\mathcal E\,e^{-i\omega t}+\mathcal E^*\,e^{i\omega t}\big)`
+- **旋转波近似**： `H_{A-F}^{RWA}=\tfrac12 M^*E^{(+)}(t)\,\sigma_++h.c.`
+- **含经典场的薛定谔方程**： `i\hbar\frac{d}{dt}|\psi\rangle=\big(H_A+H_{A-F}^{RWA}\big)|\psi\rangle`
+- **几率幅方程**：
+  `\frac{d}{dt}c_e=-i\frac{\omega_{eg}}{2}c_e-i\Omega_r e^{-i\omega t}c_g`
+  `\frac{d}{dt}c_g=+i\frac{\omega_{eg}}{2}c_g-i\Omega_r e^{+i\omega t}c_e`
+- **拉比频率**： `\Omega_r=\frac{M^*E(t)}{2\hbar}`
+- **失谐定义**： `\Delta=\frac{\omega_{eg}-\omega}{2}`
+- **几率幅变换**： `C_e=c_e\,e^{i\omega t/2},\qquad C_g=c_g\,e^{-i\omega t/2}`
+- **旋转坐标下的几率幅方程**： `\frac{d}{dt}C_e=-i\Delta C_e-i\Omega_r C_g,\qquad \frac{d}{dt}C_g=+i\Delta C_g-i\Omega_r C_e`
+- **共振情形**： `\frac{d}{dt}C_e=-i\Omega_r C_g,\qquad \frac{d}{dt}C_g=-i\Omega_r C_e`
+- **二阶方程与解**： `\frac{d^2}{dt^2}C_e=-\Omega_r^2 C_e,\qquad C_g(t)=\cos(\Omega_r t),\quad C_e(t)=-i\sin(\Omega_r t)`
+- **占据几率**： `|c_g(t)|^2=\cos^2(\Omega_r t),\qquad |c_e(t)|^2=\sin^2(\Omega_r t)`
+- **平均偶极矩演化**： `\langle d\rangle=-M\sin(2\Omega_r t)\sin(\omega_{eg}t),\qquad T_r=\frac{\pi}{\Omega_r}`
+- **密度算符（纯态）**： `\rho=|\psi\rangle\langle\psi|=\begin{pmatrix}\rho_{ee}&\rho_{eg}\\\rho_{ge}&\rho_{gg}\end{pmatrix}=\begin{pmatrix}c_ec_e^*&c_ec_g^*\\c_gc_e^*&c_gc_g^*\end{pmatrix}`
+- **任意算符平均值**： `\langle A\rangle=Tr(\rho A),\qquad \rho=p_e|e\rangle\langle e|+p_g|g\rangle\langle g|`
+- **密度矩阵的算符展开**： `\rho=\tfrac12 I+\tfrac12(\rho_{ee}-\rho_{gg})\sigma_z+\rho_{eg}\sigma_++\rho_{ge}\sigma_-=\tfrac12 I+\tfrac12(\rho_{ee}-\rho_{gg})\sigma_z+d_x\sigma_x+d_y\sigma_y`
+- **偶极矩平均值**： `\langle d\rangle=Tr(\rho d)=-M^*Tr(\rho\sigma_+)-M\,Tr(\rho\sigma_-)=-M^*\rho_{ge}-M\rho_{eg}`
+- **密度矩阵运动方程**： `\frac{d}{dt}\rho=\frac{1}{i\hbar}[H,\rho]`
+- **孤立原子运动方程**： `\frac{d}{dt}\rho=\frac{1}{i\hbar}[H_A,\rho]=\frac{\omega_{eg}}{2i}[\sigma_z,\rho]\ \Rightarrow\ \dot\rho_{ee}=\dot\rho_{gg}=0,\ \dot\rho_{eg}=-i\omega_{eg}\rho_{eg},\ \dot\rho_{ge}=i\omega_{eg}\rho_{ge}`
+- **弛豫速率**： `\dot\rho_{ee}=-\Gamma_e\rho_{ee}+\Gamma_g\rho_{gg},\qquad \Gamma_e=\frac{n_{th}+1}{\tau_{sp}},\quad \Gamma_g=\frac{n_{th}}{\tau_{sp}}`
+- **热光子数**： `n_{th}=\frac{1}{\exp(\hbar\omega_{eg}/k_BT)-1}`
+- **极化相位衰减**： `\dot\rho_{ge}=i\omega_{eg}\rho_{ge}-\frac{\Gamma_e+\Gamma_g}{2}\rho_{ge}`
+- **T1、T2 方程**： `\dot d=\rho_{ge}=\Big(i\omega_{eg}-\frac{1}{T_2}\Big)d,\qquad \dot w=-\frac{w-w_0}{T_1},\qquad \frac{1}{T_1}=\frac{2}{T_2}=\Gamma_e+\Gamma_g=\frac{2n_{th}+1}{\tau_{sp}}`
+- **热平衡反转数**： `w_0=\frac{\Gamma_g-\Gamma_e}{\Gamma_g+\Gamma_e}=\frac{-1}{2n_{th}+1}=-\tanh\frac{\hbar\omega_{eg}}{2k_BT}`
+- **泵浦下的反转数**： `w_0=\frac{\Lambda-\Gamma_e}{\Lambda+\Gamma_e}`
+- **磁化横向 / 纵向弛豫**： `M_{xy}(t)=M_{xy}(0)e^{-t/T_2},\qquad M_z(t)=M_{z,eq}-[M_{z,eq}-M_z(0)]e^{-t/T_1}`
+- **纵向恢复（$M_z(0)=0$）**： `M_z(t)=M_{z,eq}\big(1-e^{-t/T_1}\big)`
+- **与相干场相互作用**： `H_E=-\vec d\cdot\vec E(x,t)\ \xrightarrow{RWA}\ H_E=\tfrac12 M^*E^{(-)}\sigma_++h.c.`
+- **密度矩阵方程（相干场）**： `\dot\rho=\frac{1}{i\hbar}[H_E,\rho]=\frac{1}{2i\hbar}\big[M^*E^{(-)}\sigma_++ME^{(+)}\sigma_-,\rho\big]`
+- **分量方程**：
+  `\dot\rho_{ee}=\frac{1}{2i\hbar}\big(-M^*E^{(-)}\rho_{eg}+ME^{(+)}\rho_{ge}\big),\quad \dot\rho_{ge}=\frac{1}{2i\hbar}M^*E^{(-)}(\rho_{ee}-\rho_{gg})`
+  `\dot\rho_{eg}=\frac{1}{2i\hbar}ME^{(+)}(\rho_{gg}-\rho_{ee}),\quad \dot\rho_{gg}=\frac{1}{2i\hbar}\big(M^*E^{(-)}\rho_{eg}-ME^{(+)}\rho_{ge}\big)`
+- **反转数与偶极变化**： `\dot w=-\frac{1}{i\hbar}\big(M^*E^{(-)}d^*-ME^{(+)}d\big),\qquad \dot d=\frac{1}{2i\hbar}ME^{(+)}w`
+- **光学 Bloch 方程（Maxwell–Bloch）**：
+  `\dot w=-\frac{w-w_0}{T_1}-\frac{1}{i\hbar}\big(M^*E^{(-)}d^*-ME^{(+)}d\big)`
+  `\dot d=\Big(i\omega_{eg}-\frac{1}{T_2}\Big)d+\frac{1}{2i\hbar}ME^{(+)}w`
+- **稳态解**： `d=\frac{T_2}{2i\hbar}ME^{(+)}w,\qquad w=\Big[\frac{T_1T_2}{2\hbar^2}\big(M^*E^{(-)}M^*E^{(-)}+ME^{(+)}ME^{(+)}\big)+1\Big]^{-1}w_0`
+- **JC 相互作用哈密顿量**： `\hat H=\hat H_0+\hbar\Omega(\sigma_++\sigma_-)(a+a^\dagger)`
+- **JC 哈密顿量**： `\hat H=\frac{\hbar\omega_{eg}}{2}\sigma_z+\hbar\omega\big(a^\dagger a+\tfrac12\big)+\hbar\Omega\big(\sigma_+a+\sigma_-a^\dagger\big)`
+- **去掉参考能量后**： `\hat H=\frac{\hbar\omega_{eg}}{2}\sigma_z+\hbar\omega a^\dagger a+\hbar\Omega\big(\sigma_+a+\sigma_-a^\dagger\big)`
+- **裸态能谱**： `E_{en}=n\hbar\omega+\frac{\hbar\omega_{eg}}{2},\qquad E_{gn}=n\hbar\omega-\frac{\hbar\omega_{eg}}{2}`
+- **激发数算符**： `\hat N_e=\hat n+|e\rangle\langle e|=\hat n+\frac{I-\sigma_z}{2},\qquad [\hat H,\hat N_e]=0`
+- **2×2 矩阵形式**： `\hat H=\begin{pmatrix}n\hbar\omega+\frac{\hbar\omega_{eg}}{2}&\hbar\Omega\sqrt{n+1}\\\hbar\Omega\sqrt{n+1}&(n+1)\hbar\omega-\frac{\hbar\omega_{eg}}{2}\end{pmatrix}=(n+\tfrac12)\hbar\omega I+\frac{\hbar(\omega_{eg}-\omega)}{2}\sigma_z+\hbar\Omega\sqrt{n+1}\,\sigma_x`
+- **能级与失谐**： `E_{n,\pm}=\hbar\omega(n+\tfrac12)\pm\hbar\frac{\sqrt{\Delta^2+4\Omega^2(n+1)}}{2},\qquad \Delta=\omega_{eg}-\omega`
+- **共振能级**： `E_{n,\pm}=\hbar\omega(n+\tfrac12)\pm\hbar\Omega\sqrt{n+1}`
+- **缀饰态与混合角**：
+  `|n,+\rangle=\cos\frac{\theta_n}{2}|e\rangle|n\rangle+\sin\frac{\theta_n}{2}|g\rangle|n+1\rangle`
+  `|n,-\rangle=-\sin\frac{\theta_n}{2}|e\rangle|n\rangle+\cos\frac{\theta_n}{2}|g\rangle|n+1\rangle,\qquad \theta_n=\arctan\frac{2\Omega\sqrt{n+1}}{\Delta}`
+- **暗态**： `|Dark\rangle=\frac{1}{\sqrt{\Omega_1^2+\Omega_2^2}}\big(\Omega_2|1\rangle-\Omega_1|3\rangle\big)`
+- **相对论能量-动量关系**： `E^2=c^2p^2+m^2c^4`
+- **Klein–Gordon 方程**： `-\hbar^2\frac{\partial^2}{\partial t^2}\psi=\big(-\hbar^2c^2\nabla^2+m^2c^4\big)\psi`
+- **KG 色散关系**： `\hbar^2\omega^2=c^2\hbar^2k^2+m^2c^4`
+- **KG 连续性方程**： `\frac{\partial}{\partial t}\rho+\nabla\cdot j=0,\quad \rho=\frac{i\hbar}{2mc^2}\Big(\psi^*\frac{\partial\psi}{\partial t}-\psi\frac{\partial\psi^*}{\partial t}\Big),\quad j=-\frac{i\hbar}{2m}\big(\psi^*\nabla\psi-\psi\nabla\psi^*\big)`
+- **非相对论极限展开**： `E=mc^2(1+p^2/m^2c^2)^{1/2}\approx mc^2+\frac{p^2}{2m}-\frac{p^4}{8m^3c^2}+\cdots`
+- **分离静止能量**： `\psi(r,t)=\varphi(r,t)\exp(-imc^2t/\hbar)\ \Rightarrow\ i\hbar\frac{\partial}{\partial t}\varphi=-\frac{\hbar^2}{2m}\nabla^2\varphi,\qquad \rho=\varphi^*\varphi\ge0`
+- **电磁场中的替换与方程**： `p\to P-\frac{q}{c}A,\quad i\hbar\frac{\partial}{\partial t}\to i\hbar\frac{\partial}{\partial t}-q\phi;\qquad \big(i\hbar\frac{\partial}{\partial t}-q\phi\big)^2\psi=\Big[c^2\big(P-\frac{q}{c}A\big)^2+m^2c^4\Big]\psi`
+- **电磁场非相对论极限**： `i\hbar\frac{\partial}{\partial t}\varphi=\Big[\frac{1}{2m}\big(P-\frac{q}{c}A\big)^2+q\phi\Big]\varphi`
+- **KG 协变形式**： `x_\mu=(r,ict),\ \partial_\mu=\partial/\partial x_\mu;\qquad \partial_\mu\partial_\mu\psi=\frac{m^2c^2}{\hbar^2}\psi,\qquad \partial_\mu j_\mu=0`
+- **协变形式（含电磁场）**： `\Big(\frac{\partial}{\partial x_\mu}-\frac{iq}{c}A_\mu\Big)^2\psi=\frac{m^2c^2}{\hbar^2}\psi,\qquad \frac{\partial}{\partial x_\mu}\to\frac{\partial}{\partial x_\mu}-\frac{iq}{c}A_\mu`
+- **Dirac 方程**： `\frac{1}{c}\frac{\partial}{\partial t}\psi+\alpha\cdot\nabla\psi+\frac{imc}{\hbar}\beta\psi=0\ \Longleftrightarrow\ i\hbar\frac{\partial}{\partial t}\psi=H\psi,\qquad H=-i\hbar c\alpha\cdot\nabla+mc^2\beta=c\alpha\cdot p+mc^2\beta`
+- **Dirac 概率守恒**： `\rho=\psi^+\psi=\sum_v\psi_v^*\psi_v,\qquad j=c\psi^+\alpha\psi,\qquad \frac{\partial\rho}{\partial t}+\nabla\cdot j=0`
+- **各分量二阶方程**： `\frac{1}{c^2}\frac{\partial^2}{\partial t^2}\psi-\nabla^2\psi+\frac{m^2c^2}{\hbar^2}\psi=0`
+- **α、β 的代数条件**： `\alpha_x^2=\alpha_y^2=\alpha_z^2=\beta^2=1;\quad \alpha_i\alpha_k=-\alpha_k\alpha_i\ (i\neq k);\quad \alpha_i\beta+\beta\alpha_i=0`
+- **速度算符与流密度**： `v\equiv\dot r=c\alpha,\qquad j=\psi^+c\alpha\psi=\psi^+v\psi`
+- **轨道角动量不守恒**： `\frac{d}{dt}l=c(\alpha\times p),\qquad [l,H]=i\hbar c(\alpha\times p)`
+- **Σ 算符代数关系**： `[\Sigma,\beta]=0,\quad [\Sigma_i,\alpha_i]=0,\quad [\Sigma_i,\alpha_j]=2i\varepsilon_{ijk}\alpha_k,\quad \Sigma_x^2=\Sigma_y^2=\Sigma_z^2=1,\quad [\Sigma_i,\Sigma_j]=2i\varepsilon_{ijk}\Sigma_k`
+- **自旋与总角动量守恒**： `s=\frac{\hbar}{2}\Sigma,\qquad [s,H]=-i\hbar c(\alpha\times p),\qquad [J,H]=0,\ J=l+s`
+- **Pauli–Dirac 表象矩阵表示**： `\beta=\begin{pmatrix}I&0\\0&-I\end{pmatrix},\qquad \alpha_i=\begin{pmatrix}0&\sigma_i\\\sigma_i&0\end{pmatrix},\qquad \Sigma=\begin{pmatrix}\sigma&0\\0&\sigma\end{pmatrix}`
+- **平面波解与方程**： `\psi_{p,E}(r,t)=u(p)\exp[i(p\cdot r-Et)/\hbar],\qquad (c\alpha\cdot p+mc^2\beta)u(p)=Eu(p),\qquad u(p)=\begin{pmatrix}\varphi\\\chi\end{pmatrix}`
+- **二分量联立方程**： `(E-mc^2)\varphi-c\sigma\cdot k\,\chi=0,\qquad -c\sigma\cdot k\,\varphi+(E+mc^2)\chi=0`
+- **色散关系与能量本征值**： `E^2-m^2c^4-c^2\hbar^2k^2=0\ \Rightarrow\ E=E_\pm=\pm\sqrt{m^2c^4+c^2\hbar^2k^2}`
+- **大、小分量关系**： `\chi=\frac{c}{E+mc^2}(\sigma\cdot k)\varphi,\qquad \varphi=\frac{c}{E-mc^2}(\sigma\cdot k)\chi`
+- **自旋沿动量方向**： `\Sigma\cdot p\,u=\lambda u,\qquad (\Sigma\cdot p)^2=p^2=\hbar^2k^2,\qquad \lambda=\pm\hbar k`
