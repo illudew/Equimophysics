@@ -242,13 +242,14 @@ const COURSE = {
   school:'南开大学 · 物理科学学院',
   hours:'48 学时',
   examLen:'100 分钟',
-  teachers:'胡金牛（Sakurai 体系）、胡毅（周世勋体系）',
-  grade:'胡金牛讲义：小测 + 作业 40% ＋ 期末 60%；胡毅讲义：闭卷考试 80% ＋ 平时 20%（两位老师口径不同，以实际任课老师为准）',
+  classes:'伯苓班（胡金牛 · Sakurai 体系）、大类班（胡毅 · 周世勋体系）',
+  gradeBailing:'小测 + 作业 40% ＋ 期末考试 60%',
+  gradeDalei:'闭卷考试 80% ＋ 平时成绩 20%',
   refs:['Sakurai & Napolitano,《Modern Quantum Mechanics》',
         'Weinberg,《Lectures on Quantum Mechanics》',
         'Griffiths & Schroeter,《Introduction to Quantum Mechanics》',
-        '曾谨言,《量子力学》（胡毅讲义作业引用）'],
-  src:'课程信息取自胡金牛讲义 chapter01.pdf（成绩构成）与 2023–2024 期末试卷卷面（课时、时长、任课教师：胡金牛、胡毅）；成绩构成第二条取自胡毅讲义 A-绪论'
+        '曾谨言,《量子力学》；周世勋,《量子力学教程》（胡毅讲义作业引用）'],
+  src:'班型与成绩构成取自两位老师讲义：伯苓班＝胡金牛 chapter01.pdf（Quiz+Homework 40% + Final 60%）；大类班＝胡毅 A-绪论（原文「一、闭卷考试成绩（80%）二、平时成绩（20%）」）。课时、时长取自 2023–2024 期末试卷卷面（任课教师：胡金牛、胡毅）'
 };
 
 /* ============ 章节数据 ============ */
@@ -743,6 +744,76 @@ const HU_CHAPTERS = [
   ['Einstein 关系与自发辐射系数', R`A_{mk}=\frac{4h\nu_{mk}^{3}}{c^{3}}B_{mk},\qquad A_{mk}=\frac{4e^{2}\omega_{mk}^{3}}{3\hbar c^{3}}|\vec r_{km}|^{2}`],
   ['激发态寿命', R`P_m=P_m(0)e^{-A_{mk}t},\qquad \tau_m=\frac{1}{\sum_k A_{mk}}`],
   ['激光器条件', R`N_m>N_k,\qquad \omega_0=\frac{kT}{\hbar}\ln2`]
+  ]},
+
+{no:'G', title:'自旋', en:'课程共九章 · 第七章', file:'G-自旋-1 ~ -4.pdf',
+ sections:['§1 电子的自旋（Stern–Gerlach 实验 / 光谱线精细结构 / 电子自旋假设 / 回转磁比率）','§2 自旋算符与自旋波函数（自旋算符 / 含自旋状态波函数 / Pauli 矩阵 / 归一化与几率密度 / 自旋波函数 / 力学量平均值）','§3 简单塞曼效应','§4 两个角动量耦合（总角动量 / 耦合与非耦合表象 / j 取值范围 / 自旋–轨道角动量耦合）','两电子自旋波函数（单态与三重态）','光谱精细结构'],
+ concepts:[
+  ['电子自旋','纯量子概念，无经典对应；与坐标、动量无关，是电子的第四个自由度，用算符 Ŝ 表示。'],
+  ['Stern–Gerlach 实验','S 态氢原子束经非均匀磁场偏转为两条分立线——原子有磁矩且只有两种取向；因 l=0 无轨道磁矩，故磁矩来自电子固有自旋磁矩。'],
+  ['光谱线精细结构','钠黄线实为靠得很近的双线（D₁、D₂），只有考虑电子自旋才能解释。'],
+  ['电子自旋假设','（Uhlenbeck–Goudsmit 1925）自旋角动量在任何方向的投影只取 ±ħ/2；磁矩 M_S=−(e/μc)S（CGS）。'],
+  ['回转磁比率','自旋回转磁比率 −e/(μc) 是轨道 −e/(2μc) 的两倍（即 g 因子含义）。'],
+  ['自旋量子数','由 Ŝ²=s(s+1)ħ²=¾ħ² 得 s=½。'],
+  ['含自旋波函数（旋量）','Ψ 除 (x,y,z) 外还需自旋变量 S_z，写成两分量列矩阵，第一行对应 S_z=+ħ/2，第二行对应 −ħ/2。'],
+  ['塞曼效应','原子在外磁场中谱线分裂；强磁场忽略自旋–轨道作用为简单塞曼效应，弱磁场为复杂（反常）塞曼效应。'],
+  ['两个角动量耦合','J=J₁+J₂ 满足同样角动量对易关系；非耦合表象基矢 |j₁m₁j₂m₂⟩，耦合表象基矢 |j₁j₂jm⟩，由 CG 系数联系。'],
+  ['单态与三重态','两电子总自旋 S=1 为三重态（S² 本征值 2ħ²），S=0 为单态（S² 本征值 0）。'],
+  ['光谱精细结构','考虑自旋–轨道耦合 Ĥ′=ξ(r)L·S 后 L_z、S_z 不再与 Ĥ 对易，m_l、m_s 不再是好量子数，好量子数为 l, j, m。'],
+  ['精细结构常数','α=e²/(ħc)=1/137。']
+ ],
+ formulas:[
+  ['磁矩的势能与受力', R`U=-\vec M\cdot\vec B,\qquad F_z=-\frac{\partial U}{\partial z}=M\frac{\partial B_z}{\partial z}\cos\theta`],
+  ['自旋取值与自旋磁矩（CGS）', R`S_z=\pm\frac{\hbar}{2},\qquad \vec M_S=-\frac{e}{\mu c}\vec S,\qquad M_{Sz}=\pm M_B`],
+  ['回转磁比率', R`\frac{M_z}{L_z}=-\frac{e}{2\mu c}\ (\text{轨道}),\qquad \frac{M_{Sz}}{S_z}=-\frac{e}{\mu c}\ (\text{自旋})`],
+  ['自旋角动量对易关系', R`[\hat S_x,\hat S_y]=i\hbar\hat S_z,\quad [\hat S_y,\hat S_z]=i\hbar\hat S_x,\quad [\hat S_z,\hat S_x]=i\hbar\hat S_y`],
+  ['自旋平方与自旋量子数', R`\hat S_x^{2}=\hat S_y^{2}=\hat S_z^{2}=\frac{\hbar^{2}}{4},\qquad \hat S^{2}=\frac34\hbar^{2}=s(s+1)\hbar^{2}\ \Rightarrow\ s=\frac12`],
+  ['自旋算符反对易关系', R`\hat S_x\hat S_y+\hat S_y\hat S_x=0,\quad \hat S_y\hat S_z+\hat S_z\hat S_y=0,\quad \hat S_z\hat S_x+\hat S_x\hat S_z=0`],
+  ['含自旋波函数（旋量）与基矢', R`\Phi=\begin{pmatrix}\psi_1(\vec r,t)\\ \psi_2(\vec r,t)\end{pmatrix},\qquad \chi_{1/2}=\begin{pmatrix}1\\0\end{pmatrix},\quad \chi_{-1/2}=\begin{pmatrix}0\\1\end{pmatrix}`],
+  ['Pauli 矩阵与自旋矩阵', R`\hat S_i=\frac{\hbar}{2}\sigma_i,\quad \sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\ \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\ \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}`],
+  ['Pauli 对易与反对易', R`\sigma_x\sigma_y-\sigma_y\sigma_x=2i\sigma_z,\quad \sigma_i\sigma_j+\sigma_j\sigma_i=0\ (i\neq j),\quad \sigma_x^{2}=\sigma_y^{2}=\sigma_z^{2}=1`],
+  ['归一化与几率密度', R`\int\Phi^{\dagger}\Phi\,d\tau=\int(|\psi_1|^{2}+|\psi_2|^{2})\,d\tau=1,\qquad \omega=|\psi_1|^{2}+|\psi_2|^{2}`],
+  ['Ŝ_x、Ŝ_y 的本征态', R`\hat S_x:\ \frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix},\ \frac{1}{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix};\qquad \hat S_y:\ \frac{1}{\sqrt2}\begin{pmatrix}1\\i\end{pmatrix},\ \frac{1}{\sqrt2}\begin{pmatrix}1\\-i\end{pmatrix}`],
+  ['磁场附加能', R`U=\frac{e}{2\mu c}(\hat L_z+2\hat S_z)B`],
+  ['简单塞曼能级与 S 态分裂', R`E_{nlm}=E_{nl}+\frac{e\hbar B}{2\mu c}(m\pm1),\qquad E_{n00}=E_{n0}\pm\frac{e\hbar B}{2\mu c}`],
+  ['塞曼谱线角频率与选择定则', R`\omega=\omega_0+\frac{e\hbar B}{2\mu c}\Delta m,\qquad \Delta l=\pm1,\ \Delta m=0,\pm1`],
+  ['总角动量对易与 j 取值范围', R`[\hat J^{2},\hat J_\alpha]=0,\qquad j=j_1+j_2,\dots,|j_1-j_2|`],
+  ['耦合表象与 CG 系数', R`|j_1,j_2,j,m\rangle=\sum_{m_1}\langle j_1,m_1,j_2,m-m_1|j_1,j_2,j,m\rangle\,|j_1,m_1,j_2,m-m_1\rangle,\qquad m=m_1+m_2`],
+  ['L·S 分解（自旋–轨道耦合）', R`\hat{\vec L}\cdot\hat{\vec S}=\frac12\big[\hat J^{2}-\hat L^{2}-\hat S^{2}\big]=\frac12\Big[\hat J^{2}-\hat L^{2}-\frac34\hbar^{2}\Big]`],
+  ['两电子自旋波函数（单态/三重态）', R`\text{三重态}:\ \uparrow\uparrow,\ \tfrac{1}{\sqrt2}(\uparrow\downarrow+\downarrow\uparrow),\ \downarrow\downarrow;\qquad \text{单态}:\ \tfrac{1}{\sqrt2}(\uparrow\downarrow-\downarrow\uparrow)`],
+  ['精细结构微扰与能级修正', R`\hat H'=\xi(r)\hat{\vec L}\cdot\hat{\vec S},\qquad E_n^{(1)}=\langle nl|\xi|nl\rangle\frac12\Big[j(j+1)-l(l+1)-\frac34\Big]\hbar^{2}`],
+  ['精细结构常数', R`\alpha=\frac{e^{2}}{\hbar c}=\frac{1}{137}`]
+ ]},
+
+{no:'H', title:'全同粒子', en:'课程共九章 · 第八章', file:'H-全同粒子.pdf',
+ sections:['全同粒子的特性（全同性原理 / 波函数的对称性质 / 对称性不随时间变化 / Fermi 子与 Bose 子）','全同粒子体系波函数与 Pauli 原理（2 个全同粒子 / 对称与反对称波函数构造 / Bose 子体系 / Fermi 子反对称化 / Slater 行列式 / N 个全同粒子体系）'],
+ concepts:[
+  ['全同粒子','质量、电荷、自旋等固有性质完全相同的微观粒子。'],
+  ['经典可区分 vs 微观不可区分','经典粒子有确定轨道、任意时刻有确定位置与速度，故可区分；微观粒子用波函数描写，在波函数重叠区不可区分。'],
+  ['全同性原理','全同粒子体系中，二全同粒子互相代换不引起体系物理状态的改变；是量子力学基本原理之一。'],
+  ['波函数的对称性质','由 Ĥ 的交换对称性与全同性原理，交换两粒子波函数只差常数 λ，且 λ²=1，即 λ=±1。'],
+  ['交换算符 P̂_ij','P̂_ij Φ(i,j)=λΦ(i,j)，λ=±1；λ=+1 为对称波函数，λ=−1 为反对称波函数。'],
+  ['对称性守恒','[P̂_ij,Ĥ]=0，波函数的交换对称性不随时间改变。'],
+  ['Bose 子与 Fermi 子','自旋整数倍（s=0,1,…）为 Bose 子，波函数交换对称；自旋半奇数倍（s=1/2,…）为 Fermi 子，波函数交换反对称。'],
+  ['复合粒子的统计','偶数个 Fermi 子组成 Bose 子（如氘核、⁴He），奇数个 Fermi 子组成 Fermi 子（如氚核、³He）。'],
+  ['交换简并','Φ(q₁,q₂) 与 Φ(q₂,q₁) 能量简并（E=ε_i+ε_j），可由 q₁↔q₂ 互换得到。'],
+  ['Pauli 不相容原理','N 个 Fermi 子中不能有两个处于同一状态；2 个 Fermi 子时 i=j 则 Φ_A=0。'],
+  ['Slater 行列式','N 个 Fermi 子的反对称波函数写成行列式；交换两粒子等价于两列对调而变号，两行相同则为零。'],
+  ['无自旋–轨道作用的情形','总波函数可写为空间与自旋之积 Φ=φ(r)χ(s)；Fermi 子体系反对称化可由 φ 对称–χ 反对称，或 φ 反对称–χ 对称保证。']
+ ],
+ formulas:[
+  ['N 个全同粒子体系 Hamilton 量', R`\hat H=\sum_{i=1}^{N}\Big[-\frac{\hbar^{2}}{2\mu}\nabla_i^{2}+U(q_i,t)\Big]+\sum_{i<j}V(q_i,q_j)`],
+  ['Hamilton 量的交换对称性', R`\hat H(\dots,q_j,\dots,q_i,\dots)=\hat H(\dots,q_i,\dots,q_j,\dots)`],
+  ['交换波函数与 λ', R`\Phi(\dots,q_j,\dots,q_i,\dots)=\lambda\Phi(\dots,q_i,\dots,q_j,\dots),\qquad \lambda^{2}=1\ \Rightarrow\ \lambda=\pm1`],
+  ['交换算符与对称性守恒', R`\hat P_{ij}\Phi(i,j)=\lambda\Phi(i,j),\qquad [\hat P_{ij},\hat H]=0`],
+  ['2 个全同粒子体系', R`\hat H=\hat H_0(q_1)+\hat H_0(q_2),\qquad \hat H_0(q_n)\phi_i(q_n)=\varepsilon_i\phi_i(q_n)`],
+  ['交换简并的能量', R`E=\varepsilon_i+\varepsilon_j`],
+  ['对称化与反对称化波函数', R`\Phi_S=\frac{1}{\sqrt2}\big[\phi_i(q_1)\phi_j(q_2)+\phi_i(q_2)\phi_j(q_1)\big],\qquad \Phi_A=\frac{1}{\sqrt2}\big[\phi_i(q_1)\phi_j(q_2)-\phi_i(q_2)\phi_j(q_1)\big]`],
+  ['有相互作用时的构造式', R`\Phi_{S,A}(q_1,q_2)=\frac{1}{\sqrt2}\big[\Phi(q_1,q_2)\pm\Phi(q_2,q_1)\big]`],
+  ['N 个 Bose 子对称化波函数', R`\Phi_S=C\sum_p\hat p\big[\phi_i(q_1)\cdots\phi_k(q_N)\big],\qquad C=\sqrt{\frac{n_1!n_2!\cdots n_N!}{N!}}`],
+  ['N 个 Fermi 子的 Slater 行列式', R`\Phi_A=\frac{1}{\sqrt{N!}}\begin{vmatrix}\phi_i(q_1)&\cdots&\phi_i(q_N)\\ \vdots&&\vdots\\ \phi_k(q_1)&\cdots&\phi_k(q_N)\end{vmatrix}`],
+  ['Pauli 原理（行列式为零）', R`i=j\ \Rightarrow\ \Phi_A=0;\qquad \text{两行相同}\ \Rightarrow\ \Phi_A=0`],
+  ['总波函数空间–自旋分离', R`\Phi=\phi(\vec r_1,\dots,\vec r_N)\,\chi(s_1,\dots,s_N)`]
  ]}
 ];
 
@@ -754,9 +825,9 @@ const TOPICS = [
  {name:'角动量理论', ch:'IV', pri:'A', stars:5, ev:[['2025',1],['2023–2024',2],['2024–2025',2]], note:'对易关系、升降算符、含 L 的算符运算'},
  {name:'矩阵表示与本征值问题', ch:'II', pri:'A', stars:4, ev:[['2023–2024',3],['2024–2025',3]], note:'给矩阵求本征值/本征态，再算某量的测量值与不确定度'},
  {name:'表象与幺正变换', ch:'II', pri:'A', stars:4, ev:[['2023–2024',3],['2025',3]], note:'A/B 表象互化、幺正矩阵、对角化'},
- {name:'自旋与泡利矩阵', ch:'IV', pri:'A', stars:4, ev:[['2024–2025',5],['2025',4]], note:'自旋哈密顿量本征值、磁场中的自旋、翻转概率'},
+ {name:'自旋与泡利矩阵', ch:'IV / 大类班 G 章', pri:'A', stars:4, ev:[['2024–2025',5],['2025',4]], note:'自旋哈密顿量本征值、磁场中的自旋、翻转概率；伯苓班见 Chapter IV，大类班见第七章'},
  {name:'氢原子', ch:'V', pri:'A', stars:4, ev:[['2024–2025',4],['2025',5]], note:'波函数叠加、L_z 期望值、径向概率密度、量子数判定'},
- {name:'全同粒子与统计', ch:'VI', pri:'B', stars:4, ev:[['2023–2024',5],['2025',7]], note:'费米反对称/玻色对称波函数、Slater 行列式、基态能量'},
+ {name:'全同粒子与统计', ch:'VI / 大类班 H 章', pri:'B', stars:4, ev:[['2023–2024',5],['2025',7]], note:'费米反对称/玻色对称波函数、Slater 行列式、基态能量；伯苓班见 Chapter VI，大类班见第八章'},
  {name:'简谐振子', ch:'III / VI', pri:'B', stars:3, ev:[['2023–2024',6],['2025',7]], note:'升降算符代数解法、能级与零点能'},
  {name:'量子论起源（光电效应 · 康普顿散射）', ch:'I', pri:'B', stars:3, ev:[['2023–2024',1],['2024–2025',1]], note:'基础送分题：光电方程与康普顿公式'},
  {name:'三维问题（球坐标）', ch:'V / 胡毅三章', pri:'C', stars:2, ev:[], note:'讲义覆盖；氢原子部分已单独列为 A 级考点'},
@@ -894,7 +965,7 @@ function renderDashboard(){
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
     <h1>量子力学（一）<br>期末复习系统</h1>
-    <p>本站把《量子力学（一）》两套讲义（胡金牛 · Sakurai 体系，胡毅 · 周世勋体系）与 3 套期末真题整理为结构化复习资料：按考点频率排出优先级，并把每个考点回溯到它出现的真题。仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
+    <p>本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题。按考点频率排出优先级，并把每个考点回溯到它出现的真题。仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
   <div class="grid2">
@@ -934,8 +1005,9 @@ function COURSE_INFO_ROWS(){
   <div class="kv"><b>学校</b><span>${COURSE.school}</span></div>
   <div class="kv"><b>课时</b><span>${COURSE.hours}</span></div>
   <div class="kv"><b>考试用时</b><span>${COURSE.examLen}</span></div>
-  <div class="kv"><b>任课教师</b><span>${COURSE.teachers}</span></div>
-  <div class="kv"><b>成绩构成</b><span>${COURSE.grade}</span></div>
+  <div class="kv"><b>班型</b><span>${COURSE.classes}</span></div>
+  <div class="kv"><b>成绩构成 · 伯苓班</b><span>${COURSE.gradeBailing}</span></div>
+  <div class="kv"><b>成绩构成 · 大类班</b><span>${COURSE.gradeDalei}</span></div>
   <div class="kv"><b>参考教材</b><span>${COURSE.refs.map(esc).join('；')}</span></div>
   <div class="kv"><b>来源</b><span style="color:#777">${esc(COURSE.src)}</span></div>`;
 }
@@ -968,15 +1040,15 @@ function renderChapters(){
   const html = list.map((c,i)=> chCard(c, i < (isHu2?2:3), isHu2 ? (c.no+' · ') : ('第 '+c.no+' 章 · '))).join('');
   $('#chapters').innerHTML = `
     <div class="hero">
-      <div class="hero-label">讲义结构 · ${isHu2?'胡毅（周世勋体系）':'胡金牛（Sakurai 体系）'}</div>
+      <div class="hero-label">讲义结构 · ${isHu2?'大类班（胡毅 · 周世勋体系）':'伯苓班（胡金牛 · Sakurai 体系）'}</div>
       <h1>章节结构。</h1>
       <p>${isHu2
-        ? '胡毅老师中文讲义的知识体系（A–F 六章）。<b>其第五章「近似方法」与第六章「量子跃迁」完整覆盖了胡金牛讲义缺失的第七章——微扰论正是期末最高频的考点。</b>'
-        : '胡金牛老师英文讲义的知识体系（I–IX 章）。<b>该套讲义中没有第七章（近似方法）文件，请切换到「胡毅」查看微扰、变分与跃迁的完整内容。</b>'}</p>
+        ? '大类班（胡毅）中文讲义的知识体系，共 A–H 八章。<b>其第五章「近似方法」与第六章「量子跃迁」完整覆盖了伯苓班讲义缺失的第七章——微扰论正是期末最高频的考点。</b>成绩构成：闭卷 80% ＋ 平时 20%。'
+        : '伯苓班（胡金牛）英文讲义的知识体系，共 I–IX 章。<b>该套讲义中没有第七章（近似方法）文件，请切换到「大类班」查看微扰、变分与跃迁的完整内容。</b>成绩构成：平时 40% ＋ 期末 60%。'}</p>
     </div>
     <div class="seg">
-      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">胡金牛 · Sakurai 体系（I–IX）</button>
-      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">胡毅 · 周世勋体系（A–F）</button>
+      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">伯苓班 · 胡金牛（I–IX 章）</button>
+      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">大类班 · 胡毅（A–H 章）</button>
     </div>
     ${html}`;
 }
@@ -996,8 +1068,8 @@ function renderFormulas(){
       <p>把两套讲义的重要公式集中到一页，适合考前快速过一遍。</p>
     </div>
     <div class="seg">
-      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">胡金牛 · Sakurai 体系（I–IX）</button>
-      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">胡毅 · 周世勋体系（A–F）</button>
+      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">伯苓班 · 胡金牛（I–IX 章）</button>
+      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">大类班 · 胡毅（A–H 章）</button>
     </div>
     ${html}`;
 }
@@ -1140,8 +1212,8 @@ function renderAbout(){
       <table class="tbl">
         <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
         <tbody>
-          <tr><td>讲义（胡金牛）</td><td>chapter01 / 02·02a·02b / 03 / 04 / 05 / 06 / 08 / 09.pdf</td><td>章节结构、核心概念、重要公式（Sakurai 体系）</td></tr>
-          <tr><td>讲义（胡毅）</td><td>A-绪论 / B-波函数和 Schrödinger 方程 / C-量子力学中的力学量 / D-量子态和力学量的表象 / E-近似方法 / F-量子跃迁（共 20 个 PDF）</td><td>章节结构、核心概念、重要公式（周世勋体系）</td></tr>
+          <tr><td>讲义 · 伯苓班（胡金牛）</td><td>chapter01 / 02·02a·02b / 03 / 04 / 05 / 06 / 08 / 09.pdf</td><td>章节结构、核心概念、重要公式（Sakurai 体系）</td></tr>
+          <tr><td>讲义 · 大类班（胡毅）</td><td>A-绪论 / B-波函数和 Schrödinger 方程 / C-量子力学中的力学量 / D-量子态和力学量的表象 / E-近似方法 / F-量子跃迁 / G-自旋 / H-全同粒子（共 25 个 PDF）</td><td>章节结构、核心概念、重要公式（周世勋体系）</td></tr>
           <tr><td>期末真题</td><td>2023-2024…（回忆版修改后）.pdf</td><td>6 题，考点与题型统计</td></tr>
           <tr><td>期末真题</td><td>2024-2025量子力学一.pdf</td><td>6 题，考点与题型统计</td></tr>
           <tr><td>期末真题</td><td>量子力学2025.pdf</td><td>7 题，考点与题型统计</td></tr>
@@ -1154,7 +1226,8 @@ function renderAbout(){
       <div class="card-title">处理原则</div>
       <div class="concept"><b>原始文件不改动</b>：所有 PDF 均保持原样，仅在其上做提取与分析。</div>
       <div class="concept"><b>可回溯</b>：每个考点都标注它出现的年份与题号，可回到真题核对。</div>
-      <div class="concept"><b>区分来源等级</b>：讲师内容分别来自胡金牛、胡毅两位老师的讲义；两位老师对同一主题的口径不同（如成绩构成 40/60 与 80/20），已分别标注来源。胡金牛讲义缺第七章文件，该章内容由胡毅讲义第五、六章补齐并标注。</div>
+      <div class="concept"><b>按班型划分</b>：本站区分两种班型——伯苓班（胡金牛，Sakurai 英文讲义，I–IX 章）与大类班（胡毅，周世勋中文讲义，A–H 章）。两者成绩构成不同：伯苓班 平时 40% ＋ 期末 60%，大类班 闭卷 80% ＋ 平时 20%。</div>
+      <div class="concept"><b>区分来源等级</b>：内容分别来自两位老师的讲义，同一主题的口径可能不同，均已分别标注来源。伯苓班讲义缺第七章文件，该章内容由大类班讲义第五、六章补齐并标注。</div>
       <div class="concept"><b>不编造</b>：不凭空声称某考点“必考”；频率统计只基于实际拿到的真题。</div>
       <div class="concept"><b>区分不确定信息</b>：三套真题均为“回忆版”，个别系数或题干表述可能与原卷有出入，已在题面中标注。</div>
     </div>
@@ -1163,7 +1236,7 @@ function renderAbout(){
       <div class="card-title">已知局限</div>
       <div class="concept"><b>样本有限</b>：频率仅由 3 套期末卷统计，样本小，优先级排序仅供复习参考，不代表真实命题概率。</div>
       <div class="concept"><b>扫描件未收录</b>：考研真题 PDF 为图片扫描，未做 OCR。</div>
-      <div class="concept"><b>讲义各有缺口</b>：胡金牛讲义缺第七章（近似方法）文件；胡毅讲义只到第六章（未见自旋、全同粒子、散射等后续章节的 PPT）。两套讲义可互相补齐，但都无法单独覆盖全部考试范围。</div>
+      <div class="concept"><b>讲义各有缺口</b>：伯苓班（胡金牛）讲义缺第七章（近似方法）文件；大类班（胡毅）讲义到第八章（全同粒子）为止，未见第九章（散射）。两套讲义可互相补齐，但都无法单独覆盖全部考试范围。</div>
     </div>`;
 }
 
