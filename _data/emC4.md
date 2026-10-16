@@ -1,0 +1,126 @@
+# 电动力学 · 第 4 章 电磁波的传播
+> 来源：第4章.pdf（杨茂志）、第4章电磁波的传播.pdf（蔡卫）
+
+## 小节
+- 前言：迅变情况下电磁场互相激发、以波动形式存在；本章不讨论电磁波如何产生，只讲电磁波传播的基本理论
+- 4.1 平面电磁波
+  - 电磁场波动方程（真空与介质情形；介质的色散 ε=ε(ω)、μ=μ(ω)）
+  - 时谐电磁波（场量的复数表示、时谐麦克斯韦方程组、亥姆霍兹方程、波模）
+  - 平面电磁波（沿 x 轴传播的平面波、相位因子与相速度、波矢量与波长、横波性质）
+  - 平面电磁波的偏振（线偏振、椭圆偏振、圆偏振；左旋/右旋；如何判断偏振态）
+  - 电磁波的能量与能流（能量密度、能流密度、二次式求时间平均值）
+  - 电磁波的动量、动量流密度与辐射压力（蔡卫补充）
+- 介质、导体的频率色散（色散介质的电磁响应、介电系数 ε(ω) 的振子模型、Drude 模型、等离子频率、复介电系数与吸收）（蔡卫）
+- 4.2 电磁波在介质界面上的反射与折射
+  - 反射和折射定律（界面边值关系、波矢切向分量连续、入射面）
+  - 振幅关系 · 菲涅耳公式（E 垂直入射面 TE/s 波、E 平行入射面 TM/p 波；阻抗形式）
+  - 反射率与透射率；正入射；全反射与穿透深度；Goos-Hänchen 位移
+  - 布儒斯特（Brewster）角
+- 4.3 有导体存在时电磁波的传播
+  - 导体内的自由电荷分布（电荷指数衰减、良导体条件）
+  - 导体内的电磁波（复电容率、复波矢量 k=β+iα、衰减常数与相位常数）
+  - 趋肤效应与穿透深度（良导体近似）
+  - 导体表面上的反射（反射系数、表面电阻与高频损耗）
+- 电磁波在各向异性介质中的传播（本构关系 ε 张量与主轴、Fresnel 方程、单轴晶体双折射、寻常光/异常光）（蔡卫）
+- 旋光介质中的电磁波（静磁场中的自由电子气、介电系数张量、右旋/左旋本征态、法拉第效应/磁致旋光）（蔡卫）
+- 4.4 谐振腔（有界空间中的电磁波、理想导体边界条件、矩形谐振腔的本征振荡与谐振频率）
+- 4.5 波导（高频电磁能量的传输、矩形波导场方程与 TE/TM 模、截止频率、TE10 波的电磁场与管壁电流、相速度与群速度）
+
+## 核心概念
+- **电磁波**：迅变情况下电场与磁场互相激发，脱离场源以波动形式在空间传播，形成电磁波。
+- **波动方程与光速**：在自由空间（ρ=0、J=0）由麦克斯韦方程组导出 E、B 各自的齐次波动方程，其解为各种形式的电磁波；真空中的传播速度 c=1/√(μ0ε0) 是最基本的物理常数之一。
+- **介质的色散**：对不同频率的电磁波，介质的 ε 和 μ 不同，即 ε=ε(ω)、μ=μ(ω)；因此对非正弦变化的一般场 D(t)=εE(t) 不成立，介质内不能推出 E、B 的一般波动方程。
+- **时谐电磁波（单色波）**：以一定频率 ω 作正弦振荡的波；任何非单色波都可用傅里叶分析分解为不同频率单色波的叠加。场量可用复数表示为 E(x,t)=E(x)e^{−iωt} 等（蔡卫用 e^{iωt} 约定）。
+- **亥姆霍兹方程**：一定频率下电磁波的基本方程 ∇²E+k²E=0（k=ω√(με)），须与 ∇·E=0 联立才与麦克斯韦方程组等价；其每一解代表一种波模，可能是平面波、球面波、高斯光束、贝塞尔光束、艾利光束等。
+- **平面电磁波**：等相位面（波阵面）为平面、在垂直传播方向的平面上各点场值相同的电磁波；波矢量 k 大小为波数、方向沿传播方向。
+- **相速度与折射率**：等相位面移动的速度 v=ω/k=1/√(με)；介质中 v=c/n，光学折射率 n=√(μrεr)；真空 n=1，速度为 c。
+- **平面波的三条特性**：① 横波，E、B 都与传播方向 k 垂直；② E⊥B，E×B 沿 k 方向（(k,E,B) 构成右手定则）；③ E 与 B 同相，振幅比 E/B=1/√(με)=v。
+- **偏振方向（极化方向）**：E 的取向；对每个 k 可选两个与 k 垂直且互相垂直的独立偏振方向，故对每一 k 存在两个独立偏振波。
+- **偏振态**：两正交分量相位差 φy=φx 为线偏振，φy≠φx 为椭圆偏振；振幅相等且相位差 ±π/2 时为圆偏振（左旋/右旋）。可由在空间一点迎着波看电矢量随时间的轨迹判定。
+- **波阻抗**：Z=√(μ/ε)=E/H；真空波阻抗 Z0=√(μ0/ε0)=376.7 Ω。
+- **电磁场能量密度**：w=½(E·D+H·B)；平面电磁波中电场能量与磁场能量相等 εE²=B²/μ。
+- **能流密度（坡印廷矢量）**：S=E×H，平面波中 S=w·v·e_k（能流密度=能量密度×相速度）；因能量密度、能流密度是场强的二次式，复数表示不能直接代入，须用实数部分或时间平均公式。
+- **时间平均公式**：对复表示 f=f0e^{−iωt}、g=g0e^{−i(ωt+φ)}，一周期的平均值 ⟨fg⟩=½f0g0cosφ=½Re(f*g)。
+- **电磁波动量与辐射压力**（蔡卫）：动量密度 g=ε0(E×B)=w·k̂/c；平面波垂直入射理想导体全反射时面压强 ⟨P⟩=2⟨w⟩cos²θ，各向同性入射平均为 (1/3)⟨w⟩；黑体辐射对界面压强同理。
+- **色散介质的电磁响应**（蔡卫）：介质极化、磁化一般由时间、空间平移不变性和因果律描述为卷积；局域近似下对单色场化为 D(r)=ε(ω)E(r)、B(r)=μ(ω)H(r)，特定频率下波动方程与无色散介质形式一致（ε→ε(ω)、μ→μ(ω)）。
+- **介电系数 ε(ω) 的振子模型**（蔡卫）：束缚电子受迫振动，得复数相对介电系数；γ≤ω0，高频下 ε/ε0<1、低频下 >1；正常色散实部随 ω 增大，反常色散虚部为主。
+- **Drude 模型**（蔡卫）：把部分电子视为自由电子，得 εr=1−ωp²/[ω(ω+iγ)]，ωp 为等离子频率；低频趋向完美电导体(PEC)，高频(ω>ωp)时 0<εr<1，金属呈紫外透明。
+- **复介电系数与传导电流**（蔡卫）：导体中 ∇×H=σE−iωε0E=−iωεE，等效电导率 σ=ne²/[m(γ−iω)]，实部代表损耗、虚部代表能量转移。
+- **反射与折射定律**：电磁波在界面反射折射的规律包括①入射角、反射角、折射角的关系；②入射、反射、折射波的振幅比和相对相位，属边值问题，基础是界面边值关系。
+- **入射面**：入射波波矢与界面法线构成的平面；反射波矢和折射波矢都在同一平面内。
+- **菲涅耳公式**：给出反射波、折射波与入射波场强之比；E 垂直入射面与平行入射面的行为不同。
+- **偏振特性**：自然光经反射或折射后，两偏振分量强度不同，反射波和折射波都变为部分偏振光。
+- **半波损失**：E 垂直入射面情形，当 ε2>ε1 时 θ>θ″，E′/E 为负，反射波电场与入射波电场反相，称反射过程中的半波损失。
+- **布儒斯特定律**：对 E 平行入射面，当 θ+θ″=90° 时平行分量无反射波，反射光变为垂直入射面偏振的完全偏振光，此入射角称布儒斯特角。
+- **全反射**：ε1>ε2 时 n21<1，折射角大于入射角；当 sinθ=n21 时折射波沿界面掠过，入射角再增大则无实数折射角出现；反射波与入射波振幅相等（能量全反射）、有一定相位差，第二介质中为沿界面传播、垂直界面指数衰减的表面波（倏逝波）。
+- **导体内的自由电荷分布**：迅变场中导体内电荷密度按 ρ=ρ0e^{−σt/ε} 指数衰减，特征时间 τ=ε/σ；当 σ/(εω)≫1（良导体条件）时导体内无自由电荷，电荷只分布在表面。是否为良导体还与电磁波频率有关；一般金属 τ~10⁻¹⁷ s。
+- **复电容率**：导体麦氏方程与绝缘介质仅差传导电流项，形式上引入复电容率 ε′=ε+iσ/ω 后方程组形式完全一致；实部代表位移电流（不耗散），虚部代表传导电流（引起能量耗散、电磁能转化为热能）。
+- **衰减常数与相位常数**：导体内 k=β+iα 为复矢量，E=E0e^{−α·x}e^{i(β·x−ωt)}；实部 β 描述传播相位，虚部 α 描述波幅衰减。
+- **趋肤效应与穿透深度**：电磁波只能透入导体表面薄层；振幅降为原值 1/e 的距离称穿透深度 δ=1/α；高频电流集中于表面薄层内，此现象称趋肤效应。δ 与电导率、频率都有关。
+- **导体表面反射**：电导率越高反射系数越接近 1；理想导体反射系数为 1，对电磁波有屏蔽作用，理想导体表面可作电磁场边界。
+- **各向异性介质本构关系**（蔡卫）：D=ε·E，ε 为张量，可对角化得主轴介电系数 ε1、ε2、ε3；折射率 n1=n2=n3 各向同性，n1=n2≠n3 单轴晶体，n1≠n2≠n3 双轴晶体。晶体内 D 方向与 E 方向不一定一致、能流方向与波矢方向不一定一致。
+- **Fresnel 方程与双折射**（蔡卫）：各向异性介质中给定传播方向允许两个特殊线偏振光（振动面垂直、有效折射率不同）；单轴晶体中一支折射率不依赖波矢方向（寻常光），另一支依赖方向（异常光），沿光轴方向无双折射。
+- **旋光介质（法拉第效应）**（蔡卫）：静磁场中自由电子气使介电系数成为带虚非对角元的张量；沿磁场方向传播的平面波本征态为圆偏振光，右旋与左旋相速度不同（v_L>v_R），线偏振光偏振面以前进方向为轴旋转，旋转角正比于厚度 d 和磁场强度 |B|。
+- **理想导体边界条件**：导体内部无电磁场，介质一侧满足 e_n×E=0（切向电场为零，电场垂直于界面）、e_n×H=α、e_n·B=0（法向磁场为零，磁场平行于界面）；真正制约电磁波存在形式的是 e_n×E=0。以导体为边界的电磁波满足亥姆霍兹方程、∇·E=0、E_t=0、∂E_n/∂n=0。
+- **谐振腔**：高频下 LC 回路不能有效产生高频振荡，微波段用金属壁谐振腔、光学中用反射镜组成的光学谐振腔；矩形腔内场由分离变量解出，满足边界条件的解为本征振荡，谐振频率由模式数 (m,n,p) 决定，最低波模 (1,1,0)。
+- **波导**：高频电磁能量以电磁场形式存在，用波导传输；波导内 E 和 H 不能同时为横波，分横电波 TE(Ez=0)、横磁波 TM(Hz=0)，相同 (m,n) 可同时存在两种独立波模的叠加。
+- **截止频率**：波导中 kz 为虚数时波不能传播（沿 z 方向振幅衰减）；能传播的最低频率极限 ωc 称为该波模的截止频率；a>b 时所有波模中 TE10 截止频率最低，是最常用的波模；波导内能通过的最大波长为 2a。
+- **波导内波速**：相速度 v_p=c/√(1−(ωc/ω)²)>c，群速度 v_g=c√(1−(ωc/ω)²)<c，二者乘积 v_p·v_g=c²。
+
+## 重要公式
+- **麦克斯韦方程组**： `\nabla\times\vec E=-\dfrac{\partial \vec B}{\partial t},\quad \nabla\times\vec H=\dfrac{\partial \vec D}{\partial t}+\vec J,\quad \nabla\cdot\vec D=\rho,\quad \nabla\cdot\vec B=0`
+- **真空波动方程**： `\nabla^2\vec E-\dfrac{1}{c^2}\dfrac{\partial^2\vec E}{\partial t^2}=0,\qquad \nabla^2\vec B-\dfrac{1}{c^2}\dfrac{\partial^2\vec B}{\partial t^2}=0,\qquad c=\dfrac{1}{\sqrt{\mu_0\varepsilon_0}}`
+- **介质色散关系**： `\vec D(\omega)=\varepsilon(\omega)\vec E(\omega),\qquad \vec B(\omega)=\mu(\omega)\vec H(\omega)`
+- **时谐场复数表示**： `\vec E(\vec x,t)=\vec E(\vec x)e^{-i\omega t},\qquad \vec B(\vec x,t)=\vec B(\vec x)e^{-i\omega t}`
+- **时谐麦克斯韦方程组**： `\nabla\times\vec E=i\omega\mu\vec H,\qquad \nabla\times\vec H=-i\omega\varepsilon\vec E,\qquad \nabla\cdot\vec E=0,\qquad \nabla\cdot\vec H=0`
+- **亥姆霍兹方程**： `\nabla^2\vec E+k^2\vec E=0,\qquad \nabla\cdot\vec E=0,\qquad k=\omega\sqrt{\mu\varepsilon}`
+- **由 E 求 B（频率域）**： `\vec B=\dfrac{i}{\omega}\nabla\times\vec E=\dfrac{i}{k}\sqrt{\mu\varepsilon}\,\nabla\times\vec E`
+- **坡印廷/波阻抗（蔡卫约定）**： `\vec B=\dfrac{1}{\omega}\vec k\times\vec E,\qquad \dfrac{|\vec E|}{|\vec H|}=\sqrt{\dfrac{\mu}{\varepsilon}}=Z,\qquad Z_0=\sqrt{\dfrac{\mu_0}{\varepsilon_0}}=376.7\,\Omega`
+- **平面电磁波与色散关系**： `\vec E(\vec x,t)=\vec E_0 e^{i(\vec k\cdot\vec x-\omega t)},\qquad k=|\vec k|=\omega\sqrt{\mu\varepsilon}`
+- **横波条件**： `\vec k\cdot\vec E=0,\qquad \vec B=\dfrac{1}{\omega}\vec k\times\vec E\ \ (\vec k,\vec E,\vec B\ 右手定则)`
+- **相位与相速度、波长**： `\vec k\cdot\vec x-\omega t=\text{const},\qquad v=\dfrac{\omega}{k}=\dfrac{1}{\sqrt{\mu\varepsilon}},\qquad \lambda=\dfrac{2\pi}{k}`
+- **介质/真空中的速度与折射率**： `v=\dfrac{c}{\sqrt{\mu_r\varepsilon_r}}=\dfrac{c}{n},\qquad n=\sqrt{\mu_r\varepsilon_r}`
+- **电磁场能量密度**： `w=\dfrac12(\vec E\cdot\vec D+\vec H\cdot\vec B)=\dfrac12\!\left(\varepsilon E^2+\dfrac{B^2}{\mu}\right)`
+- **平面波能量与能流**： `\varepsilon E^2=\dfrac{B^2}{\mu},\qquad \vec S=\vec E\times\vec H=\dfrac{1}{\sqrt{\mu\varepsilon}}w\,\hat e_k=v\,w\,\hat e_k`
+- **二次式求时间平均**： `\langle fg\rangle=\dfrac12 f_0 g_0\cos\varphi=\dfrac12\mathrm{Re}(f^*g)`
+- **平均能量密度与平均能流**： `\langle w\rangle=\dfrac12\varepsilon E_0^2=\dfrac{1}{2\mu}B_0^2,\qquad \langle\vec S\rangle=\dfrac12\mathrm{Re}(\vec E\times\vec H^{*})=\langle w\rangle v\,\hat e_k`
+- **电磁波动量密度与辐射压力**（蔡卫）： `\vec g=\varepsilon_0\vec E\times\vec B=\dfrac{w}{c}\hat k,\qquad \langle P\rangle=2\langle w_{\text{入}}\rangle\cos^2\theta,\qquad \langle P\rangle_{\text{各向同性}}=\dfrac13\langle w\rangle`
+- **振子模型介电系数**（蔡卫）： `\dfrac{\varepsilon}{\varepsilon_0}=1+\dfrac{Ne^2}{m\varepsilon_0}\sum_j\dfrac{f_j}{-\omega^2-i\gamma_j\omega+\omega_j^2}`
+- **Drude 模型与等离子频率**（蔡卫）： `\varepsilon_r=1-\dfrac{\omega_p^2}{\omega(\omega+i\gamma)},\qquad \omega_p^2=\dfrac{ne^2}{m\varepsilon_0}`
+- **复介电系数下的复波数**（蔡卫）： `\tilde k=\beta+i\dfrac{\alpha}{2},\qquad \beta^2-\dfrac{\alpha^2}{4}=k_0^2\mathrm{Re}\!\left\{\dfrac{\varepsilon}{\varepsilon_0}\right\},\qquad \alpha\beta=k_0^2\mathrm{Im}\!\left\{\dfrac{\varepsilon}{\varepsilon_0}\right\}`
+- **界面边值关系**： `\hat e_n\times(\vec E_2-\vec E_1)=0,\qquad \hat e_n\times(\vec H_2-\vec H_1)=\vec\alpha,\qquad \hat e_n\cdot(\vec D_2-\vec D_1)=\sigma,\qquad \hat e_n\cdot(\vec B_2-\vec B_1)=0`
+- **波矢切向分量连续**： `k_x=k'_x=k''_x,\qquad k_y=k'_y=k''_y`
+- **反射与折射定律**： `\theta=\theta',\qquad \dfrac{\sin\theta}{\sin\theta''}=\dfrac{v_1}{v_2}=n_{21}=\sqrt{\dfrac{\mu_2\varepsilon_2}{\mu_1\varepsilon_1}}`
+- **Snell 定律**： `\dfrac{\sin\theta''}{\sin\theta}=\dfrac{n_1}{n_2}`
+- **菲涅耳公式 · E 垂直入射面（TE/s 波）**： `\dfrac{E'}{E}=-\dfrac{\sin(\theta-\theta'')}{\sin(\theta+\theta'')},\qquad \dfrac{E''}{E}=\dfrac{2\cos\theta\sin\theta''}{\sin(\theta+\theta'')}`
+- **菲涅耳公式 · E 平行入射面（TM/p 波）**： `\dfrac{E'}{E}=\dfrac{\tan(\theta-\theta'')}{\tan(\theta+\theta'')},\qquad \dfrac{E''}{E}=\dfrac{2\cos\theta\sin\theta''}{\sin(\theta+\theta'')\cos(\theta-\theta'')}`
+- **菲涅耳公式 · 阻抗形式（蔡卫）**： `r_{\text{TE}}=\dfrac{Z_2\cos\theta-Z_1\cos\theta''}{Z_2\cos\theta+Z_1\cos\theta''},\qquad r_{\text{TM}}=\dfrac{Z_1\cos\theta-Z_2\cos\theta''}{Z_1\cos\theta+Z_2\cos\theta''}`
+- **布儒斯特（Brewster）角**： `\theta+\theta''=\dfrac{\pi}{2},\qquad \tan\theta_B=\dfrac{n_2}{n_1}`
+- **反射率与正入射**： `R=\left|\dfrac{\vec S'}{\vec S}\right|=\left|\dfrac{E'}{E}\right|^2,\qquad R_{\text{正入射}}=\left(\dfrac{n_1-n_2}{n_1+n_2}\right)^2=\left(\dfrac{Z_2-Z_1}{Z_2+Z_1}\right)^2`
+- **全反射临界角**： `\sin\theta_c=n_{21}=\dfrac{n_2}{n_1}\quad(n_1>n_2)`
+- **全反射反射系数与相位差**： `\dfrac{E'}{E}=\dfrac{\cos\theta-i\sqrt{\sin^2\theta-n_{21}^2}}{\cos\theta+i\sqrt{\sin^2\theta-n_{21}^2}}=e^{-2i\phi},\qquad \tan\phi=\dfrac{\sqrt{\sin^2\theta-n_{21}^2}}{\cos\theta}`
+- **全反射穿透深度**： `\dfrac{1}{\kappa}=\dfrac{\lambda_1}{2\pi\sqrt{\sin^2\theta-n_{21}^2}}`
+- **导体中电荷衰减与良导体条件**： `\rho(t)=\rho_0 e^{-\frac{\sigma}{\varepsilon}t},\qquad \tau=\dfrac{\varepsilon}{\sigma},\qquad \dfrac{\sigma}{\varepsilon\omega}\gg1`
+- **复电容率**： `\varepsilon'=\varepsilon+i\dfrac{\sigma}{\omega},\qquad \nabla\times\vec H=-i\omega\varepsilon'\vec E`
+- **导体中复波矢量关系**： `\vec k=\vec\beta+i\vec\alpha,\qquad \beta^2-\alpha^2=\omega^2\mu\varepsilon,\qquad \vec\alpha\cdot\vec\beta=\dfrac12\omega\mu\sigma`
+- **α、β 一般解**： `\beta=\omega\sqrt{\mu\varepsilon}\left[\dfrac12\!\left(\sqrt{1+\dfrac{\sigma^2}{\varepsilon^2\omega^2}}+1\right)\right]^{1/2},\qquad \alpha=\omega\sqrt{\mu\varepsilon}\left[\dfrac12\!\left(\sqrt{1+\dfrac{\sigma^2}{\varepsilon^2\omega^2}}-1\right)\right]^{1/2}`
+- **良导体近似**： `k^2\approx i\omega\mu\sigma,\qquad \alpha\approx\beta\approx\sqrt{\dfrac{\omega\mu\sigma}{2}},\qquad E=E_0 e^{-\alpha z}e^{i(\beta z-\omega t)}`
+- **趋肤（穿透）深度**： `\delta=\dfrac{1}{\alpha}=\sqrt{\dfrac{2}{\omega\mu\sigma}}`
+- **良导体中磁场（滞后 45°）**： `\vec H\approx\sqrt{\dfrac{\sigma}{\omega\mu}}\,e^{i\pi/4}\,\hat e_n\times\vec E,\qquad \dfrac{\mu H}{\varepsilon E}=\dfrac{\sigma}{\omega\varepsilon}\gg1`
+- **导体表面反射系数**： `R=\left|\dfrac{E'}{E}\right|^2\approx1-2\sqrt{\dfrac{2\omega\varepsilon_0}{\sigma}}\ \xrightarrow{\sigma\to\infty}\ 1`
+- **导体表面高频损耗功率**： `P_L=\dfrac{\alpha_{f0}^2}{2\sigma\delta},\qquad \vec\alpha_f=\dfrac{\sigma E_0}{\alpha^2+\beta^2}e^{i\phi},\qquad \tan\phi=\dfrac{\beta}{\alpha}`
+- **各向异性介质本构关系**（蔡卫）： `\vec D=\boldsymbol\varepsilon\cdot\vec E,\qquad D_i=\varepsilon_{ij}E_j=\varepsilon_i E_i\ \ (\text{主轴})`
+- **Fresnel 方程**（蔡卫）： `\dfrac{k_x^2}{v_p^2-v_x^2}+\dfrac{k_y^2}{v_p^2-v_y^2}+\dfrac{k_z^2}{v_p^2-v_z^2}=0`
+- **单轴晶体双折射（有效折射率）**（蔡卫）： `v_p^2=v_o^2\cos^2\theta+v_e^2\sin^2\theta,\qquad \dfrac{1}{n_e^2(\theta)}=\dfrac{\cos^2\theta}{n_o^2}+\dfrac{\sin^2\theta}{n_e^2}`
+- **旋光介质：旋磁频率与介电系数张量**（蔡卫）： `\omega_c=\dfrac{eB_0}{m},\qquad \boldsymbol\varepsilon=\begin{pmatrix}\varepsilon_1 & i\varepsilon_2 & 0\\ -i\varepsilon_2 & \varepsilon_1 & 0\\ 0&0&\varepsilon_3\end{pmatrix}`
+- **旋光介质本征态与相速度**（蔡卫）： `k_\pm=k_0\sqrt{\varepsilon_1\pm\varepsilon_2},\qquad v_R=\dfrac{c}{\sqrt{\varepsilon_1+\varepsilon_2}},\qquad v_L=\dfrac{c}{\sqrt{\varepsilon_1-\varepsilon_2}}\ \ (v_L>v_R)`
+- **法拉第旋转角**（蔡卫）： `\Delta\phi=\dfrac{k_0 d}{2}\sqrt{\varepsilon_1+\varepsilon_2}-\dfrac{k_0 d}{2}\sqrt{\varepsilon_1-\varepsilon_2}\approx\dfrac{\omega d}{2c}\dfrac{\varepsilon_2}{\sqrt{\varepsilon_1}}\ \ (\propto d,\ \propto|\vec B|)`
+- **理想导体边界条件**： `\hat e_n\times\vec E=0,\qquad \hat e_n\cdot\vec B=0,\qquad \hat e_n\times\vec H=\vec\alpha`
+- **谐振腔本征频率（矩形腔 L1×L2×L3）**： `\omega_{mnp}=\dfrac{\pi}{\sqrt{\mu\varepsilon}}\sqrt{\left(\dfrac{m}{L_1}\right)^2+\left(\dfrac{n}{L_2}\right)^2+\left(\dfrac{p}{L_3}\right)^2}`
+- **谐振腔最低波模 (1,1,0)**： `f_{110}=\dfrac{1}{2\sqrt{\mu\varepsilon}}\sqrt{\dfrac{1}{L_1^2}+\dfrac{1}{L_2^2}},\qquad \lambda_{110}=\dfrac{2L_1L_2}{\sqrt{L_1^2+L_2^2}}`
+- **LC 回路谐振频率**： `f=\dfrac{1}{2\pi\sqrt{LC}}`
+- **波导中场分量关系**： `k_x=\dfrac{m\pi}{a},\qquad k_y=\dfrac{n\pi}{b},\qquad k_x^2+k_y^2+k_z^2=k^2`
+- **波导色散关系与截止频率**： `k_z=\sqrt{k^2-k_c^2}=\dfrac{\omega}{c}\sqrt{1-\left(\dfrac{\omega_c}{\omega}\right)^2},\qquad \omega_{c,mn}=\dfrac{\pi}{\sqrt{\mu\varepsilon}}\sqrt{\left(\dfrac{m}{a}\right)^2+\left(\dfrac{n}{b}\right)^2}`
+- **TE10 波截止频率、线频率与截止波长**： `\omega_{c,10}=\dfrac{\pi}{a\sqrt{\mu\varepsilon}},\qquad \nu_c=\dfrac{1}{2a\sqrt{\mu_0\varepsilon_0}}=\dfrac{c}{2a},\qquad \lambda_{c,10}=2a`
+- **TE10 波的电磁场**： `E_x=E_z=0,\quad E_y=\dfrac{i\omega\mu a}{\pi}H_0\sin\!\dfrac{\pi}{a}x\,e^{ik_z z},\quad H_z=H_0\cos\!\dfrac{\pi}{a}x\,e^{ik_z z}`
+- **波导内相速度与群速度**： `v_p=\dfrac{\omega}{k_z}=\dfrac{c}{\sqrt{1-(\omega_c/\omega)^2}}>c,\qquad v_g=\dfrac{d\omega}{dk_z}=c\sqrt{1-(\omega_c/\omega)^2}<c`

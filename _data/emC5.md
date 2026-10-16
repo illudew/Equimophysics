@@ -1,0 +1,90 @@
+# 电动力学 · 第 5 章 电磁波的辐射
+> 来源：第5章.pdf（杨茂志）、第5章电磁波的辐射.pdf（蔡卫）
+
+## 小节
+- 章首引言：研究高频交变电流辐射电磁波的规律；严格求解需用天线表面边界条件同时定出空间电磁场与天线电流分布，本章只讨论给定电流分布下计算辐射
+- 5.1 电磁场的矢势和标势（两位老师均有）
+  - 描述电磁场的势（矢势 A、标势 φ 的引入与物理意义）
+  - 规范变换与规范不变性（规范自由度、A-B 效应）
+  - 两种重要规范：库仑规范、洛伦兹规范
+  - 达朗贝尔（d'Alembert）方程；例：求平面电磁波的势
+- 5.2 推迟势（两位老师均有）
+  - 标势方程的解（球对称、向外发射的球面波、解满足达朗贝尔方程的证明）
+  - 矢势的解；势 A、φ 满足洛伦兹条件的证明；推迟势的物理意义
+- 5.3 电偶极辐射（杨；蔡归入「多极矩展开」）
+  - 计算辐射场的一般公式（单频交变电流、推迟因子 e^{ikr}）
+  - 矢势的展开式（近区 r≪λ、感应区 r~λ、远区/辐射区 r≫λ 三个线度）
+  - 电偶极辐射（展开式第一项）；辐射能流、角分布、辐射功率
+  - 短天线的辐射与辐射电阻
+- 5.4 磁偶极辐射与电四极辐射（蔡卫）
+  - 高频电流分布的磁偶极矩与电四极矩（矢势展开式第二项的对称/反对称分解）
+  - 磁偶极辐射；电四极辐射；约化电四极矩
+- 5.5 天线辐射（蔡卫）
+  - 天线上的电流分布（细直天线、驻波形式）
+  - 天线的辐射场（远区矢势积分、半波天线）
+  - 天线阵与方向性调制因子
+- 5.7 电磁场的动量（杨茂志）
+  - 电磁场的动量密度与动量流密度张量（电磁场应力张量）
+  - 辐射压力（理想导体表面全反射）
+
+## 核心概念
+- **矢势与标势**：由 ∇·B=0 引入矢势 A 使 B=∇×A；一般电场有旋（∇×E≠0），由 E=-∇φ-∂A/∂t 引入标势 φ。A 沿任一闭合回路的线积分等于该时刻回路内的磁通量。变化场中 φ 不再具有势能的直接意义，A、φ 必须作为一个整体描述电磁场。
+- **规范变换与规范不变性**：对任意时空函数 ψ，作变换 A→A+∇ψ、φ→φ-∂ψ/∂t，(A,φ) 与 (A',φ') 描述同一电磁场 (E,B)。每一组 (A,φ) 称为一种规范；势作规范变换时一切物理量与物理规律不变，称规范不变性。
+- **规范自由度来源**：B=∇×A 只给出 A 的旋度，不足以确定 A，须额外给定额外条件（规范条件 ∇·A=?）；E、B 对 ∇·A 无任何限制，每一种取值对应一种规范。
+- **A-B 效应**：量子力学中 E、B 不能完全描述所有物理效应；非单连通区域内电子波函数绕闭合路径一周的相位差由 ∮A·dl 描述，不能用 B 的局域作用解释，但该回路积分仍规范不变（∮(A+∇ψ)·dl=∮A·dl）。
+- **库仑规范**：规范条件 ∇·A=0，A 为无源场（横场）。此时 E 的纵场部分完全由 φ 描述、横场部分完全由 A 描述；-∇φ 对应库仑场、-∂A/∂t 对应感应电场；标势方程与静电场相同（解为库仑势），A 只有横向分量恰能描述辐射波的两独立偏振。
+- **洛伦兹规范**：规范条件 ∇·A+(1/c²)∂φ/∂t=0，使势方程化为对称形式（A、φ 同形），且相对论中显示协变性。
+- **达朗贝尔方程**：洛伦兹规范下 A、φ 满足的非齐次波动方程，自由项为源（电荷、电流）；电流产生矢势的波动、电荷产生标势的波动。离开源区后势以波动形式传播，导出的 E、B 也以波动传播。
+- **推迟势**：达朗贝尔方程的解。某点 x 在 t 时刻的场值不依赖于同一时刻的源分布，而决定于较早时刻 t-r/c 的源；推迟时间 r/c 正是电磁作用从源点传播到场点所需时间，说明电磁作用具有有限传播速度。
+- **推迟因子**：单频情形矢势中出现的 e^{ikr}（k=ω/c），表示电磁波传到场点时相位滞后 kr；kR≪1（无推迟）时回到准静态结果。
+- **三个线度与三个区域**：小区域辐射涉及源区线度 l、波长 λ=2π/k、场点距离 r。当 l≪r、l≪λ 时按 r 与 λ 关系分近区（r≪λ，kr≪1，场近似稳恒场，纵场为主）、感应区（r~λ，纵场向横场过渡）、远区/辐射区（r≫λ，主要是横向电磁场）。
+- **电偶极辐射**：矢势展开第一项 ∝ 电偶极矩变化率 ṗ，是振荡电偶极矩产生的辐射。远区为横波（TEM）：B 沿纬线振荡、E 沿经线振荡，B 总横向，磁力线为绕极轴的圆周；E 线为经面上的闭合曲线（因 ∇·E=0），近区 E 不完全横向。
+- **电偶极辐射的角分布与功率**：角分布 ∝ sin²θ，θ=π/2 最强、θ=0 或 π 为零；辐射功率 ∝ ω⁴（频率越高辐射越强，如瑞利散射）。
+- **短天线与辐射电阻**：天线长度 l≪λ 时其辐射为电偶极辐射；馈电点电流最大 I₀、两端为零，电流近似线性分布。辐射功率 ∝ I₀²，等效于一个等效电阻（辐射电阻 R_r）上的损耗功率；R_r 表征天线辐射能力。
+- **磁偶极矩与电四极矩**：矢势展开式第二项按对称/反对称部分分解，反对称部分给出磁偶极矩 m、对称部分给出电四极矩 D。两者同量级；稳定电流只存在磁偶极辐射，交变电流时电荷积累才出现电多极矩辐射。
+- **磁偶极辐射**：与电偶极辐射不同处在于电场沿纬线振荡、磁场沿经线振荡（E↔cB 相互代换），角分布仍为 sin²θ，与电偶极一致。电流线圈的辐射 ∝ (a/λ)⁴，比短天线小 (a/λ)² 量级，辐射能力更弱。
+- **电四极（约化）矩**：对 D 加上含 R 分量的项不影响 E、B，故可用约化电四极矩 D_ij=∫q(3x_ix_j-r²δ_ij)dV'（仅 5 个独立分量）。电荷区线度 l 时 D~O(l²)，辐射功率 ∝ (l/λ)⁴，与磁偶极同量级；其角分布依赖 |D⃗×R̂|²，较复杂需具体分析。
+- **天线辐射**：小区域辐射功率至多 ∝ (l/λ)²，要得到大辐射功率天线长度须达波长量级，此时矢势展开式不能直接用，须知道天线电流分布直接积分。一般电流与电场互为制约属边值问题；细直天线可取近似电流分布（两端为波节的驻波形式）。
+- **半波天线与天线阵**：半波天线 l=λ/2 对极角 θ 有方向性、对方位角 φ 无依赖；辐射电阻 ≈73.2 Ω。将多副天线排成天线阵，利用辐射干涉效应可获得强方向性，角分布因子为单天线因子乘以阵列调制因子。
+- **电磁场动量与动量流密度张量**：电磁场具有动量（辐射压力是实验证据）；动量密度 g=ε₀E×B，与能流密度关系 g=S/c²。动量流密度（应力）张量 T 的分量 T_ij 表示通过垂直于 i 轴的单位面积流过的动量 j 分量；由 f+∂g/∂t=-∇·T 得电磁场与电荷的总动量守恒。
+- **辐射压力**：电磁波入射到物体上施加的压力。平面波入射理想导体全反射（入射角 θ）时面压强 P=2w_i cos²θ=w cos²θ；各方向入射取平均为 w/3。一般光波、无线电波辐射压强很小（太阳光能流 ~1.35×10³ W·m⁻² 对应 ~10⁻⁶ Pa）。
+
+## 重要公式
+- **势的定义**： `\vec B=\nabla\times\vec A,\qquad \vec E=-\nabla\varphi-\dfrac{\partial\vec A}{\partial t}`
+- **规范变换**： `\vec A\to\vec A'=\vec A+\nabla\psi,\qquad \varphi\to\varphi'=\varphi-\dfrac{\partial\psi}{\partial t}`
+- **库仑规范**： `\nabla\cdot\vec A=0`
+- **洛伦兹规范**： `\nabla\cdot\vec A+\dfrac{1}{c^2}\dfrac{\partial\varphi}{\partial t}=0`
+- **达朗贝尔方程**： `\nabla^2\vec A-\dfrac{1}{c^2}\dfrac{\partial^2\vec A}{\partial t^2}=-\mu_0\vec J,\qquad \nabla^2\varphi-\dfrac{1}{c^2}\dfrac{\partial^2\varphi}{\partial t^2}=-\dfrac{\rho}{\varepsilon_0}`
+- **库仑规范下势方程**： `\nabla^2\varphi=-\dfrac{\rho}{\varepsilon_0},\qquad \nabla^2\vec A-\dfrac{1}{c^2}\dfrac{\partial^2\vec A}{\partial t^2}-\dfrac{1}{c^2}\nabla\dfrac{\partial\varphi}{\partial t}=-\mu_0\vec J`
+- **推迟势**： `\varphi(\vec x,t)=\dfrac{1}{4\pi\varepsilon_0}\int\dfrac{\rho(\vec x',t-r/c)}{r}\,dV',\qquad \vec A(\vec x,t)=\dfrac{\mu_0}{4\pi}\int\dfrac{\vec J(\vec x',t-r/c)}{r}\,dV',\qquad r=|\vec x-\vec x'|`
+- **球面波通解**： `u(r,t)=f\!\left(t-\dfrac{r}{c}\right)+g\!\left(t+\dfrac{r}{c}\right),\qquad \varphi(r,t)=\dfrac{f(t-r/c)}{r}+\dfrac{g(t+r/c)}{r}`
+- **平面电磁波的势（洛伦兹规范）**： `\vec A=\vec A_0e^{i(\vec k\cdot\vec x-\omega t)},\quad \varphi=\varphi_0e^{i(\vec k\cdot\vec x-\omega t)},\qquad \varphi_0=\dfrac{c^2}{\omega}\vec k\cdot\vec A_0`
+- **平面波场强与横波条件**： `\vec B=\nabla\times\vec A=i\vec k\times\vec A,\qquad \vec E=-\nabla\varphi-\dfrac{\partial\vec A}{\partial t}=-\dfrac{c^2}{\omega}\vec k\times\vec B=-c\hat e_n\times\vec B`
+- **电偶极辐射的矢势**： `\vec A(\vec x)=\dfrac{\mu_0}{4\pi}\dfrac{e^{ikR}}{R}\int_V\vec J(\vec x')\,dV'=\dfrac{\mu_0}{4\pi}\dfrac{e^{ikR}}{R}\dot{\vec p},\qquad \int_V\vec J\,dV'=\dot{\vec p}`
+- **电偶极辐射场**： `\vec B=\dfrac{1}{4\pi\varepsilon_0c^3R}e^{ikR}\,\ddot{\vec p}\times\hat e_R,\qquad \vec E=\dfrac{1}{4\pi\varepsilon_0c^2R}e^{ikR}\,(\ddot{\vec p}\times\hat e_R)\times\hat e_R`
+- **电偶极辐射场（球坐标分量）**： `B_\phi=\dfrac{|\ddot{\vec p}|}{4\pi\varepsilon_0c^3R}e^{ikR}\sin\theta,\qquad E_\theta=\dfrac{|\ddot{\vec p}|}{4\pi\varepsilon_0c^2R}e^{ikR}\sin\theta`
+- **电偶极辐射能流与角分布**： `\langle\vec S\rangle=\dfrac{|\ddot{\vec p}|^2}{32\pi^2\varepsilon_0c^3R^2}\sin^2\theta\,\hat e_R,\qquad f(\theta,\varphi)=\dfrac{|\ddot{\vec p}|^2}{32\pi^2\varepsilon_0c^3}\sin^2\theta\propto\sin^2\theta`
+- **电偶极辐射功率**： `P=\dfrac{|\ddot{\vec p}|^2}{12\pi\varepsilon_0c^3}=\dfrac{1}{4\pi\varepsilon_0}\dfrac{|\ddot{\vec p}|^2}{3c^3};\qquad P=\dfrac{p_0^2\omega^4}{12\pi\varepsilon_0c^3}\propto\omega^4\ \ (p=p_0e^{-i\omega t})`
+- **短天线的辐射（l≪λ）**： `I(z)=I_0\!\left(1-\dfrac{2|z|}{l}\right),\quad \dot{\vec p}=\dfrac{1}{2}I_0l\,\hat e_z,\qquad P=\dfrac{\mu_0I_0^2\omega^2l^2}{48\pi c}=\dfrac{\pi}{12}\sqrt{\dfrac{\mu_0}{\varepsilon_0}}\,I_0^2\!\left(\dfrac{l}{\lambda}\right)^2`
+- **辐射电阻**： `P=\dfrac{1}{2}R_rI_0^2,\qquad R_r=\dfrac{\pi}{6}\sqrt{\dfrac{\mu_0}{\varepsilon_0}}\left(\dfrac{l}{\lambda}\right)^2\approx197\left(\dfrac{l}{\lambda}\right)^2\ \Omega\qquad\left(\sqrt{\mu_0/\varepsilon_0}=376.7\,\Omega\right)`
+- **磁偶极矩与电四极矩（矢势展开第二项）**： `\vec A^{(2)}(\vec x)=\dfrac{i\omega\mu_0}{4\pi cR}\left(\hat R\times[m]-\dfrac{1}{6}\hat R\cdot[D]\right),\qquad [m]=\dfrac{1}{2}\int(\vec x'\times\vec J)\,dV',\qquad D=\int 3q\,\vec x'\vec x'\,dV'`
+- **磁偶极辐射场**： `\vec B=\dfrac{1}{4\pi\varepsilon_0c^4R}e^{ikR}(\ddot{\vec m}\times\hat R)\times\hat R,\qquad \vec E=-\dfrac{1}{4\pi\varepsilon_0c^3R}e^{ikR}(\ddot{\vec m}\times\hat R)`
+- **磁偶极辐射功率**： `P=\dfrac{1}{4\pi\varepsilon_0}\dfrac{|\ddot{\vec m}|^2}{3c^5}\ \ (\text{由电偶极结果作}\ \vec p\to\vec m/c\ \text{代换得到})`
+- **小电流线圈的辐射（半径 a，电流 I₀）**： `[m]=I_0\pi a^2,\qquad P=\dfrac{4\pi^5}{3}Z_0\left(\dfrac{a}{\lambda}\right)^4I_0^2\propto\left(\dfrac{a}{\lambda}\right)^4`
+- **磁偶极辐射能流与角分布**： `\langle\vec S\rangle=\dfrac{1}{32\pi^2\varepsilon_0c^5R^2}|\ddot{\vec m}\times\hat R|^2\,\hat R\propto\sin^2\theta,\qquad P=\dfrac{|\ddot{\vec m}|^2}{12\pi\varepsilon_0c^5}`
+- **约化电四极矩**： `\mathcal D_{ij}=\int q\,(3x_ix_j-r^2\delta_{ij})\,dV',\qquad \vec{\mathcal D}=\hat R\cdot\mathcal D,\qquad \mathcal D\sim O(l^2)`
+- **电四极辐射场与能流**： `\vec B=\dfrac{1}{24\pi\varepsilon_0c^3R}e^{ikR}\vec{\mathcal D}\times\hat R,\qquad \vec E=-\dfrac{1}{24\pi\varepsilon_0c^3R}e^{ikR}(\vec{\mathcal D}\times\hat R)\times\hat R,\qquad \langle\vec S\rangle=\dfrac{1}{4\pi\varepsilon_0}\dfrac{1}{288\pi c^5R^2}|\vec{\mathcal D}\times\hat R|^2\hat R`
+- **电四极辐射功率**： `P\propto\left(\dfrac{l}{\lambda}\right)^4\ \ (\text{与磁偶极同量级})`
+- **天线上的电流分布（细直天线）**： `I(z,t)=I_0\sin k\!\left(\dfrac{l}{2}-|z|\right)e^{-i\omega t}=\begin{cases}I_0e^{-i\omega t}\sin k\!\left(\dfrac l2-z\right),&0\le z\le l/2\\ I_0e^{-i\omega t}\sin k\!\left(\dfrac l2+z\right),&-l/2\le z\le0\end{cases}`
+- **天线远区辐射场**： `\vec B=-\dfrac{i\mu_0I_0e^{ikR}}{2\pi R}\dfrac{\cos\!\left(\frac{kl\cos\theta}{2}\right)-\cos\!\frac{kl}{2}}{\sin\theta}\,\hat\phi,\qquad \vec E=-\dfrac{i\mu_0cI_0e^{ikR}}{2\pi R}\dfrac{\cos\!\left(\frac{kl\cos\theta}{2}\right)-\cos\!\frac{kl}{2}}{\sin\theta}\,\hat\theta`
+- **天线平均辐射能流与角分布因子**： `\langle\vec S\rangle=\dfrac{Z_0I_0^2}{8\pi^2R^2}f(\theta)\,\hat R,\qquad f(\theta)=\dfrac{\left[\cos\!\left(\frac{kl\cos\theta}{2}\right)-\cos\!\frac{kl}{2}\right]^2}{\sin^2\theta}`
+- **半波天线（l=λ/2, kl=π）**： `B_\phi=-\dfrac{i\mu_0I_0e^{ikR}}{2\pi R}\dfrac{\cos\!\left(\frac{\pi\cos\theta}{2}\right)}{\sin\theta},\qquad E_\theta=-\dfrac{i\mu_0cI_0e^{ikR}}{2\pi R}\dfrac{\cos\!\left(\frac{\pi\cos\theta}{2}\right)}{\sin\theta}`
+- **半波天线辐射功率与辐射电阻**： `P=\dfrac{Z_0I_0^2}{8\pi}\cdot2.44,\qquad R_r=\dfrac{2P}{I_0^2}\approx73.2\,\Omega,\qquad P=\dfrac{1}{2}R_rI_0^2`
+- **天线阵辐射场与调制因子**： `\vec E=\vec E_0\dfrac{1-e^{iNkl\cos\theta}}{1-e^{ikl\cos\theta}},\qquad f=\left|\dfrac{1-e^{iNkl\cos\theta}}{1-e^{ikl\cos\theta}}\right|^2=\dfrac{\sin^2\!\left(\frac{Nkl\cos\theta}{2}\right)}{\sin^2\!\left(\frac{kl\cos\theta}{2}\right)}`
+- **天线阵主瓣张角**： `Nkl\cos\theta=Nkl\cos\!\left(\dfrac{\pi}{2}-\psi\right)=2\pi\ \Rightarrow\ \psi=\arcsin\!\left(\dfrac{\lambda}{Nl}\right)\ \ (Nl\gg\lambda)`
+- **电磁场动量密度**： `\vec g=\varepsilon_0\vec E\times\vec B=\dfrac{1}{c^2}\vec S,\qquad \vec g=\dfrac{w}{c}\hat e_k\ \ (\text{平面波})`
+- **电磁场动量流密度（应力）张量**： `T=-\varepsilon_0\vec E\vec E-\dfrac{1}{\mu_0}\vec B\vec B+\dfrac{1}{2}\bar I\!\left(\varepsilon_0E^2+\dfrac{1}{\mu_0}B^2\right)`
+- **动量守恒（洛伦兹力 + 场动量）**： `\vec f+\dfrac{\partial\vec g}{\partial t}=-\nabla\cdot T,\qquad \int_V\vec f\,dV+\dfrac{\partial}{\partial t}\int_V\vec g\,dV=-\oint_S d\vec S\cdot T`
+- **通过面元流出的动量**： `\Delta\vec p=\Delta\vec S\cdot T\ \ (T_{ij}:\ \text{通过垂直 }i\text{ 轴单位面积流过的动量 }j\text{ 分量})`
+- **平面波的动量流密度张量**： `T=w\,\hat e_k\hat e_k=c\,g\,\hat e_k\hat e_k`
+- **辐射压力（理想导体全反射）**： `P=2w_i\cos^2\theta=w\cos^2\theta,\qquad P_{\text{各向同性平均}}=\dfrac{1}{3}w`

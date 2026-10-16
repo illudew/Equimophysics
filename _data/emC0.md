@@ -1,0 +1,100 @@
+# 电动力学 · 第 0 章 矢量分析
+> 来源：第0章矢量分析.pdf（蔡卫）
+
+## 小节
+- 一、矢量代数：矢量运算（加法、数乘、点乘、叉乘）
+- 一、矢量代数：矢量运算-分量形式
+- 一、矢量代数：三重积（标量三重积、矢量三重积）
+- 一、矢量代数：位置、位移及间隔矢量
+- 二、微分运算（∇ 算符、梯度、散度、旋度、拉普拉斯）
+- 二、微分运算：二阶微分
+- 三、积分运算：线积分、面积分、体积分
+- 三、积分运算：积分的基本理论（高斯公式、斯托克斯公式）
+- 三、积分运算：分部积分
+- 四、曲线坐标系：球坐标
+- 四、曲线坐标系：柱坐标
+- 五、狄拉克 δ 函数
+
+## 核心概念
+- **矢量**：既包含大小、也包含方向的量，例如位移、速度、加速度、动量等。
+- **矢量运算**：共四种——加法与三类乘法（数乘、点乘、叉乘）。
+- **矢量加法**：满足平行四边形法则与交换律。
+- **数乘**：矢量乘以标量，大小变化、方向不变或反转，满足交换律与分配律。
+- **点乘（内积、标积）**：结果为一标量，$A\cdot B=AB\cos\theta$，满足交换律与分配律。
+- **叉乘（矢量积）**：结果为一矢量，$A\times B=AB\sin\theta\,\hat{n}$，方向由右手螺旋规则确定，满足分配律但**不满足交换律**（$A\times B=-B\times A$）。
+- **标量三重积**：$A\cdot(B\times C)$，其绝对值等于以 $A,B,C$ 为棱的平行六面体体积。
+- **矢量三重积**：遵循 BAC-CAB 规则。
+- **位置矢量**：指某位置距坐标原点的矢量；单位矢量 $\hat{r}=r/|r|$。
+- **间隔矢量**：场点到源点的矢量。电动力学中约定源点为 $x'$、场点（观测点）为 $x$。
+- **微分（几何意义）**：单变量函数微分的几何解释为斜率。
+- **∇ 算符（Nabla）**：矢量微分算符 $\nabla=\hat{x}\tfrac{\partial}{\partial x}+\hat{y}\tfrac{\partial}{\partial y}+\hat{z}\tfrac{\partial}{\partial z}$。
+- **梯度**：∇ 作用于标量场，几何意义为函数增加最快的方向及该方向的最大变化率。
+- **散度**：∇ 点乘作用于矢量场，表示场是否有源。
+- **旋度**：∇ 叉乘作用于矢量场，表示场是否有旋转。
+- **拉普拉斯算符**：$\nabla^2=\nabla\cdot\nabla$，为二阶微分算符。
+- **两个二阶微分恒等式**：$\nabla\times(\nabla T)=0$（梯度场无旋）；$\nabla\cdot(\nabla\times v)=0$（旋度场无源）。
+- **线积分与路径无关**：对无旋场（$\nabla\times v=0$），线积分 $\int v\cdot dl$ 与路径无关。
+- **面积分与面无关**：对无源场（$\nabla\cdot v=0$），面积分 $\int v\cdot da$ 只取决于边界、与面无关。
+- **高斯公式**：把体积分转化为闭合面积分。**斯托克斯公式**：把面积分转化为闭合线积分。
+- **分部积分**：由一维分部积分推广到三维，出现边界项。
+- **球坐标**：由 $x,y,z$ 与 $r,\theta,\varphi$ 的变换定义；基矢 $\hat{r},\hat{\theta},\hat{\varphi}$ 随位置改变而改变。
+- **柱坐标**：由 $x,y,z$ 与 $\rho,\varphi,z$ 的变换定义；基矢 $\hat{\rho},\hat{\varphi},\hat{z}$ 随位置改变而改变。
+- **狄拉克 δ 函数**：一种广义函数，用于描述点源/奇点，具有归一性与挑选性。
+
+## 重要公式
+- **矢量加法（分量）**： `A+B=(A_x+B_x)\hat{x}+(A_y+B_y)\hat{y}+(A_z+B_z)\hat{z}`
+- **数乘（分量）**： `aA=aA_x\hat{x}+aA_y\hat{y}+aA_z\hat{z}`
+- **点乘定义**： `A\cdot B=AB\cos\theta`
+- **叉乘定义**： `A\times B=AB\sin\theta\,\hat{n}`
+- **基矢点乘**： `\hat{x}\cdot\hat{x}=\hat{y}\cdot\hat{y}=\hat{z}\cdot\hat{z}=1,\qquad \hat{x}\cdot\hat{y}=\hat{y}\cdot\hat{z}=\hat{z}\cdot\hat{x}=0`
+- **基矢叉乘**： `\hat{x}\times\hat{y}=\hat{z},\quad \hat{y}\times\hat{z}=\hat{x},\quad \hat{z}\times\hat{x}=\hat{y},\quad \hat{x}\times\hat{x}=\hat{y}\times\hat{y}=\hat{z}\times\hat{z}=0`
+- **点乘（分量）**： `A\cdot B=A_xB_x+A_yB_y+A_zB_z`
+- **叉乘（行列式）**： `A\times B=\begin{vmatrix}\hat{x}&\hat{y}&\hat{z}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}`
+- **标量三重积**： `A\cdot(B\times C)=B\cdot(C\times A)=C\cdot(A\times B)=\begin{vmatrix}A_x&A_y&A_z\\B_x&B_y&B_z\\C_x&C_y&C_z\end{vmatrix}`
+- **矢量三重积（BAC-CAB）**： `A\times(B\times C)=B(A\cdot C)-C(A\cdot B)`
+- **位置矢量**： `r=x\hat{x}+y\hat{y}+z\hat{z},\qquad \hat{r}=\frac{x\hat{x}+y\hat{y}+z\hat{z}}{\sqrt{x^2+y^2+z^2}}`
+- **无限小位移**： `dl=dx\,\hat{x}+dy\,\hat{y}+dz\,\hat{z}`
+- **间隔矢量**： `r=x-x',\qquad \hat{r}=\frac{x-x'}{|x-x'|}`
+- **梯度**： `\nabla T=\frac{\partial T}{\partial x}\hat{x}+\frac{\partial T}{\partial y}\hat{y}+\frac{\partial T}{\partial z}\hat{z}`
+- **温度微分**： `dT=\nabla T\cdot dl`
+- **散度**： `\nabla\cdot v=\frac{\partial v_x}{\partial x}+\frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}`
+- **旋度**： `\nabla\times v=\begin{vmatrix}\hat{x}&\hat{y}&\hat{z}\\[2pt]\dfrac{\partial}{\partial x}&\dfrac{\partial}{\partial y}&\dfrac{\partial}{\partial z}\\[6pt]v_x&v_y&v_z\end{vmatrix}`
+- **乘积法则（标量梯度）**： `\nabla(fg)=f\nabla g+g\nabla f`
+- **乘积法则（矢量点乘）**： `\nabla(A\cdot B)=A\times(\nabla\times B)+B\times(\nabla\times A)+(A\cdot\nabla)B+(B\cdot\nabla)A`
+- **乘积法则（散度）**： `\nabla\cdot(fA)=f\nabla\cdot A+A\cdot\nabla f`
+- **乘积法则（叉乘的散度）**： `\nabla\cdot(A\times B)=B\cdot(\nabla\times A)-A\cdot(\nabla\times B)`
+- **乘积法则（旋度）**： `\nabla\times(fA)=f\nabla\times A+\nabla f\times A`
+- **乘积法则（叉乘的旋度）**： `\nabla\times(A\times B)=A(\nabla\cdot B)-B(\nabla\cdot A)+(B\cdot\nabla)A-(A\cdot\nabla)B`
+- **拉普拉斯算符**： `\nabla^2=\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}+\frac{\partial^2}{\partial z^2}`
+- **梯度场无旋**： `\nabla\times(\nabla T)=0`
+- **旋度场无源**： `\nabla\cdot(\nabla\times v)=0`
+- **旋度的旋度**： `\nabla\times(\nabla\times v)=\nabla(\nabla\cdot v)-\nabla^2 v`
+- **梯度线积分**： `\int_a^b \nabla T\cdot dl=T(b)-T(a)`
+- **高斯公式**： `\int_V \nabla\cdot v\,d\tau=\oint_{\partial V} v\cdot da`
+- **斯托克斯公式**： `\int_S (\nabla\times v)\cdot da=\oint_{\partial S} v\cdot dl`
+- **分部积分（三维）**： `\int_V f\,\nabla\cdot A\,dV=-\int_V A\cdot\nabla f\,dV+\oint_{\partial V} f\,A\cdot da`
+- **球坐标变换**： `x=r\sin\theta\cos\varphi,\quad y=r\sin\theta\sin\varphi,\quad z=r\cos\theta`
+- **球坐标取值范围**： `r:0\to\infty,\quad \theta:0\to\pi,\quad \varphi:0\to2\pi`
+- **球坐标线元**： `dl_r=dr,\quad dl_\theta=r\,d\theta,\quad dl_\varphi=r\sin\theta\,d\varphi`
+- **球坐标体积元**： `dV=dl_r\,dl_\theta\,dl_\varphi=r^2\sin\theta\,dr\,d\theta\,d\varphi`
+- **球坐标面积元（球面 r 为常数）**： `dS=r^2\sin\theta\,d\theta\,d\varphi\,\hat{r}`
+- **球坐标梯度**： `\nabla T=\frac{\partial T}{\partial r}\hat{r}+\frac{1}{r}\frac{\partial T}{\partial\theta}\hat{\theta}+\frac{1}{r\sin\theta}\frac{\partial T}{\partial\varphi}\hat{\varphi}`
+- **球坐标散度**： `\nabla\cdot v=\frac{1}{r^2}\frac{\partial}{\partial r}(r^2v_r)+\frac{1}{r\sin\theta}\frac{\partial}{\partial\theta}(\sin\theta\,v_\theta)+\frac{1}{r\sin\theta}\frac{\partial v_\varphi}{\partial\varphi}`
+- **球坐标旋度**： `\nabla\times v=\frac{1}{r\sin\theta}\left[\frac{\partial}{\partial\theta}(\sin\theta\,v_\varphi)-\frac{\partial v_\theta}{\partial\varphi}\right]\hat{r}+\frac{1}{r}\left[\frac{1}{\sin\theta}\frac{\partial v_r}{\partial\varphi}-\frac{\partial}{\partial r}(r\,v_\varphi)\right]\hat{\theta}+\frac{1}{r}\left[\frac{\partial}{\partial r}(r\,v_\theta)-\frac{\partial v_r}{\partial\theta}\right]\hat{\varphi}`
+- **球坐标拉普拉斯**： `\nabla^2 T=\frac{1}{r^2}\frac{\partial}{\partial r}\!\left(r^2\frac{\partial T}{\partial r}\right)+\frac{1}{r^2\sin\theta}\frac{\partial}{\partial\theta}\!\left(\sin\theta\frac{\partial T}{\partial\theta}\right)+\frac{1}{r^2\sin^2\theta}\frac{\partial^2 T}{\partial\varphi^2}`
+- **柱坐标变换**： `x=\rho\cos\varphi,\quad y=\rho\sin\varphi,\quad z=z`
+- **柱坐标取值范围**： `\rho:0\to\infty,\quad \varphi:0\to2\pi,\quad z:-\infty\to\infty`
+- **柱坐标线元**： `dl_\rho=d\rho,\quad dl_\varphi=\rho\,d\varphi,\quad dl_z=dz`
+- **柱坐标体积元**： `dV=dl_\rho\,dl_\varphi\,dl_z=\rho\,d\rho\,d\varphi\,dz`
+- **柱坐标梯度**： `\nabla T=\frac{\partial T}{\partial\rho}\hat{\rho}+\frac{1}{\rho}\frac{\partial T}{\partial\varphi}\hat{\varphi}+\frac{\partial T}{\partial z}\hat{z}`
+- **柱坐标散度**： `\nabla\cdot v=\frac{1}{\rho}\frac{\partial}{\partial\rho}(\rho\,v_\rho)+\frac{1}{\rho}\frac{\partial v_\varphi}{\partial\varphi}+\frac{\partial v_z}{\partial z}`
+- **柱坐标旋度**： `\nabla\times v=\left[\frac{1}{\rho}\frac{\partial v_z}{\partial\varphi}-\frac{\partial v_\varphi}{\partial z}\right]\hat{\rho}+\left[\frac{\partial v_\rho}{\partial z}-\frac{\partial v_z}{\partial\rho}\right]\hat{\varphi}+\frac{1}{\rho}\left[\frac{\partial}{\partial\rho}(\rho\,v_\varphi)-\frac{\partial v_\rho}{\partial\varphi}\right]\hat{z}`
+- **柱坐标拉普拉斯**： `\nabla^2 T=\frac{1}{\rho}\frac{\partial}{\partial\rho}\!\left(\rho\frac{\partial T}{\partial\rho}\right)+\frac{1}{\rho^2}\frac{\partial^2 T}{\partial\varphi^2}+\frac{\partial^2 T}{\partial z^2}`
+- **一维 δ 函数定义**： `\delta(x)=\begin{cases}\infty,&x=0\\0,&x\neq0\end{cases}`
+- **δ 函数归一性**： `\int_{-\infty}^{\infty}\delta(x)\,dx=1`
+- **δ 函数挑选性**： `\int_{-\infty}^{\infty}f(x)\,\delta(x)\,dx=f(0),\qquad \int_{-\infty}^{\infty}f(x)\,\delta(x-a)\,dx=f(a)`
+- **δ 函数标度性质**： `\delta(kx)=\frac{1}{|k|}\delta(x)`
+- **三维 δ 函数**： `\delta(r)=\delta(x)\delta(y)\delta(z),\quad \int\delta(r)\,dV=1,\quad \int f(r)\,\delta(r-a)\,dV=f(a)`
+- **间隔矢量场散度（奇点）**： `\nabla\cdot\frac{\hat{r}}{r^2}=4\pi\delta(r),\qquad \oint \frac{\hat{r}}{r^2}\cdot dS=4\pi`
+- **拉普拉斯作用在 1/r 上**： `\nabla\cdot\nabla\!\left(\frac{1}{r}\right)=\nabla^2\!\left(\frac{1}{r}\right)=-4\pi\delta(r)`
+- **阶梯函数与 δ 函数**： `\theta(x)=\begin{cases}1,&x>0\\0,&x<0\end{cases},\qquad \frac{d\theta(x)}{dx}=\delta(x)`
