@@ -1,0 +1,117 @@
+# 量子力学（二） · 玻恩近似 / 跃迁矩阵 / 量子力学的经典极限
+> 来源：7玻恩近似.pdf、8跃迁矩阵.pdf、9量子力学的经典极限.pdf
+
+## 小节
+- 第七章 玻恩近似
+- 1. 时间无关格林函数
+- 1a. 狄拉克 δ 函数及其性质
+- 1b. 留数定理（Residue Theorem）
+- 2. 定态薛定谔方程的格林函数
+- 3. Lippmann–Schwinger 方程
+- 4. L-S 方程中格林函数的具体形式（推迟/超前格林函数；积分步骤）
+- 5. 玻恩近似（一级近似波函数、散射振幅、玻恩级数解）
+- 6. 玻恩近似的适用范围
+- 7. 例：汤川势的散射
+- 7. 例：屏蔽库仑势的散射
+- 7. 例：电子、质子散射时玻恩近似的适用条件
+- 第八章 跃迁矩阵
+- 1. 散射振幅与势的关系
+- 2. 跃迁算符的 Lippmann–Schwinger 方程
+- 3. 跃迁算符的格林函数表达式（玻恩级数、Bethe–Goldstone 方程、全格林函数表达式）
+- 4. 全格林函数的 Lippmann–Schwinger 方程（Dyson 方程）
+- 5. 全格林函数与跃迁算符的关系
+- 6. 散射矩阵（U 算符、S 算符、幺正性）
+- 6a. 关于 $\dfrac{1}{x\pm i\varepsilon}=P\dfrac{1}{x}\mp i\pi\delta(x)$ 式的说明
+- 7. 光学定理
+- 第九章 量子力学的经典极限
+- 1. 从量子力学到经典力学的极限过渡（Hamilton–Jacobi 方程）
+- 1a–1c. 经典分析力学（Lagrange 量、Hamilton 量、作用量函数）
+- 2. 用经典力学描述定态量子系统的条件
+- 3. 一维 WKB 近似波函数
+- 4. 一维 WKB 近似的适用条件
+- 5. 连接公式
+- 5a–5b. Airy 函数及其性质
+- 6. 一维运动束缚态（含线性谐振子、半无限深势阱、无限深方势阱）
+- 7. 连接公式的普遍形式
+- 8. 一维散射——势垒贯穿几率
+- 9. 三维中心势场中的 WKB 近似（角度部分、径向部分、散射相移、量子化条件）
+
+## 核心概念
+- **时间无关格林函数**：算符 $z-\hat L(r)$ 的逆，定义为 $[z-\hat L(r)]G(r,r';z)=\delta(r-r')$，描写体系对单位点源的响应；在 $L$ 的本征值处有一阶极点，其余区域解析。
+- **格林函数的谱表示**：由 $\hat L$ 的完备正交本征函数集展开 $G(r,r';z)=\sum_n\dfrac{\psi_n(r)\psi_n^*(r')}{z-E_n}$；极点位置给本征值，对角元素的留数积分给能级简并度。
+- **δ 函数**：$\delta(r)=\delta(x)\delta(y)\delta(z)$，可用任意正交归一完备函数系构成；球坐标中 $\delta(\vec r-\vec r')=\dfrac{1}{r^2\sin\theta}\delta(r-r')\delta(\theta-\theta')\delta(\varphi-\varphi')$；三维空间有 $\delta(r)=-\dfrac{1}{4\pi}\nabla^2\dfrac1r$。
+- **定态薛定谔方程的格林函数**：定义 $[E-\hat H(r)]G(r,r';E)=\delta(r-r')$，与波函数满足同一边值条件；$G(r,r';z)=\sum_n\dfrac{\psi_n(r)\psi_n^*(r')}{z-E_n}$。
+- **Lippmann–Schwinger 方程**：散射波函数满足的积分方程，等价于定态薛定谔方程加无穷远出射边界条件的组合，是散射理论的核心出发点。
+- **自由（推迟）格林函数**：$G_0^{(+)}(r-r')=-\dfrac{1}{4\pi}\dfrac{e^{ik|r-r'|}}{|r-r'|}$，对应 $\vec r\to\infty$ 的外行球面波边界条件；由 $\vec k\to\vec k+i\varepsilon/(2k)$ 的极点移动（+iε 路径）给出。
+- **玻恩近似**：把相互作用势 $V$ 视作微扰，将 L-S 方程右端积分中的波函数用入射单色平面波替代，得到一级近似波函数与散射振幅（势的傅里叶变换）。
+- **玻恩级数解**：把 $\psi_k=\dfrac{1}{1-G(E)U}\varphi_k$ 的逆算符按 $G(E)U$ 幂级数展开，截断到 $V$ 的 $n$ 次幂即为 $n$ 级玻恩近似。
+- **玻恩近似适用范围**：玻恩级数收敛要求第二项远小于第一项；总体上要求①能量 $E$ 远大于势强度 $|V|$，②仅小动量转移。具体条件依赖势的形式（高能极限/低能极限不同）。
+- **汤川势**：$V(r)=V_0\dfrac{e^{-\alpha r}}{r}$（$\alpha>0$，$\alpha\to0$ 回到库仑势），描述核子间等效势的长程吸引部分，预言了 $\pi$ 介子。
+- **屏蔽库仑势**：$V(r)=\dfrac{Z_1Z_2e^2}{4\pi\varepsilon_0}\dfrac{e^{-ar}}{r}=\dfrac{Ze_s^2}{r}e^{-ar}$，描述带电粒子与中性原子的散射，$a\to\infty$ 回到库仑势。
+- **散射振幅与势的关系**：$f(\theta,\varphi)=-\dfrac{\mu}{2\pi\hbar^2}\langle\varphi_{k'}|V|\psi_k^{(+)}\rangle$，即散射振幅是势在初末态间的矩阵元。
+- **跃迁算符（T 矩阵）**：$\langle\varphi_{k'}|T|\varphi_k\rangle\equiv\langle\varphi_{k'}|V|\psi_k^{(+)}\rangle$，与动量 $k$（能量 $E$）有关，$f=-\dfrac{\mu}{2\pi\hbar^2}\langle\varphi_{k'}|T|\varphi_k\rangle$。
+- **T 算符的 L-S 方程**：$T(E)=V+VG_0^{(+)}(E)T(E)$；形式解 $T=\dfrac{1}{1-VG_0^{(+)}}V$。
+- **Bethe–Goldstone 方程**：核物质背景中把 T 矩阵改称 G 矩阵，$G=V+V\dfrac{Q}{E-H_0}G$，$Q$ 为对高于费米动量的核子波函数求和（投影）算符。
+- **全格林函数与 Dyson 方程**：$G^{(+)}(E)=\dfrac{1}{E-H_0-V+i\varepsilon}=\dfrac{1}{E-H+i\varepsilon}$，满足 $G^{(+)}=G_0^{(+)}+G_0^{(+)}VG^{(+)}$。
+- **全格林函数与 T 的关系**：$G^{(+)}=G_0^{(+)}+G_0^{(+)}TG_0^{(+)}$，且 $T(E)G_0^{(+)}(E)=VG^{(+)}(E)$、$G_0^{(+)}(E)T(E)=G^{(+)}(E)V$。
+- **U 算符（Møller 波算符）**：$U^{(\pm)}(E)=\dfrac{1}{1-G_0^{(\pm)}(E)V}$，$\psi_k^{(\pm)}=U^{(\pm)}(E)\varphi_k$；$U^{(\pm)\dagger}U^{(\pm)}=1$（等距算符）。
+- **散射矩阵 S**：$S=1-2\pi i\,T^{(+)}(E)=\dfrac{1-i\pi T(E)}{1+i\pi T(E)}$，为幺正矩阵 $S^\dagger S=SS^\dagger=1$；分波法中 $S_{ll}=e^{2i\delta_l}$。
+- **光学定理**：总截面与向前散射振幅虚部的关系（由 V 厄米性、$\delta$ 函数性质导出），是幺正性的直接结果。
+- **量子力学到经典力学的极限过渡**：波函数写成 $\psi=A\exp[\frac{i}{\hbar}S(r,t)]$，把 $S$ 按 $\hbar$ 展开并略去二次微分项（$\hbar\to0$）即得经典 Hamilton–Jacobi 方程。
+- **用经典力学描述定态系统的条件**：略去 $s$ 的二次导数项要求势场相对德布罗意波长缓变、粒子动量较大（即半经典条件）。
+- **WKB 近似**：把波函数按 $\hbar/i$（或 $i/\hbar$）展开求解非线性方程，取一级近似得准经典波函数，在经典允许区为振荡解、不允许区为指数衰减/增长解。
+- **WKB 适用条件**：$\dfrac{dV/dx}{4[E-V(x)]^{3/2}}\ll1$（或含 $\hbar$ 形式），即势场缓变、动能较大；在 $V(x)=E$ 的转折点处 WKB 波函数失效。
+- **转折点与连接公式**：在转折点附近用线性势（均匀场）近似，薛定谔方程的解为 Airy 函数，据此把两侧的 WKB 波函数（不允许区 $\leftrightarrow$ 允许区）用连接公式衔接；只能单向使用。
+- **Airy 函数**：方程 $y''(z)-zy(z)=0$ 且 $y(\infty)=0$ 的解，用贝塞尔函数表示，是转折点附近波函数严格解，其渐近行为给出连接公式中的相位 $\pi/4$。
+- **Bohr–Sommerfeld 量子化条件**：$\oint p\,dx=(n+\frac12)h$，零点振动项 $\frac12h$ 由 WKB 连接公式自动给出；不同边界（半无限深阱、无限深阱、中心势）对应不同的常数项。
+- **一维束缚态波函数无简并**：两个转折点两侧连接得到的同一区域波函数应等价，迫使相位差取离散值，从而给出能级量子化条件。
+- **势垒贯穿（隧穿）几率**：透射系数 $D$ 由势垒区内动量积分决定，随势垒高度/宽度指数衰减，反射系数 $R=1-D$。
+- **三维中心势场中的 WKB 近似**：角向部分（大 $l$ 勒让德多项式）、径向部分（等效于 $r=0$ 有无限高势垒的一维问题）分别作 WKB 处理；用相移 $\delta_l$ 描述散射，用径量子数给出量子化条件。
+
+## 重要公式
+- **时间无关格林函数定义**： `\big[z-\hat L(r)\big]G(r,r';z)=\delta(r-r')\ (\text{式中 } z=\lambda+is)`
+- **时间无关格林函数谱表示**： `G(r,r';z)=\sum_n \frac{\psi_n(r)\psi_n^*(r')}{z-E_n};\qquad \hat G(z)=\frac{1}{z-\hat L}`
+- **非齐次方程特解**： `\big[z-\hat L(r)\big]u(r)=f(r)\ \Rightarrow\ u(r)=\int G(r,r';z)\,f(r')\,dr'`
+- **δ 函数性质（三维与球坐标）**： `\int f(r)\delta(r)\,dr=f(0);\qquad \delta(r)=-\frac{1}{4\pi}\nabla^2\frac{1}{r};\qquad \delta(\vec r-\vec r')=\frac{1}{r^2\sin\theta}\delta(r-r')\delta(\theta-\theta')\delta(\varphi-\varphi')`
+- **留数定理**： `\oint_S f(z)\,dz=2\pi i\sum_{a_k\in S}\mathrm{Res}\,f(a_k),\qquad \mathrm{Res}\,f(z_0)=\lim_{z\to z_0}(z-z_0)f(z)\ (\text{单极点})`
+- **定态薛定谔方程的格林函数**： `\big[E-\hat H(r)\big]G(r,r';E)=\delta(r-r');\qquad \hat G(z)=\sum_n\frac{|\psi_n\rangle\langle\psi_n|}{z-E_n}=\frac{1}{z-\hat H}`
+- **Lippmann–Schwinger 方程（坐标表象）**： `\psi(\vec r)=e^{i\vec k\cdot\vec r}-\frac{\mu}{2\pi\hbar^2}\int d^3r'\,\frac{e^{ik|\vec r-\vec r'|}}{|\vec r-\vec r'|}\,V(\vec r')\,\psi(\vec r')`
+- **自由（推迟/超前）格林函数**： `G_0^{(\pm)}(r-r')=-\frac{1}{4\pi}\frac{e^{\pm ik|\vec r-\vec r'|}}{|\vec r-\vec r'|};\qquad G_0^{(+)}(q)=\frac{1}{(2\pi)^3}\frac{1}{k^2-q^2+i\varepsilon}`
+- **格林函数定义式与傅里叶变换**： `(\nabla^2+k^2)G(r-r')=\delta(r-r'),\qquad G_0^{(+)}(E)=\frac{1}{E-H_0+i\varepsilon}`
+- **玻恩近似的出射波渐近式**： `\psi_{sc}(\vec r)\xrightarrow{r\to\infty}-\frac{\mu}{2\pi\hbar^2}\frac{e^{ikr}}{r}\int d^3r'\,e^{-i\vec k_f\cdot\vec r'}\,V(\vec r')\,\psi(\vec r')`
+- **一级玻恩近似散射振幅**： `f(\theta,\varphi)=-\frac{\mu}{2\pi\hbar^2}\int d^3r\,e^{i\vec q\cdot\vec r}\,V(\vec r),\qquad \vec q\equiv\vec k-\vec k_f,\qquad q=2k\sin(\theta/2)`
+- **球对称（中心）势的玻恩振幅**： `f(q)=-\frac{2\mu}{\hbar^2 q}\int_0^\infty V(r)\,\sin(qr)\,r\,dr`
+- **玻恩级数解**： `\psi_k=\varphi_k+G(E)U\varphi_k+G(E)UG(E)U\varphi_k+\cdots\qquad (U=\tfrac{2\mu}{\hbar^2}V)`
+- **汤川势散射截面**： `\sigma(\theta)=|f(\theta)|^2=\left(\frac{2\mu V_0}{\hbar^2}\right)^2\frac{1}{(\alpha^2+q^2)^2}=\frac{4\mu^2V_0^2}{\hbar^4}\Big[\alpha^2+4k^2\sin^2(\theta/2)\Big]^{-2}`
+- **屏蔽库仑势散射截面（玻恩近似）**： `\sigma(\theta)=|f(\theta)|^2=\frac{4\mu^2Z^2e_s^4}{\hbar^4}\Big[a^2+4k^2\sin^2(\theta/2)\Big]^{-2}\quad\Big(V(r)=\tfrac{Ze_s^2}{r}e^{-ar}\Big)`
+- **散射振幅与势的 T 矩阵元**： `f(\theta,\varphi)=-\frac{\mu}{2\pi\hbar^2}\langle\varphi_{k'}|V|\psi_k^{(+)}\rangle=-\frac{\mu}{2\pi\hbar^2}\langle\varphi_{k'}|T|\varphi_k\rangle`
+- **T 算符的 Lippmann–Schwinger 方程**： `T(E)=V+VG_0^{(+)}(E)\,T(E),\qquad T(E)=\frac{1}{1-VG_0^{(+)}(E)}V`
+- **T 矩阵玻恩级数**： `T=V+VG_0^{(+)}V+VG_0^{(+)}VG_0^{(+)}V+\cdots`
+- **Bethe–Goldstone 方程**： `G=V+V\frac{Q}{E-H_0}G`
+- **T 的全格林函数表达式**： `T(E)=V+VG^{(+)}(E)V,\qquad G^{(+)}(E)=\frac{1}{E-H_0-V+i\varepsilon}=\frac{1}{E-H+i\varepsilon}`
+- **Dyson 方程（全格林函数）**： `G^{(+)}(E)=G_0^{(+)}(E)+G_0^{(+)}(E)\,V\,G^{(+)}(E)`
+- **全格林函数与 T 的关系**： `G^{(+)}=G_0^{(+)}+G_0^{(+)}TG_0^{(+)},\qquad T(E)G_0^{(+)}(E)=VG^{(+)}(E),\qquad G_0^{(+)}(E)T(E)=G^{(+)}(E)V`
+- **U 算符**： `U^{(\pm)}(E)=\frac{1}{1-G_0^{(\pm)}(E)V}=1+G_0^{(\pm)}(E)VU^{(\pm)}(E)=1+G^{(\pm)}(E)V,\qquad \psi_k^{(\pm)}=U^{(\pm)}(E)\varphi_k`
+- **主值分解等式**： `\frac{1}{x\pm i\varepsilon}=P\frac{1}{x}\mp i\pi\delta(x)\qquad(\varepsilon\to0^+)`
+- **T 与 S 的关系**： `T^{(\pm)}(E)=\frac{T(E)}{1\pm i\pi T(E)},\qquad U^{(\pm)}(E)=\frac{U(E)}{1\pm i\pi T(E)}`
+- **散射矩阵 S**： `S=1-2\pi i\,T^{(+)}(E),\qquad S=\frac{1-i\pi T(E)}{1+i\pi T(E)}=[U^{(-)}(E)]^\dagger U^{(+)}(E),\qquad S^\dagger S=SS^\dagger=1`
+- **分波 S 矩阵元**： `S_{ll}=e^{2i\delta_l}`
+- **光学定理**： `\sigma_T=\frac{4\pi}{k}\,\mathrm{Im}\,f(0),\qquad f(0)=-\frac{\mu}{2\pi\hbar^2}(2\pi)^3\langle k|T|k\rangle`
+- **薛定谔方程的 S 表示**： `\psi(\vec r,t)=A\exp\!\Big[\frac{i}{\hbar}S(\vec r,t)\Big],\qquad -\frac{\partial S}{\partial t}=\frac{1}{2\mu}\nabla S\cdot\nabla S+V(r)-\frac{i\hbar}{2\mu}\nabla^2S`
+- **Hamilton–Jacobi 方程**： `-\frac{\partial S_0}{\partial t}=\frac{1}{2\mu}\nabla S_0\cdot\nabla S_0+V(r),\qquad \vec p=\nabla S_0(r,t)`
+- **定态条件（$s$ 与 $s_0$ 的方程）**： `\frac{[\nabla s(r)]^2}{2\mu}+V(r)-E-\frac{i\hbar}{2\mu}\nabla^2 s(r)=0;\qquad \frac{[\nabla s_0(r)]^2}{2\mu}+V(r)-E=0`
+- **经典力学描述条件（一维）**： `\frac{\dfrac{dp}{dx}}{p^2(x)}\ll1\ \Longleftrightarrow\ \frac{\mu\,\dfrac{dV(x)}{dx}}{p^3(x)}\ll1,\qquad p(x)=\sqrt{2\mu[E-V(x)]}`
+- **一维 WKB 近似波函数**： `\psi(x)=\frac{C}{\sqrt{p(x)}}\exp\!\Big[\pm\frac{i}{\hbar}\int^x p(x')\,dx'\Big],\qquad p(x)=\sqrt{2\mu[E-V(x)]}`
+- **经典允许区/不允许区波函数**： `\psi(x)=\frac{C}{\sqrt{p(x)}}\sin\!\Big[\frac{1}{\hbar}\int^x p\,dx'+\alpha\Big]\ (E>V);\qquad \psi(x)=\frac{C}{\sqrt{|p(x)|}}\exp\!\Big[-\frac{1}{\hbar}\int^x |p|\,dx'\Big]\ (E<V)`
+- **WKB 适用条件**： `\frac{\hbar\,|dV/dx|}{4[2\mu(E-V)]^{3/2}}\ll1\quad\text{即势场缓变、动能较大}`
+- **Airy 函数**： `y''(z)-z\,y(z)=0;\qquad \mathrm{Ai}(z)=\frac{1}{\pi}\int_0^\infty\cos\!\Big(\frac{u^3}{3}+uz\Big)du`
+- **连接公式（不允许区 ↔ 允许区，转折点 $a$）**： `\frac{C}{2\sqrt{p(x)}}\exp\!\Big[-\frac{1}{\hbar}\int_a^x p\,dx'\Big]\ \Longleftrightarrow\ \frac{C}{\sqrt{p(x)}}\cos\!\Big[\frac{1}{\hbar}\int_a^x p\,dx'-\frac{\pi}{4}\Big]`
+- **连接公式（允许区 → 不允许区，转折点 $b$）**： `\frac{C}{\sqrt{p(x)}}\exp\!\Big[\frac{i}{\hbar}\int_b^x p\,dx'+\frac{i\pi}{4}\Big]\ \Longleftrightarrow\ \frac{C}{\sqrt{|p(x)|}}\exp\!\Big[-\frac{1}{\hbar}\int_b^x |p|\,dx'\Big]`
+- **Bohr–Sommerfeld 量子化条件**： `\oint p(x)\,dx=\Big(n+\tfrac12\Big)h,\qquad (n=0,1,2,\cdots)`
+- **线性谐振子（WKB）**： `E_n=\Big(n+\tfrac12\Big)\hbar\omega,\qquad (n=0,1,2,\cdots)`
+- **半无限深势阱量子化条件**： `\oint p\,dx=\Big(n+\tfrac34\Big)h,\qquad E_n=\Big(2n+\tfrac32\Big)\hbar\omega\ (\text{半无限深谐振子})`
+- **无限深方势阱量子化条件与能级**： `\oint p\,dx=(n+1)h,\qquad E_n=\frac{\pi^2\hbar^2(n+1)^2}{2\mu(b-a)^2},\qquad (n=0,1,2,\cdots)`
+- **势垒贯穿（透射）几率**： `D\approx e^{-2\alpha}=\exp\!\Big[-\frac{2}{\hbar}\int_a^b\sqrt{2\mu[V(x)-E]}\,dx\Big],\qquad R=1-D`
+- **三维中心势 WKB 相移**： `\delta_l\approx-\frac{1}{2}\int_a^\infty U(r')\Big[k^2-\frac{(l+\tfrac12)^2}{r'^2}\Big]^{-1/2}dr',\qquad U(r)=\frac{2\mu}{\hbar^2}V(r)`
+- **幂势 $V(r)=Ar^{-n}$ 的相移**： `\delta_l=-\frac{\mu Ak^{n-2}}{2\hbar^2 l^{2n-1}}\,B\!\Big(\frac{n-1}{2},\frac12\Big)`
+- **中心势场量子化条件**： `\oint p(r)\,dr=\Big(n_r+\tfrac12\Big)h,\quad \oint p(\theta)\,d\theta=\Big(l-m+\tfrac12\Big)h,\quad \oint p(\varphi)\,d\varphi=mh`

@@ -1,0 +1,111 @@
+# 量子力学（二） · 共振散射 / 复势的散射 / 带自旋粒子的散射
+> 来源：4共振散射.pdf、5复势的散射.pdf、6带自旋粒子的散射.pdf
+
+## 小节
+- 完全透射——冉绍尔-汤森效应
+- 共振散射——有效势
+- 共振散射——相移和分波截面的变化
+- 共振散射——Breit-Wigner 公式
+- 几个散射截面实验测量值曲线
+- 复势的散射：光学势虚部的作用
+- 中心势散射中弹性散射截面的计算
+- 中心势散射中吸收截面的计算
+- 中心势散射中总截面的计算
+- 光学定理
+- 例：复方势阱的低能散射
+- 带自旋粒子：角动量算符及其本征值
+- 自旋角动量
+- 两个角动量的耦合
+- 全同粒子的散射
+- 自旋量子数为 0 的全同粒子的中心势散射
+- 自旋量子数为 1/2 的全同粒子的中心势散射
+- 自旋量子数为 s 的全同粒子的中心势散射
+- 包含自旋-轨道耦合势的散射
+- 例：核散射的分子轨道理论
+
+## 核心概念
+- **分波相移的符号判据**：吸引势 $V(r)<0$ 对应 $\delta_l>0$，排斥势 $V(r)>0$ 对应 $\delta_l<0$；$V=0$ 时 $\delta_l=0$。吸引势绝对值增大，$\delta_l$ 也由零增大，经历 $0\to\pi/2\to\pi\cdots$。
+- **冉绍尔-汤森效应（完全透射）**：低能下仅 s 波重要，若吸引势足够强使 $\delta_0=\pi$，则 s 波散射振幅为零、总散射截面为零，入射波完全透射。
+- **有效势与离心势垒**：$l\neq0$ 时有效势第二项为离心势垒，起排斥作用；吸引势使总有效势可能出现势阱，粒子的准束缚态因隧道效应寿命有限。
+- **准束缚态（亚稳态）**：不稳定准束缚态用带时间衰减因子的波函数描述，对应定态能量为复数 $E=E_0-i\Gamma/2$，$\Gamma$ 与寿命关系 $\tau=\hbar/\Gamma$。
+- **共振散射的相移特征**：入射能量经过准束缚态能量值时，分波相移 $\delta_l$ 由小到大通过 $\pi/2$，该分波截面同时通过最大可能值 $4\pi(2l+1)/k^2$。
+- **光学势（光学模型）**：同时存在弹性与非弹性散射时需复散射势；以复势描述入射粒子与靶核相互作用的模型称光学模型，其虚部表示靶核对入射粒子的吸收（类比复折射率虚部表示光衰减）。
+- **复势下的粒子流守恒破坏**：实势（$\mathrm{Im}V=0$）粒子流强度处处不变，只有弹性散射；$\mathrm{Im}V<0$ 时粒子流散度减小，对粒子有吸收，出现非弹性散射。
+- **吸收截面**：复势散射引起的、入射波粒子在散射后损失的通量，记为 $v\sigma_r$，$\sigma_r$ 即吸收截面（非弹性散射截面）。
+- **复数相移**：中心势散射中分波法对实势、复势均适用；实势给出实相移，复势给出复相移 $\delta_l=\alpha_l+i\beta_l$，且必有 $\beta_l\ge 0$，$\beta_l=0$ 时无吸收。
+- **光学定理**：总截面与向前散射振幅的虚部成正比，对非中心势场散射、狭义相对论协变理论等情形均有效。
+- **角动量算符共同本征系**：$J^2$ 与 $J_z$ 存在共同完备本征函数系 $|j,m\rangle$，$m$ 取值 $-j,-j+1,\cdots,j$，$j=0,\tfrac12,1,\tfrac32,\cdots$。
+- **玻色子与费米子**：自旋量子数 $s$ 为整数（$0,1,2,\cdots$）的是玻色子，半整数（$1/2,3/2,\cdots$）的是费米子。
+- **角动量耦合与三角形法则**：$J=J_1+J_2$，$j$ 取 $j_1+j_2,\ j_1+j_2-1,\cdots,|j_1-j_2|$，$m=m_1+m_2$；$j_1,j_2,j$ 必须满足三角形关系。
+- **Clebsch-Gordan 系数**：连接无耦合表象 $|j_1,m_1,j_2,m_2\rangle$ 与耦合表象 $|j_1,j_2,j,m\rangle$ 的表象变换（矢量耦合）系数。
+- **全同性原理与交换对称性**：两个全同粒子交换不改变体系物理状态；全同玻色子波函数对交换对称，全同费米子波函数对交换反对称。交换粒子使相对坐标 $\mathbf r\to-\mathbf r$。
+- **全同粒子散射的干涉项**：微分截面含交换干涉项，经典（粒子可区分）情况下干涉项消失。
+- **自旋为 0 全同粒子散射**：玻色子取对称组合，质心系中微分截面关于 $\theta=90^\circ$ 对称。
+- **自旋为 1/2 全同粒子散射**：费米子总波函数反对称；无自旋-轨道耦合时总波函数为空间部分与自旋部分之积，自旋反对称（单态）配空间对称（取 $+$），自旋对称（三重态）配空间反对称（取 $-$）；无极化时单态占 $1/4$、三重态占 $3/4$。
+- **自旋为 s 全同粒子散射**：交换反对称自旋波函数有 $s(2s+1)$ 个、交换对称的有 $(s+1)(2s+1)$ 个；无极化时处于反对称态概率 $s/(2s+1)$、对称态概率 $(s+1)/(2s+1)$。
+- **自旋-轨道耦合势**：非相对论描述自旋 1/2 粒子需在哈密顿量中加自旋-轨道修正项；中心场下化为 $V_{LS}(r)\,S\cdot L$，散射势含中心势与自旋-轨道耦合势两部分，相移分裂为 $\delta_l^\pm$（虚势时相移为复数，虚部体现非弹性散射）。
+- **散射振幅矩阵**：含自旋-轨道耦合时散射振幅 $f(\theta)$ 为 $2\times2$ 矩阵，分解为自旋不翻转部分 $g(\theta)$ 与自旋翻转部分 $h(\theta)$。
+
+## 重要公式
+- **分波展开的散射振幅**： `f(\theta)=\frac{1}{k}\sum_{l=0}^{\infty}(2l+1)\,e^{i\delta_l}\sin\delta_l\,P_l(\cos\theta)`
+- **总散射截面（分波求和）**： `\sigma_T=\sum_{l=0}^{\infty}\sigma_l=\frac{4\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\sin^2\delta_l`
+- **分波径向方程**： `u_l''(r)+\left[k^2-U(r)-\frac{l(l+1)}{r^2}\right]u_l(r)=0`
+- **有效势**： `V_{\mathrm{eff}}(r)=V(r)+\frac{l(l+1)}{2\mu\,r^2}`
+- **准束缚态波函数**： `\psi(r,t)=\psi(r)\,e^{-iE_0 t/\hbar}\,e^{-t/2\tau}=\psi(r)\,e^{-i(E_0-i\Gamma/2)t/\hbar},\qquad \tau=\hbar/\Gamma`
+- **共振态傅里叶分量的振幅**： `F(\omega)\propto \frac{-1}{i(E-E_0)-\Gamma/2}`
+- **共振态强度分布（洛伦兹型）**： `|F|^2\propto \frac{1}{(E-E_0)^2+\Gamma^2/4}`
+- **分波截面**： `\sigma_l=\frac{4\pi}{k^2}(2l+1)\sin^2\delta_l`
+- **分波振幅（实相移）**： `f_l(k)=\frac{1}{k}e^{i\delta_l}\sin\delta_l=\frac{e^{2i\delta_l}-1}{2ik}=\frac{1}{k\cot\delta_l-ik}`
+- **cot 相移在 $E_0$ 附近的展开**： `\cot\delta_l(E)\approx -\frac{2}{\Gamma}(E-E_0)`
+- **Breit-Wigner 分波振幅**： `f_l(k)=-\frac{1}{k}\frac{\Gamma/2}{(E-E_0)+i\Gamma/2}`
+- **Breit-Wigner 分波截面**： `\sigma_l=\frac{4\pi}{k^2}(2l+1)\frac{(\Gamma/2)^2}{(E-E_0)^2+(\Gamma/2)^2}=\frac{\pi}{k^2}(2l+1)\frac{\Gamma^2}{(E-E_0)^2+\Gamma^2/4}`
+- **复势的定态薛定谔方程**： `\nabla^2\psi+[k^2-U(r)]\psi=0,\qquad \nabla^2\psi^*+[k^2-U^*(r)]\psi^*=0`
+- **粒子流守恒的修正（定态）**： `\nabla\cdot J=\frac{2}{\hbar}\,\mathrm{Im}V(r)\,\rho(r)`
+- **含时连续性方程**： `\frac{\partial}{\partial t}\rho(\mathbf r,t)+\nabla\cdot J(\mathbf r,t)=\frac{2}{\hbar}\,\mathrm{Im}V(r)\,\rho(\mathbf r,t)`
+- **粒子流密度**： `J(\mathbf r,t)=-\frac{i}{2\mu}\left[\psi^*\nabla\psi-\psi\nabla\psi^*\right],\qquad \rho=|\psi|^2`
+- **吸收截面（通量定义）**： `\sigma_r=-\frac{1}{v}\int_S J_n\,dS`
+- **复数相移与 S 矩阵**： `\delta_l=\alpha_l+i\beta_l,\qquad S_l=e^{2i\delta_l}=e^{2i\alpha_l}e^{-2\beta_l}`
+- **复势下的弹性散射振幅**： `f(\theta)=\frac{1}{2ik}\sum_{l=0}^{\infty}(2l+1)(S_l-1)P_l(\cos\theta)`
+- **弹性散射总截面**： `\sigma_{el}=\frac{\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left|1-S_l\right|^2=\frac{\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left(1-2e^{-2\beta_l}\cos 2\alpha_l+e^{-4\beta_l}\right)`
+- **吸收截面**： `\sigma_r=\frac{\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left(1-e^{-4\beta_l}\right)=\frac{\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left(1-|S_l|^2\right)`
+- **总截面**： `\sigma_T=\sigma_{el}+\sigma_r=\frac{2\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left(1-e^{-2\beta_l}\cos 2\alpha_l\right)=\frac{2\pi}{k^2}\sum_{l=0}^{\infty}(2l+1)\left(1-\mathrm{Re}\,S_l\right)`
+- **光学定理**： `\sigma_T=\frac{4\pi}{k}\,\mathrm{Im}\,f(0)`
+- **复方势阱**： `V(r)=\begin{cases}-V_0, & r\le d\\[2pt] 0, & r>d\end{cases}`
+- **阱内波函数与波数关系**： `u_0^{(1)}(r)=C_1\,Kr\,j_0(Kr)=C_1\sin(Kr),\qquad K^2=2\mu(E+V_0)=k^2+2\mu V_0`
+- **渐近解与 S 矩阵元**： `u_0^{(2)}(r)=C_2\left(e^{-ikr}-S_0\,e^{ikr}\right),\qquad S_0=e^{2i\delta_0}`
+- **由连续性条件得到的 $S_0$**： `S_0=-\frac{k-iK\cot(Kd)}{k+iK\cot(Kd)}\,e^{-2ikd}`
+- **引入实参数 $M_0,N_0$**： `\mathrm{Re}\,[K\cot(Kd)]=N_0,\qquad \mathrm{Im}\,[K\cot(Kd)]=\frac{k^2-M_0}{2k}`
+- **$\mathrm{Re}\,S_0$ 表达式**： `\mathrm{Re}\,S_0=\cos(2kd)-\frac{2k}{M_0^2+N_0^2}\left[M_0\cos(2kd)-N_0\sin(2kd)\right]`
+- **s 波总截面**： `\sigma_0=\frac{4\pi}{k^2}\left\{\sin^2(kd)+\frac{2k}{M_0^2+N_0^2}\left[M_0\cos(2kd)-N_0\sin(2kd)\right]\right\}`
+- **低能极限（$kd\ll1$）**： `\sigma_0\approx 4\pi d^2+\frac{4\pi}{k}\frac{M_0-2N_0 kd}{M_0^2+N_0^2}`（前者为势散射截面，与入射能量无关；后者为共振吸收截面）
+- **角动量对易关系**： `[J_\alpha,J_\beta]=i\hbar\,\epsilon_{\alpha\beta\gamma}J_\gamma,\qquad [J^2,J_\alpha]=0`
+- **共同本征函数**： `J^2|j,m\rangle=\hbar^2 j(j+1)|j,m\rangle,\qquad J_z|j,m\rangle=m\hbar\,|j,m\rangle`
+- **升降算符**： `J_\pm=J_x\pm iJ_y,\qquad [J_+,J_-]=2\hbar J_z,\qquad J_\pm|j,m\rangle=\hbar\sqrt{(j\mp m)(j\pm m+1)}\,|j,m\pm1\rangle`
+- **算符矩阵元**： `\langle j',m'|J^2|j,m\rangle=\hbar^2 j(j+1)\delta_{jj'}\delta_{mm'},\qquad \langle j',m'|J_\pm|j,m\rangle=\hbar\sqrt{(j\mp m)(j\pm m+1)}\,\delta_{jj'}\delta_{m',m\pm1}`
+- **自旋算符本征值**： `S^2|s,m_s\rangle=\hbar^2 s(s+1)|s,m_s\rangle,\qquad S_z|s,m_s\rangle=m_s\hbar\,|s,m_s\rangle`
+- **泡利算符与泡利矩阵**： `S=\frac{\hbar}{2}\sigma,\qquad \sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}`
+- **$s=1$ 的角动量矩阵（$S_z$ 与 $S^2$）**： `S_z=\hbar\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix},\qquad S^2=2\hbar^2\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}`
+- **任意方向自旋算符**： `S_u=S\cdot\hat u=\frac{\hbar}{2}\sigma\cdot\hat u=\frac{\hbar}{2}\begin{pmatrix}u_z & u_x-iu_y\\ u_x+iu_y & -u_z\end{pmatrix}`
+- **角动量耦合与取值范围**： `J=J_1+J_2,\qquad j=j_1+j_2,\ j_1+j_2-1,\ \cdots,\ |j_1-j_2|`
+- **表象变换（C-G 展开）**： `|j_1,j_2,j,m\rangle=\sum_{m_1,m_2}|j_1,m_1,j_2,m_2\rangle\,\langle j_1,m_1,j_2,m_2|j_1,j_2,j,m\rangle`
+- **C-G 系数的非零条件**： `m=m_1+m_2`
+- **角动量本征态计数（么正变换下）**： `\sum_{j=j_{\min}}^{j_{\max}}(2j+1)=(2j_1+1)(2j_2+1)`
+- **全同粒子散射微分截面（一般形式）**： `\sigma(\theta,\varphi)=\left|f(\theta,\varphi)\pm f(\pi-\theta,\pi+\varphi)\right|^2`
+- **含交换干涉项的展开式**： `\sigma(\theta,\varphi)=|f(\theta,\varphi)|^2+|f(\pi-\theta,\pi+\varphi)|^2\pm 2\,\mathrm{Re}\left[f(\theta,\varphi)f^*(\pi-\theta,\pi+\varphi)\right]`
+- **自旋 0 全同粒子微分散面**： `\sigma(\theta)=|f(\theta)+f(\pi-\theta)|^2`
+- **自旋 1/2 全同粒子（无极化）微分散面**： `\sigma(\theta)=\frac{1}{4}|f(\theta)+f(\pi-\theta)|^2+\frac{3}{4}|f(\theta)-f(\pi-\theta)|^2`
+- **自旋 1/2 单态/三重态分截面**： `\sigma_0(\theta)=|f(\theta)+f(\pi-\theta)|^2,\qquad \sigma_1(\theta)=|f(\theta)-f(\pi-\theta)|^2`
+- **自旋 s 全同费米子（半整数 $s$）微分散面**： `\sigma(\theta)=\frac{s}{2s+1}|f(\theta)+f(\pi-\theta)|^2+\frac{s+1}{2s+1}|f(\theta)-f(\pi-\theta)|^2=|f(\theta)|^2+|f(\pi-\theta)|^2-\frac{2}{2s+1}\,\mathrm{Re}\left[f^*(\theta)f(\pi-\theta)\right]`
+- **自旋 s 全同玻色子（整数 $s$）微分散面**： `\sigma(\theta)=\frac{s}{2s+1}|f(\theta)-f(\pi-\theta)|^2+\frac{s+1}{2s+1}|f(\theta)+f(\pi-\theta)|^2=|f(\theta)|^2+|f(\pi-\theta)|^2+\frac{2}{2s+1}\,\mathrm{Re}\left[f^*(\theta)f(\pi-\theta)\right]`
+- **自旋-轨道相互作用修正项**： `V_R=\frac{\hbar^2}{4\mu^2 c^2}\left[\sigma\cdot(\nabla V(r)\times p)\right]`
+- **中心场下的自旋-轨道势**： `V_R=\frac{1}{2\mu^2 c^2}\frac{1}{r}\frac{dV(r)}{dr}\,S\cdot L\equiv V_{LS}(r)\,S\cdot L`
+- **含自旋-轨道耦合的总散射势**： `V=V_C(r)+V_{LS}(r)\,S\cdot L`
+- **总角动量与分波相移分裂**： `J=L+S,\qquad j=l\pm\frac{1}{2}`
+- **约化相互势 $U_{lj}(r)$**： `U_{lj}(r)=\begin{cases}\dfrac{2\mu}{\hbar^2}V_C(r)+l\,V_{LS}(r), & j=l+\frac{1}{2}\\[6pt] \dfrac{2\mu}{\hbar^2}V_C(r)-(l+1)\,V_{LS}(r), & j=l-\frac{1}{2}\end{cases}`
+- **含自旋-轨道耦合的径向方程与渐近行为**： `\left[\frac{d^2}{dr^2}+k^2-\frac{l(l+1)}{r^2}-U_{lj}(r)\right]u_{lj}(r)=0,\qquad u_{lj}(r)\xrightarrow{r\to\infty}\sin\left(kr-\frac{l\pi}{2}+\delta_l^\pm\right)`
+- **散射振幅的矩阵形式**： `f(\theta)=g(\theta)\hat I+h(\theta)\,\vec e_n\cdot\vec\sigma,\qquad \vec e_n=\frac{k_i\times k_f}{|k_i\times k_f|}`
+- **自旋不翻转部分与自旋翻转部分**： `g(\theta)=\frac{1}{k}\sum_{l=0}^{\infty}\left[(l+1)e^{i\delta_l^+}\sin\delta_l^+ + l\,e^{i\delta_l^-}\sin\delta_l^-\right]P_l(\cos\theta)`
+- **自旋翻转部分**： `h(\theta)=\frac{i}{k}\sum_{l=1}^{\infty}\left[e^{i\delta_l^+}\sin\delta_l^+ - e^{i\delta_l^-}\sin\delta_l^-\right]P_l^1(\cos\theta)`
+- **自旋平均后的微分散面**： `\sigma(\theta)=|g(\theta)|^2+|h(\theta)|^2`
+- **含自旋-轨道耦合的弹性散射截面**： `\sigma_{el}=\frac{\pi}{k^2}\sum_{l=0}^{\infty}\left[(l+1)\left|e^{2i\delta_l^+}-1\right|^2 + l\left|e^{2i\delta_l^-}-1\right|^2\right]`
+- **含自旋-轨道耦合的吸收截面**： `\sigma_r=\frac{\pi}{k^2}\sum_{l=0}^{\infty}\left[(2l+1)-(l+1)\left|e^{2i\delta_l^+}\right|^2 - l\left|e^{2i\delta_l^-}\right|^2\right]`
