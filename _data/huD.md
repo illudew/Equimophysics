@@ -1,0 +1,121 @@
+# 胡毅讲义 · 四、量子态和力学量的表象
+> 原始文件：D-量子态和力学量的表象-1 ~ -5.pdf
+
+## 小节
+- 坐标表象（态与力学量的坐标函数表示）
+- 动量表象
+- 力学量（Q）表象——态的表象
+  - 分立本征值情形
+  - 含有连续本征值情形
+- 态矢量与 Hilbert 空间
+- 算符的矩阵表示
+  - 力学量算符的矩阵表示
+  - Q 表象中力学量算符 F 的性质
+  - Q 有连续本征值的情况
+- 量子力学公式的矩阵表述
+  - 平均值公式
+  - 本征方程与久期方程
+  - Schrödinger 方程的矩阵形式
+- 坐标表象与 Q 表象对照
+- Dirac 符号
+  - 态矢量：右矢空间、左矢空间、伴矢量的关系
+  - 本征函数的封闭性与投影算符
+  - 算符的 Dirac 表示与平均值
+  - 总结与厄密共轭规则
+- 占有数表象
+  - 算符 a、a⁺、N
+  - 占有数表象的矩阵表示
+- 幺正变换
+  - 不同表象之间的变换与幺正变换矩阵
+  - 波函数和算符的变换关系
+  - 幺正变换的性质
+- 作业（曾谨言《量子力学》卷I 第五版，第八、九章相关练习与补充题）
+
+## 核心概念
+- **表象**：量子力学中态和力学量的具体表示方式称为表象；此前一直使用坐标表象，本章推广到任意力学量 Q 表象。
+- **坐标表象**：态用坐标波函数 Ψ(x,y,z,t) 表示，力学量用作用于坐标函数的算符表示；坐标算符本征值为 x′、本征函数为 δ(x−x′)。
+- **动量表象**：以动量本征函数 ψ_p(x) 为基矢，态由动量波函数 C(p) 表示；|C(p)|²dp 是在该态中测得动量在 p→p+dp 内的几率。
+- **态的一一对应**：Ψ(x) 与 C(p) 一一对应、描写同一状态，分别是同一状态在坐标表象与动量表象中的波函数。
+- **自身表象中的本征函数**：动量本征函数在自身（动量）表象中是一个 δ 函数；同理 x 在坐标表象中本征函数为 δ(x′−x)。
+- **力学量 Q 表象**：以 Q 的本征函数 u_n(x) 为基矢，态由展开系数 a_n(t) 表示；|a_n|² 为测得 Q_n 的几率，连续谱时 |a_q|²dq 为测得结果在 q→q+dq 的几率。
+- **态矢量**：状态 Ψ(x,t) 在 Q 表象中写成一列矩阵，如同矢量 A 在给定坐标系中的分量；Q 表象相当于选定一个坐标系。
+- **Hilbert 空间**：Q 表象基矢有无限多个，态矢量所在的无限维抽象函数空间称为 Hilbert 空间。
+- **算符的矩阵表示**：算符 F 在 Q 表象中是一个矩阵，矩阵元 F_nm = ∫u_n* F̂ u_m dx；算符方程 Φ=F̂Ψ 化为 b_n = Σ_m F_nm a_m。
+- **厄密矩阵**：厄密算符的矩阵表示是厄密矩阵，满足 F_nm = F_mn*。
+- **自身表象中的算符**：算符在自身表象中是一对角矩阵，对角元素就是算符的本征值。
+- **久期方程**：本征方程 Fψ=λψ 有非零解的条件是系数行列式为零，由此求出本征值，把求解微分方程化为求代数方程根。
+- **Dirac 符号**：不用具体表象来描写量子状态的抽象方法；右矢 | ⟩ 对应量子状态，左矢 ⟨ | 为伴矢量。
+- **左右矢空间（对偶空间）**：左矢与右矢互为转置共轭；二者属于不同空间，不能相加，但可做标积得到复数。
+- **封闭性（单位算符）**：Σ_n|Q_n⟩⟨Q_n|=1（分立谱）、∫|q⟩dq⟨q|=1（连续谱）等，是本征函数完备性的表示，可在公式任意位置插入。
+- **投影算符**：|Q_n⟩⟨Q_n| 作用在态矢上相当于把 |ψ⟩ 投影到基矢 |Q_n⟩ 上，只留下分量 ⟨Q_n|ψ⟩。
+- **厄密共轭规则**：求表示式的厄密共轭时，将全部次序整个颠倒并作代换 C→C*、左矢↔右矢、F̂→F̂⁺。
+- **湮灭算符 a / 产生算符 a⁺**：a 使能量下降一个 ℏω 并给出 a|n⟩=√n|n−1⟩，a⁺ 使能量上升一个 ℏω 并给出 a⁺|n⟩=√(n+1)|n+1⟩。
+- **粒子数算符 N=a⁺a**：N|n⟩=n|n⟩，本征值 n 描写粒子数目。
+- **占有数表象**：以粒子数算符 N 的本征矢 |n⟩ 为基矢的表象；|n⟩ 表示体系中有 n 个粒子。
+- **幺正变换**：联系两组完备正交归一基的变换矩阵 S（S_kβ=⟨ψ_k|φ_β⟩）满足 S⁺S=SS⁺=I，即 S⁺=S⁻¹。
+- **幺正变换的性质**：不改变算符的本征值、不改变矩阵的迹、矩阵方程式经幺正变换保持不变、不改变厄密矩阵的厄密性。
+
+## 重要公式
+- **坐标表象平均值**： `\bar F=\int \Psi^*(x,y,z,t)\,\hat F\,\Psi(x,y,z,t)\,d\tau`
+- **坐标算符本征方程**： `\hat x\,\delta(x-x')=x'\,\delta(x-x')`
+- **δ 函数正交归一**： `\int \delta^*(x-x'')\,\delta(x-x')\,dx=\delta(x'-x'')`
+- **任意波函数按 δ 函数展开**： `\Psi(x)=\int f(x')\,\delta(x-x')\,dx'`
+- **本征函数展开（一般）**： `\Psi(x)=\sum_n c_n\,\varphi_n(x)`
+- **动量本征函数**： `\psi_p(x)=\frac{1}{\sqrt{2\pi\hbar}}\,e^{\,ipx/\hbar}`
+- **动量表象展开与变换**： `\Psi(x)=\int C(p)\,\psi_p(x)\,dp,\qquad C(p)=\int \psi_p^*(x)\,\Psi(x)\,dx`
+- **动量本征函数在动量表象中为 δ 函数**： `C(p)=\int \psi_p^*(x)\,\psi_{p'}(x)\,dx=\delta(p-p')`
+- **Q 表象（分立谱）态展开**： `\Psi(x,t)=\sum_n a_n(t)\,u_n(x),\qquad a_n(t)=\int u_n^*(x)\,\Psi(x,t)\,dx`
+- **分立谱归一化与几率**： `\sum_n |a_n(t)|^2=1,\qquad |a_n|^2\ \text{为测得}\ Q_n\ \text{的几率}`
+- **Q 表象列矩阵表示**： `\Psi=\begin{pmatrix}a_1(t)\\ a_2(t)\\ \vdots\\ a_n(t)\\ \vdots\end{pmatrix},\qquad \Psi^+=\big(a_1^*(t)\ a_2^*(t)\ \cdots\ a_n^*(t)\ \cdots\big)`
+- **Q 表象（连续谱）展开与归一化**： `\Psi(x,t)=\sum_n a_n(t)u_n(x)+\int a_q(t)u_q(x)\,dq,\qquad \sum_n|a_n|^2+\int|a_q|^2\,dq=1`
+- **算符在 Q 表象中的矩阵元**： `F_{nm}\equiv\int u_n^*(x)\,\hat F\!\left(x,-i\hbar\tfrac{\partial}{\partial x}\right)u_m(x)\,dx`
+- **算符方程的矩阵形式**： `b_n=\sum_m F_{nm}a_m,\qquad \Phi=F\Psi`
+- **厄密性条件**： `F_{nm}=F_{mn}^{*}`
+- **算符在自身表象中**： `\hat Q_{nm}=Q_m\,\delta_{nm}`（对角矩阵，对角元为本征值）
+- **连续谱矩阵元**： `F_{qq'}=\int u_q^*(x)\,\hat F\!\left(x,-i\hbar\tfrac{\partial}{\partial x}\right)u_{q'}(x)\,dx`
+- **坐标算符在坐标表象中**： `x_{xx'}=x\,\delta(x'-x)`
+- **动量算符在动量表象中**： `p_{pp'}=p'\,\delta(p-p')`
+- **坐标算符在动量表象中**： `x_{pp'}=i\hbar\tfrac{\partial}{\partial p}\,\delta(p-p')`
+- **L²、L_z 共同表象中 l=1 的 L_x、L_y、L_z**： `L_x=\frac{\hbar}{\sqrt2}\!\begin{pmatrix}0&1&0\\1&0&1\\0&1&0\end{pmatrix},\quad L_y=\frac{\hbar}{\sqrt2}\!\begin{pmatrix}0&-i&0\\ i&0&-i\\0&i&0\end{pmatrix},\quad L_z=\hbar\!\begin{pmatrix}1&0&0\\0&0&0\\0&0&-1\end{pmatrix}`
+- **升降算符作用于球谐函数**： `\hat L_\pm Y_{lm}=\hbar\sqrt{(l\mp m)(l\pm m+1)}\,Y_{l,\,m\pm1},\qquad \hat L_\pm=\hat L_x\pm i\hat L_y`
+- **平均值公式（矩阵形式）**： `\bar F=\sum_{m,n}a_m^* F_{mn}a_n=\Psi^{+}\hat F\,\Psi`
+- **本征方程的矩阵形式**： `F\psi=\lambda\psi`
+- **久期方程**： `\begin{vmatrix}F_{11}-\lambda & F_{12} & \cdots & F_{1n}\\ F_{21} & F_{22}-\lambda & \cdots & F_{2n}\\ \vdots & \vdots & & \vdots\\ F_{n1} & F_{n2} & \cdots & F_{nn}-\lambda\end{vmatrix}=0`
+- **Schrödinger 方程的矩阵形式**： `i\hbar\frac{\partial}{\partial t}a_m(t)=\sum_n H_{mn}a_n(t),\qquad H_{mn}=\int u_m^*(x)\,\hat H\,u_n(x)\,dx`
+- **Schrödinger 方程矩阵简写**： `i\hbar\frac{\partial}{\partial t}\Psi=H\Psi`
+- **表象对照（归一化）**： `\int\Psi^*(x)\Psi(x)\,dx=1\ \longleftrightarrow\ \Psi^{+}\Psi=1`
+- **表象对照（本征态正交归一）**： `\int\Psi_n^*(x)\Psi_m(x)\,dx=\delta_{nm}\ \longleftrightarrow\ \Psi_n^{+}\Psi_m=\delta_{nm}`
+- **Dirac 标积**： `\langle\phi|\psi\rangle=\sum_n b_n^* a_n,\qquad \langle\phi|\psi\rangle^{*}=\langle\psi|\phi\rangle`
+- **Dirac 正交归一化**： `\langle Q_n|Q_m\rangle=\delta_{nm},\qquad \langle x'|x''\rangle=\delta(x'-x''),\qquad \langle p'|p''\rangle=\delta(p'-p'')`
+- **本征矢封闭性**： `\sum_n|Q_n\rangle\langle Q_n|=1,\qquad \int|q\rangle\,dq\,\langle q|=1,\qquad \int|x\rangle dx\langle x|=1,\qquad \int|p\rangle dp\langle p|=1`
+- **态矢展开**： `|\psi\rangle=\sum_n|Q_n\rangle\langle Q_n|\psi\rangle,\qquad |\psi\rangle=\int|x\rangle dx\langle x|\psi\rangle`
+- **Dirac 形式的平均值**： `\bar F=\langle\psi|\hat F|\psi\rangle=\sum_{m,n}a_m^* F_{mn}a_n,\qquad F_{mn}=\langle m|\hat F|n\rangle`
+- **Dirac 形式的本征方程与 S 方程**： `\hat F|\psi\rangle=\lambda|\psi\rangle,\qquad i\hbar\frac{d}{dt}|\Psi(t)\rangle=\hat H|\Psi(t)\rangle`
+- **坐标算符在动量表象中（Dirac 推导结果）**： `\hat x=i\hbar\frac{\partial}{\partial p}`
+- **厄密共轭代换示例**： `\big[C\langle u|\hat F|v\rangle|\varphi\rangle\langle\psi|\big]^{*}\ \longrightarrow\ |\psi\rangle\langle\varphi|\,\langle v|\hat F^{+}|u\rangle\,C^{*}`
+- **产生、湮灭算符定义（线谐振子）**： `\hat a=\sqrt{\frac{\mu\omega}{2\hbar}}\left(\hat x+\frac{i}{\mu\omega}\hat p\right),\qquad \hat a^{+}=\sqrt{\frac{\mu\omega}{2\hbar}}\left(\hat x-\frac{i}{\mu\omega}\hat p\right)`
+- **对易关系**： `[\hat a,\hat a^{+}]=1`
+- **坐标、动量用 a、a⁺ 表示**： `\hat x=\sqrt{\frac{\hbar}{2\mu\omega}}\left(\hat a^{+}+\hat a\right),\qquad \hat p=i\sqrt{\frac{\mu\omega\hbar}{2}}\left(\hat a^{+}-\hat a\right)`
+- **谐振子哈密顿量的代数形式**： `\hat H=\hbar\omega\left(\hat a^{+}\hat a+\tfrac12\right)=\hbar\omega\left(\hat N+\tfrac12\right),\qquad \hat N=\hat a^{+}\hat a`
+- **算符对态的作用**： `\hat a|n\rangle=\sqrt{n}\,|n-1\rangle,\qquad \hat a^{+}|n\rangle=\sqrt{n+1}\,|n+1\rangle,\qquad \hat a|0\rangle=0`
+- **粒子数算符本征方程**： `\hat N|n\rangle=n|n\rangle`
+- **基态生成任意本征态**： `|n\rangle=\frac{1}{\sqrt{n!}}\left(\hat a^{+}\right)^{n}|0\rangle`
+- **占有数表象中的矩阵元**： `\langle n'|\hat a|n\rangle=\sqrt{n}\,\delta_{n',\,n-1},\qquad \langle n'|\hat a^{+}|n\rangle=\sqrt{n+1}\,\delta_{n',\,n+1},\qquad \langle n'|\hat N|n\rangle=n\,\delta_{n'n}`
+- **幺正变换矩阵元**： `S_{k\beta}=\langle\psi_k|\phi_\beta\rangle=\int\psi_k^*(x)\,\phi_\beta(x)\,dx`
+- **基矢展开与变换矩阵**： `|\phi_\beta\rangle=\sum_k S_{k\beta}|\psi_k\rangle,\qquad \phi=S\psi`
+- **S 矩阵的幺正性**： `S^{+}S=SS^{+}=I,\qquad S^{+}=S^{-1}`
+- **波函数的变换关系**： `b_\alpha=\sum_k S_{k\alpha}^{*}a_k,\qquad b=S^{+}a=S^{-1}a`
+- **算符的变换关系**： `F'_{\alpha\beta}=\langle\phi_\alpha|\hat F|\phi_\beta\rangle=\sum_{jk}S_{\alpha j}^{*}F_{jk}S_{k\beta},\qquad F'=S^{+}FS=S^{-1}FS`
+- **幺正变换不改变本征值**： `F'=S^{-1}FS,\ b=S^{-1}a\ \Rightarrow\ F'b=\lambda b`
+- **幺正变换不改变迹**： `\mathrm{Sp}(F')=\sum_\alpha F'_{\alpha\alpha}=\sum_k F_{kk}=\mathrm{Sp}(F)`
+- **矩阵方程经幺正变换不变**： `F\psi=\varphi\ \Rightarrow\ F'\psi'=S^{-1}F\psi=S^{-1}\varphi=\varphi'`
+- **对易关系在幺正变换下不变**： `x'p'_x-p'_x x'=S^{-1}(x\hat p_x-\hat p_x x)S=i\hbar S^{-1}S=i\hbar`
+- **厄密性在幺正变换下不变**： `F'^{+}=\left(S^{-1}FS\right)^{+}=F'`
+
+## 与其他教师的对应
+- 本章（胡毅·表象）与胡金牛讲义（Sakurai《Modern Quantum Mechanics》体系）的对应关系：
+  - **态的表象、算符的矩阵表示、量子力学公式的矩阵表述、幺正变换** → 对应 **第二章「量子力学的代数表述」（Algebraic Formulation of Quantum Mechanics）**：其中的「狄拉克符号」「矩阵表示（右矢/左矢的矩阵表示、算符的矩阵表示）」「投影算符」「幺正变换」「算符的本征值与本征矢/对角化」诸节。
+  - **Dirac 符号（右矢、左矢、封闭性、厄密共轭）** → 同样对应 **第二章的「狄拉克符号」「厄密共轭」「投影算符」** 部分。
+  - **角动量算符的矩阵表示（l=1 的 L_x、L_y、L_z）** → 对应 **第四章「角动量理论」** 中的「角动量算符的矩阵表示」一节。
+  - **占有数表象（算符 a、a⁺、N 与二次量子化）** → 对应 **第六章「多粒子系统」** 中的「二次量子化」「占据数（占有数）表示」两节；其出发点线谐振子的代数解法亦见 **第三章「一维问题」** 的「一维简谐振子」与 **第六章** 中的「谐振子哈密顿量与阶梯算符」。
+- 说明：胡毅讲义按「坐标表象 → 动量表象 → 任意 Q 表象 → Dirac 符号 → 占有数表象 → 幺正变换」的顺序组织；胡金牛（Sakurai 体系）讲义把 Dirac 符号、矩阵表示与幺正变换集中在第二章统一讲授，把二次量子化/占据数表示放在第六章多粒子系统，因此本章内容在 Sakurai 体系中是分散对应到第二、三、四、六章的。

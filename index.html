@@ -76,6 +76,13 @@ button{font-family:inherit;}
 
 .stars{color:var(--yellow);font-size:11px;letter-spacing:1px;}
 
+/* 教师切换 */
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:20px;}
+.seg button{background:none;border:none;color:#888;padding:9px 16px;font-size:12px;cursor:pointer;}
+.seg button.on{background:#1e1e1e;color:#fff;}
+.seg button:hover{color:#fff;}
+.teacher-note{color:#7a7a7a;font-size:12px;line-height:1.75;margin:-6px 0 20px;max-width:820px;}
+
 /* 表格 */
 .tbl{width:100%;border-collapse:collapse;}
 .tbl th,.tbl td{text-align:left;border-bottom:1px solid #1f1f1f;padding:12px 8px;font-size:12.5px;vertical-align:top;}
@@ -235,12 +242,13 @@ const COURSE = {
   school:'南开大学 · 物理科学学院',
   hours:'48 学时',
   examLen:'100 分钟',
-  teachers:'胡金牛、胡毅',
-  grade:'平时（小测 + 作业）40% ＋ 期末考试 60%',
+  teachers:'胡金牛（Sakurai 体系）、胡毅（周世勋体系）',
+  grade:'胡金牛讲义：小测 + 作业 40% ＋ 期末 60%；胡毅讲义：闭卷考试 80% ＋ 平时 20%（两位老师口径不同，以实际任课老师为准）',
   refs:['Sakurai & Napolitano,《Modern Quantum Mechanics》',
         'Weinberg,《Lectures on Quantum Mechanics》',
-        'Griffiths & Schroeter,《Introduction to Quantum Mechanics》'],
-  src:'课程信息取自讲义 chapter01.pdf（成绩构成）与 2023–2024 期末试卷卷面（课时、时长、任课教师）'
+        'Griffiths & Schroeter,《Introduction to Quantum Mechanics》',
+        '曾谨言,《量子力学》（胡毅讲义作业引用）'],
+  src:'课程信息取自胡金牛讲义 chapter01.pdf（成绩构成）与 2023–2024 期末试卷卷面（课时、时长、任课教师：胡金牛、胡毅）；成绩构成第二条取自胡毅讲义 A-绪论'
 };
 
 /* ============ 章节数据 ============ */
@@ -524,9 +532,223 @@ const CHAPTERS = [
  ]}
 ];
 
+/* ============ 胡毅老师讲义（周世勋体系，A–F 六章） ============ */
+const HU_CHAPTERS = [
+{no:'A', title:'绪论', en:'课程共六章 · 第一章', file:'A-绪论-2023.pdf',
+ sections:['引言（量子力学的地位与应用）','课程内容概要','成绩构成与参考书','§1 经典物理学的困难：黑体辐射 / 光电效应 / 氢原子光谱','§2 量子论的诞生：Planck 定律 / 光量子与光电效应 / Compton 散射 / Bohr 量子论','§3 实物粒子的波粒二象性'],
+ concepts:[
+  ['经典物理学的三大困难','黑体辐射、光电效应、氢原子光谱——20 世纪初经典理论无法解释的三个实验。'],
+  ['黑体','能吸收全部入射辐射的理想物体（Kirchhoff 引入）；平衡态下空腔辐射的能量密度分布只与温度有关，与材料、形状无关。'],
+  ['Wien 公式与 Rayleigh–Jeans 公式','Wien 公式短波与实验相符、长波不符；R–J 公式长波相符、短波发散（紫外灾难）。'],
+  ['Planck 黑体辐射定律','1900 年 Planck 假定谐振子能量不连续、只能以 E=hν 为单位发射与吸收辐射，得到与实验一致的公式，标志量子论诞生。'],
+  ['光量子（光子）','Einstein 1905 年提出：电磁辐射在发射与吸收时以能量 hν 的微粒（光子）形式出现；光子静质量为零，E=pc。'],
+  ['光电效应','存在临界频率 ν₀=A/h；电子能量只与光频率有关、与光强无关，光强只决定电子数目。'],
+  ['Compton 效应','X 射线被自由电子散射后波长变长，Δλ 随散射角增大而增大，是光子粒子性的有力证据。'],
+  ['Bohr 量子论','① 原子只能处于能量分立的定态，量子化条件 L=nħ；② 量子跃迁：跃迁时发射/吸收一个光子 hν=E_n−E_m。'],
+  ['Bohr 理论的局限','不能解释氦等复杂原子；不能给出谱线强度；只能处理周期运动、不能处理散射等非束缚态；与经典力学不相容。']
+ ],
+ formulas:[
+  ['Wien 公式', R`\rho_\nu\,d\nu=C_1\nu^{3}\exp(-C_2\nu/T)\,d\nu`],
+  ['Rayleigh–Jeans 公式', R`\rho_\nu\,d\nu=\frac{8\pi}{c^{3}}kT\,\nu^{2}\,d\nu`],
+  ['Planck 辐射定律', R`\rho_\nu\,d\nu=\frac{8\pi h\nu^{3}}{c^{3}}\frac{1}{\exp(h\nu/kT)-1}\,d\nu`],
+  ['光电效应方程', R`\tfrac12\mu V^{2}=h\nu-A`],
+  ['临界频率', R`\nu_0=A/h`],
+  ['光子能量与动量', R`E=h\nu=\hbar\omega,\qquad \vec p=\frac{h}{\lambda}\vec n=\hbar\vec k`],
+  ['光子能动量关系', R`E=pC\quad\text{或}\quad p=E/C`],
+  ['Compton 散射（波长增量）', R`\lambda'-\lambda=\frac{2\pi\hbar}{m_0c}(1-\cos\theta)=\frac{4\pi\hbar}{m_0c}\sin^{2}\frac{\theta}{2}`],
+  ['Compton（用 λ₀ 表示）', R`\Delta\lambda=2\lambda_0\sin^{2}\frac{\theta}{2},\qquad \lambda_0=\frac{2\pi\hbar}{m_0c}\approx2.4\times10^{-10}\,\mathrm{cm}`],
+  ['Bohr 量子化条件', R`L=n\hbar,\qquad n=1,2,3,\dots`],
+  ['氢原子能级', R`E_n=-\frac{\mu e^{4}}{2n^{2}\hbar^{2}}`],
+  ['氢原子轨道半径', R`r=\frac{n^{2}\hbar^{2}}{\mu e^{2}},\qquad r_0=\frac{\hbar^{2}}{\mu e^{2}}`],
+  ['氢原子线光谱与 Rydberg 常数', R`\nu=\frac{\mu e^{4}}{4\pi\hbar^{3}}\Big(\frac{1}{m^{2}}-\frac{1}{n^{2}}\Big),\qquad R_H=\frac{\mu e^{4}}{4\pi\hbar^{3}c}`],
+  ['Balmer 公式', R`\nu=R_Hc\Big(\frac{1}{2^{2}}-\frac{1}{n^{2}}\Big),\quad n=3,4,5,\dots`],
+  ['索末菲量子化条件', R`\oint p_i\,dq_i=n_i h`]
+ ]},
+
+{no:'B', title:'波函数和 Schrödinger 方程', en:'课程共六章 · 第二章', file:'B-波函数和Schrödinger方程-2023-1 / -4.pdf',
+ sections:['波粒二象性与 de Broglie 关系','§1 波函数的统计解释','波函数性质（几率密度 / 平方可积 / 归一化 / 平面波 δ 归一 / Dirac δ 函数 / 宇称）','§2 态叠加原理','线性谐振子','§3 一维势散射问题（势垒穿透）','波函数含时演化与传播子'],
+ concepts:[
+  ['de Broglie 关系','与能量 E、动量 p 的实物粒子相联系的物质波满足 ν=E/h、λ=h/p，把粒子性与波动性联系起来。'],
+  ['驻波条件与角动量量子化','把原子定态看作驻波，要求圆周长是波长整数倍，自然导出 L=nħ。'],
+  ['波函数的统计解释（Born）','|Ψ|² 与该点找到粒子的几率成正比，波函数又称几率幅，是量子力学基本原理。'],
+  ['归一化与相位不定性','Ψ 与 CΨ 描写同一状态；exp(iα)Ψ 也描写同一几率波。'],
+  ['平面波的 δ 函数归一化','平面波不可平方可积，改用 δ(p−p′) 归一。'],
+  ['宇称','空间反射 r→−r 下 ψ(−r,t)=±ψ(r,t)，分别为偶/奇宇称，否则无确定宇称。'],
+  ['态叠加原理','Ψ=ΣcₙΨₙ 也是可能状态；双缝叠加的相干项产生衍射花纹。'],
+  ['坐标表象与动量表象','u(x,t) 与 c(pₓ,t) 互为 Fourier 变换，是同一量子态的两种等价描述。'],
+  ['线性谐振子与零点能','能级等间距、非简并，E₀=½ħω≠0；n 大时趋于经典（对应原理）。'],
+  ['隧穿效应','E<V₀ 时透射系数一般不为零，粒子能穿透比其动能更高的势垒；Gamow 曾用它解释 α 衰变。'],
+  ['传播子','G(r,t;r′,0) 是自由粒子从 r′ 到 r 的几率幅核，相当于 Huygens 原理（处理的是几率波）。']
+ ],
+ formulas:[
+  ['de Broglie 关系', R`\nu=E/h,\qquad \lambda=h/p`],
+  ['de Broglie 平面波', R`\Psi=A\exp\Big[\frac{i}{\hbar}(p\cdot r-Et)\Big]`],
+  ['驻波条件与角动量量子化', R`2\pi r=n\lambda,\qquad L=rp=n\hbar`],
+  ['几率密度与归一化', R`\omega(r,t)=C|\Psi(r,t)|^{2},\qquad C\int_\infty|\Psi|^{2}d\tau=1`],
+  ['一维平面波（δ 归一）', R`\Psi_{p_x}(x,t)=\frac{1}{\sqrt{2\pi\hbar}}e^{\frac{i}{\hbar}(p_xx-Et)}`],
+  ['Dirac δ 函数', R`\delta(x-x_0)=0\ (x\ne x_0),\quad \int_{-\infty}^{\infty}\delta(x-x_0)\,dx=1`],
+  ['δ 函数的平面波表示', R`\delta(x-x_0)=\frac{1}{2\pi\hbar}\int e^{\frac{i}{\hbar}p_x(x-x_0)}\,dp_x`],
+  ['宇称条件', R`\psi(-r,t)=\pm\psi(r,t)`],
+  ['态叠加原理', R`\Psi=C_1\Psi_1+C_2\Psi_2+\dots+C_n\Psi_n+\dots`],
+  ['谐振子波函数', R`\psi_n(x)=\sqrt{\frac{\alpha}{2^{n}n!\sqrt{\pi}}}\,e^{-\alpha^{2}x^{2}/2}H_n(\alpha x),\qquad \alpha=\sqrt{\mu\omega/\hbar}`],
+  ['谐振子能级（零点能）', R`E_n=\Big(n+\tfrac12\Big)\hbar\omega,\qquad E_0=\tfrac12\hbar\omega\ne0`],
+  ['定态 Schrödinger 方程', R`\frac{d^{2}\psi}{dx^{2}}+\frac{2\mu}{\hbar^{2}}\big[E-V(x)\big]\psi=0`],
+  ['透射系数（E>V₀）', R`D=\frac{4k_1^{2}k_2^{2}}{(k_1^{2}-k_2^{2})^{2}\sin^{2}k_2a+4k_1^{2}k_2^{2}},\qquad D+R=1`],
+  ['隧穿透射系数（E<V₀）', R`D=\frac{4k_1^{2}k_3^{2}}{(k_1^{2}+k_3^{2})^{2}\sinh^{2}k_3a+4k_1^{2}k_3^{2}},\qquad k_3=\frac{\sqrt{2\mu(V_0-E)}}{\hbar}`],
+  ['厚势垒近似与 WKB', R`D\approx D_0e^{-2k_3a},\qquad D=D_0\exp\Big[-\frac{2}{\hbar}\int_a^{b}\sqrt{2\mu(V(x)-E)}\,dx\Big]`],
+  ['自由粒子传播子', R`G(r,t;r',0)=\Big(\frac{\mu}{2\pi i\hbar t}\Big)^{3/2}\exp\Big[\frac{i\mu(r-r')^{2}}{2\hbar t}\Big]`]
+ ]},
+
+{no:'C', title:'量子力学中的力学量', en:'课程共六章 · 第三章', file:'C-量子力学中的力学量-2023-2 ~ -7.pdf',
+ sections:['表示力学量的算符：厄密算符的定义与性质','动量算符及其厄密性','厄密算符本征值问题的性质','算符与力学量的关系：期望值、可能值与几率、有确定值的条件','对易关系与对易括号','角动量算符：形式、对易关系、球坐标表示','角动量本征方程：L̂_z 与 L̂² 的本征值与本征函数（球谐函数）','角动量升降算符','厄密算符本征函数的正交性与完备性','共同本征函数与力学量完全集合（CSCO）','测不准关系','力学量守恒与对称性','有心力场下的 Schrödinger 方程与电子在库仑场中的运动（氢原子）'],
+ concepts:[
+  ['厄密算符','满足 ⟨ψ|Ô|φ⟩=⟨Ôψ|φ⟩ 即 Ô†=Ô；量子力学中表示力学量的算符都是厄密算符。'],
+  ['厄密算符本征值实、本征函数正交','本征值必为实数；不同本征值的本征函数彼此正交；f 度简并的本征函数可线性组合为正交归一系。'],
+  ['完备系','任意函数 ψ 可按 φ_n 展开时称其完备；动量、L_z、L²、无限深势阱、谐振子等本征函数均构成完备系。'],
+  ['力学量的可能值','测量结果只能是 Ô 的本征值之一；ψ=Σc_nφ_n 中 |c_n|² 为测得 λ_n 的几率（c_n 称几率振幅）。'],
+  ['有确定值的条件','在态 ψ 中测量 F 有确定值的充要条件是 ψ 为 F̂ 的本征态。'],
+  ['对易与对易括号','[Ô,Û]=ÔÛ−ÛÔ；满足反称性、线性、乘积法则与 Jacobi 恒等式。'],
+  ['角动量算符','L̂=r̂×p̂=−iħ r×∇，各分量及 L̂² 均厄密；分量间不对易，但 L̂² 与各分量对易。'],
+  ['L̂_z 与 L̂² 的本征值','由单值性得 L_z=mħ，本征函数 e^{imφ}/√(2π)；L̂² 本征值 λ=l(l+1)，m 取 (2l+1) 个值，即 (2l+1) 度简并。'],
+  ['球谐函数','Y_lm 是 L̂² 与 L̂_z 的共同本征函数，由连带 Legendre 多项式与 e^{imφ} 组成，构成正交归一系。'],
+  ['升降算符','L̂±=L̂_x±iL̂_y 为非厄米算符（L̂₊†=L̂₋）；作用于 Y_lm 使 m 升/降 1。'],
+  ['共同本征函数与 CSCO','两算符对易 ⟺ 存在共同完备本征函数系；完全确定状态所需的一组两两对易算符的最小集合即 CSCO。'],
+  ['测不准关系','(ΔF)²(ΔG)² ≥ k²/4（[F̂,Ĝ]=ik̂）；坐标—动量给出 (Δx)²(Δpₓ)² ≥ ħ²/4，由此说明谐振子零点能。'],
+  ['守恒量与对称性','F̂ 不显含时间且与 Ĥ 对易时 F 守恒；空间平移→动量、旋转→角动量、时间平移→能量、空间反演→宇称。'],
+  ['氢原子（库仑场）','能级只依赖主量子数 n，简并度 n²（含对 l 的附加简并，源于库仑场更高对称性）；径向几率分布 W_nl(r)dr=R_nl²r²dr。'],
+  ['轨道磁矩','M_z=−μ_B m，回转磁比值 g=−1；s 态（l=0）磁矩为零。']
+ ],
+ formulas:[
+  ['厄密算符定义', R`\int d\tau\,\psi^{*}\hat O\varphi=\int d\tau\,(\hat O\psi)^{*}\varphi,\qquad \hat O^{\dagger}=\hat O`],
+  ['厄密共轭乘积', R`(\hat O\hat A)^{\dagger}=\hat A^{\dagger}\hat O^{\dagger}`],
+  ['力学量期望值', R`\langle F\rangle=\frac{\int\psi^{*}\hat F\psi\,d\tau}{\int\psi^{*}\psi\,d\tau}`],
+  ['按本征函数展开与几率', R`\psi=\sum_n c_n\varphi_n,\qquad c_n=\int\varphi_n^{*}\psi\,d\tau,\qquad \langle F\rangle=\sum_n|c_n|^{2}\lambda_n`],
+  ['对易括号性质与 Jacobi', R`[\hat O,\hat U]=-[\hat U,\hat O],\qquad [\hat O,\hat U\hat E]=[\hat O,\hat U]\hat E+\hat U[\hat O,\hat E],\qquad [\hat O,[\hat U,\hat E]]+\text{轮换}=0`],
+  ['基本对易关系', R`[x_\alpha,\hat p_\beta]=i\hbar\,\delta_{\alpha\beta},\qquad [\hat p_\alpha,\hat p_\beta]=0`],
+  ['角动量算符与对易关系', R`\hat L=\hat r\times\hat p=-i\hbar\,r\times\nabla,\qquad [\hat L_\alpha,\hat L_\beta]=i\hbar\,\varepsilon_{\alpha\beta\gamma}\hat L_\gamma,\qquad [\hat L^{2},\hat L_\alpha]=0`],
+  ['球坐标中 L̂² 与 L̂_z', R`\hat L_z=-i\hbar\frac{\partial}{\partial\phi},\qquad \hat L^{2}=-\hbar^{2}\Big[\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\Big(\sin\theta\frac{\partial}{\partial\theta}\Big)+\frac{1}{\sin^{2}\theta}\frac{\partial^{2}}{\partial\phi^{2}}\Big]`],
+  ['L̂_z 本征函数与本征值', R`\psi_m(\phi)=\frac{1}{\sqrt{2\pi}}e^{im\phi},\qquad l_z=m\hbar,\quad m=0,\pm1,\pm2,\dots`],
+  ['L̂² 本征值与球谐函数', R`\hat L^{2}Y_{lm}=l(l+1)\hbar^{2}Y_{lm},\qquad Y_{lm}=(-1)^{m}\sqrt{\frac{(l-|m|)!(2l+1)}{4\pi(l+|m|)!}}P_l^{m}(\cos\theta)e^{im\phi}`],
+  ['升降算符', R`\hat L_\pm=\hat L_x\pm i\hat L_y,\qquad \hat L_\pm Y_{lm}=\hbar\sqrt{l(l+1)-m(m\pm1)}\,Y_{l,\,m\pm1}`],
+  ['共同本征函数定理', R`\hat F\hat G-\hat G\hat F=0\ \Longleftrightarrow\ \text{存在共同完备本征函数系}`],
+  ['测不准关系', R`(\Delta F)^{2}(\Delta G)^{2}\ge\frac{k^{2}}{4},\qquad [\hat F,\hat G]=i\hat k;\qquad (\Delta x)^{2}(\Delta p_x)^{2}\ge\frac{\hbar^{2}}{4}`],
+  ['力学量期望值的时间导数', R`\frac{d\langle F\rangle}{dt}=\frac{\partial\hat F}{\partial t}+\frac{1}{i\hbar}[\hat F,\hat H]`],
+  ['有心力场径向方程', R`\frac{1}{r^{2}}\frac{d}{dr}\Big(r^{2}\frac{dR}{dr}\Big)+\Big[\frac{2\mu}{\hbar^{2}}\Big(E+\frac{Ze^{2}}{r}\Big)-\frac{l(l+1)}{r^{2}}\Big]R=0`],
+  ['氢原子能级与简并度', R`E_n=-\frac{\mu Z^{2}e^{4}}{2\hbar^{2}n^{2}},\qquad \sum_{l=0}^{n-1}(2l+1)=n^{2}`],
+  ['径向几率分布', R`W_{nl}(r)\,dr=R_{nl}^{2}(r)\,r^{2}\,dr,\qquad \int_0^{\infty}R_{nl}^{2}r^{2}\,dr=1`],
+  ['轨道磁矩与 g 因子', R`M_z=-\frac{e\hbar}{2\mu c}m=-\mu_B m,\qquad g=-1`],
+  ['宇称', R`\hat P\psi(\vec r)=\psi(-\vec r),\qquad \hat P\psi_{nlm}=(-1)^{l}\psi_{nlm}`]
+ ]},
+
+{no:'D', title:'量子态和力学量的表象', en:'课程共六章 · 第四章', file:'D-量子态和力学量的表象-1 ~ -5.pdf',
+ sections:['坐标表象','动量表象','力学量（Q）表象：态的表象（分立谱 / 连续谱）','态矢量与 Hilbert 空间','算符的矩阵表示','量子力学公式的矩阵表述（平均值 / 本征方程与久期方程 / Schrödinger 方程）','Dirac 符号（右矢空间 / 左矢空间 / 封闭性 / 厄密共轭）','占有数表象（a、a⁺、N）','幺正变换及其性质'],
+ concepts:[
+  ['表象','态和力学量的具体表示方式称为表象；本章由坐标表象推广到任意力学量 Q 表象。'],
+  ['坐标表象与动量表象','态用 Ψ(x) 或 C(p) 表示，二者一一对应（Fourier 变换），描写同一状态。'],
+  ['Q 表象','以 Q 的本征函数 u_n 为基矢，态由展开系数 a_n(t) 表示，|a_n|² 为测得 Q_n 的几率。'],
+  ['Hilbert 空间','基矢有无限多个，态矢量所在的无限维抽象函数空间。'],
+  ['算符的矩阵表示','F_nm=∫u_n* F̂ u_m dx；厄密算符对应厄密矩阵 F_nm=F_mn*；算符在自身表象中为对角矩阵，对角元即本征值。'],
+  ['久期方程','本征方程有非零解要求系数行列式为零，由此把求解微分方程化为求代数方程根。'],
+  ['Dirac 符号','右矢 | ⟩ 对应量子状态，左矢 ⟨ | 为伴矢量；标积 ⟨φ|ψ⟩ 为复数。'],
+  ['封闭性（单位算符）','Σ_n|Q_n⟩⟨Q_n|=1（分立谱）、∫|q⟩dq⟨q|=1（连续谱），是本征函数完备性的表示。'],
+  ['投影算符','|Q_n⟩⟨Q_n| 把 |ψ⟩ 投影到基矢 |Q_n⟩ 上，只留下分量 ⟨Q_n|ψ⟩。'],
+  ['厄密共轭规则','求厄密共轭时把全部次序颠倒并作代换 C→C*、左矢↔右矢、F̂→F̂†。'],
+  ['产生/湮灭算符','a|n⟩=√n|n−1⟩、a⁺|n⟩=√(n+1)|n+1⟩、a|0⟩=0；N=a⁺a 的本征值 n 描写粒子数。'],
+  ['幺正变换','S_kβ=⟨ψ_k|φ_β⟩ 满足 S†S=SS†=I；不改变本征值与迹、保持矩阵方程形式与厄密性（对角化＝求本征值）。']
+ ],
+ formulas:[
+  ['平均值公式（坐标表象）', R`\bar F=\int\Psi^{*}(x,t)\hat F\Psi(x,t)\,d\tau`],
+  ['Q 表象态展开与几率', R`\Psi(x,t)=\sum_n a_n(t)u_n(x),\qquad |a_n|^{2}\ \text{为测得}\ Q_n\ \text{的几率}`],
+  ['Q 表象列矩阵表示', R`\Psi=\begin{pmatrix}a_1\\ a_2\\ \vdots\end{pmatrix},\qquad \Psi^{+}=(a_1^{*}\ a_2^{*}\ \cdots)`],
+  ['算符矩阵元与算符方程', R`F_{nm}=\int u_n^{*}\hat F u_m\,dx,\qquad b_n=\sum_m F_{nm}a_m`],
+  ['厄密性条件与自身表象', R`F_{nm}=F_{mn}^{*},\qquad \hat Q_{nm}=Q_m\delta_{nm}`],
+  ['平均值公式（矩阵形式）', R`\bar F=\sum_{m,n}a_m^{*}F_{mn}a_n=\Psi^{+}\hat F\Psi`],
+  ['久期方程', R`\begin{vmatrix}F_{11}-\lambda & F_{12}\\ F_{21} & F_{22}-\lambda\end{vmatrix}=0\ \ (\text{推广到 }n\text{ 阶})`],
+  ['Schrödinger 方程矩阵形式', R`i\hbar\frac{\partial}{\partial t}a_m(t)=\sum_n H_{mn}a_n(t),\qquad H_{mn}=\int u_m^{*}\hat H u_n\,dx`],
+  ['Dirac 标积与正交归一', R`\langle\phi|\psi\rangle=\sum_n b_n^{*}a_n,\qquad \langle Q_n|Q_m\rangle=\delta_{nm}`],
+  ['封闭性（单位算符）', R`\sum_n|Q_n\rangle\langle Q_n|=1,\qquad \int|q\rangle dq\langle q|=1`],
+  ['Dirac 形式平均值', R`\bar F=\langle\psi|\hat F|\psi\rangle=\sum_{m,n}a_m^{*}F_{mn}a_n`],
+  ['坐标算符在动量表象中', R`\hat x=i\hbar\frac{\partial}{\partial p}`],
+  ['产生/湮灭算符', R`\hat a=\sqrt{\frac{\mu\omega}{2\hbar}}\Big(\hat x+\frac{i}{\mu\omega}\hat p\Big),\qquad [\hat a,\hat a^{+}]=1`],
+  ['谐振子哈密顿量代数形式', R`\hat H=\hbar\omega\Big(\hat a^{+}\hat a+\tfrac12\Big)=\hbar\omega\Big(\hat N+\tfrac12\Big)`],
+  ['算符对态的作用', R`\hat a|n\rangle=\sqrt{n}|n-1\rangle,\qquad \hat a^{+}|n\rangle=\sqrt{n+1}|n+1\rangle,\qquad \hat N|n\rangle=n|n\rangle`],
+  ['幺正变换矩阵与变换关系', R`S_{k\beta}=\langle\psi_k|\phi_\beta\rangle,\qquad b=S^{+}a,\qquad F'=S^{+}FS`],
+  ['幺正变换性质', R`F'=S^{-1}FS\ \Rightarrow\ \text{本征值, 迹不变; }F'^{+}=F'`]
+ ]},
+
+{no:'E', title:'近似方法（微扰 · 变分）', en:'课程共六章 · 第五章', file:'E-近似方法-1 ~ -3.pdf',
+ sections:['引言（近似方法的必要性与分类）','非简并定态微扰理论','非简并实例：受恒定弱电场的线性谐振子','简并定态微扰理论','简并实例：氢原子一级 Stark 效应 / 三阶矩阵','变分法','变分实例：一维谐振子 / 氦原子基态','Hellmann–Feynman 定理'],
+ concepts:[
+  ['近似方法的出发点','从可精确求解的未微扰体系出发，用微扰论（微扰小）或变分法（微扰不小）求复杂体系的近似解。'],
+  ['两类问题','Ĥ 不显含时间→定态问题（定态微扰论、变分法）；Ĥ 显含时间→跃迁问题（含时微扰，见第六章）。'],
+  ['能量一级修正','等于微扰 Hamilton 量在零级态矢中的平均值 H′_nn，可正可负。'],
+  ['态矢一级修正的物理意义','报动态矢是未扰动态矢的线性叠加；系数 H′_kn/(E_n⁰−E_k⁰) 反比于能量间隔，故能量最接近的态混合最强。'],
+  ['适用条件','|H′_kn| ≪ |E_n⁰−E_k⁰|：微扰矩阵元小、能级间距宽。库仑场 E_n ∝ −1/n²，n 大时间距小，故微扰只适用于低能级。'],
+  ['简并微扰与久期方程','零级波函数取简并态线性组合；久期方程 det[H′_βα−E_n⁽¹⁾δ_βα]=0 给出 k 个一级修正根。'],
+  ['简并消除判据','根全不同→简并完全消除；有重根→部分消除，须再考虑二级修正。'],
+  ['氢原子一级 Stark 效应','n=2（4 度简并）分裂为 3ea₀, −3ea₀, 0, 0，原谱线变 3 条；选择定则 Δl=±1、Δm=0。'],
+  ['变分法','对任意归一化试探波函数 ⟨H⟩ ≥ E₀；令 d⟨H(λ)⟩/dλ=0 取极小即得基态能量上界（能量对波函数偏差是二阶小量，结果稳定）。'],
+  ['Hellmann–Feynman 定理','∂E_n/∂λ=⟨ψ_n|∂Ĥ/∂λ|ψ_n⟩，可由能量直接求力学量平均值，无须繁复积分。']
+ ],
+ formulas:[
+  ['微扰体系方程', R`\hat H=\hat H^{(0)}+\hat H'=\hat H^{(0)}+\lambda\hat H^{(1)}`],
+  ['幂级数展开', R`E_n=E_n^{(0)}+\lambda E_n^{(1)}+\lambda^{2}E_n^{(2)}+\cdots,\qquad |\psi_n\rangle=|\psi_n^{(0)}\rangle+\lambda|\psi_n^{(1)}\rangle+\cdots`],
+  ['能量一级修正', R`E_n^{(1)}=\langle\psi_n^{(0)}|\hat H^{(1)}|\psi_n^{(0)}\rangle=H'_{nn}`],
+  ['能量二级修正', R`E_n^{(2)}=\sum_{k\neq n}\frac{|H'_{kn}|^{2}}{E_n^{(0)}-E_k^{(0)}}`],
+  ['态矢一级修正', R`|\psi_n\rangle=|\psi_n^{(0)}\rangle+\sum_{k\neq n}\frac{H'_{kn}}{E_n^{(0)}-E_k^{(0)}}|\psi_k^{(0)}\rangle`],
+  ['适用条件', R`\frac{|H'_{kn}|}{|E_n^{(0)}-E_k^{(0)}|}\ll1,\qquad E_n^{(0)}\neq E_k^{(0)}`],
+  ['电谐振子能量二级修正', R`\hat H'=-e\varepsilon x\ \Rightarrow\ E_n^{(2)}=-\frac{e^{2}\varepsilon^{2}}{2\mu\omega^{2}}`],
+  ['简并微扰线性方程组', R`\sum_{\alpha=1}^{k}\big[H'_{\beta\alpha}-E_n^{(1)}\delta_{\beta\alpha}\big]c_\alpha=0`],
+  ['久期方程', R`\det\big[H'_{\beta\alpha}-E_n^{(1)}\delta_{\beta\alpha}\big]=0`],
+  ['零级近似波函数', R`|\psi_{n\nu}^{(0)}\rangle=\sum_{\alpha=1}^{k}c_{\alpha\nu}|n_\alpha\rangle,\qquad \langle\psi_{n\gamma}^{(0)}|\psi_{n\nu}^{(0)}\rangle=\delta_{\gamma\nu}`],
+  ['Stark 效应矩阵元与分裂', R`H'_{12}=-3e\varepsilon a_0,\qquad E_2^{(1)}=3e\varepsilon a_0,\,-3e\varepsilon a_0,\,0,\,0`],
+  ['角积分与选择定则', R`\langle Y_{l'm'}|\cos\theta|Y_{lm}\rangle\neq0\ \Rightarrow\ \Delta l=\pm1,\ \Delta m=0`],
+  ['变分原理', R`\langle H\rangle=\langle\psi|\hat H|\psi\rangle\ge E_0,\qquad \frac{d\langle H(\lambda)\rangle}{d\lambda}=0`],
+  ['变分实例（谐振子，高斯试探）', R`\langle H(\gamma)\rangle=\frac{\hbar^{2}}{2\mu}\gamma+\frac18\mu\omega^{2}\gamma^{-1},\qquad \gamma=\frac12\frac{\mu\omega}{\hbar}\ \Rightarrow\ \langle H\rangle=\frac12\hbar\omega`],
+  ['变分实例（氦原子基态）', R`Z_{\min}=\frac{27}{16}\ \Rightarrow\ E_0\approx-2.85\,\frac{e^{2}}{a_0}`],
+  ['Hellmann–Feynman 定理', R`\frac{\partial E_n}{\partial\lambda}=\Big\langle\psi_n\Big|\frac{\partial\hat H}{\partial\lambda}\Big|\psi_n\Big\rangle`]
+ ]},
+
+{no:'F', title:'量子跃迁（含时微扰）', en:'课程共六章 · 第六章', file:'F-量子跃迁-1 ~ -3.pdf',
+ sections:['§1 含时微扰理论（引言 / 一级近似方程 / Bohr 频率）','§2 量子跃迁几率（跃迁几率 / 一阶常微扰与费米黄金规则 / 简谐微扰与共振 / 实例 / 能量—时间测不准关系）','§3 光的发射和吸收（偶极近似 / 选择定则 / 自发辐射与 Einstein 系数 / 激光器条件）'],
+ concepts:[
+  ['含时微扰体系','Ĥ(t)=Ĥ₀+Ĥ′(t)；Ĥ 显含时间时定态微扰法失效，须解含时 Schrödinger 方程，求跃迁几率。'],
+  ['能量不守恒','Ĥ 显含时间时 d⟨H⟩/dt=⟨∂Ĥ/∂t⟩≠0，体系能量不守恒。'],
+  ['Bohr 频率','ω_mn=(ε_m−ε_n)/ħ，描述初末态的固有跃迁频率。'],
+  ['跃迁几率','t 时刻处于 Ψ_m 的几率 = |a_m(t)|²；一级近似 W_{k→m}=|a_m⁽¹⁾(t)|²。'],
+  ['一阶常微扰','Ĥ′ 在 0≤t≤T 内与时间无关；T 很大时跃迁速率与时间无关，且只在 ε_m≈ε_k 时显著跃迁。'],
+  ['费米黄金规则','跃迁速率正比于末态密度：W=(2π/ħ)|H′_mk|²ρ(ε_m)；δ(ε_m−ε_k) 体现能量守恒。'],
+  ['简谐（周期性）微扰与共振','Ĥ′=F̂(e^{iωt}+e^{−iωt})；仅当 ω=±ω_mk（ε_m=ε_k±ħω）时显著跃迁，吸收/发射能量 ħω，即共振。'],
+  ['细致平衡（互易性）','w_{m→k}=w_{k→m}。'],
+  ['能量—时间测不准关系','ΔE·Δt ≥ ħ/2；高斯波包算例取等号。'],
+  ['光的半经典处理与两点近似','对原子用量子力学、对光用经典电磁理论；忽略磁场作用（U_B/U_E≈α=1/137）、电场在原子内均匀（偶极近似）。'],
+  ['电偶极跃迁选择定则','Δl=±1、Δm=0,±1；主量子数无选择定则；|r_mk|²=0 为禁戒跃迁。'],
+  ['Einstein 系数与自发辐射','B_km=B_mk；A_mk=(4e²ω³/3ħc³)|r_km|²；激发态寿命 τ_m=1/Σ_k A_mk。'],
+  ['激光器条件','需粒子数反转 N_m>N_k，且受激辐射 ≫ 自发辐射；临界频率 ω₀=(kT/ħ)ln2。']
+ ],
+ formulas:[
+  ['含时 Hamilton 量与 S 方程', R`\hat H(t)=\hat H_0+\hat H'(t),\qquad i\hbar\frac{\partial}{\partial t}|\Psi\rangle=\hat H(t)|\Psi\rangle`],
+  ['零级与一级方程', R`i\hbar\frac{\partial}{\partial t}|\Psi^{(0)}\rangle=\hat H_0|\Psi^{(0)}\rangle,\qquad i\hbar\frac{\partial}{\partial t}|\Psi^{(1)}\rangle=\hat H_0|\Psi^{(1)}\rangle+\hat H'(t)|\Psi^{(0)}\rangle`],
+  ['Bohr 频率', R`\omega_{mn}=\frac{\varepsilon_m-\varepsilon_n}{\hbar}`],
+  ['一级近似振幅', R`a_m^{(1)}(t)=\frac{1}{i\hbar}\int_0^{t}H'_{mk}(t')\,e^{i\omega_{mk}t'}\,dt'`],
+  ['跃迁几率', R`W_{k\to m}=|a_m^{(1)}(t)|^{2}`],
+  ['常微扰跃迁几率', R`W_{k\to m}=\frac{4|H'_{mk}|^{2}}{\hbar^{2}\omega_{mk}^{2}}\sin^{2}\Big(\frac{\omega_{mk}T}{2}\Big)`],
+  ['跃迁速率与费米黄金规则', R`w_{k\to m}=\frac{2\pi}{\hbar}|H'_{mk}|^{2}\delta(\varepsilon_m-\varepsilon_k),\qquad W=\frac{2\pi}{\hbar}|H'_{mk}|^{2}\rho(\varepsilon_m)`],
+  ['简谐微扰共振条件与速率', R`\varepsilon_m=\varepsilon_k\pm\hbar\omega,\qquad w_{k\to m}=\frac{2\pi}{\hbar}|F_{mk}|^{2}\delta(\varepsilon_m-\varepsilon_k\pm\hbar\omega)`],
+  ['细致平衡', R`w_{m\to k}=w_{k\to m}`],
+  ['能量—时间测不准关系', R`\Delta E\cdot\Delta t\ge\frac{\hbar}{2},\qquad \Delta t=\frac{\Delta F}{|d\langle F\rangle/dt|}`],
+  ['偶极近似与微扰', R`\hat H'=exE_0\cos\omega t=\hat F(e^{i\omega t}+e^{-i\omega t}),\qquad \hat F=\tfrac12 exE_0`],
+  ['自然光跃迁速率', R`w_{k\to m}=\frac{4\pi^{2}e^{2}}{3\hbar^{2}}I(\omega_{mk})|\vec r_{mk}|^{2}=\frac{4\pi}{3\hbar^{2}}I(\omega_{mk})|\vec D_{mk}|^{2}`],
+  ['电偶极选择定则', R`\Delta l=\pm1,\qquad \Delta m=0,\pm1`],
+  ['Einstein 关系与自发辐射系数', R`A_{mk}=\frac{4h\nu_{mk}^{3}}{c^{3}}B_{mk},\qquad A_{mk}=\frac{4e^{2}\omega_{mk}^{3}}{3\hbar c^{3}}|\vec r_{km}|^{2}`],
+  ['激发态寿命', R`P_m=P_m(0)e^{-A_{mk}t},\qquad \tau_m=\frac{1}{\sum_k A_{mk}}`],
+  ['激光器条件', R`N_m>N_k,\qquad \omega_0=\frac{kT}{\hbar}\ln2`]
+ ]}
+];
+
 /* ============ 考点数据（据三套期末回忆卷统计） ============ */
 const TOPICS = [
- {name:'定态微扰论', ch:'VII', pri:'S', stars:5, ev:[['2023–2024',6],['2024–2025',6],['2025',6]], note:'三套卷全部出现，且常与势阱、谐振子、全同粒子结合命题'},
+ {name:'定态微扰论', ch:'VII / 胡毅五章', pri:'S', stars:5, ev:[['2023–2024',6],['2024–2025',6],['2025',6]], note:'三套卷全部出现，常与势阱、谐振子、全同粒子结合；胡金牛讲义缺此章文件，内容见胡毅讲义第五章'},
  {name:'算符与对易关系', ch:'II / IV', pri:'S', stars:5, ev:[['2023–2024',2],['2024–2025',2],['2025',1]], note:'对易子计算是基础解法，几乎每套必考'},
  {name:'无限深势阱', ch:'III', pri:'A', stars:5, ev:[['2023–2024',4],['2024–2025',6],['2025',2]], note:'常与微扰、态叠加、概率求解结合'},
  {name:'角动量理论', ch:'IV', pri:'A', stars:5, ev:[['2025',1],['2023–2024',2],['2024–2025',2]], note:'对易关系、升降算符、含 L 的算符运算'},
@@ -537,8 +759,9 @@ const TOPICS = [
  {name:'全同粒子与统计', ch:'VI', pri:'B', stars:4, ev:[['2023–2024',5],['2025',7]], note:'费米反对称/玻色对称波函数、Slater 行列式、基态能量'},
  {name:'简谐振子', ch:'III / VI', pri:'B', stars:3, ev:[['2023–2024',6],['2025',7]], note:'升降算符代数解法、能级与零点能'},
  {name:'量子论起源（光电效应 · 康普顿散射）', ch:'I', pri:'B', stars:3, ev:[['2023–2024',1],['2024–2025',1]], note:'基础送分题：光电方程与康普顿公式'},
- {name:'三维问题（球坐标）', ch:'V', pri:'C', stars:2, ev:[], note:'讲义覆盖；近三套期末未单独命题'},
- {name:'散射理论', ch:'VIII', pri:'D', stars:1, ev:[], note:'讲义覆盖；近三套期末未考，属了解内容'}
+ {name:'三维问题（球坐标）', ch:'V / 胡毅三章', pri:'C', stars:2, ev:[], note:'讲义覆盖；氢原子部分已单独列为 A 级考点'},
+ {name:'量子跃迁（含时微扰）', ch:'胡毅六章', pri:'C', stars:2, ev:[], note:'胡毅讲义第六章；近三套期末未直接命题，但属课程收尾重点，与微扰论同源'},
+ {name:'散射理论', ch:'VIII', pri:'D', stars:1, ev:[], note:'胡金牛讲义有、胡毅讲义未提供；近三套期末未考，属了解内容'}
 ];
 
 /* ============ 题型数据 ============ */
@@ -671,7 +894,7 @@ function renderDashboard(){
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
     <h1>量子力学（一）<br>期末复习系统</h1>
-    <p>本站把《量子力学（一）》的 8 章讲义与 3 套期末真题整理为结构化复习资料：按考点频率排出优先级，并把每个考点回溯到它出现的真题。仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
+    <p>本站把《量子力学（一）》两套讲义（胡金牛 · Sakurai 体系，胡毅 · 周世勋体系）与 3 套期末真题整理为结构化复习资料：按考点频率排出优先级，并把每个考点回溯到它出现的真题。仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
   <div class="grid2">
@@ -717,11 +940,14 @@ function COURSE_INFO_ROWS(){
   <div class="kv"><b>来源</b><span style="color:#777">${esc(COURSE.src)}</span></div>`;
 }
 
-function renderChapters(){
-  const html = CHAPTERS.map((c,i)=>`
-  <details class="ch" ${i<3?'open':''}>
+let TEACHER = 'hu';
+function setTeacher(t){ TEACHER = t; renderChapters(); renderFormulas(); typeset(); }
+
+function chCard(c, open, prefix){
+  return `
+  <details class="ch" ${open?'open':''}>
     <summary>
-      <h3>第 ${c.no} 章 · ${esc(c.title)}</h3>
+      <h3>${prefix}${esc(c.title)}</h3>
       <span class="en">${esc(c.en)}</span>
       <span class="src">${esc(c.file)}</span>
     </summary>
@@ -733,27 +959,45 @@ function renderChapters(){
       <div class="sub-h">重要公式</div>
       ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
     </div>
-  </details>`).join('');
+  </details>`;
+}
+
+function renderChapters(){
+  const isHu2 = TEACHER === 'hu2';
+  const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
+  const html = list.map((c,i)=> chCard(c, i < (isHu2?2:3), isHu2 ? (c.no+' · ') : ('第 '+c.no+' 章 · '))).join('');
   $('#chapters').innerHTML = `
     <div class="hero">
-      <div class="hero-label">讲义结构 · 共 8 章</div>
+      <div class="hero-label">讲义结构 · ${isHu2?'胡毅（周世勋体系）':'胡金牛（Sakurai 体系）'}</div>
       <h1>章节结构。</h1>
-      <p>按讲义顺序整理的知识体系。每章给出小节、核心概念与重要公式（公式保留 LaTeX 原符号）。<b>注意：第七章“近似方法”没有讲义文件，但据第九章总结与三套真题，它是期末最高频的考点。</b></p>
+      <p>${isHu2
+        ? '胡毅老师中文讲义的知识体系（A–F 六章）。<b>其第五章「近似方法」与第六章「量子跃迁」完整覆盖了胡金牛讲义缺失的第七章——微扰论正是期末最高频的考点。</b>'
+        : '胡金牛老师英文讲义的知识体系（I–IX 章）。<b>该套讲义中没有第七章（近似方法）文件，请切换到「胡毅」查看微扰、变分与跃迁的完整内容。</b>'}</p>
+    </div>
+    <div class="seg">
+      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">胡金牛 · Sakurai 体系（I–IX）</button>
+      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">胡毅 · 周世勋体系（A–F）</button>
     </div>
     ${html}`;
 }
 
 function renderFormulas(){
-  const html = CHAPTERS.map(c=>`
+  const isHu2 = TEACHER === 'hu2';
+  const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
+  const html = list.map(c=>`
     <div class="card">
-      <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+      <div class="card-title">${isHu2 ? (c.no+' · '+esc(c.title)) : ('第 '+c.no+' 章 · '+esc(c.title))}</div>
       ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
     </div>`).join('');
   $('#formulas').innerHTML = `
     <div class="hero">
       <div class="hero-label">公式速查</div>
       <h1>公式速查。</h1>
-      <p>把全部章节的重要公式集中到一页，适合考前快速过一遍。</p>
+      <p>把两套讲义的重要公式集中到一页，适合考前快速过一遍。</p>
+    </div>
+    <div class="seg">
+      <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">胡金牛 · Sakurai 体系（I–IX）</button>
+      <button class="${isHu2?'on':''}" onclick="setTeacher('hu2')">胡毅 · 周世勋体系（A–F）</button>
     </div>
     ${html}`;
 }
@@ -896,7 +1140,8 @@ function renderAbout(){
       <table class="tbl">
         <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
         <tbody>
-          <tr><td>讲义</td><td>chapter01 / 02·02a·02b / 03 / 04 / 05 / 06 / 08 / 09.pdf</td><td>章节结构、核心概念、重要公式</td></tr>
+          <tr><td>讲义（胡金牛）</td><td>chapter01 / 02·02a·02b / 03 / 04 / 05 / 06 / 08 / 09.pdf</td><td>章节结构、核心概念、重要公式（Sakurai 体系）</td></tr>
+          <tr><td>讲义（胡毅）</td><td>A-绪论 / B-波函数和 Schrödinger 方程 / C-量子力学中的力学量 / D-量子态和力学量的表象 / E-近似方法 / F-量子跃迁（共 20 个 PDF）</td><td>章节结构、核心概念、重要公式（周世勋体系）</td></tr>
           <tr><td>期末真题</td><td>2023-2024…（回忆版修改后）.pdf</td><td>6 题，考点与题型统计</td></tr>
           <tr><td>期末真题</td><td>2024-2025量子力学一.pdf</td><td>6 题，考点与题型统计</td></tr>
           <tr><td>期末真题</td><td>量子力学2025.pdf</td><td>7 题，考点与题型统计</td></tr>
@@ -909,7 +1154,7 @@ function renderAbout(){
       <div class="card-title">处理原则</div>
       <div class="concept"><b>原始文件不改动</b>：所有 PDF 均保持原样，仅在其上做提取与分析。</div>
       <div class="concept"><b>可回溯</b>：每个考点都标注它出现的年份与题号，可回到真题核对。</div>
-      <div class="concept"><b>区分来源等级</b>：讲义内容来自课程文件；第七章“近似方法”无讲义，内容取自第九章总结与真题，已明确标注为“推断/补充”。</div>
+      <div class="concept"><b>区分来源等级</b>：讲师内容分别来自胡金牛、胡毅两位老师的讲义；两位老师对同一主题的口径不同（如成绩构成 40/60 与 80/20），已分别标注来源。胡金牛讲义缺第七章文件，该章内容由胡毅讲义第五、六章补齐并标注。</div>
       <div class="concept"><b>不编造</b>：不凭空声称某考点“必考”；频率统计只基于实际拿到的真题。</div>
       <div class="concept"><b>区分不确定信息</b>：三套真题均为“回忆版”，个别系数或题干表述可能与原卷有出入，已在题面中标注。</div>
     </div>
@@ -918,7 +1163,7 @@ function renderAbout(){
       <div class="card-title">已知局限</div>
       <div class="concept"><b>样本有限</b>：频率仅由 3 套期末卷统计，样本小，优先级排序仅供复习参考，不代表真实命题概率。</div>
       <div class="concept"><b>扫描件未收录</b>：考研真题 PDF 为图片扫描，未做 OCR。</div>
-      <div class="concept"><b>讲义缺失</b>：课程包中没有第七章讲义，但该章（微扰等）是期末高频考点，建议向老师/同学补齐讲义。</div>
+      <div class="concept"><b>讲义各有缺口</b>：胡金牛讲义缺第七章（近似方法）文件；胡毅讲义只到第六章（未见自旋、全同粒子、散射等后续章节的 PPT）。两套讲义可互相补齐，但都无法单独覆盖全部考试范围。</div>
     </div>`;
 }
 

@@ -1,0 +1,128 @@
+# 胡毅讲义 · 三、量子力学中的力学量
+> 原始文件：C-量子力学中的力学量-2023-2 ~ -7.pdf
+
+## 小节
+- 表示力学量的算符：厄密算符的定义与性质
+- 动量算符及其厄密性（周期性边界条件）
+- 厄密算符本征值问题的性质（本征值为实数、本征函数正交、简并）
+- 算符与力学量的关系：力学量期望值、可能值与几率、有确定值的条件
+- 对易关系与对易括号
+- 角动量算符：形式、对易关系、球坐标表示
+- 角动量算符的本征方程：L̂_z 与 L̂² 的本征值与本征函数（球谐函数）
+- 角动量升降算符
+- 厄密算符本征函数的正交性与完备性（正交归一系）
+- 厄密（力学量）算符的共同本征函数与力学量完全集合（CSCO）
+- 测不准关系
+- 力学量守恒与对称性
+- 有心力场下的 Schrödinger 方程与电子在库仑场中的运动（氢原子）
+
+## 核心概念
+- **厄密算符**：满足 `∫dτ ψ*Ôφ = ∫dτ (Ôψ)*φ` 即 `Ô†=Ô` 的算符；量子力学中表示力学量的算符都是厄密算符。
+- **厄密共轭算符的乘积**：`(ÔÂ)†=Â†Ô†`，可推广为 `(ÔÂÛ…)^†=…Û†Â†Ô†`。
+- **坐标算符与动量算符**：`x†=x`、`p̂_x†=p̂_x`，即二者的厄密共轭算符是其自身（厄密算符）。
+- **厄密算符运算性质**：两个厄密算符之和仍为厄密算符；两个厄密算符之积一般不是厄密算符，除非二者对易。
+- **本征值为实数**：厄密算符的本征值必为实数。
+- **正交性**：厄密算符属于不同本征值的本征函数彼此正交。
+- **简并正交化**：f 度简并的本征函数一般不一定正交，但可由其线性组合出 f 个仍属同一本征值、且满足正交归一条件的新本征函数。
+- **完备系**：任意函数 ψ(x) 可按一组函数 φ_n(x) 展开时称其完备；除动量本征函数外，L_z、L²、无限深势阱、线性谐振子等的本征函数也构成完备系。
+- **力学量的可能值**：在任意态 ψ 中测量力学量 F，所得结果只能是算符 F̂ 本征方程 `F̂φ_n=λ_nφ_n` 解出的本征值之一。
+- **几率振幅与几率**：ψ 按本征函数展开 `ψ=Σc_nφ_n`，系数 `c_n=∫φ_n*ψ dτ`；`|c_n|²` 是测得本征值 λ_n 的几率，cn 称为几率振幅。
+- **有确定值的条件**：在态 ψ 中测量力学量 F 有确定值的充要条件是 ψ 必为算符 F̂ 的一个本征态。
+- **期望值（平均值）**：把力学量算符夹在 ψ* 与 ψ 之间对全空间积分即得该力学量的平均值。
+- **对易与反对易**：若 `ÔÛ=ÛÔ` 称二者对易，否则不对易；若 `ÔÛ=-ÛÔ` 称二者反对易。
+- **对易括号**：定义 `[Ô,Û]≡ÔÛ-ÛÔ`；满足反称性、线性、乘积法则 Jacobi 恒等式。
+- **基本对易关系**：坐标算符与不同维度动量算符对易、各动量之间对易，但坐标算符与同一维度动量算符不对易。
+- **角动量算符**：由经典 L=r×p 把 r、p 换成算符得 `L̂=r̂×p̂=-iℏr×∇`，其各分量及 L̂² 均为厄密算符。
+- **角动量对易关系**：角动量各分量之间不对易（满足 `[L̂_α,L̂_β]=iℏε_{αβγ}L̂_γ`），而 L̂² 与每个分量都对易。
+- **球坐标下角动量算符**：直角坐标下 L̂² 含偏导交叉项、不能分离变量，故采用球坐标求解。
+- **L̂_z 本征值与本征函数**：由波函数单值性（φ 转过 2π 回原位）得 `l_z=mℏ`，本征函数为 `e^{imφ}/√(2π)`。
+- **角量子数与磁量子数**：L̂² 本征值由角量子数 l 表征、L̂_z 本征值由磁量子数 m 表征；一个 l 对应 m=0,±1,…,±l 共 (2l+1) 个态，即 (2l+1) 度简并。
+- **球谐函数**：Y_lm(θ,φ) 是 L̂² 与 L̂_z 的共同本征函数，由连带 Legendre 多项式与 e^{imφ} 组成，构成正交归一系。
+- **升降算符**：`L̂_±=L̂_x±iL̂_y` 为本征值的“升/降”算符，且 `L̂_+†=L̂_-`、`L̂_-†=L̂_+`（非厄密）。
+- **共同本征函数**：当在 ψ 态中测量 F 和 G 同时有确定值时，ψ 必是二者的共同本征函数。
+- **两算符对易的物理含义**：若两力学量算符有一组共同完备本征函数系，则两算符对易（定理）；反之若两算符对易，则存在组成完备系的共同本征函数（逆定理，非简并情形）。
+- **力学量完全集合（CSCO）**：为完全确定状态所需的一组两两对易的力学量算符的最小集合；其数目一般等于体系自由度数。
+- **不确定度算符**：`ΔF̂=F̂-⟨F⟩`；若 F̂ 为厄密算符，则 ΔF̂ 仍为厄密算符。
+- **测不准关系**：对不（全）对易的两算符，其均方偏差不能同时为零，乘积有一个由对易关系决定的下限。
+- **零点能**：由测不准关系要求的最小能量，如线性谐振子零点能。
+- **力学量守恒**：若 F̂ 不显含时间且与 Ĥ 对易，则 F 的期望值不随时间改变，F 为运动恒量（守恒）。
+- **宇称算符**：`P̂ψ(x)=ψ(-x)`，`P̂²=1` 故本征值为 ±1；本征值 1 对应偶宇称，-1 对应奇宇称。
+- **对称性与守恒定律**：一个不可观察量（哈密顿）的对称性导致一个可观察量的守恒性。
+- **有心力场**：势能只与 r 有关而与 θ、φ 无关，用球坐标分离变量求解较方便；径向势场只改变径向方程，不改变角向方程。
+- **氢原子（库仑场）**：电子在核库仑场 `-Ze²/r` 中运动，方程可严格求解。
+- **主量子数 n**：能量只与主量子数 n 有关，`n=n_r+l+1`；本征函数与 n、l、m 有关，故能级存在简并，简并度为 n²。
+- **附加简并**：一般有心力场能量 E=E_nl、简并度 (2l+1)；库仑场能量只与 n 有关，出现对 l 的附加简并，源于库仑场更高的对称性。
+- **径向几率分布**：氢原子中电子在半径 r→r+dr 球壳内出现的几率；几率密度随角度变化，与 φ 无关（绕 z 轴旋转对称）。
+- **轨道磁矩与磁量子数**：绕 z 轴的环电流产生轨道磁矩 `M_z=-μ_B m`，与 m 有关，故 m 称为磁量子数；s 态(l=0)磁矩为零。
+- **g 因子（回转磁比值）**：`M_z/L_z=-e/(2μc)`，取 e/(2μc) 为单位则 g=-1。
+- **类氢离子**：结果对 He⁺、Li⁺⁺ 等适用，只需把核电荷 +e 换成 Ze、μ 换成相应折合质量。
+
+## 重要公式
+- **厄密算符定义**： `\int d\tau\,\psi^*\hat O\varphi=\int d\tau\,(\hat O\psi)^*\varphi,\qquad \hat O^\dagger=\hat O`
+- **厄密共轭乘积**： `(\hat O\hat A)^\dagger=\hat A^\dagger\hat O^\dagger,\qquad (\hat O\hat A\hat U\cdots)^\dagger=\cdots\hat U^\dagger\hat A^\dagger\hat O^\dagger`
+- **厄密算符本征值为实数**： `\hat O\phi=\lambda\phi\ \Rightarrow\ \lambda=\lambda^*`
+- **不同本征值本征函数正交**： `\lambda_n\neq\lambda_m\ \Rightarrow\ \int d\tau\,\psi_m^*\psi_n=0`
+- **简并新本征函数**： `\psi_{nj}=\sum_{i=1}^{f}A_{ji}\phi_{ni},\qquad \int\psi_{nj}^*\psi_{nj'}\,d\tau=\delta_{jj'}`
+- **本征函数正交归一（矩量形式）**： `\int d\tau\,\psi_m^*\psi_n=\delta_{mn}`
+- **力学量期望值**： `\langle F\rangle=\int \psi^*(\vec r)\,\hat F\,\psi(\vec r)\,d\tau`
+- **未归一化波函数的期望值**： `\langle F\rangle=\frac{\int\psi^*\hat F\psi\,d\tau}{\int\psi^*\psi\,d\tau}`
+- **动量期望值（位置表象）**： `\langle p_x\rangle=\int_{-\infty}^{\infty}\psi^*(x)\,\hat p_x\,\psi(x)\,dx,\qquad \hat p_x=-i\hbar\frac{\partial}{\partial x}`
+- **按本征函数展开与系数**： `\psi(x)=\sum_n c_n\phi_n(x),\qquad c_n=\int\phi_n^*(x)\psi(x)\,dx`
+- **可能值的几率与归一化**： `\langle F\rangle=\sum_n |c_n|^2\lambda_n,\qquad \sum_n |c_n|^2=1`
+- **对易括号定义**： `[\hat O,\hat U]\equiv\hat O\hat U-\hat U\hat O`
+- **对易括号性质**： `[\hat O,\hat U]=-[\hat U,\hat O],\quad [\hat O,\hat U+\hat E]=[\hat O,\hat U]+[\hat O,\hat E],\quad [\hat O,\hat U\hat E]=[\hat O,\hat U]\hat E+\hat U[\hat O,\hat E]`
+- **Jacobi 恒等式**： `[\hat O,[\hat U,\hat E]]+[\hat U,[\hat E,\hat O]]+[\hat E,[\hat O,\hat U]]=0`
+- **基本对易关系**： `[x_\alpha,\hat p_\beta]=i\hbar\delta_{\alpha\beta},\qquad [\hat p_\alpha,\hat p_\beta]=0,\qquad \alpha,\beta=x,y,z`
+- **角动量算符（直角坐标）**： `\hat L=\hat{\vec r}\times\hat{\vec p}=-i\hbar\,\vec r\times\nabla`
+- **角动量分量**： `\hat L_x=\hat y\hat p_z-\hat z\hat p_y,\quad \hat L_y=\hat z\hat p_x-\hat x\hat p_z,\quad \hat L_z=\hat x\hat p_y-\hat y\hat p_x`
+- **角动量平方算符**： `\hat L^2=\hat L_x^2+\hat L_y^2+\hat L_z^2`
+- **角动量对易关系**： `[\hat L_\alpha,\hat L_\beta]=i\hbar\,\varepsilon_{\alpha\beta\gamma}\hat L_\gamma`
+- **L̂² 与分量对易**： `[\hat L^2,\hat L_\alpha]=0`
+- **球坐标中角动量算符**： `\hat L_x=i\hbar\!\left(\sin\phi\frac{\partial}{\partial\theta}+\cot\theta\cos\phi\frac{\partial}{\partial\phi}\right),\quad \hat L_y=-i\hbar\!\left(\cos\phi\frac{\partial}{\partial\theta}+\cot\theta\sin\phi\frac{\partial}{\partial\phi}\right),\quad \hat L_z=-i\hbar\frac{\partial}{\partial\phi}`
+- **球坐标中 L̂²**： `\hat L^2=-\hbar^2\!\left[\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\!\left(\sin\theta\frac{\partial}{\partial\theta}\right)+\frac{1}{\sin^2\theta}\frac{\partial^2}{\partial\phi^2}\right]`
+- **L̂_z 本征函数与本征值**： `\hat L_z\psi_m(\phi)=l_z\psi_m(\phi),\qquad \psi_m(\phi)=\frac{1}{\sqrt{2\pi}}e^{im\phi},\qquad l_z=m\hbar,\quad m=0,\pm1,\pm2,\dots`
+- **L̂_z 本征函数正交归一**： `\frac{1}{2\pi}\int_0^{2\pi}e^{-im\phi}e^{in\phi}\,d\phi=\delta_{mn}`
+- **L̂² 本征值方程**： `\hat L^2Y(\theta,\phi)=\lambda\hbar^2Y(\theta,\phi),\qquad \lambda=l(l+1),\quad l=0,1,2,\dots`
+- **球谐函数**： `Y_{lm}(\theta,\phi)=(-1)^mN_{lm}P_l^m(\cos\theta)e^{im\phi}`
+- **球谐函数归一化系数**： `N_{lm}=\sqrt{\frac{(l-|m|)!\,(2l+1)}{4\pi\,(l+|m|)!}}`
+- **球谐函数正交归一**： `\int_0^{2\pi}\!\!\int_0^{\pi}Y_{lm}^*(\theta,\phi)Y_{l'm'}(\theta,\phi)\sin\theta\,d\theta\,d\phi=\delta_{ll'}\delta_{mm'}`
+- **L̂_z 作用于 Y_lm**： `\hat L_zY_{lm}(\theta,\phi)=m\hbar\,Y_{lm}(\theta,\phi)`
+- **升降算符定义**： `\hat L_+=\hat L_x+i\hat L_y,\qquad \hat L_-=\hat L_x-i\hat L_y,\qquad \hat L_+^\dagger=\hat L_-,\quad \hat L_-^\dagger=\hat L_+`
+- **升降算符作用**： `\hat L_\pm Y_{lm}=\hbar\sqrt{l(l+1)-m(m\pm1)}\,Y_{l,m\pm1}`
+- **升降算符对易关系**： `\hat L_z\hat L_\pm=\hat L_\pm(\hat L_z\pm\hbar),\qquad \hat L^2\hat L_\pm=\hat L_\pm\hat L^2`
+- **升降算符乘积**： `\hat L_+\hat L_-=\hat L^2-\hat L_z^2+\hbar\hat L_z,\qquad \hat L_-\hat L_+=\hat L^2-\hat L_z^2-\hbar\hat L_z`
+- **共同本征函数定理**： `\hat F\hat G-\hat G\hat F=0\ \Longleftrightarrow\ \text{存在共同完备本征函数系}`
+- **测不准关系（一般形式）**： `(\Delta F)^2(\Delta G)^2\geq\frac{k^2}{4},\qquad [\hat F,\hat G]=i\hat k`
+- **均方偏差**： `(\Delta \hat F)^2=\overline{F^2}-\overline{F}^{\,2}`
+- **坐标—动量测不准关系**： `(\Delta x)^2(\Delta p_x)^2\geq\frac{\hbar^2}{4}`
+- **力学量期望值的时间导数**： `\frac{d\langle F\rangle}{dt}=\frac{\partial \hat F}{\partial t}+\frac{1}{i\hbar}[\hat F,\hat H]`
+- **守恒条件**： `\frac{\partial\hat F}{\partial t}=0\ \text{且}\ [\hat F,\hat H]=0\ \Rightarrow\ \frac{d\langle F\rangle}{dt}=0`
+- **有心力场定态 Schrödinger 方程**： `-\frac{\hbar^2}{2\mu}\nabla^2\psi-\frac{Ze^2}{r}\psi=E\psi\quad(\text{CGS 单位制})`
+- **分离变量解**： `\psi(r,\theta,\phi)=R(r)Y(\theta,\phi)`
+- **径向方程**： `\frac{1}{r^2}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)+\left[\frac{2\mu}{\hbar^2}\!\left(E+\frac{Ze^2}{r}\right)-\frac{l(l+1)}{r^2}\right]R=0`
+- **约化径向方程（R=u/r）**： `\frac{d^2u}{dr^2}+\left[\frac{2\mu}{\hbar^2}\!\left(E+\frac{Ze^2}{r}\right)-\frac{l(l+1)}{r^2}\right]u=0`
+- **氢原子能级**： `E_n=-\frac{\mu Z^2e^4}{2\hbar^2n^2},\qquad n=1,2,3,\dots`
+- **氢原子本征函数**： `\psi_{nlm}(r,\theta,\phi)=R_{nl}(r)Y_{lm}(\theta,\phi),\qquad l=0,1,\dots,n-1,\quad m=0,\pm1,\dots,\pm l`
+- **第一玻尔轨道半径**： `a_0=\frac{\hbar^2}{\mu e^2}`
+- **径向波函数的一般形式**： `R_{nl}(r)=N_{nl}\exp\!\left(-\frac{Zr}{na_0}\right)\!\left(\frac{2Zr}{na_0}\right)^{\!l}F\!\left(-n+l+1,\,2l+2,\,\frac{2Zr}{na_0}\right)`
+- **前几个径向波函数（Z=1）**： `R_{10}=2a_0^{-3/2}e^{-r/a_0},\quad R_{20}=\left(\tfrac{1}{2a_0}\right)^{3/2}\!\left(2-\tfrac{r}{a_0}\right)e^{-r/2a_0},\quad R_{21}=\left(\tfrac{1}{2a_0}\right)^{3/2}\tfrac{r}{a_0\sqrt3}e^{-r/2a_0}`
+- **氢原子能级简并度**： `\sum_{l=0}^{n-1}(2l+1)=n^2`
+- **氢原子电离能**： `\varepsilon=E_\infty-E_1=-E_1=\frac{\mu e^4}{2\hbar^2}=13.579\ \text{eV}`
+- **里德堡常数与巴尔末公式**： `R_H=\frac{\mu e^4}{4\pi\hbar^3c}=1.097\times10^7\ \text{m}^{-1},\qquad \frac{1}{\lambda}=R_H\!\left(\frac{1}{m^2}-\frac{1}{n^2}\right)`
+- **径向几率分布**： `W_{nl}(r)\,dr=R_{nl}^2(r)\,r^2\,dr,\qquad \int_0^{\infty}R_{nl}^2(r)r^2\,dr=1`
+- **类氢离子能级**： `E_n=-\frac{\mu e^4Z^2}{2\hbar^2n^2},\qquad n=1,2,3,\dots`
+- **原子中电流密度的 φ 分量**： `j_\phi=-\frac{em\hbar}{\mu r\sin\theta}|\psi_{nlm}|^2,\qquad \vec J_e=j_\phi\hat\phi`
+- **轨道磁矩**： `M_z=-\frac{e\hbar}{2\mu c}m=-\mu_B m,\qquad \mu_B=\frac{e\hbar}{2\mu c}`
+- **磁矩算符表示**： `\hat{\vec M}_L=-\frac{e}{2\mu c}\hat{\vec L}`
+- **g 因子（回转磁比值）**： `\frac{M_z}{L_z}=-\frac{e}{2\mu c},\qquad g=-1`
+- **宇称算符与波函数宇称**： `\hat P\psi(\vec r)=\psi(-\vec r),\qquad \hat P\psi_{nlm}=(-1)^l\psi_{nlm}`
+- **宇称本征值**： `\hat P^2=1\ \Rightarrow\ P=1\ (\text{偶宇称}),\ P=-1\ (\text{奇宇称})`
+- **对称性与守恒量对应**： `\begin{aligned}&\text{空间平移}\to\text{动量守恒}\\ &\text{空间旋转}\to\text{角动量守恒}\\ &\text{时间平移}\to\text{能量守恒}\\ &\text{空间反演}\to\text{宇称守恒}\end{aligned}`
+
+## 与其他教师的对应
+- 本章（胡毅·力学量）对应胡金牛讲义（Sakurai 体系）的多章，内容按主题交叉：
+  - **算符代数、厄密算符、测量公设、期望值与可能值/几率、对易关系** → 对应 ch02《量子力学的代数表述》（算符、观测量公设、测量与期望值部分）。
+  - **角动量算符的形式与对易关系、L̂² 与 L̂_z 的本征值与本征函数、球坐标下的角动量算符、球谐函数、升降算符** → 对应 ch04《角动量理论》的“轨道角动量算符、对易关系、L̂²/L̂_z 本征值、球坐标中的角动量算符、球谐函数”等小节。
+  - **共同本征函数、两算符对易与共同完备本征系、测不准关系、力学量完全集合（CSCO）** → 主要对应 ch02《量子力学的代数表述》与 ch04《角动量理论》中关于共同本征态与不确定关系的讨论。
+  - **有心力场下的 Schrödinger 方程、库仑场中的电子运动（氢原子）与类氢离子、径向波函数与几率分布、简并度、轨道磁矩** → 对应 ch05《三维空间的量子力学》的“球坐标、球对称势与分离变量、径向部分的求解、氢原子、玻尔半径、简并度”等小节。
+  - **守恒量与对称性（动量/角动量/能量/宇称守恒）** → 散布于 ch02/ch04/ch05，Sakurai 体系中与哈密顿量的对称性、宇称算符及守恒定律的表述相对应。
