@@ -96,6 +96,28 @@ button{font-family:inherit;}
 .cv-on i{font-style:normal;color:#5f7a66;font-size:10px;margin-left:6px;}
 .cv-off{display:inline-block;color:#4a4a4a;border:1px solid #1e1e1e;border-radius:6px;padding:3px 10px;margin:0 8px 6px 0;font-size:12px;}
 
+/* 开屏主页 */
+.landing{min-height:100vh;padding:64px 46px 90px;max-width:1260px;margin:0 auto;}
+.lp-title{font-size:46px;font-weight:700;letter-spacing:-1.8px;margin:0;}
+.lp-title span{color:var(--green);}
+.lp-sub{color:#6d6d6d;font-size:12px;letter-spacing:2.4px;margin:12px 0 0;}
+.lp-intro{color:#8a8a8a;font-size:13.5px;line-height:2;max-width:860px;margin:22px 0 36px;}
+.lp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(318px,1fr));gap:16px;align-items:start;}
+.lp-term{background:#0d0d0d;border:1px solid var(--border);border-radius:12px;padding:18px 18px 10px;}
+.lp-term-h{font-size:11px;letter-spacing:1.8px;color:var(--green);margin-bottom:13px;}
+.lp-course{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:#111;border:1px solid var(--border);color:#bbb;border-radius:8px;padding:11px 13px;margin-bottom:9px;cursor:pointer;font-size:13.5px;}
+.lp-course b{font-weight:600;color:#eaeaea;}
+.lp-course span{font-size:10.5px;color:#5f7a66;white-space:nowrap;}
+.lp-course:hover{border-color:var(--green);background:#141a15;}
+.lp-course.off{color:#4a4a4a;background:#0a0a0a;border-style:dashed;cursor:not-allowed;}
+.lp-course.off:hover{border-color:#222;background:#0a0a0a;}
+.lp-course.off b{color:#575757;}
+.lp-course.off span{color:#3d3d3d;}
+.lp-foot{color:#454545;font-size:11.5px;margin-top:34px;line-height:1.9;}
+.backbar{background:none;border:1px solid var(--border);color:#8a8a8a;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer;}
+.backbar:hover{color:#fff;border-color:#444;}
+@media(max-width:900px){.landing{padding:40px 20px 70px;}.lp-title{font-size:32px;}}
+
 /* 表格 */
 .tbl{width:100%;border-collapse:collapse;}
 .tbl th,.tbl td{text-align:left;border-bottom:1px solid #1f1f1f;padding:12px 8px;font-size:12.5px;vertical-align:top;}
@@ -190,10 +212,12 @@ window.MathJax = {
 </head>
 
 <body>
-<div class="app">
+<div id="landing" class="landing"></div>
+
+<div class="app" id="appRoot" style="display:none">
 
 <aside class="sidebar">
-  <div class="logo">Equimo<span>physics</span></div>
+  <div class="logo" onclick="showLanding()" style="cursor:pointer" title="返回课程选择">Equimo<span>physics</span></div>
   <div class="tagline">
     南开大学 · 物理科学学院
   </div>
@@ -223,7 +247,10 @@ window.MathJax = {
 <main class="main">
 <div class="topbar">
   <div class="page-title" id="pageTitle">总览</div>
-  <div class="profile">物</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="backbar" onclick="showLanding()">← 课程选择</button>
+    <div class="profile">物</div>
+  </div>
 </div>
 
 <!-- 总览 -->
@@ -262,6 +289,7 @@ const COURSE = {
   hours:'48 学时',
   examLen:'100 分钟',
   classes:'伯苓班（胡金牛 · Sakurai 体系）、大类班（胡毅 · 周世勋体系）',
+  paper:'3 套期末回忆卷：2023–2024 学年 6 题、2024–2025 学年 6 题、2025 年 7 题（48 学时 / 100 分钟）；另有考研真题 10 套（2012–2022，共 80 题）',
   gradeBailing:'小测 + 作业 40% ＋ 期末考试 60%',
   gradeDalei:'闭卷考试 80% ＋ 平时成绩 20%',
   refs:['Sakurai & Napolitano,《Modern Quantum Mechanics》',
@@ -976,6 +1004,7 @@ const COURSE_EM = {
   teachers:'杨茂志、蔡卫',
   examLen:'（杨茂志卷）8 题 / 100 分',
   grade:'平时成绩 30% ＋ 期末考试 70%',
+  paper:'共 8 题 / 100 分（杨茂志 2025–2026 卷：15＋5＋10＋10＋20＋10＋20＋10）；蔡卫 3 套回忆提纲各 8 题',
   refs:['郭硕鸿,《电动力学》（第三版），高等教育出版社',
         'Jackson,《经典电动力学》',
         'Griffiths,《Introduction to Electrodynamics》',
@@ -1279,60 +1308,149 @@ const EM_TYPES = [
 ];
 
 const EM_EXAMS = [
-{ id:'em2023',
-  label:'2023 电动力学考题（蔡卫，回忆版）',
-  meta:[['任课教师','蔡卫'],['题量','8 题'],['备注','学生回忆版，题干较简略'],['回忆人','钟传涛'],['来源文件','2023电动力学考题.docx']],
+{ id:'em2025', label:'2025–2026 学年电动力学期末考试（杨茂志）',
+  meta:[['出题人','杨茂志'],['日期','2026/01/19'],['题量','8 题 / 100 分'],['来源文件','电动力学2025期末-杨茂志.pdf']],
   qs:[
-   {no:'一', title:'小圆环的磁矢势与磁感应强度', topic:'静磁场', type:'推导题', stem:'推导带电/载流小圆环在远处产生的磁矢势及磁感应强度。', key:'矢势多极展开，最低阶为磁偶极子。', src:'第 1 题'},
-   {no:'二', title:'麦克斯韦方程组（积分形式）', topic:'普遍规律', type:'简答', stem:'写出积分形式的麦克斯韦方程组并解释各项意义。', key:'四个积分方程 + 位移电流意义。', src:'第 2 题'},
-   {no:'三', title:'带电粒子在稳恒磁场中的动量', topic:'狭义相对论 / 静磁场', type:'计算题', stem:'计算带电 q、低速 v 在稳恒磁场 B 中运动的粒子的动量。', key:'洛伦兹力 + 匀速圆周运动。', src:'第 3 题'},
-   {no:'四', title:'镜像法：导体球外点电荷', topic:'静电场', type:'计算题', stem:'（镜像法）导体球外有一个点电荷，距球心 a，导体球表面电势接 V₀，求空间中各处电势。', key:'镜像电荷 + 球心电荷修正。', src:'第 4 题'},
-   {no:'五', title:'旋转带电球的磁矩', topic:'静磁场', type:'计算题', stem:'带电 Q、质量 m₀（均匀）的球，以角速度 ω 绕一直径旋转。计算：(1) 球的磁矩；(2) 磁矩与角动量的比值。', key:'积分求 m，再与角动量 L 之比。', src:'第 5 题'},
-   {no:'六', title:'布儒斯特角与全反射角', topic:'电磁波的反射与折射', type:'简答', stem:'说明布儒斯特角与全反射角分别满足的条件及区别。', key:'tanθ_B=n₂/n₁ 与 sinθ_c=n₂/n₁。', src:'第 6 题'},
-   {no:'七', title:'TM 波的反射与透射系数', topic:'电磁波的反射与折射', type:'计算题', stem:'以 TM 波（p 波）为例，计算电场的反射和透射系数。', key:'由界面边值关系推菲涅耳公式。', src:'第 7 题'},
-   {no:'八', title:'电偶极子的近场', topic:'电磁波的辐射', type:'计算题', stem:'空间中某一点存在一电偶极子，求近场区的磁场、电场及能流密度。', key:'近区（kr≪1）近似，场为准静态偶极场。', src:'第 8 题'}
+   {no:'1', title:'场论运算', topic:'矢量分析', type:'计算 · 15 分',
+    stem:'计算 ∇×r、∇(a·r)、∇r₁₂、∇×(E₀cos(k·r))、∇·(E₀cos(k·r))。',
+    key:'∇×r=0；∇(a·r)=a；∇r₁₂=r̂₁₂；∇×(E₀cos(k·r))=−k×E₀·sin(k·r)；∇·(E₀cos(k·r))=−(k·E₀)sin(k·r)。',
+    src:'第 1 题'},
+   {no:'2', title:'极化电流面密度', topic:'电磁现象的普遍规律', type:'计算 · 5 分',
+    stem:'定义极化强度矢量 P=Σp/ΔV，求极化电流面密度。',
+    key:'极化电流体密度 J_P=∂P/∂t；表面极化电荷 σ_P=P·n̂，相应的表面极化电流 α_P=∂σ_P/∂t=Ṗ·n̂。',
+    src:'第 2 题'},
+   {no:'3', title:'两介质界面的矢量微分关系', topic:'电磁现象的普遍规律', type:'计算 · 10 分',
+    stem:'两介质分界面，有电流线密度 α 与电荷面密度 σ，求矢量微分关系（电磁场边值关系）。',
+    key:'n̂×(E₂−E₁)=0；n̂·(D₂−D₁)=σ；n̂×(H₂−H₁)=α；n̂·(B₂−B₁)=0。',
+    src:'第 3 题'},
+   {no:'4', title:'匀强磁场矢势的证明', topic:'静磁场', type:'证明 · 10 分',
+    stem:'证明匀强磁场 B 的矢势可写作 A=½B×r。',
+    key:'∇×(½B×r)=½[3B−B]=B（用 ∇×(B×r)=(∇·r)B−(B·∇)r·… 或 ε 恒等式展开），且 ∇·A=0 满足库仑规范。',
+    src:'第 4 题'},
+   {no:'5', title:'谐振腔表面的电流分布', topic:'谐振腔与波导', type:'计算 · 20 分',
+    stem:'谐振腔的电场为 E_x=A₁cos k_x x·sin k_y y·sin k_z z，E_y=A₂sin k_x x·cos k_y y·sin k_z z，E_z=A₃sin k_x x·sin k_y y·cos k_z z，其中 k_x=mπ/a、k_y=nπ/b、k_z=pπ/c。求 x=a 面、y=b 面、z=c 面上的电流分布。',
+    key:'先由 H=(i/ωμ)∇×E 求腔内磁场，再用表面电流密度 α=n̂×H 分别代入三个面的外法线求分布。',
+    src:'第 5 题'},
+   {no:'6', title:'磁场中相对论粒子的角动量', topic:'狭义相对论', type:'计算 · 10 分',
+    stem:'质量 m₀、电荷 q 的粒子，以 v₀ 的速度沿与匀强磁场 B 成 θ 角的方向射入。相对论效应不可忽略，已知粒子运动可看作绕轴转动，求粒子相对转轴的角动量。',
+    key:'垂直分量做圆周运动、平行分量匀速；用相对论动量 p=γm₀v、回旋半径 r=mv_⊥/(qB)，角动量 L=r·p_⊥=γm₀v_⊥²/(qB)。',
+    src:'第 6 题'},
+   {no:'7', title:'导体圆锥与平板间的电势', topic:'静电场', type:'计算 · 20 分',
+    stem:'无限大的导体圆锥，母线与高的夹角为 θ₀，倒扣在无限大导体平板上；接触点绝缘，圆锥面与平板表面电势分别为 φ₁、φ₂。求空间中各点电势 φ，以及圆锥与平板表面的电势分布。（题给球坐标拉普拉斯算子与 ∫dx/sin x = ln(1/tan x)+C 的提示）',
+    key:'边界是两个锥面 θ=θ₀ 与 θ=π/2，轴对称下 φ 只依赖 θ；分离变量后 Θ(θ) 满足 Legendre 方程，用两锥面电势定常数。',
+    src:'第 7 题'},
+   {no:'8', title:'能否找到电场为零的参考系', topic:'狭义相对论', type:'简答 · 10 分',
+    stem:'匀强电场 E 处于 Σ 系。问是否存在这样的 Σ′ 系，使得在该系下电场强度为 0？',
+    key:'洛伦兹不变量 E²−c²B² 与 E·B 不变。纯电场（B=0）时 E²−c²B²>0，任何惯性系中 E′ 都不为零；只有 E⊥B 且 |E|<c|B| 时可变为纯磁场。',
+    src:'第 8 题'}
   ]},
-
-{ id:'em2024recall',
-  label:'2024 电动力学（蔡卫，回忆版）',
-  meta:[['任课教师','蔡卫'],['题量','8 题'],['备注','学生回忆版，题干较简略'],['来源文件','电动力学回忆.docx']],
+{ id:'em2023', label:'2023 电动力学考题（蔡卫，回忆提纲 · 钟传涛）',
+  meta:[['出题人','蔡卫'],['回忆人','钟传涛'],['题量','8 题'],['备注','原文件为回忆提纲，题干按原文保留'],['来源文件','2023电动力学考题.docx']],
   qs:[
-   {no:'1', title:'真空中的麦克斯韦方程组', topic:'普遍规律', type:'简答', stem:'写出真空中的麦克斯韦方程组及每一项的意义。', key:'四个方程 + 各项物理意义。', src:'第 1 题'},
-   {no:'2', title:'导体球与点电荷的空间电势', topic:'静电场', type:'计算题', stem:'半径为 R 的导体球带电荷 Q，距离球心 a 处有一点电荷，求空间电势。', key:'镜像法求解。', src:'第 2 题'},
-   {no:'3', title:'教材 1.5 原题', topic:'普遍规律', type:'计算题', stem:'（教材习题 1.5 原题，似未提示用流守恒）', key:'属课后习题，需查教材。', src:'第 3 题'},
-   {no:'4', title:'薄圆盘的磁矩', topic:'静磁场', type:'计算题', stem:'薄圆盘半径 R、带电荷 Q，以角速度自转，求磁矩。', key:'面电流积分求 m。', src:'第 4 题'},
-   {no:'5', title:'介质球在匀强磁场中的场', topic:'静磁场 / 介质', type:'计算题', stem:'匀强磁场中，真空中放入磁导率为 μ、半径为 R 的介质球，求空间磁场。', key:'磁标势法（类比介质球静电问题）。', src:'第 5 题'},
-   {no:'6', title:'教材 4.4 原题', topic:'电磁波的传播', type:'计算题', stem:'（教材习题 4.4 原题）', key:'属课后习题，需查教材。', src:'第 6 题'},
-   {no:'7', title:'振荡点电荷的辐射与能流', topic:'电磁波的辐射', type:'计算题', stem:'点电荷沿某方向振荡，求辐射和能流（未指明近场/远场）。', key:'电偶极辐射能流与角分布。', src:'第 7 题'},
-   {no:'8', title:'存在磁单极子时的麦克斯韦方程组', topic:'普遍规律', type:'简答', stem:'写出有磁单极子时的麦克斯韦方程组。', key:'补上磁荷/磁流项。', src:'第 8 题'}
+   {no:'一', title:'小圆环远场的磁矢势与磁感应强度', topic:'静磁场', type:'计算',
+    stem:'推导带电（载流 I₀ 的）小圆环在远处产生的磁矢势及磁感应强度。',
+    key:'A=(μ₀/4π)(m×R)/R³（m=I₀S n̂ 为磁偶极矩）；B=∇×A 得偶极场 B=(μ₀/4π)[3(m·R̂)R̂−m]/R³。',
+    src:'第 1 题'},
+   {no:'二', title:'麦克斯韦方程组的积分形式', topic:'电磁现象的普遍规律', type:'简答',
+    stem:'写出麦克斯韦方程组的积分形式，并解释各项的意义。',
+    key:'∮D·dS=Q、∮B·dS=0、∮E·dl=−dΦ_B/dt、∮H·dl=I+dΦ_D/dt；分别对应高斯定律、磁通连续、法拉第感应、安培–麦克斯韦定律。',
+    src:'第 2 题'},
+   {no:'三', title:'稳恒磁场中低速粒子的动量', topic:'电磁现象的普遍规律', type:'计算',
+    stem:'计算带电 q、低速 v 的粒子在稳恒磁场 B 中运动的动量。',
+    key:'洛伦兹力 F=qv×B 不作功、速率不变；动量 p=mv，做半径 r=mv/(qB)、ω=qB/m 的圆周运动。',
+    src:'第 3 题'},
+   {no:'四', title:'镜像法：导体球的电势', topic:'静电场', type:'计算',
+    stem:'（镜像法）导体球外一个电荷，距球心 a，导体球表面电势接 V₀，求空间中各处电势。',
+    key:'镜像电荷 q′=−(R₀/a)q 置于 b=R₀²/a 处；再用球心加电荷把球面电势抬到 V₀，φ=q/(4πε₀|r−r_q|)+q′/(4πε₀|r−r_q′|)+V₀R₀/r。',
+    src:'第 4 题'},
+   {no:'五', title:'旋转带电球的磁矩', topic:'静磁场', type:'计算',
+    stem:'带电 Q、质量 m₀（均匀分布）的球，以角速度 ω 绕一直径旋转。(1) 计算球的磁矩；(2) 计算磁矩与角动量的比值。',
+    key:'m=(Q/5)R²ω（对均匀带电球面为 QR²ω/3）；角动量 L=(2/5)m₀R²ω；比值 m/L=Q/(2m₀)。',
+    src:'第 5 题'},
+   {no:'六', title:'布儒斯特角与全反射角', topic:'电磁波的传播', type:'简答',
+    stem:'说明布儒斯特角与全反射角分别满足的条件及二者的区别。',
+    key:'布儒斯特角 tanθ_B=n₂/n₁（平行分量反射为零，θ_B+θ_折射=90°）；全反射临界角 sinθ_C=n₂/n₁（n₁>n₂）；两者条件与物理内涵不同，一般 θ_C<θ_B。',
+    src:'第 6 题'},
+   {no:'七', title:'TM 波的反射与透射系数', topic:'电磁波的传播', type:'计算',
+    stem:'以 TM 波（p 偏振）为例，计算（并得到）电场的反射和透射系数。',
+    key:'由界面边值关系得菲涅耳公式 r_p=(n₂cosθ₁−n₁cosθ₂)/(n₂cosθ₁+n₁cosθ₂)、t_p=2n₁cosθ₁/(n₂cosθ₁+n₁cosθ₂)。',
+    src:'第 7 题'},
+   {no:'八', title:'电偶极子的近场', topic:'电磁波的辐射', type:'计算',
+    stem:'空间中某一点存在一电偶极子 p=p₀e^{−iωt}，求近场区的磁场、电场及能流密度。',
+    key:'近场（kr≪1）E≈(1/4πε₀)[3(p·r̂)r̂−p]/r³、B≈(μ₀/4π)(ṗ×r̂)/r²；能流 ⟨S⟩ 很小，主要为感应场储能。',
+    src:'第 8 题'}
   ]},
-
-{ id:'em2024b',
-  label:'2024 年 B 卷 电动力学（蔡卫）',
-  meta:[['任课教师','蔡卫'],['题量','8 题'],['备注','学生回忆版；标注“原题/作业题”的需查教材'],['来源文件','2024年B卷 蔡卫.docx']],
+{ id:'em2024a', label:'2024 电动力学（蔡卫，回忆提纲）',
+  meta:[['出题人','蔡卫'],['题量','8 题'],['备注','原文件为回忆提纲；第 3、6 题原文只写「教材 1.5 / 4.4 原题」，教材未上传故无法展开'],['来源文件','电动力学回忆.docx']],
   qs:[
-   {no:'1', title:'由积分形式推界面关系', topic:'普遍规律', type:'推导题', stem:'从麦克斯韦的积分形式推导两介质界面间的关系（电磁场边值关系）。', key:'四组边值关系。', src:'第 1 题'},
-   {no:'2', title:'镜像法：球电势与点电荷', topic:'静电场', type:'计算题', stem:'球的电势为 V，离球心 a 处有一点电荷，求空间电势（镜像法）。', key:'镜像电荷 + 球心电荷。', src:'第 2 题'},
-   {no:'3', title:'铁磁球 M₀', topic:'静磁场', type:'计算题', stem:'铁磁球磁化强度 M₀，求磁场分布。', key:'磁标势/磁荷法。', src:'第 3 题'},
-   {no:'4', title:'磁标势法求电流环的势', topic:'静磁场', type:'计算题', stem:'用磁标势法推出电流环的势，并说明穿过环时势的不连续性。', key:'环面为磁标势的不连续面（对应磁化电流）。', src:'第 4 题'},
-   {no:'5', title:'束缚电荷与自由电荷的关系', topic:'介质', type:'证明题', stem:'证明束缚电荷密度 ρ_P 是自由电荷密度 ρ_f 的 −(1−ε₀/ε) 倍。', key:'由 D=εE 与 ρ_P=−∇·P 推导。', src:'第 5 题'},
-   {no:'6', title:'波导模式判断', topic:'谐振腔与波导', type:'计算题', stem:'给定波导尺寸 a×b 与微波频率，判断哪个模式可以传播（作业题）。', key:'与截止频率比较。', src:'第 6 题'},
-   {no:'7', title:'绕轴转动电子的偶极辐射', topic:'电磁波的辐射', type:'计算题', stem:'远场：绕轴转动的电子，求偶极辐射和能流（第五章作业题）。', key:'电偶极辐射功率与角分布。', src:'第 7 题'},
-   {no:'8', title:'斐索效应证明', topic:'狭义相对论', type:'证明题', stem:'证明斐索效应（运动介质中的光速）。', key:'相对论速度变换的低速展开。', src:'第 8 题'}
+   {no:'1', title:'真空中的麦克斯韦方程组', topic:'电磁现象的普遍规律', type:'简答',
+    stem:'写出真空中的麦克斯韦方程组，并说明每一项的意义。',
+    key:'∇·E=ρ/ε₀、∇×E=−∂B/∂t、∇·B=0、∇×B=μ₀J+μ₀ε₀∂E/∂t（及四个积分形式）。',
+    src:'第 1 题'},
+   {no:'2', title:'导体球外点电荷的电势', topic:'静电场', type:'计算',
+    stem:'半径为 R₀ 的导体球带电荷 Q₀，距离球心 a 处有点电荷 Q，求空间电势。',
+    key:'镜像电荷 q′=−(R₀/a)Q 在 b=R₀²/a 处，再于球心加 Q₀−q′ 使球带电 Q₀；φ 为三者叠加。',
+    src:'第 2 题'},
+   {no:'3', title:'教材 1.5 原题', topic:'电磁现象的普遍规律', type:'计算',
+    stem:'教材（郭硕鸿）习题 1.5 原题（回忆人注：好像没有提示用流守恒）。',
+    key:'因教材未上传，题面无法展开；对应第 1 章「电磁现象的普遍规律」习题。',
+    src:'第 3 题'},
+   {no:'4', title:'薄圆盘的磁矩', topic:'静磁场', type:'计算',
+    stem:'薄圆盘半径 R、带电荷 Q，以角速度 ω 自转，求磁矩。',
+    key:'面电荷密度 σ=Q/(πR²)；m=¼QR²ω。',
+    src:'第 4 题'},
+   {no:'5', title:'介质球在匀强磁场中', topic:'静磁场', type:'计算',
+    stem:'匀强磁场 B，真空中介质球磁导率 μ、半径 R，求空间磁场。',
+    key:'用磁标势 + Legendre 展开，与介质球静电场问题类比（ε→μ）；球内均匀磁化、球外为偶极场叠加匀强场。',
+    src:'第 5 题'},
+   {no:'6', title:'教材 4.4 原题', topic:'电磁波的传播', type:'计算',
+    stem:'教材（郭硕鸿）习题 4.4 原题。',
+    key:'因教材未上传，题面无法展开；对应第 4 章「电磁波的传播」习题。',
+    src:'第 6 题'},
+   {no:'7', title:'振荡点电荷的辐射', topic:'电磁波的辐射', type:'计算',
+    stem:'点电荷 q 沿 z=z₀e^{−iωt} 振荡，z₀ω≪c，求辐射和能流（题未指明近场/远场）。',
+    key:'电偶极辐射：p=qz₀e^{−iωt}，⟨S⟩=(μ₀|p̈|²/16π²c)·sin²θ/r²，总功率 P=|p̈|²/(6πε₀c³)∝ω⁴。',
+    src:'第 7 题'},
+   {no:'8', title:'存在磁单极子时的麦克斯韦方程组', topic:'电磁现象的普遍规律', type:'简答',
+    stem:'写出存在磁单极子时的麦克斯韦方程组。',
+    key:'引入磁荷密度 ρ_m 与磁流 J_m：∇·B=μ₀ρ_m、∇×E=−∂B/∂t−μ₀J_m，与电荷方程成电磁对偶。',
+    src:'第 8 题'}
   ]},
-
-{ id:'em2025',
-  label:'2025–2026 学年电动力学期末考试（杨茂志）',
-  meta:[['任课教师','杨茂志'],['日期','2026/01/19'],['题量','8 题 / 100 分'],['备注','带分值的正式卷面'],['来源文件','电动力学2025期末-杨茂志.pdf']],
+{ id:'em2024b', label:'2024 年 B 卷 电动力学（蔡卫，回忆提纲）',
+  meta:[['出题人','蔡卫'],['题量','8 题'],['备注','原文件为回忆提纲；第 6、7 题为作业题'],['来源文件','2024年B卷 蔡卫.docx']],
   qs:[
-   {no:'1', title:'场论运算', topic:'矢量分析与场论', type:'计算题 · 15 分', stem:'计算 ∇×r、∇(a·r)、∇r₁₂、∇×(E₀cos(k·r))、∇·(E₀cos(k·r))。', key:'基本矢量恒等式与复合函数求导。', src:'第 1 题'},
-   {no:'2', title:'极化电流面密度', topic:'介质中的极化', type:'简答 · 5 分', stem:'定义极化强度矢量 P=Σp/ΔV，求极化电流面密度。', key:'J_P=∂P/∂t 与面密度。', src:'第 2 题'},
-   {no:'3', title:'两介质界面的矢量微分关系', topic:'普遍规律', type:'计算题 · 10 分', stem:'两介质分界面，电流线密度 α、电荷面密度 σ，求矢量微分关系。', key:'由边值关系写微分形式。', src:'第 3 题'},
-   {no:'4', title:'匀强磁场矢势的证明', topic:'静磁场', type:'证明题 · 10 分', stem:'证明匀强磁场 B 的矢势 A 可写作 A=½B×r。', key:'验证 ∇×A=B 且 ∇·A=0。', src:'第 4 题'},
-   {no:'5', title:'谐振腔表面电流分布', topic:'谐振腔与波导', type:'计算题 · 20 分', stem:'谐振腔场为 E_x=A₁cos k_xx sin k_yy sin k_zz，E_y=A₂sin k_xx cos k_yy sin k_zz，E_z=A₃sin k_xx sin k_yy cos k_zz（k_x=mπ/a 等）。求 x=a 面、y=b 面、z=c 面的电流分布。', key:'由 e_n×H 求表面电流。', src:'第 5 题'},
-   {no:'6', title:'磁场中粒子的角动量', topic:'狭义相对论', type:'计算题 · 10 分', stem:'质量 m₀、带电 q 的粒子，以 v₀ 速度、与 B 成 θ 角射入匀强磁场 B。相对论效应不可忽略，已知运动可看作绕轴转动，求粒子相对转轴的角动量。', key:'相对论圆周运动半径与角动量。', src:'第 6 题'},
-   {no:'7', title:'导体圆锥与平板的电势', topic:'静电场', type:'计算题 · 20 分', stem:'无限大导体圆锥（母线与高夹角 θ）倒扣在无限大导体平板上，接触点绝缘，圆锥与平板表面电势分别为 φ₁、φ₂，求空间中各点电势 φ，以及圆锥与平板表面的电势分布。（附球坐标拉普拉斯算符与 ∫dx/sin x 提示）', key:'球坐标分离变量 + 尖劈本征指数。', src:'第 7 题'},
-   {no:'8', title:'电场能否为零的参考系', topic:'狭义相对论', type:'计算题 · 10 分', stem:'匀强电场 E 处于 Σ 系。问是否存在这样的 Σ′ 系，使该系下电场强度为 0？', key:'由电磁场不变量 B²−E²/c² 与 B·E 判断不可能。', src:'第 8 题'}
+   {no:'1', title:'由积分形式推界面关系', topic:'电磁现象的普遍规律', type:'推导',
+    stem:'从麦克斯韦方程组的积分形式推导两介质界面间的关系（电磁场边值关系）。',
+    key:'对扁盒/小回路取极限得 n̂·(D₂−D₁)=σ、n̂·(B₂−B₁)=0、n̂×(E₂−E₁)=0、n̂×(H₂−H₁)=α。',
+    src:'第 1 题'},
+   {no:'2', title:'镜像法：球电势与点电荷', topic:'静电场', type:'计算',
+    stem:'球电势 V，离球心 a 处有电荷（用镜像法）。',
+    key:'镜像电荷 q′=−(R₀/a)q 置于 b=R₀²/a，叠加球心电荷满足球面等势 V。',
+    src:'第 2 题'},
+   {no:'3', title:'铁磁球 M₀', topic:'静磁场', type:'计算',
+    stem:'铁磁球（磁化强度 M₀）。',
+    key:'用磁标势或等效磁荷 ρ_m=−μ₀∇·M 处理；球内均匀磁化、球外偶极场 B=(μ₀/4π)[3(m·R̂)R̂−m]/R³，m=M₀·(4/3)πR³。',
+    src:'第 3 题'},
+   {no:'4', title:'磁标势法求电流环的势', topic:'静磁场', type:'计算',
+    stem:'用磁标势法推出电流环的势，并说明穿过环时的不连续性。',
+    key:'电流环张成的曲面为 φ_m 的间断面，跨过曲面 φ_m 跃变 I（磁标势的多值性）；H=−∇φ_m 在环外成立。',
+    src:'第 4 题'},
+   {no:'5', title:'束缚电荷与自由电荷的关系', topic:'静电场', type:'证明',
+    stem:'证明束缚电荷密度是自由电荷密度的 −(1−ε₀/ε) 倍。',
+    key:'由 ρ_P=−∇·P、P=(ε−ε₀)E、∇·D=ρ_f，∇·E=ρ_f/ε 得 ρ_P=−(1−ε₀/ε)ρ_f。',
+    src:'第 5 题'},
+   {no:'6', title:'波导模式的传播判断', topic:'谐振腔与波导', type:'计算',
+    stem:'波导给定微波频率与 a×b 尺寸，判断哪个模式可以传播（作业题）。',
+    key:'比较 ω 与截止频率 ω_c,mn=πc√((m/a)²+(n/b)²)，ω>ω_c 的模式可传播。',
+    src:'第 6 题'},
+   {no:'7', title:'绕轴转动电子的偶极辐射', topic:'电磁波的辐射', type:'计算',
+    stem:'远场，绕轴转的电子，求偶极辐射和能流（第五章作业题）。',
+    key:'等效为旋转电偶极子 p=p₀(cosωt,sinωt,0)，远场平均能流 ⟨S⟩=(μ₀p₀²ω⁴/32π²c)·(1+cos²θ)/r²。',
+    src:'第 7 题'},
+   {no:'8', title:'斐索效应证明', topic:'狭义相对论', type:'证明',
+    stem:'证明斐索效应（运动介质中的光速）。',
+    key:'用相对论速度变换公式，v′=c/n 代入得介质中光速 v=c/n+V(1−1/n²)，即斐索曳引系数 (1−1/n²)。',
+    src:'第 8 题'}
   ]}
 ];
 
@@ -1346,6 +1464,7 @@ const COURSE_QM2 = {
   teachers:'李老师（据《量子力学（二）真题汇编》记载）',
   examLen:'（据真题汇编）',
   grade:'平时成绩 20% ＋ 期末考试 80%',
+  paper:'《量子力学（二）真题汇编》按章节编排，共 33 题（覆盖 2017–2022）',
   refs:['课程讲义：散射过程的物理描述 / 分波法 / 库仑势散射 / 共振散射 / 复势的散射 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 量子力学的经典极限',
         '曾谨言,《量子力学》（真题汇编中引作参考）'],
   src:'章节来自 9 份课程讲义 PDF（1散射过程的物理描述 ~ 9量子力学的经典极限）；真题来自《量子力学2真题汇编_230130.pdf》（灰小免 整理）。注：另一份《量子力学考研真题》经核查全部属于量子力学（一），已归入该课程。'
@@ -1736,6 +1855,7 @@ const COURSE_HQ = {
   teachers:'金亮（物理学院 · 现代物理系；助教 张添寅）',
   examLen:'（据考题回忆）10 道简答 + 计算题',
   grade:'平时成绩 20% ＋ 期末考试 80%',
+  paper:'10 道简答 ＋ 计算/证明题；4 份回忆卷（2025：10 简答＋4 计算；2022–2023：10 小题×4 分＋3 大题×20 分；2017–2018：10 简答×6 分＋3 计算）',
   refs:['曾谨言,《量子力学 I, II》','喀兴林,《高等量子力学》','张永德,《高等量子力学》',
         'Scully & Zubairy,《Quantum optics》','Walls & Milburn,《Quantum optics》'],
   src:'课程信息取自《高等量子力学-课程介绍.pdf》（金亮，现代物理系）；章节来自 1–10 号讲义 PDF；真题来自 4 份考题（2017–2018 回忆、2018–2019 试题、2022–2023、2025）'
@@ -2099,6 +2219,7 @@ const COURSE_LM = {
   teachers:'杨望（物理学院）',
   examLen:'4 道大题 / 100 分',
   grade:'平时成绩 40% ＋ 期末考试 60%',
+  paper:'4 道大题 / 100 分：一 20 分（4 小问）、二 20 分（2 小问）、三 25 分（4 小问）、四 35 分（7 小问）',
   refs:['金尚年,《理论力学》（第三版），高等教育出版社',
         'H. Goldstein, C. Poole, J. Safko,《Classical Mechanics》',
         'V. I. Arnold,《Mathematical Methods of Classical Mechanics》'],
@@ -2510,11 +2631,55 @@ const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseOf(){ return CID==='em'?COURSE_EM : CID==='qm2'?COURSE_QM2 : CID==='hq'?COURSE_HQ : CID==='lm'?COURSE_LM : COURSE; }
-function chaptersOf(){ if(CID==='em') return EM_CHAPTERS; if(CID==='qm2') return QM2_CHAPTERS; if(CID==='hq') return HQ_CHAPTERS; if(CID==='lm') return LM_CHAPTERS; return TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS; }
-function topicsOf(){ return CID==='em'?EM_TOPICS : CID==='qm2'?QM2_TOPICS : CID==='hq'?HQ_TOPICS : CID==='lm'?LM_TOPICS : TOPICS; }
-function typesOf(){ return CID==='em'?EM_TYPES : CID==='qm2'?QM2_TYPES : CID==='hq'?HQ_TYPES : CID==='lm'?LM_TYPES : TYPES; }
-function examsOf(){ return CID==='em'?EM_EXAMS : CID==='qm2'?QM2_EXAMS : CID==='hq'?HQ_EXAMS : CID==='lm'?LM_EXAMS : EXAMS.concat(KY_EXAMS); }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : TYPES; }
+function courseOf(){ return courseById(CID); }
+function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
+function topicsOf(){ return topicsById(CID); }
+function typesOf(){ return typesById(CID); }
+function examsOf(){ return examsById(CID); }
+
+/* 开屏主页：选择课程（含尚未收录的课程） */
+function renderLanding(){
+  const order = ['lm','qm','em','qm2','hq'];
+  const grid = CURRICULUM.map(sec=>{
+    const items = sec.courses.map(name=>{
+      const id = order.find(k=>COURSE_NAME[k]===name);
+      if(!id) return `<div class="lp-course off"><b>${esc(name)}</b><span>制作中</span></div>`;
+      const nc = chaptersById(id).length;
+      const ne = examsById(id).reduce((a,e)=>a+e.qs.length,0);
+      return `<button class="lp-course" onclick="enterCourse('${id}')"><b>${esc(name)}</b><span>${nc} 章 · ${ne} 题</span></button>`;
+    }).join('');
+    return `<div class="lp-term"><div class="lp-term-h">${esc(sec.term)}</div>${items}</div>`;
+  }).join('');
+  const done = CURRICULUM.reduce((a,s)=>a+s.courses.filter(n=>Object.values(COURSE_NAME).indexOf(n)>=0).length,0);
+  const total = CURRICULUM.reduce((a,s)=>a+s.courses.length,0);
+  $('#landing').innerHTML = `
+    <h1 class="lp-title">Equimo<span>physics</span></h1>
+    <div class="lp-sub">南开大学 · 物理科学学院 · 物理考试智能系统</div>
+    <div class="lp-intro">
+      选择一门课程开始复习。每门课程包含：章节结构、公式速查、高频考点、高频题型、历年真题（每条结论可回溯到原始资料）与冲刺方案。<br>
+      已收录 <b style="color:var(--green)">${done}</b> / ${total} 门课程，其余课程正在制作中。
+    </div>
+    <div class="lp-grid">${grid}</div>
+    <div class="lp-foot">数据来自各科课程讲义与历年真题 PDF；仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</div>`;
+}
+function enterCourse(id){
+  CID = id;
+  renderAll();
+  $('#landing').style.display = 'none';
+  $('#appRoot').style.display = 'flex';
+  showPage('dashboard');
+  window.scrollTo(0,0);
+}
+function showLanding(){
+  $('#appRoot').style.display = 'none';
+  $('#landing').style.display = 'block';
+  window.scrollTo(0,0);
+}
 /* 按培养方案的学期顺序渲染课程切换器：只列出已收录的课程，按学期分组 */
 function renderCourseSeg(){
   const order = ['lm','qm','em','qm2','hq'];
@@ -2644,25 +2809,23 @@ function renderDashboard(){
 function COURSE_INFO_ROWS(){
   const C = courseOf();
   const rows = [];
-  rows.push(`<div class="kv"><b>课程</b><span>${esc(C.name)}</span></div>`);
-  rows.push(`<div class="kv"><b>学校</b><span>${esc(C.school)}</span></div>`);
+  const kv = (k,v)=>rows.push(`<div class="kv"><b>${k}</b><span>${v}</span></div>`);
   const cn = COURSE_NAME[CID];
   const term = cn ? (CURRICULUM.find(s=>s.courses.indexOf(cn)>=0)||{}).term : null;
-  if(term) rows.push(`<div class="kv"><b>开课学期</b><span>${esc(term)}${cn?'（物理科学学院 · '+esc(cn)+'）':''}</span></div>`);
+  kv('课程', esc(C.name));
+  kv('开课学期', term ? `${esc(term)} · 物理科学学院` : '—');
+  kv('教材', esc(C.textbook||'—'));
+  kv('教师', CID==='qm'
+      ? `伯苓班：胡金牛；大类班：胡毅`
+      : esc(C.teachers||'—'));
   if(CID==='qm'){
-    rows.push(`<div class="kv"><b>课时</b><span>${esc(C.hours)}</span></div>`);
-    rows.push(`<div class="kv"><b>考试用时</b><span>${esc(C.examLen)}</span></div>`);
-    rows.push(`<div class="kv"><b>班型</b><span>${C.classes}</span></div>`);
-    rows.push(`<div class="kv"><b>成绩构成 · 伯苓班</b><span>${C.gradeBailing}</span></div>`);
-    rows.push(`<div class="kv"><b>成绩构成 · 大类班</b><span>${C.gradeDalei}</span></div>`);
+    kv('成绩构成', `伯苓班：${C.gradeBailing}<br>大类班：${C.gradeDalei}`);
   } else {
-    rows.push(`<div class="kv"><b>教材</b><span>${esc(C.textbook)}</span></div>`);
-    rows.push(`<div class="kv"><b>任课教师</b><span>${esc(C.teachers)}</span></div>`);
-    rows.push(`<div class="kv"><b>考试</b><span>${esc(C.examLen)}</span></div>`);
-    if(C.grade) rows.push(`<div class="kv"><b>成绩构成</b><span>${esc(C.grade)}</span></div>`);
+    kv('成绩构成', esc(C.grade||'—'));
   }
-  rows.push(`<div class="kv"><b>参考教材</b><span>${C.refs.map(esc).join('；')}</span></div>`);
-  rows.push(`<div class="kv"><b>来源</b><span style="color:#777">${esc(C.src)}</span></div>`);
+  kv('卷面构成', esc(C.paper||'—'));
+  rows.push(`<div class="kv" style="align-items:flex-start"><b>来源</b><span style="color:#777;font-size:12px">${esc(C.src)}</span></div>`);
+  rows.push(`<div class="kv" style="align-items:flex-start"><b>参考教材</b><span style="color:#777;font-size:12px">${C.refs.map(esc).join('；')}</span></div>`);
   return rows.join('');
 }
 
@@ -3277,7 +3440,9 @@ function typeset(){
 }
 
 /* ============ 初始化 ============ */
+renderLanding();
 renderAll();
+showLanding();
 document.querySelectorAll('.page').forEach(p=>{ if(p.id!=='dashboard') p.style.display='none'; });
 
 (function waitMJ(){
