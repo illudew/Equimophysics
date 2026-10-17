@@ -294,10 +294,17 @@ function mathify(s){
   const shielded=String(s).replace(/<[^>]*>/g, m=>{
     tags.push(m); return `\u0000${tags.length-1}\u0000`;
   });
+  const balanced = (c)=>{
+    const same=(a,b)=>c.split(a).length===c.split(b).length;
+    return same('{','}') && same('(',')') && same('[',']');
+  };
   const out=shielded.replace(MATH_SEG, m=>{
     if(m.indexOf('$')>=0) return m;
     const core=m.trim();
     if(core.length<2 || !HAS_MATH.test(core) || /[\u4e00-\u9fff]/.test(core)) return m;
+    if(!/[A-Za-z0-9\u0370-\u03ff\u2200-\u22ff]/.test(core)) return m;
+    if(/[_^](?![{A-Za-z0-9\u0370-\u03ff])/.test(core)) return m;
+    if(!balanced(core)) return m;
     const pre=m.match(/^\s*/)[0], post=m.match(/\s*$/)[0];
     return `${pre}$${core}$${post}`;
   });
