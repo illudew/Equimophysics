@@ -2242,7 +2242,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -3908,17 +3908,206 @@ const CIR_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   固体物理（一）（大三下）
+   ============================================================ */
+const COURSE_SS = {
+  name:'固体物理（一）',
+  school:'南开大学 · 物理科学学院',
+  semester:'大三下',
+  textbook:'陆栋、蒋平、徐至中《固体物理学》（第一至第七章）',
+  teachers:'张立新（物理学院）',
+  examLen:'简答题 12 题（60 分）＋ 计算题 3 道（40 分）',
+  grade:'作业＋实践 40% ＋ 期末考试 60%',
+  paper:'2026 卷：简答 12 题共 60 分 ＋ 计算 3 道共 40 分；往年（2014–2017）为简答＋计算混合，题量相近',
+  refs:['陆栋、蒋平、徐至中《固体物理学》',
+        '黄昆、韩汝琦《固体物理学》',
+        'C. Kittel, Introduction to Solid State Physics'],
+  src:'章节来自 7 份《固体物理》PPT（第 1–7 章，张立新）；课程信息取自第 1 章首页（教材、学时 68、学分 3.5、成绩构成）；真题来自《固体物理2026.pdf》（12 简答＋3 计算）；《固体物理期末复习2014-2017》PDF 字体编码损坏、提取为乱码，仅作题型旁证'
+};
+
+const SS_CHAPTERS = [
+{no:'1', title:'晶体结构', en:'第一章', file:'固体物理--第1章.pptx',
+ sections:['点阵和基元','晶胞与晶体学原胞','维格纳—赛茨原胞','十四种布拉维格子和七大晶系','典型晶体结构（fcc/bcc/NaCl/CsCl/金刚石/闪锌矿/密堆）','晶列指数与米勒指数','晶体的对称性'],
+ concepts:[
+  ['晶体结构','晶体结构＝点阵＋基元；点阵是周期性排列的代表点，基元是最小重复单元。'],
+  ['简单格子与复式格子','每个格点等价为简单格子；格点不等价为复式格子（如 NaCl、金刚石）。'],
+  ['原胞与晶胞','原胞体积最小；晶胞同时体现对称性，体积可以更大。'],
+  ['十四种布拉维格子','受对称性限制只有 14 种晶胞类型，归入三斜、单斜、正交、三角、四角、六角、立方七大晶系。'],
+  ['米勒指数','由晶面在各基矢方向截距的倒数约化为互质整数 (hkl)，表示晶面方向。'],
+  ['晶体对称性','晶体许可的旋转轴只有 2、3、4、6 度；点群 32 个，空间群 230 个。']
+ ],
+ formulas:[
+  ['面心立方原胞基矢', R`\vec a_1=\frac a2(\vec j+\vec k),\quad \vec a_2=\frac a2(\vec k+\vec i),\quad \vec a_3=\frac a2(\vec i+\vec j)`],
+  ['面心立方原胞体积', R`W=\vec a_1\cdot(\vec a_2\times\vec a_3)=\frac{a^3}{4}`],
+  ['体心立方原胞基矢', R`\vec a_1=\frac a2(-\vec i+\vec j+\vec k),\quad \vec a_2=\frac a2(\vec i-\vec j+\vec k),\quad \vec a_3=\frac a2(\vec i+\vec j-\vec k)`],
+  ['体心立方原胞体积', R`W=\frac{a^3}{2}`],
+  ['晶列指数', R`\vec{OA}=l'\vec a+m'\vec b+n'\vec c\ \Rightarrow\ [lmn]`],
+  ['米勒指数', R`\left(\frac1r,\frac1s,\frac1t\right)\to(hkl)`]
+ ]},
+
+{no:'2', title:'晶体中的衍射', en:'第二章', file:'固体物理--第2章.pptx',
+ sections:['X 射线、电子与中子衍射','倒格子','布里渊区','劳厄方程','布拉格公式','原子散射因子与结构因子'],
+ concepts:[
+  ['倒格子','由正格子基矢按 b_i=2π(a_j×a_k)/W 定义，倒格子与正格子互为傅里叶变换。'],
+  ['布里渊区','倒空间中离原点最近的倒格矢的垂直平分面围成的区域，第一布里渊区即 Wigner–Seitz 原胞。'],
+  ['劳厄条件','散射前后波矢差等于倒格矢：k′−k=G。'],
+  ['布拉格公式','2d sinθ=nλ，晶面反射的相长干涉条件。'],
+  ['结构因子','F(hkl)=Σ f_j exp[i2π(hx_j+ky_j+lz_j)]，决定衍射峰的强弱与消光。'],
+  ['衍射粒子','X 射线（0.1nm）、电子（表面敏感，LEED）、中子（对磁矩敏感）。']
+ ],
+ formulas:[
+  ['倒格子基矢', R`\vec b_1=\frac{2\pi(\vec a_2\times\vec a_3)}{W},\quad \vec b_2=\frac{2\pi(\vec a_3\times\vec a_1)}{W},\quad \vec b_3=\frac{2\pi(\vec a_1\times\vec a_2)}{W}`],
+  ['劳厄方程', R`\vec k'-\vec k=\vec G`],
+  ['布拉格公式', R`2d\sin\theta=n\lambda`],
+  ['晶面间距（立方）', R`d_{hkl}=\frac{a}{\sqrt{h^2+k^2+l^2}}`],
+  ['结构因子', R`F_{hkl}=\sum_j f_j\,e^{i2\pi(hx_j+ky_j+lz_j)}`]
+ ]},
+
+{no:'3', title:'晶体的结合', en:'第三章', file:'固体物理--第3章.pptx',
+ sections:['内聚能','体积弹性模量','原子间的互作用力','离子结合与离子晶体','范德瓦尔斯结合与分子晶体','共价结合与共价晶体','金属结合与金属晶体','氢键结合'],
+ concepts:[
+  ['内聚能','把晶体拆散为自由原子所需的能量，等于结合能的绝对值；晶体能量最低时原子处于平衡位置。'],
+  ['五种结合类型','离子键、共价键、金属键、范德瓦尔斯键、氢键。'],
+  ['离子晶体','正负离子靠库仑吸引结合，马德隆常数描述晶格几何对库仑能的贡献。'],
+  ['共价键','电子配对形成，具有饱和性和方向性，本质是量子效应。'],
+  ['范德瓦尔斯结合','瞬时偶极—诱导偶极作用，作用弱、熔点低。'],
+  ['金属结合','价电子公有化，离子实浸在电子海中。']
+ ],
+ formulas:[
+  ['相互作用势', R`U(r)=-\frac{A}{r^m}+\frac{B}{r^n}\quad(n>m)`],
+  ['平衡条件', R`\left.\frac{dU}{dr}\right|_{r_0}=0`],
+  ['内聚能', R`U_0=U(r_0)`],
+  ['体积弹性模量', R`K=-V\frac{dP}{dV}=\frac{1}{9V_0}\frac{d^2U}{dV^2}\Big|_{V_0}`],
+  ['马德隆能', R`U_{\text{Madelung}}=-\frac{N\alpha e^2}{4\pi\varepsilon_0 r_0}`]
+ ]},
+
+{no:'4', title:'晶格振动和晶体的热学性质', en:'第四章', file:'固体物理--第4章.pptx',
+ sections:['一维单原子链','一维双原子链','简正坐标和格波量子','三维晶格的振动模','声子谱的中子散射实验测定','晶格比热'],
+ concepts:[
+  ['色散关系','格波频率与波矢的关系；一维单原子链 ω=2√(β/m)|sin(qa/2)|。'],
+  ['声学支与光学支','双原子链有两支：声学支 ω→0（q→0），光学支 ω→有限值。'],
+  ['声子','格波能量量子化的准粒子，能量 ℏω(q)，服从玻色统计。'],
+  ['简正坐标','把耦合振动分解为独立简谐振子，每个简正模对应一个声子。'],
+  ['德拜模型','把声子谱近似为线性色散、截断于德拜频率，低温比热 ∝T³。'],
+  ['爱因斯坦模型','所有声子同频率，低温比热指数下降，不如德拜模型准确。']
+ ],
+ formulas:[
+  ['一维单原子链色散', R`\omega(q)=2\sqrt{\frac{\beta}{m}}\left|\sin\frac{qa}{2}\right|`],
+  ['一维双原子链色散', R`\omega_\pm^2=\beta\frac{m_1+m_2}{m_1m_2}\left[1\pm\sqrt{1-\frac{4m_1m_2}{(m_1+m_2)^2}\sin^2\frac{qa}{2}}\right]`],
+  ['格波能量', R`E_q=\left(n_q+\tfrac12\right)\hbar\omega(q)`],
+  ['德拜比热', R`C_V=9Nk_B\left(\frac{T}{\Theta_D}\right)^3\int_0^{\Theta_D/T}\frac{x^4e^x}{(e^x-1)^2}dx`],
+  ['高温极限', R`C_V\approx3Nk_B\quad(T\gg\Theta_D)`]
+ ]},
+
+{no:'5', title:'晶体中的缺陷', en:'第五章', file:'固体物理--第5章.pptx',
+ sections:['点缺陷','色心','位错','面缺陷','缺陷的统计'],
+ concepts:[
+  ['点缺陷','空位、间隙原子、杂质原子；热平衡下空位浓度随温度指数增加。'],
+  ['色心','F 心是俘获电子的负离子空位，使晶体着色。'],
+  ['位错','刃型位错与螺型位错，用柏格斯矢量描述；位错运动导致塑性变形。'],
+  ['面缺陷','晶界、层错、表面。'],
+  ['缺陷统计','空位浓度 n/N=exp(−E_v/k_BT)。']
+ ],
+ formulas:[
+  ['空位浓度', R`\frac{n}{N}=\exp\left(-\frac{E_v}{k_BT}\right)`],
+  ['位错应变能', R`E\propto Gb^2\ln(R/r_0)`]
+ ]},
+
+{no:'6', title:'金属电子论', en:'第六章', file:'固体物理--第6章.pptx',
+ sections:['自由电子气体模型','费米—狄拉克分布','费米能与态密度','电子比热','电导与欧姆定律','霍尔效应','热导'],
+ concepts:[
+  ['自由电子模型','电子间无相互作用、独立运动；德鲁德模型解释电导与热导，索末菲引入量子统计解释比热。'],
+  ['费米面','T=0 时占据态与未占据态的分界面，金属的导电主要来自费米面附近电子。'],
+  ['费米能','T=0 时最高占据能级，E_F=ℏ²k_F²/2m。'],
+  ['电子比热','C_e∝T，远小于晶格比热，低温下占主导。'],
+  ['霍尔效应','载流子在磁场中偏转产生横向电压，霍尔系数 R_H=1/(nq) 可判断载流子类型。']
+ ],
+ formulas:[
+  ['费米波矢', R`k_F=(3\pi^2n)^{1/3}`],
+  ['费米能', R`E_F=\frac{\hbar^2k_F^2}{2m}=\frac{\hbar^2}{2m}(3\pi^2n)^{2/3}`],
+  ['费米—狄拉克分布', R`f(E)=\frac{1}{e^{(E-E_F)/k_BT}+1}`],
+  ['态密度（三维自由电子）', R`g(E)=\frac{V}{2\pi^2}\left(\frac{2m}{\hbar^2}\right)^{3/2}E^{1/2}`],
+  ['电子比热', R`C_e=\frac{\pi^2}{2}Nk_B\frac{T}{T_F}`],
+  ['霍尔系数', R`R_H=\frac{1}{nq}`]
+ ]},
+
+{no:'7', title:'周期场中的电子态', en:'第七章', file:'固体物理--第7章.pptx',
+ sections:['布洛赫定理','近自由电子近似','紧束缚近似','能带与能隙','等能面与费米面','金属、绝缘体与半导体'],
+ concepts:[
+  ['布洛赫定理','周期势场中电子波函数为 ψ_k(r)=e^{ik·r}u_k(r)，u_k 具有晶格周期性。'],
+  ['能带与能隙','周期势使电子能量形成能带，带间存在禁带；能隙来源于布拉格反射。'],
+  ['近自由电子近似','弱周期势下在布里渊区边界打开能隙。'],
+  ['紧束缚近似','由原子轨道线性组合得到能带，适合内层电子与过渡金属 d 带。'],
+  ['有效质量','m*=ℏ²/(d²E/dk²)，描述能带底部/顶部附近电子对外场的响应，可为负。'],
+  ['费米面','金属中电子填充的最高等能面；费米面附近电子决定导电、热导与磁性质。'],
+  ['导体与半导体','满带不导电；导体有部分填充带；半导体价带满、导带空、禁带约 1eV，n 型/ p 型由掺杂决定。']
+ ],
+ formulas:[
+  ['布洛赫波函数', R`\psi_{n\vec k}(\vec r)=e^{i\vec k\cdot\vec r}u_{n\vec k}(\vec r),\qquad u_{n\vec k}(\vec r+\vec R)=u_{n\vec k}(\vec r)`],
+  ['近自由电子能隙', R`E_g=2|V_G|`],
+  ['紧束缚色散', R`E(\vec k)=\varepsilon_0-2t\sum_{\delta}\cos(\vec k\cdot\vec\delta)`],
+  ['有效质量', R`m^*=\hbar^2\left(\frac{d^2E}{dk^2}\right)^{-1}`],
+  ['费米面与布里渊区', R`k_F=(3\pi^2n)^{1/3},\qquad \text{费米球半径与第一布里渊区尺寸比较}`]
+ ]}
+];
+
+const SS_TOPICS = [
+ {name:'正格子与倒格子基矢', ch:'第1/2章', pri:'S', stars:5, ev:[['2026','简答1'],['2026','计算一']], note:'BCC/FCC 的原胞基矢、倒格子基矢与布里渊区形状'},
+ {name:'布洛赫定理与衍射条件', ch:'第2/7章', pri:'S', stars:5, ev:[['2026','简答2'],['2026','简答7']], note:'布洛赫定理内容/条件；布洛赫反射与劳厄衍射的异同'},
+ {name:'马德隆常数与离子结合', ch:'第3章', pri:'S', stars:5, ev:[['2026','简答3']], note:'一维正负离子交替链的马德隆常数与计算方法'},
+ {name:'格波与声子', ch:'第4章', pri:'S', stars:5, ev:[['2026','简答4'],['2026','简答6']], note:'格波能量 (n+½)ℏω；声子谱的中子散射/拉曼测量'},
+ {name:'德拜模型与晶格比热', ch:'第4章', pri:'S', stars:5, ev:[['2026','简答5']], note:'低温 T³ 律；与爱因斯坦模型的比较'},
+ {name:'紧束缚与能带形成', ch:'第7章', pri:'S', stars:5, ev:[['2026','简答8'],['2026','计算一']], note:'原子轨道交叠→能带；BCC 紧束缚色散与最低点'},
+ {name:'有效质量', ch:'第7章', pri:'S', stars:5, ev:[['2026','简答9'],['2026','计算一']], note:'m*=ℏ²/(d²E/dk²)；能带顶部为负'},
+ {name:'费米面与金属导电', ch:'第6/7章', pri:'S', stars:5, ev:[['2026','简答10'],['2026','简答11'],['2026','计算二']], note:'费米面定义、费米面附近电子对导电的贡献'},
+ {name:'导体、绝缘体与半导体', ch:'第7章', pri:'S', stars:5, ev:[['2026','简答12']], note:'能带填充情况；n 型/p 型掺杂'},
+ {name:'电子在外场中的运动', ch:'第6/7章', pri:'A', stars:4, ev:[['2026','计算三']], note:'由 E(k) 求速度 v=(1/ℏ)dE/dk，再结合电场加速'}
+];
+
+const SS_TYPES = [
+ {name:'简答·概念', cnt:12, topics:'晶体结构/衍射/结合/振动/电子论/能带', pri:'S', ex:'布洛赫定理、德拜模型、费米面、有效质量'},
+ {name:'正倒格子计算', cnt:2, topics:'BCC/FCC', pri:'S', ex:'写正格子与倒格子基矢、判断布里渊区'},
+ {name:'结合能与马德隆常数', cnt:1, topics:'离子晶体', pri:'S', ex:'一维正负离子链的马德隆常数'},
+ {name:'晶格振动与声子', cnt:2, topics:'格波/声子', pri:'S', ex:'格波能量表达式、声子谱测量方法'},
+ {name:'金属电子论计算', cnt:1, topics:'费米面', pri:'S', ex:'由晶格常数与电子数算 k_F，判断费米球与布里渊区相切'},
+ {name:'能带计算与有效质量', cnt:2, topics:'紧束缚', pri:'S', ex:'BCC 紧束缚色散、最低点与有效质量'},
+ {name:'半导体分类', cnt:1, topics:'能带', pri:'S', ex:'导体/非导体、n 型/p 型'}
+];
+
+const SS_EXAMS = [
+{ id:'ss2026', label:'固体物理（一）2026 期末',
+  meta:[['结构','简答 12 题（60 分）＋ 计算 3 道（40 分）'],['备注','计算三的电场数值原文写作 E=10⁴V，按上下文理解为 10⁴ V/m'],['来源文件','固体物理2026.pdf']],
+  qs:[
+   {no:'1', title:'BCC 与 FCC 的正、倒格子基矢', topic:'正/倒格子', type:'简答 · 5 分', stem:'写出 BCC 和 FCC 的正格子和倒格子基矢量。', key:'FCC：a₁=a/2(j+k)、a₂=a/2(k+i)、a₃=a/2(i+j)，倒格子为 BCC；BCC：a₁=a/2(−i+j+k) 等，倒格子为 FCC。', src:'简答 1'},
+   {no:'2', title:'布洛赫反射与劳厄衍射', topic:'衍射条件', type:'简答 · 5 分', stem:'写出布洛赫反射条件，布洛赫反射和劳厄衍射有何异同？', key:'布洛赫反射：k 的端点落在布里渊区边界，2k·G=G²；劳厄衍射：k′−k=G。两者本质相同，都是倒格矢参与的相干散射，布洛赫反射强调电子波在周期势中的布拉格反射。', src:'简答 2'},
+   {no:'3', title:'一维离子链的马德隆常数', topic:'马德隆常数', type:'简答 · 5 分', stem:'写出一维正负离子交替链的马德隆常数，如何计算？', key:'α=2ln2≈1.386；按距离交替求和 Σ(−1)^(n+1)/n，利用 ln(1+x) 展开。', src:'简答 3'},
+   {no:'4', title:'格波与声子能量', topic:'声子', type:'简答 · 5 分', stem:'写出波矢为 q、频率为 ω(q) 的格波的能量表达式，声子能量是多少？', key:'E_q=(n_q+½)ℏω(q)；声子能量 ℏω(q)，n_q 为声子数，服从玻色分布。', src:'简答 4'},
+   {no:'5', title:'德拜模型与爱因斯坦模型', topic:'晶格比热', type:'简答 · 5 分', stem:'德拜模型是什么？为什么低温下德拜模型比爱因斯坦模型更准？', key:'德拜把声子谱近似为线性色散并截断于 Θ_D；低温只激发长波声学模，C_V∝T³；爱因斯坦模型把所有模取同一频率，低温比热指数衰减，低估了低频声学模的贡献。', src:'简答 5'},
+   {no:'6', title:'声子谱的实验测量', topic:'声子谱', type:'简答 · 5 分', stem:'如何测量声子振动谱？写出两个实验方法并解释一个。', key:'中子非弹性散射、拉曼散射（或红外吸收）。中子散射：测量散射前后中子能量与动量变化，直接得到 ω(q) 色散。', src:'简答 6'},
+   {no:'7', title:'布洛赫定理', topic:'布洛赫定理', type:'简答 · 5 分', stem:'布洛赫定理的内容和成立的条件是什么？', key:'周期势场 V(r+R)=V(r) 中，ψ_k(r)=e^{ik·r}u_k(r)，u_k 具有晶格周期性；条件是势场具有平移周期性。', src:'简答 7'},
+   {no:'8', title:'紧束缚模型与能带', topic:'紧束缚', type:'简答 · 5 分', stem:'从紧束缚模型的角度说明为什么有能带。', key:'原子轨道线性组合后，交叠积分使原本简并的原子能级分裂为 N 个密集能级，形成能带；带宽由交叠积分 t 决定。', src:'简答 8'},
+   {no:'9', title:'有效质量的物理意义', topic:'有效质量', type:'简答 · 5 分', stem:'有效质量的物理意义是什么？为什么有效质量可以是负的？', key:'m*=ℏ²/(d²E/dk²) 描述能带中电子对外场的惯性响应；能带顶部 d²E/dk²<0，故 m*<0，表示电子在满带附近的行为等价于带正电的空穴。', src:'简答 9'},
+   {no:'10', title:'费米面', topic:'费米面', type:'简答 · 5 分', stem:'什么是费米面？为什么金属晶体的费米面附近的电子重要？', key:'T=0 时占据态与未占据态的分界面；只有费米面附近电子能被外场激发，导电、热导、磁化都主要由它们贡献。', src:'简答 10'},
+   {no:'11', title:'费米面附近电子与导电', topic:'金属导电', type:'简答 · 5 分', stem:'说明金属晶体费米面周围的电子如何影响金属的导电性质。', key:'外电场使费米球整体偏移，只有费米面附近电子改变占据态，形成净电流；电导率由费米面附近电子的有效质量、弛豫时间与态密度决定。', src:'简答 11'},
+   {no:'12', title:'导体、非导体与 n/p 型半导体', topic:'能带分类', type:'简答 · 5 分', stem:'从能带角度介绍导体和非导体，什么是 n 型和 p 型半导体？', key:'满带不导电；导体有部分填充带；绝缘体禁带很宽；半导体禁带约 1eV。n 型掺施主，导带电子导电；p 型掺受主，价带空穴导电。', src:'简答 12'},
+   {no:'13', title:'紧束缚模型计算 BCC 能带', topic:'紧束缚', type:'计算 · 15 分', stem:'(1) 用紧束缚模型计算 BCC 能带；(2) 求能带最低点并求最低点的有效质量。', key:'BCC 最近邻 8 个，E(k)=ε₀−2t[cos(k_xa/2)cos(k_ya/2)+cos(k_ya/2)cos(k_za/2)+cos(k_za/2)cos(k_xa/2)]；最低点在 Γ 点 k=0，E_min=ε₀−6t；展开得 m*=ℏ²/(ta²)。', src:'计算 一'},
+   {no:'14', title:'铜的费米波矢与铜锌比例', topic:'费米面', type:'计算 · 10 分', stem:'(1) 计算 0K 下铜（FCC，晶格常数 a=0.4nm）的费米波矢；(2) 假如部分铜被锌替代，晶格结构和晶格常数不变，费米球恰好与第一布里渊区相切，计算铜原子和锌原子的比例。', key:'Cu 每个原子 1 个 conduction electron，n=4/a³；k_F=(3π²n)^(1/3)。FCC 第一布里渊区为截角八面体，相切方向为 [111]，k_F=√3·(2π/a)/2；由电子浓度反推平均价电子数，得 Cu:Zn 比例。', src:'计算 二'},
+   {no:'15', title:'电场中电子的运动速度', topic:'能带运动', type:'计算 · 15 分', stem:'晶体外加电场，晶格常数 a=0.4nm，运动时间 t=10⁻⁹s，电场 E=10⁴ V/m。已知 E(k)=ℏ²k²/(ma²)(7/8−cos ka+(1/8)cos2ka)，求电子运动速度 v。', key:'v=(1/ℏ)dE/dk=(ℏk/(ma²))[7/8−cos ka+(1/8)cos2ka]+…；由 ℏdk/dt=−eE 求 k(t)，再代入 v(k)。', src:'计算 三'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -3927,7 +4116,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -3976,7 +4165,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4026,10 +4215,11 @@ function renderDashboard(){
   const mec = (CID==='me');
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
+  const ssc = (CID==='ss');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -4038,6 +4228,7 @@ function renderDashboard(){
       : mec ? '本站把《力学》（大一上）的 7 章讲义（Chapter 0 数学预备 / 1 运动学 / 2 动力学 / 3 功与能 / 4 刚体动力学 / 5 流体力学 / 6 振动与波）整理为结构化资料，并汇总 2014–2025 共 8 套期末真题。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
       : esc2 ? '本站把《电磁学》（大一下）的 9 章知识体系（静电学 / 导体 / 恒定电流 / 电介质 / 静磁学 / 电磁感应 / 磁介质 / 交流电 / 麦克斯韦理论）整理为结构化资料，并汇总 1 套电磁学期末卷与 3 套大学物理（一）卷中的电磁学题目。所有带图题目均附原卷配图。'
       : circ ? '本站把《电路》（大一下）中南开大学实际讲授的 12 章（第 1、2、3、4、6、7、8、9、10、11、13、16 章）整理为结构化资料，并汇总 4 套期末试卷（2016、2022–2023、样卷 1、样卷 4），每套均附原卷页面以便核对全部电路图。'
+      : ssc ? '本站把《固体物理（一）》（张立新 · 大三下）的 7 章 PPT（晶体结构 / 衍射 / 结合 / 晶格振动 / 缺陷 / 金属电子论 / 周期场中的电子态）整理为结构化资料，并收录 2026 期末完整卷（12 道简答＋3 道计算）。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -4081,6 +4272,8 @@ function renderDashboard(){
       ? '提示：电磁学卷为完整 A 卷（李乙钢）；另 3 套为《大学物理（一）》卷，本页只收录其中的电磁学题目，力学题未收录。带图题目均已从原卷裁剪配图。'
       : circ
       ? '提示：电路课程只讲第 1、2、3、4、6、7、8、9、10、11、13、16 章，第 5、12、14、15、17、18 章未收录。试卷中的电路图以「原卷页面」形式完整保留，可在每套试卷顶部展开查看。'
+      : ssc
+      ? '提示：2026 卷为完整真题（简答 60 分＋计算 40 分）；《固体物理期末复习2014-2017》PDF 字体编码损坏、提取为乱码，仅作题型旁证，未逐题收录。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -4181,6 +4374,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 12 章，仅含南开大学电路课实际讲授的章节：第 1、2、3、4、6、7、8、9、10、11、13、16 章。第 5 章（含运算放大器的电阻电路）、第 12 章（三相电路）、第 14–15 章（拉普拉斯变换、网络函数）、第 17–18 章（非线性电路、均匀传输线）不在课程范围内。</p>
     </div>`;
+  } else if(CID==='ss'){
+    html = SS_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 固体物理（一）（张立新 · 大三下）</div>
+      <h1>章节结构。</h1>
+      <p>共 7 章：晶体结构、晶体中的衍射、晶体的结合、晶格振动和晶体的热学性质、晶体中的缺陷、金属电子论、周期场中的电子态。教材为陆栋、蒋平、徐至中《固体物理学》，参考黄昆与 Kittel。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4244,6 +4444,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='ss'){
+    html = SS_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4269,15 +4475,15 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
-      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq)?' 次':' / '+total}</td>
+      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq||ssc)?' 次':' / '+total}</td>
       <td style="color:#8a8a8a">${esc(ev)}</td>
       <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
       <td>${priTag(t.pri)}</td>
@@ -4291,7 +4497,8 @@ function renderHigh(){
   const mec = (CID==='me');
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (qm2 ? 33 : 3))));
+  const ssc = (CID==='ss');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (qm2 ? 33 : 3)))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -4308,12 +4515,14 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 4 套电磁学相关试卷中出现的卷数（1 套电磁学卷 + 3 套大学物理（一）卷的电磁学部分）。同一考点在同一卷的多道题中出现只计一次。'
         : circ
         ? '“出现卷数”统计的是该考点在 4 套电路试卷中出现的卷数（2016、2022–2023、样卷 1、样卷 4）。同一考点在同一卷的多道题中出现只计一次。'
+        : ssc
+        ? '“出现次数”统计的是该考点在 2026 期末卷中出现的题数（同一道题涉及多个考点时分别计入）。每一行都列出了具体题号，可回溯核对。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
-        <thead><tr><th>考点</th><th>${qm2?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
+        <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
@@ -4349,6 +4558,7 @@ function renderExams(){
   const mec = (CID==='me');
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
+  const ssc = (CID==='ss');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -4385,6 +4595,8 @@ function renderExams(){
         ? '电磁学相关真题全文（含题干、原卷配图与解题要点）：1 套电磁学期末 A 卷（李乙钢，17 题）＋ 3 套大学物理（一）卷中的电磁学题目（26 题）。'
         : circ
         ? '4 套电路期末试卷（2016、2022–2023、样卷 1、样卷 4，共 69 题），每套附原卷页面，全部电路图均可对照原文查看。'
+        : ssc
+        ? '固体物理（一）2026 期末完整卷：12 道简答（60 分）＋ 3 道计算（40 分），每题附解题要点。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -4398,11 +4610,44 @@ function renderExams(){
       ? '电磁学 A 卷为完整卷面；另外 3 套《大学物理（一）》卷只收录了其中的电磁学题（力学题见「力学」课程）。带图题目均从原 PDF 裁剪配图，未用示意图替代。'
       : circ
       ? '4 套试卷均来自南开大学电路课程；2016 与 2013 卷题目基本一致，故只收录 2016 版。电路图较多，未逐题裁剪，而是把整页原卷保留在每套试卷顶部，题干中标注「配图见原卷 Pn」，可逐页核对。'
+      : ssc
+      ? '2026 卷为目前拿到的最新完整真题；《固体物理期末复习2014-2017》PDF 字体编码损坏、文本为乱码，无法可靠还原题目，仅作题型旁证。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='ss'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>固体物理卷以「简答 60 分＋计算 40 分」为主。简答靠概念复述（布洛赫定理、德拜模型、费米面、有效质量），计算集中在正倒格子、紧束缚能带、费米面与能带运动三块。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>7 章概念与公式过一遍；2026 卷 15 题全部做一遍；重点补第 4、6、7 章。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只背 12 道简答的标准答案＋练 3 类计算：BCC/FCC 正倒格子、紧束缚能带、费米波矢。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背布洛赫定理、德拜 T³、声子能量、有效质量、费米面定义；记 fcc/bcc 原胞基矢与倒格子。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：布洛赫定理、马德隆常数 2ln2、德拜/爱因斯坦区别、m*=ℏ²/(d²E/dk²)、k_F=(3π²n)^(1/3)。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>默写 fcc/bcc 正格子与倒格子基矢，说明互为倒格子</td><td>正/倒格子</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>背布洛赫定理（内容＋条件），比较布洛赫反射与劳厄衍射</td><td>布洛赫定理</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>紧束缚：BCC 色散、最低点、展开求有效质量</td><td>紧束缚·有效质量</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>费米波矢：由 n 算 k_F，判断费米球与第一布里渊区关系</td><td>费米面</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>背德拜模型与爱因斯坦模型的区别，低温 T³ 的物理原因</td><td>晶格比热</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>背声子能量、格波能量、声子谱两种测量方法</td><td>声子</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>导体/绝缘体/半导体的能带解释，n 型与 p 型</td><td>能带分类</td><td>${priTag('S')}</td></tr>
+          <tr><td>8</td><td>由 E(k) 求 v=(1/ℏ)dE/dk，结合 ℏdk/dt=−eE 求运动</td><td>能带运动</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='cir'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -4758,6 +5003,44 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='ss'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《固体物理（一）》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>课件（7 章）</td><td>固体物理--第1章.pptx ～ 第7章.pptx</td><td>章节结构、小节划分、课堂强调点</td></tr>
+          <tr><td>课程信息</td><td>第 1 章 PPT 首页</td><td>教师张立新、教材陆栋《固体物理学》、学时 68、学分 3.5、成绩构成 40%＋60%</td></tr>
+          <tr><td>真题</td><td>固体物理2026.pdf</td><td>12 道简答（60 分）＋ 3 道计算（40 分）</td></tr>
+          <tr><td>未使用</td><td>固体物理期末复习2014-2017(1).pdf</td><td>PDF 字体编码损坏，提取文本为乱码，仅作题型旁证</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>原始文件不改动</b>：PPT 与 PDF 均保持原样，仅做文本提取与结构化。</div>
+      <div class="concept"><b>章节以 PPT 为准</b>：7 章标题与 § 小节编号直接取自 PPT；PPT 中公式多为图片，公式按教材口径补全并核对。</div>
+      <div class="concept"><b>可回溯</b>：每道题标注原卷题号（简答 N / 计算 N），考点标注出现位置。</div>
+      <div class="concept"><b>不编造</b>：2026 卷题干按原文整理；计算三的电场单位原文写作 E=10⁴V，已在备注中说明按 10⁴ V/m 理解。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>仅 1 套完整真题</b>：2026 卷是目前拿到的最新完整卷；2014–2017 复习 PDF 编码损坏，无法可靠还原题目，故未逐题收录。</div>
+      <div class="concept"><b>PPT 公式为图片</b>：第 2、4、6、7 章的推导公式在 PPT 中以图片嵌入，无法直接提取文本；本站公式按教材（陆栋《固体物理学》）补全，可能与课堂板书细节略有差异。</div>
+      <div class="concept"><b>第 5 章内容较少</b>：缺陷章 PPT 文字很少，章节小节按教材目录补全，概念解释以标准固体物理口径为准。</div>
+      <div class="concept"><b>答案来源</b>：2026 卷未附标准答案，「解题要点」为依据 PPT 与教材的整理，仅供复习参考。</div>
     </div>`;
     return;
   }
