@@ -29,6 +29,12 @@ button{font-family:inherit;}
 .logo span{color:var(--green);}
 .tagline{font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-bottom:30px;line-height:1.6;}
 .nav-label{color:#555;font-size:9px;letter-spacing:1.5px;margin:20px 0 8px;}
+.home-btn{
+  display:block;width:100%;margin:14px 0 2px;padding:9px 10px;
+  background:#141414;color:#bdbdbd;border:1px solid #2a2a2a;border-radius:7px;
+  font-family:inherit;font-size:11.5px;cursor:pointer;text-align:left;
+}
+.home-btn:hover{background:#1d1d1d;color:var(--green);border-color:#3a3a3a;}
 .nav button{
   display:block;width:100%;background:none;border:none;color:#8a8a8a;
   padding:10px 10px;text-align:left;border-radius:6px;cursor:pointer;font-size:13px;margin-bottom:2px;
@@ -223,7 +229,7 @@ window.MathJax = {
     南开大学 · 物理科学学院
   </div>
 
-  <div class="course-seg" id="courseSeg"></div>
+  <button class="home-btn" onclick="showLanding()">← 返回主页面</button>
 
   <div class="nav">
     <div class="nav-label">培养方案</div>
@@ -239,7 +245,6 @@ window.MathJax = {
     <button data-page="exams" onclick="showPage('exams',this)">历年真题</button>
     <div class="nav-label">备考</div>
     <button data-page="sprint" onclick="showPage('sprint',this)">冲刺方案</button>
-    <button data-page="mistakes" onclick="showPage('mistakes',this)">错题本</button>
     <div class="nav-label">说明</div>
     <button data-page="about" onclick="showPage('about',this)">数据说明</button>
   </div>
@@ -269,8 +274,6 @@ window.MathJax = {
 <section id="exams" class="page" style="display:none"></section>
 <!-- 冲刺方案 -->
 <section id="sprint" class="page" style="display:none"></section>
-<!-- 错题本 -->
-<section id="mistakes" class="page" style="display:none"></section>
 <!-- 数据说明 -->
 <section id="about" class="page" style="display:none"></section>
 
@@ -282,6 +285,24 @@ window.MathJax = {
 const R = String.raw;
 const $ = (s)=>document.querySelector(s);
 const esc = (s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* 把纯文本中的公式片段包成 $...$，交给 MathJax 以 LaTeX 行内公式渲染 */
+const MATH_SEG = /[A-Za-z0-9\u0370-\u03ff\u2200-\u22ff\u2070-\u209f\u00b2\u00b3\u00b9\u00bd\u00bc\u00be\u221a\u222b\u222e\u2211\u2202\u2207\u00d7\u00b7\u00b1\u2248\u2260\u2264\u2265\u2192\u221e\u2080-\u2089\u2070-\u2079=+\-\u2212*/()\[\]{}^_|.,\s]+/g;
+const HAS_MATH = /[=∫∮√∂∇∑×·±≈≠≤≥→∞²³¹⁰ⁿ½¼¾₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹_^\u0370-\u03ff\u2200-\u22ff]/;
+function mathify(s){
+  if(!s) return s;
+  const tags=[];
+  const shielded=String(s).replace(/<[^>]*>/g, m=>{
+    tags.push(m); return `\u0000${tags.length-1}\u0000`;
+  });
+  const out=shielded.replace(MATH_SEG, m=>{
+    if(m.indexOf('$')>=0) return m;
+    const core=m.trim();
+    if(core.length<2 || !HAS_MATH.test(core) || /[\u4e00-\u9fff]/.test(core)) return m;
+    const pre=m.match(/^\s*/)[0], post=m.match(/\s*$/)[0];
+    return `${pre}$${core}$${post}`;
+  });
+  return out.replace(/\u0000(\d+)\u0000/g, (_,i)=>tags[+i]);
+}
 
 /* ============ 课程信息（来自讲义第 I 章与真题卷面） ============ */
 const COURSE = {
@@ -2204,6 +2225,7 @@ const CURRICULUM = [
  {term:'大二下', courses:['数学物理方法','原子物理','计算物理']},
  {term:'大三上', courses:['量子力学（一）','电动力学','专业英语']},
  {term:'大三下', courses:['固体物理（一）','量子力学（二）','热力学与统计物理','材料物理']},
+ {term:'A 课', courses:['思想道德与法治','马克思主义基本原理','中国近现代史纲要','毛泽东思想与中国特色社会主义理论体系概论','习近平中国特色社会主义思想概论','大学语文']},
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
@@ -3597,26 +3619,11 @@ function showLanding(){
   window.scrollTo(0,0);
 }
 /* 按培养方案的学期顺序渲染课程切换器：只列出已收录的课程，按学期分组 */
-function renderCourseSeg(){
-  const order = ['es','me','lm','qm','em','qm2','hq'];
-  let html = '';
-  CURRICULUM.forEach(sec=>{
-    const avail = sec.courses
-      .map(name=>({name, id: order.find(k=>COURSE_NAME[k]===name)}))
-      .filter(o=>o.id);
-    if(!avail.length) return;
-    html += `<div class="seg-term">${esc(sec.term)}</div>`;
-    html += avail.map(o=>`<button data-course="${o.id}" onclick="setCourse('${o.id}')">${esc(o.name)}</button>`).join('');
-  });
-  $('#courseSeg').innerHTML = html;
-}
 function setCourse(c){ CID = c; renderAll(); }
 function renderAll(){
-  renderCourseSeg();
   renderCurriculum();
   renderDashboard(); renderChapters(); renderFormulas(); renderHigh();
-  renderTypes(); renderExams(); renderSprint(); renderMistakes(); renderAbout();
-  document.querySelectorAll('#courseSeg button').forEach(b=>b.classList.toggle('on', b.dataset.course===CID));
+  renderTypes(); renderExams(); renderSprint(); renderAbout();
   $('#pageTitle').innerText = PAGE_NAMES[CURPAGE] || '';
   typeset();
 }
@@ -3767,9 +3774,9 @@ function chCard(c, open, prefix){
       <div class="sub-h">小节</div>
       <div class="section-list">${c.sections.map(s=>`<span>${esc(s)}</span>`).join('')}</div>
       <div class="sub-h">核心概念</div>
-      ${c.concepts.map(([t,d])=>`<div class="concept"><b>${esc(t)}</b>：${esc(d)}</div>`).join('')}
+      ${c.concepts.map(([t,d])=>`<div class="concept"><b>${esc(t)}</b>：${mathify(esc(d))}</div>`).join('')}
       <div class="sub-h">重要公式</div>
-      ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+      ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
     </div>
   </details>`;
 }
@@ -3843,37 +3850,37 @@ function renderFormulas(){
     html = EM_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else if(CID==='qm2'){
     html = QM2_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else if(CID==='hq'){
     html = HQ_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else if(CID==='lm'){
     html = LM_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else if(CID==='me'){
     html = ME_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else if(CID==='es'){
     html = ES_CHAPTERS.map(c=>`
       <div class="card">
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
@@ -3881,7 +3888,7 @@ function renderFormulas(){
     html = list.map(c=>`
       <div class="card">
         <div class="card-title">${isHu2 ? (c.no+' · '+esc(c.title)) : ('第 '+c.no+' 章 · '+esc(c.title))}</div>
-        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
     seg = `<div class="seg">
       <button class="${isHu2?'':'on'}" onclick="setTeacher('hu')">伯苓班 · 胡金牛（I–IX 章）</button>
@@ -3912,7 +3919,7 @@ function renderHigh(){
       <td style="color:#8a8a8a">${esc(ev)}</td>
       <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
       <td>${priTag(t.pri)}</td>
-      <td style="color:#7a7a7a;font-size:11.5px">${esc(t.note)}</td>
+      <td style="color:#7a7a7a;font-size:11.5px">${mathify(esc(t.note))}</td>
     </tr>`;
   }).join('');
   const em = (CID==='em');
@@ -3986,8 +3993,8 @@ function renderExams(){
           <span class="tag">${esc(q.type)}</span>
           <span class="tag">考点：${esc(q.topic)}</span>
         </div>
-        <div class="q-stem">${q.stem}</div>
-        <div class="q-key">解题要点：${esc(q.key)}</div>
+        <div class="q-stem">${mathify(q.stem)}</div>
+        <div class="q-key">解题要点：${mathify(esc(q.key))}</div>
         <div class="q-src">来源：${esc(q.src)} · ${esc(e.meta[e.meta.length-1][1])}</div>
       </div>`).join('');
     return `<div class="card">
@@ -4231,19 +4238,6 @@ function renderSprint(){
           <tr><td>7</td><td>费米/玻色波函数构造（Slater 行列式、对称态）</td><td>全同粒子与统计</td><td>${priTag('B')}</td></tr>
         </tbody>
       </table>
-    </div>`;
-}
-
-function renderMistakes(){
-  $('#mistakes').innerHTML = `
-    <div class="hero">
-      <div class="hero-label">错误数据库</div>
-      <h1>错题本。</h1>
-      <p>目前尚未录入你的错题记录。系统会根据你的练习自动汇总错误、生成复习队列（此功能需要学习数据）。</p>
-    </div>
-    <div class="card">
-      <div class="card-title">最近错误</div>
-      <div style="color:#666;font-size:12.5px;padding:18px 0">暂无记录。</div>
     </div>`;
 }
 
@@ -4527,7 +4521,7 @@ function renderAbout(){
 
 /* ============ 页面切换 ============ */
 const PAGE_NAMES = {curriculum:'课程体系',dashboard:'总览',chapters:'章节结构',formulas:'公式速查',high:'高频考点',
-  types:'高频题型',exams:'历年真题',sprint:'冲刺方案',mistakes:'错题本',about:'数据说明'};
+  types:'高频题型',exams:'历年真题',sprint:'冲刺方案',about:'数据说明'};
 
 function showPage(id, btn){
   CURPAGE = id;
