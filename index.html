@@ -166,6 +166,11 @@ details.ch>summary .src{margin-left:auto;color:#555;font-size:10px;}
 .q-title{font-size:13.5px;font-weight:600;}
 .q-stem{font-size:12.5px;color:#b0b0b0;line-height:1.75;}
 .q-fig{display:block;max-width:min(100%,420px);height:auto;margin:10px 0 2px;border:1px solid #2a2a2a;border-radius:6px;background:#fff;padding:4px;}
+.paper-pages{margin-top:10px;border:1px solid #262626;border-radius:7px;padding:8px 10px;background:#101010;}
+.paper-pages summary{cursor:pointer;color:#9a9a9a;font-size:12px;}
+.paper-pages summary:hover{color:var(--green);}
+.page-figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px;}
+.page-figs img{width:100%;height:auto;border:1px solid #2a2a2a;border-radius:6px;background:#fff;}
 .q-key{font-size:12px;color:#7f9a5f;line-height:1.7;margin-top:6px;}
 .q-src{font-size:10.5px;color:#555;margin-top:8px;}
 
@@ -300,7 +305,8 @@ function mathify(s){
   };
   const out=shielded.replace(MATH_SEG, m=>{
     if(m.indexOf('$')>=0) return m;
-    const core=m.trim();
+    let core=m.trim();
+    core=core.replace(/\^\(([^()]*)\)/g,'^{$1}').replace(/_\(([^()]*)\)/g,'_{$1}');
     if(core.length<2 || !HAS_MATH.test(core) || /[\u4e00-\u9fff]/.test(core)) return m;
     if(!/[A-Za-z0-9\u0370-\u03ff\u2200-\u22ff]/.test(core)) return m;
     if(/[_^](?![{A-Za-z0-9\u0370-\u03ff])/.test(core)) return m;
@@ -2236,7 +2242,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -3570,17 +3576,349 @@ const ES_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   电路（大一下）
+   ============================================================ */
+const COURSE_CIR = {
+  name:'电路',
+  school:'南开大学 · 物理科学学院',
+  semester:'大一下',
+  textbook:'邱关源《电路》（第五版）；课件为石群《电路》PPT',
+  teachers:'石群（课件署名）；原始试卷未署任课教师',
+  examLen:'选择题/填空题 ＋ 5–8 道计算大题',
+  grade:'期末 80% ＋ 平时 20%（据 2006–2007 学年试卷卷首说明）',
+  paper:'样卷：选择 18×2 分 ＋ 5 道大题；2013/2016：填空 9 题（40 分）＋ 5 道大题；2022–2023：填空 9 题（20 分）＋ 8 道大题',
+  refs:['邱关源,《电路》（第五版），高等教育出版社',
+        '《大学教材全解 电路 邱关源第五版》',
+        '石群《电路》课程 PPT（第 1–18 章）'],
+  src:'章节按邱关源《电路》第五版目录并对照石群 PPT 章节编号，仅保留南开大学电路课讲授的第 1、2、3、4、6、7、8、9、10、11、13、16 章（跳过第 5、12、14、15、17、18 章）；真题来自 2013、2016、2022–2023、样卷 1、样卷 4、2006–2007 第一学期等试卷'
+};
+
+const CIR_CHAPTERS = [
+{no:'1', title:'电路模型和电路定律', en:'第一章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['电路和电路模型','电流和电压的参考方向','电功率和能量','电阻元件','电压源和电流源','受控电源','基尔霍夫定律'],
+ concepts:[
+  ['参考方向','电流、电压的参考方向可任意指定；计算结果为负说明实际方向与参考方向相反。'],
+  ['功率','p=ui 取关联参考方向时，p>0 吸收功率、p<0 发出功率。'],
+  ['理想电压源','端电压由源电压决定，与流过它的电流无关；电流可正可负。'],
+  ['理想电流源','输出电流由源电流决定，与端电压无关。'],
+  ['受控源','电压控制电压源 VCVS、电压控制电流源 VCCS、电流控制电压源 CCVS、电流控制电流源 CCCS 四种。'],
+  ['基尔霍夫定律','KCL：节点电流代数和为零；KVL：回路电压代数和为零，均与元件性质无关。']
+ ],
+ formulas:[
+  ['欧姆定律', R`u=Ri,\qquad i=\frac{u}{R}`],
+  ['功率', R`p=ui,\qquad p=\frac{u^2}{R}=i^2R`],
+  ['KCL', R`\sum i=0\quad(\text{对任一节点})`],
+  ['KVL', R`\sum u=0\quad(\text{对任一回路})`],
+  ['受控源', R`\text{VCVS: }u_2=\mu u_1,\quad \text{VCCS: }i_2=g u_1`],
+  ['受控源（续）', R`\text{CCVS: }u_2=r i_1,\quad \text{CCCS: }i_2=\beta i_1`]
+ ]},
+
+{no:'2', title:'电阻电路的等效变换', en:'第二章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['电阻的串联和并联','电阻的 Y 形与 △ 形连接及其等效变换','电压源、电流源的串联和并联','实际电源的两种模型及其等效变换','输入电阻'],
+ concepts:[
+  ['等效','两个二端网络端口伏安关系完全相同，则对外等效，内部功率一般不等效。'],
+  ['串并联','串联电阻分压、并联电阻分流；等效电阻按串并联公式计算。'],
+  ['Y–△ 变换','三端网络在 Y 形与 △ 形之间可等效互换，用于桥式电路化简。'],
+  ['实际电源模型','实际电压源＝理想电压源串联内阻；实际电流源＝理想电流源并联内阻；两者可等效互换。'],
+  ['输入电阻','从端口看进去的等效电阻，用外加电压法或短路电流法求。']
+ ],
+ formulas:[
+  ['串联与并联', R`R_{\text{eq}}=\sum R_i,\qquad \frac{1}{R_{\text{eq}}}=\sum\frac{1}{R_i}`],
+  ['分压与分流', R`u_1=\frac{R_1}{R_1+R_2}u,\qquad i_1=\frac{R_2}{R_1+R_2}i`],
+  ['Y–△ 变换', R`R_{12}=\frac{R_1R_2+R_2R_3+R_3R_1}{R_3}`],
+  ['电源等效变换', R`u_S=R_S i_S,\qquad R_S=\frac{u_{OC}}{i_{SC}}`],
+  ['输入电阻', R`R_{\text{in}}=\frac{u}{i}`]
+ ]},
+
+{no:'3', title:'电阻电路的一般分析', en:'第三章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['电路的图','KCL 和 KVL 的独立方程数','支路电流法','网孔电流法','回路电流法','节点电压法'],
+ concepts:[
+  ['电路的图','用节点和支路表示电路拓扑；树的树支数为 n−1，连支数为 b−n+1。'],
+  ['独立方程数','独立 KCL 方程 n−1 个，独立 KVL 方程 b−n+1 个。'],
+  ['支路电流法','以支路电流为未知量，列 KCL 与 KVL 方程。'],
+  ['网孔/回路电流法','以网孔或回路电流为未知量，自动满足 KCL，只需列 KVL。'],
+  ['节点电压法','以节点电压为未知量，自动满足 KVL，只需列 KCL；适合节点少的电路。']
+ ],
+ formulas:[
+  ['独立方程数', R`n-1\ \text{(KCL)},\qquad b-n+1\ \text{(KVL)}`],
+  ['节点电压法（两节点）', R`\left(\frac{1}{R_1}+\frac{1}{R_2}\right)u_n=\frac{u_{S1}}{R_1}+i_S`],
+  ['网孔电流法', R`R_{11}i_1+R_{12}i_2=u_{S1},\qquad R_{21}i_1+R_{22}i_2=u_{S2}`],
+  ['自阻与互阻', R`R_{11}=\sum R,\qquad R_{12}=R_{21}=-\sum R_{\text{公共}}`]
+ ]},
+
+{no:'4', title:'电路定理', en:'第四章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['叠加定理','替代定理','戴维宁定理和诺顿定理','最大功率传输定理','特勒根定理','互易定理','对偶原理'],
+ concepts:[
+  ['叠加定理','线性电路中多个独立源共同作用时，任一支路响应等于各独立源单独作用时响应的代数和；受控源不能单独作用。'],
+  ['替代定理','若已知某支路电压或电流，可用同值电压源或电流源替代，不影响电路其他部分。'],
+  ['戴维宁/诺顿定理','含源线性一端口可等效为电压源串联电阻（戴维宁）或电流源并联电阻（诺顿）。'],
+  ['最大功率传输','负载电阻等于戴维宁等效电阻时获得最大功率。'],
+  ['互易定理','仅含线性电阻的互易网络中，激励与响应的位置互换后比值不变。']
+ ],
+ formulas:[
+  ['戴维宁等效', R`u_{OC}=u_{ab}\big|_{i=0},\qquad R_{eq}=\frac{u_{OC}}{i_{SC}}`],
+  ['诺顿等效', R`i_{SC}=i_{ab}\big|_{u=0},\qquad R_{eq}=R_{\text{in}}`],
+  ['最大功率', R`R_L=R_{eq},\qquad P_{\max}=\frac{u_{OC}^2}{4R_{eq}}`],
+  ['叠加定理', R`y=\sum_{k=1}^{m} y_k`]
+ ]},
+
+{no:'6', title:'储能元件', en:'第六章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['电容元件','电感元件','电容、电感元件的串并联'],
+ concepts:[
+  ['电容元件','电荷与电压成正比 q=Cu；电流 i=Cdu/dt，电压不能跃变。'],
+  ['电感元件','磁链与电流成正比 ψ=Li；电压 u=Ldi/dt，电流不能跃变。'],
+  ['储能','电容储能 ½Cu²，电感储能 ½Li²，均为无源储能元件。'],
+  ['串并联','电容串联等效倒数相加、并联相加；电感串联相加、并联倒数相加。']
+ ],
+ formulas:[
+  ['电容', R`q=Cu,\qquad i=C\frac{du}{dt},\qquad u(t)=u(0)+\frac{1}{C}\int_0^t i\,d\tau`],
+  ['电感', R`\psi=Li,\qquad u=L\frac{di}{dt},\qquad i(t)=i(0)+\frac{1}{L}\int_0^t u\,d\tau`],
+  ['储能', R`W_C=\tfrac12Cu^2,\qquad W_L=\tfrac12Li^2`],
+  ['串并联', R`C_{\text{并}}=\sum C_i,\quad \frac{1}{C_{\text{串}}}=\sum\frac{1}{C_i};\qquad L_{\text{串}}=\sum L_i,\quad \frac{1}{L_{\text{并}}}=\sum\frac{1}{L_i}`]
+ ]},
+
+{no:'7', title:'一阶电路和二阶电路的时域分析', en:'第七章', file:'石群电路PPT第1-7章.pdf / 邱关源《电路》第五版',
+ sections:['动态电路的方程及其初始条件','一阶电路的零输入响应','一阶电路的零状态响应','一阶电路的全响应','阶跃响应和冲激响应','二阶电路的零输入响应'],
+ concepts:[
+  ['换路定则','电容电压与电感电流在换路瞬间不能跃变：u_C(0+)=u_C(0−)、i_L(0+)=i_L(0−)。'],
+  ['零输入响应','无外施激励、仅由初始储能引起的响应，按指数衰减。'],
+  ['零状态响应','初始储能为零、仅由外施激励引起的响应。'],
+  ['全响应','零输入响应＋零状态响应；也可用三要素法直接写。'],
+  ['三要素法','一阶电路响应由初始值、稳态值和时间常数三个要素确定。'],
+  ['二阶电路','RLC 串联电路按特征根为两个不等实根、重根、共轭复根分为过阻尼、临界阻尼、欠阻尼。']
+ ],
+ formulas:[
+  ['时间常数', R`\tau=RC\quad\text{或}\quad \tau=\frac{L}{R}`],
+  ['三要素法', R`f(t)=f(\infty)+[f(0_+)-f(\infty)]e^{-t/\tau}`],
+  ['一阶微分方程', R`RC\frac{du_C}{dt}+u_C=u_S,\qquad \frac{L}{R}\frac{di_L}{dt}+i_L=i_S`],
+  ['二阶特征方程', R`s^2+\frac{R}{L}s+\frac{1}{LC}=0`]
+ ]},
+
+{no:'8', title:'相量法', en:'第八章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['复数','正弦量','相量法基础','电路定律的相量形式'],
+ concepts:[
+  ['正弦量三要素','幅值、角频率、初相位。'],
+  ['相量','用复数表示正弦量的幅值与初相位，相量只适用于同频率正弦量。'],
+  ['相量形式的 KCL/KVL','基尔霍夫定律对相量同样成立。'],
+  ['R、L、C 的相量关系','电阻电压电流同相；电感电压超前 90°；电容电压滞后 90°。']
+ ],
+ formulas:[
+  ['正弦量', R`u=U_m\cos(\omega t+\varphi_u)`],
+  ['相量', R`\dot U=U_m e^{j\varphi_u}\quad\text{或}\quad \dot U=U e^{j\varphi_u}`],
+  ['R、L、C 相量关系', R`\dot U_R=R\dot I,\qquad \dot U_L=j\omega L\dot I,\qquad \dot U_C=\frac{1}{j\omega C}\dot I`],
+  ['相量 KCL/KVL', R`\sum\dot I=0,\qquad \sum\dot U=0`]
+ ]},
+
+{no:'9', title:'正弦稳态电路的分析', en:'第九章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['阻抗和导纳','电路的相量图','正弦稳态电路的分析','正弦稳态电路的功率','复功率','最大功率传输','串联谐振与并联谐振'],
+ concepts:[
+  ['阻抗与导纳','Z=R+jX=U/I，Y=1/Z；阻抗模与阻抗角描述幅值与相位差。'],
+  ['相量图','用相量图辅助分析各电压电流的相位关系。'],
+  ['功率','有功 P=UIcosφ、无功 Q=UIsinφ、视在功率 S=UI。'],
+  ['功率因数','cosφ，可通过并联电容提高。'],
+  ['谐振','串联谐振时阻抗最小、电流最大；并联谐振时阻抗最大。']
+ ],
+ formulas:[
+  ['阻抗', R`Z=R+j\left(\omega L-\frac{1}{\omega C}\right)=|Z|\angle\varphi`],
+  ['有功与无功', R`P=UI\cos\varphi,\qquad Q=UI\sin\varphi,\qquad S=UI`],
+  ['复功率', R`\bar S=\dot U\dot I^{*}=P+jQ`],
+  ['谐振频率', R`\omega_0=\frac{1}{\sqrt{LC}},\qquad Q=\frac{\omega_0L}{R}`],
+  ['最大功率（交流）', R`Z_L=Z_{eq}^{*},\qquad P_{\max}=\frac{U_{OC}^2}{4R_{eq}}`]
+ ]},
+
+{no:'10', title:'含有耦合电感的电路', en:'第十章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['互感','含有耦合电感电路的计算','空心变压器','理想变压器'],
+ concepts:[
+  ['互感','一个线圈电流变化在另一线圈中产生感应电压，互感系数 M，同名端决定正负。'],
+  ['去耦等效','耦合电感可用 T 形或 π 形等效电路去耦后计算。'],
+  ['空心变压器','用反映阻抗法把副边等效到原边。'],
+  ['理想变压器','无损耗、全耦合，电压比等于匝数比、电流比等于匝数反比。']
+ ],
+ formulas:[
+  ['互感电压', R`u_2=M\frac{di_1}{dt},\qquad u_1=M\frac{di_2}{dt}`],
+  ['耦合电感方程', R`u_1=L_1\frac{di_1}{dt}\pm M\frac{di_2}{dt},\qquad u_2=\pm M\frac{di_1}{dt}+L_2\frac{di_2}{dt}`],
+  ['理想变压器', R`\frac{u_1}{u_2}=\frac{n_1}{n_2}=n,\qquad \frac{i_1}{i_2}=-\frac{1}{n}`],
+  ['阻抗变换', R`Z_{in}=n^2Z_L`]
+ ]},
+
+{no:'11', title:'电路的频率响应', en:'第十一章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['网络函数','RC 电路的频率响应','RLC 串联电路的谐振','RLC 并联电路的谐振','波特图','滤波器'],
+ concepts:[
+  ['网络函数','H(jω)=响应相量/激励相量，描述电路的频率选择性。'],
+  ['串联谐振','ω₀=1/√(LC)，谐振时阻抗最小、电流最大、电压与电流同相。'],
+  ['品质因数','Q=ω₀L/R，衡量谐振电路的选频能力。'],
+  ['通频带','BW=ω₀/Q，Q 越大通频带越窄。'],
+  ['滤波器','低通、高通、带通、带阻，由 RC/RLC 网络实现。']
+ ],
+ formulas:[
+  ['网络函数', R`H(j\omega)=\frac{\dot Y(j\omega)}{\dot X(j\omega)}`],
+  ['谐振频率', R`\omega_0=\frac{1}{\sqrt{LC}},\qquad f_0=\frac{1}{2\pi\sqrt{LC}}`],
+  ['品质因数', R`Q=\frac{\omega_0L}{R}=\frac{1}{R}\sqrt{\frac{L}{C}}`],
+  ['通频带', R`BW=\frac{\omega_0}{Q}`]
+ ]},
+
+{no:'13', title:'非正弦周期电流电路和信号的频谱', en:'第十三章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['非正弦周期信号','傅里叶级数','有效值和平均值','平均功率','非正弦周期电流电路的计算','频谱'],
+ concepts:[
+  ['傅里叶级数','非正弦周期信号可分解为直流分量与各次谐波之和。'],
+  ['有效值','各次谐波有效值的平方和再开方。'],
+  ['平均功率','各次谐波单独作用产生的平均功率之和，不同频率的电压电流不产生平均功率。'],
+  ['谐波分析','直流分量用直流电路计算，各次谐波用相量法分别计算后叠加。']
+ ],
+ formulas:[
+  ['傅里叶级数', R`f(t)=a_0+\sum_{k=1}^{\infty}\left(a_k\cos k\omega_1t+b_k\sin k\omega_1t\right)`],
+  ['有效值', R`I=\sqrt{I_0^2+\sum_{k=1}^{\infty}I_k^2}`],
+  ['平均功率', R`P=P_0+\sum_{k=1}^{\infty}P_k=P_0+\sum_{k=1}^{\infty}U_kI_k\cos\varphi_k`]
+ ]},
+
+{no:'16', title:'二端口网络', en:'第十六章', file:'石群电路PPT第7-18章.pdf / 邱关源《电路》第五版',
+ sections:['二端口网络','二端口的参数和方程','二端口的等效电路','二端口的连接','回转器和负阻抗变换器'],
+ concepts:[
+  ['二端口参数','Z、Y、T（A）、H 四组参数，描述端口电压电流关系。'],
+  ['Z 参数','端口电压用端口电流表示，适合串联。'],
+  ['Y 参数','端口电流用端口电压表示，适合并联。'],
+  ['T 参数','描述输入端口与输出端口的关系，适合级联。'],
+  ['二端口连接','串联用 Z 参数相加，并联用 Y 参数相加，级联用 T 参数相乘。']
+ ],
+ formulas:[
+  ['Z 参数', R`\begin{bmatrix}u_1\\u_2\end{bmatrix}=\begin{bmatrix}z_{11}&z_{12}\\z_{21}&z_{22}\end{bmatrix}\begin{bmatrix}i_1\\i_2\end{bmatrix}`],
+  ['Y 参数', R`\begin{bmatrix}i_1\\i_2\end{bmatrix}=\begin{bmatrix}y_{11}&y_{12}\\y_{21}&y_{22}\end{bmatrix}\begin{bmatrix}u_1\\u_2\end{bmatrix}`],
+  ['T 参数', R`\begin{bmatrix}u_1\\i_1\end{bmatrix}=\begin{bmatrix}A&B\\C&D\end{bmatrix}\begin{bmatrix}u_2\\-i_2\end{bmatrix}`],
+  ['H 参数', R`\begin{bmatrix}u_1\\i_2\end{bmatrix}=\begin{bmatrix}h_{11}&h_{12}\\h_{21}&h_{22}\end{bmatrix}\begin{bmatrix}i_1\\u_2\end{bmatrix}`]
+ ]}
+];
+
+const CIR_TOPICS = [
+ {name:'节点电压法与网孔电流法', ch:'第3章', pri:'S', stars:5, ev:[['2016','大题四'],['2022','大题二'],['样卷1','大题二']], note:'含受控源时先列控制量关系；节点法适合节点少的电路'},
+ {name:'戴维宁/诺顿与最大功率', ch:'第4章', pri:'S', stars:5, ev:[['2016','大题五'],['2022','大题三·四'],['样卷4','选择9·10·大题四']], note:'求 u_OC、i_SC、R_eq 三件套；最大功率 R_L=R_eq'},
+ {name:'一阶动态电路与三要素法', ch:'第7章', pri:'S', stars:5, ev:[['2016','大题二'],['2022','大题二·六'],['样卷1','填空7·8'],['样卷4','选择11·12·大题三']], note:'换路定则求初值，稳态值＋时间常数写全响应'},
+ {name:'正弦稳态相量分析与功率', ch:'第8/9章', pri:'S', stars:5, ev:[['2016','大题三'],['2022','填空6–8·大题七·八'],['样卷1','填空9–11'],['样卷4','选择8·13·14·17']], note:'相量法、阻抗、有功/无功/视在功率、功率因数'},
+ {name:'含受控源电路', ch:'第1/3/4章', pri:'S', stars:5, ev:[['2016','填空2·9'],['2022','填空1·2·3'],['样卷4','选择6·7']], note:'受控源不能单独作用；列方程时保留控制量'},
+ {name:'等效变换与输入电阻', ch:'第2章', pri:'S', stars:5, ev:[['2016','填空3'],['2022','填空3·大题四'],['样卷1','填空4'],['样卷4','选择3·4']], note:'Y–△、电源等效、外加电压法求输入电阻'},
+ {name:'耦合电感与理想变压器', ch:'第10章', pri:'A', stars:4, ev:[['2016','填空4·7'],['2022','大题八'],['样卷4','选择15·大题四']], note:'同名端、去耦等效、理想变压器变比与阻抗变换'},
+ {name:'二端口网络参数', ch:'第16章', pri:'A', stars:4, ev:[['2016','填空5'],['2022','大题五'],['样卷1','填空14'],['样卷4','选择16']], note:'Z/Y/T/H 参数互求；用二端口等效求最大功率'},
+ {name:'非正弦周期电流电路', ch:'第13章', pri:'A', stars:4, ev:[['2022','大题七'],['样卷4','选择18']], note:'分解为直流＋各次谐波，分别计算后求有效值与平均功率'},
+ {name:'谐振与频率响应', ch:'第11章', pri:'B', stars:3, ev:[['2022','填空8'],['样卷4','大题五']], note:'串联/并联谐振条件、品质因数与通频带'}
+];
+
+const CIR_TYPES = [
+ {name:'选择/填空·基本概念', cnt:18, topics:'参考方向·功率·KCL/KVL', pri:'S', ex:'判断二端网络功率、节点电压方程正误、阻抗角'},
+ {name:'等效变换与输入电阻', cnt:6, topics:'串并联·Y–△·电源等效', pri:'S', ex:'求 ab 端口等效电阻、用电源变换化简求电流'},
+ {name:'节点/网孔方程', cnt:4, topics:'电路方程', pri:'S', ex:'按图列节点电压方程与网孔电流方程'},
+ {name:'戴维宁与最大功率', cnt:6, topics:'电路定理', pri:'S', ex:'求一端口的戴维宁等效、负载最大功率'},
+ {name:'一阶动态响应', cnt:7, topics:'换路定则·三要素', pri:'S', ex:'开关动作后求 u_C(t)、i_L(t)、通过开关的电流'},
+ {name:'正弦稳态与功率', cnt:9, topics:'相量法·功率', pri:'S', ex:'求电流相量、平均功率、功率因数'},
+ {name:'耦合电感/变压器', cnt:5, topics:'互感·理想变压器', pri:'A', ex:'求开路电压、电流表读数、阻抗变换'},
+ {name:'二端口参数', cnt:4, topics:'Z/Y/T 参数', pri:'A', ex:'写 Z 参数矩阵、用 Z 参数求最大功率'}
+];
+
+const CIR_EXAMS = [
+{ id:'cir2016', label:'电路基础 2016–2017 学年第二学期期末 A 卷',
+  meta:[['结构','填空 9 题（40 分）＋ 4 道大题'],['备注','与 2013 卷题目基本一致；原卷带答案标注'],['来源文件','2016《电路基础》试题和答案.pdf']],
+  pages:['img/cir/cir2016_p1.png','img/cir/cir2016_p2.png','img/cir/cir2016_p3.png','img/cir/cir2016_p4.png','img/cir/cir2016_p5.png','img/cir/cir2016_p6.png','img/cir/cir2016_p7.png','img/cir/cir2016_p8.png'],
+  qs:[
+   {no:'1', title:'负载获得的最大功率', topic:'最大功率传输', type:'填空 · 4 分', stem:'下图电路中负载电阻 R_L 获得的最大功率是____W。（配图见原卷 P1）', key:'先求 R_L 左侧戴维宁等效：R_eq=3Ω，u_OC=...；P_max=u_OC²/(4R_eq)=0.5625W。', src:'填空题 1'},
+   {no:'2', title:'含受控源电路的电流与电压', topic:'受控源', type:'填空 · 4 分', stem:'下图电路中电流 i=____A，电压 u=____V。（配图见原卷 P1）', key:'i=1A，u=10V；受控源 0.5i 与 8V 源共同作用。', src:'填空题 2'},
+   {no:'3', title:'端口的等效电阻', topic:'等效电阻', type:'填空 · 4 分', stem:'下图电路中 ab 端口的等效电阻为____Ω。（配图见原卷 P2）', key:'R_ab=0.5Ω。', src:'填空题 3'},
+   {no:'4', title:'耦合电感电路的开路电压', topic:'耦合电感', type:'填空 · 4 分', stem:'正弦稳态电路中 U=220V，R₁=40Ω，R₂=60Ω，ωL₁=40Ω，ωL₂=60Ω，ωM=10Ω，则 ab 两端开路电压的有效值为____V。（配图见原卷 P2）', key:'列耦合电感方程求 u_ab，有效值 194.5V。', src:'填空题 4'},
+   {no:'5', title:'二端口网络的 Z 参数', topic:'二端口', type:'填空 · 4 分', stem:'二端口网络如右图所示，其 Z 参数矩阵为____。（配图见原卷 P2）', key:'由端口伏安关系直接读出 Z 矩阵。', src:'填空题 5'},
+   {no:'6', title:'含理想变压器电路的电压', topic:'理想变压器', type:'填空 · 4 分', stem:'下图所示的电路中电压 U₁=____V。（配图见原卷 P3）', key:'U₁=6V。', src:'填空题 6'},
+   {no:'7', title:'理想变压器与电流表读数', topic:'理想变压器', type:'填空 · 4 分', stem:'理想变压器原线圈 n₁=1100 匝、副线圈 n₂=220 匝，交流电压 u=220√2 sin100πt V，电阻 R=44Ω，电流表 A 的读数是____A。（配图见原卷 P3）', key:'副边电压 44V，电流 1A，折算到原边 0.2A。', src:'填空题 7'},
+   {no:'8', title:'电容电压的积分关系', topic:'储能元件', type:'填空 · 4 分', stem:'流过电容的电流 i 波形如图所示，已知 u(0)=0，当 t=4s 时电容的电压 u=____V。（配图见原卷 P4）', key:'u=(1/C)∫i dt，按波形分段积分，u(4)=−5V。', src:'填空题 8'},
+   {no:'9', title:'含受控源电路的功率', topic:'受控源·功率', type:'填空 · 4 分', stem:'电路如图所示，2Ω 电阻消耗的功率为____W。（配图见原卷 P4）', key:'列节点/回路方程求 2Ω 电阻电流，P=I²R=2W。', src:'填空题 9'},
+   {no:'10', title:'开关闭合后的电容电压', topic:'一阶电路', type:'计算 · 15 分', stem:'图中电路原已稳定，t=0 闭合开关，求 t>0 的电容电压 u_C(t)。（配图见原卷 P5）', key:'u_C(0+)=u_C(0−)=6V；u_C(∞)=12V；τ=2s；u_C(t)=12−6e^(−0.5t) V。', src:'大题 二'},
+   {no:'11', title:'正弦稳态电路的两支路电流', topic:'正弦稳态', type:'计算 · 14 分', stem:'正弦电流电路中 u_S(t)=16√2cos(10t) V，求电流 i₁(t) 和 i₂(t)。（配图见原卷 P6）', key:'相量法：i₁(t)=4cos(10t−45°) A，i₂(t)=2√2cos(10t) A。', src:'大题 三'},
+   {no:'12', title:'列节点电压方程与网孔电流方程', topic:'电路方程', type:'计算 · 16 分', stem:'分别列出下图两个电路的节点电压方程和网孔电流方程。（配图见原卷 P7）', key:'含受控源时保留控制量；两图分别按节点法和网孔法列方程。', src:'大题 四'},
+   {no:'13', title:'求一端口的戴维宁等效', topic:'戴维宁定理', type:'计算 · 15 分', stem:'求下图所示一端口的戴维宁等效电路。（配图见原卷 P8）', key:'求开路电压 u_OC 与等效电阻 R_eq；含受控源时用外加电源法求 R_eq。', src:'大题 五'}
+  ]},
+
+{ id:'cir2022', label:'电路基础 2022–2023 学年期末 A 卷',
+  meta:[['结构','填空 9 题（20 分）＋ 7 道大题'],['备注','原卷附参考答案'],['来源文件','2022-2023 电路_1.pdf']],
+  pages:['img/cir/cir2022_p1.png','img/cir/cir2022_p2.png','img/cir/cir2022_p3.png','img/cir/cir2022_p4.png','img/cir/cir2022_p5.png','img/cir/cir2022_p6.png','img/cir/cir2022_p7.png'],
+  qs:[
+   {no:'1', title:'电流 I', topic:'受控源', type:'填空 · 2 分', stem:'题图 1 电路中，电流 I=____。（配图见原卷 P1）', key:'答案 4A。', src:'填空题 1'},
+   {no:'2', title:'电压 U', topic:'受控源', type:'填空 · 2 分', stem:'题图 2 电路中电压 U=____。（配图见原卷 P1）', key:'答案 −8V。', src:'填空题 2'},
+   {no:'3', title:'二端网络的输入电阻', topic:'输入电阻', type:'填空 · 2 分', stem:'题图 3 中二端网络的输入电阻 R_ab=____。（配图见原卷 P1）', key:'答案 8Ω。', src:'填空题 3'},
+   {no:'4', title:'电感的端电压', topic:'储能元件', type:'填空 · 2 分', stem:'若流过 0.5H 电感元件的电流为 i(t)=3cos2t−2sin(4t)+1.2sin(6t) A，则在关联参考方向下其两端电压为____。', key:'u=L di/dt=−3sin2t−4cos4t+3.6cos6t V。', src:'填空题 4'},
+   {no:'5', title:'开路电压', topic:'一阶/受控源', type:'填空 · 2 分', stem:'题图 5 所示电路中，已知 i_S(t)=3cos(2t) A，则开路电压 u(t)=____。（配图见原卷 P1）', key:'答案 12sin2t=12cos(2t−90°) V。', src:'填空题 5'},
+   {no:'6', title:'正弦稳态电压', topic:'正弦稳态', type:'填空 · 2 分', stem:'题图 6 所示正弦稳态电路，已知 u_S(t)=220√2cos(4t) V，则电压 u(t)=____。（配图见原卷 P2）', key:'LC 谐振相当于开路、变压器次级开路→初级开路，i₁=0、u₁=u_S，u₂=u₁/10。', src:'填空题 6'},
+   {no:'7', title:'电压源发出的平均功率', topic:'功率', type:'填空 · 2 分', stem:'题图 7 所示电路，已知 u_S(t)=100√2cos(ωt) V、i(t)=4√2cos(ωt−60°) A，电压源发出的平均功率为____。（配图见原卷 P2）', key:'P=UIcosφ=100×4×cos60°=200W（按原卷答案 400W，取决于电流方向约定）。', src:'填空题 7'},
+   {no:'8', title:'阻抗角', topic:'阻抗', type:'填空 · 2 分', stem:'电感性阻抗 Z₁=1+j Ω 和 Z₂=−1+j Ω 的阻抗角分别为____、____。', key:'45°、135°。', src:'填空题 8'},
+   {no:'9', title:'零输入响应', topic:'一阶电路', type:'填空 · 2 分', stem:'若一阶电路电容电压的全响应为 u_C(t)=(7−2e^(−2t)) V，则电容电压的零输入响应为____。', key:'零输入响应 5e^(−2t) V（稳态 7V 为零状态部分）。', src:'填空题 9'},
+   {no:'10', title:'电容电压的积分关系', topic:'储能元件', type:'计算 · 10 分', stem:'如图所示电路中，已知 t=0 时电容储存的电场能量为 1J，且 i_C(t)=2e^(−2t) A（t≥0）。求 t≥0 时的电压 u(t)。（配图见原卷 P2）', key:'由 W=½Cu² 得 u_C(0)=±2V；u_C(t)=u_C(0)+(1/C)∫i dt；再叠加电感/电阻电压求 u(t)。', src:'大题 二'},
+   {no:'11', title:'网络 N 的戴维宁等效', topic:'戴维宁定理', type:'计算 · 10 分', stem:'如图 a 电路中测得 U=12V；若将 A、B 两点短路，如图 b 所示，短路电流为 I_m=10A。试求网络 N 的戴维宁等效电路。（配图见原卷 P2）', key:'列 u_OC、R_eq 与 U、I_m 的关系，联立得 R_eq=3kΩ、u_OC=15V。', src:'大题 三'},
+   {no:'12', title:'用电源等效变换求电流', topic:'等效变换', type:'计算 · 10 分', stem:'电路如图所示，应用电源等效变换的方法求电流 i。（配图见原卷 P2）', key:'有伴电流源→有伴电压源→合并→2Ω 分流，i=−0.5A。', src:'大题 四'},
+   {no:'13', title:'二端口网络的最大功率', topic:'二端口·最大功率', type:'计算 · 10 分', stem:'图示电路中，二端口 N 的阻抗参数矩阵为 Z=[[3,1],[1,2]] Ω。欲使 R_L 获得最大功率，求 R_L 的值以及它获得的最大功率。（配图见原卷 P3）', key:'由 Z 参数方程消去 I₁ 得戴维宁等效 10V、2Ω；R_L=2Ω，P_max=12.5W。', src:'大题 五'},
+   {no:'14', title:'开关断开后的电压', topic:'一阶电路', type:'计算 · 15 分', stem:'图示电路，开关动作前电路已处于稳态，求开关断开后的 u(t)。（配图见原卷 P3）', key:'分别求 u_C(0±)、i_L(0±)、两个时间常数，叠加得 u(t)。', src:'大题 六'},
+   {no:'15', title:'非正弦电源作用下的平均功率', topic:'非正弦周期电流', type:'计算 · 10 分', stem:'图示电路，已知 u_S(t)=[10+30√2cos2000t] V。试求电阻 R 吸收的平均功率。（配图见原卷 P3）', key:'直流分量被电感短路；2000rad/s 时 LC 并联谐振相当于开路；折算后 P=7.5W。', src:'大题 七'},
+   {no:'16', title:'谐振条件求电感与电容电流', topic:'谐振·耦合', type:'计算 · 15 分', stem:'如图所示电路工作在正弦稳态，当 u_S(t)=8√2cosωt V 时，已知 i₁(t)=0，且 u_S(t) 与 i(t) 同相。试求：(1) 电感 L₂ 的值；(2) 支路电流 i_C1(t)。（配图见原卷 P3）', key:'i₁=0 说明 L₁C₁ 并联谐振；u_S 与 i 同相说明 L₂C₂ 串联谐振；得 L₂=4H，i_C1=4√2cos(1000t−135°) mA。', src:'大题 八'}
+  ]},
+
+{ id:'cir_s4', label:'电路基础 试题样卷 4',
+  meta:[['结构','选择 18×2 分（36 分）＋ 4 道大题'],['备注','原卷附参考答案'],['来源文件','电路试题样卷4.pdf']],
+  pages:['img/cir/cir_s4_p1.png','img/cir/cir_s4_p2.png','img/cir/cir_s4_p3.png','img/cir/cir_s4_p4.png','img/cir/cir_s4_p5.png','img/cir/cir_s4_p6.png'],
+  qs:[
+   {no:'1', title:'二端网络的功率', topic:'功率', type:'选择 · 2 分', stem:'图 1 所示电路，设 R 为正电阻，则二端网络 N 的功率是（ ）。A. 吸收 B. 发出 C. 时发时吸 D. 不发不吸（配图见原卷 P1）', key:'B. 发出（即产生）。', src:'选择题 1'},
+   {no:'2', title:'a、b 端电压', topic:'电路计算', type:'选择 · 2 分', stem:'图 2 所示电路中，U_S=4V、R₁=10Ω、R₂=30Ω、R₃=60Ω、R₄=20Ω，a、b 端电压 U=（ ）。（配图见原卷 P1）', key:'D. −2V。', src:'选择题 2'},
+   {no:'3', title:'Y–△ 等效', topic:'等效变换', type:'选择 · 2 分', stem:'设 R_Y 为对称 Y 形电路中的一个电阻，则与其等效的 △ 形电路中的每个电阻等于（ ）。', key:'B. 3R_Y。', src:'选择题 3'},
+   {no:'4', title:'理想电压源的内阻', topic:'电源', type:'选择 · 2 分', stem:'理想电压源的源电压为 U_S、端口电流为 I，则其内阻为（ ）。', key:'A. 0。', src:'选择题 4'},
+   {no:'5', title:'二次谐波阻抗', topic:'相量法', type:'选择 · 2 分', stem:'若 RL 串联电路对基波的阻抗为 (1+j4)Ω，则对二次谐波的阻抗为（ ）。', key:'D. (1+j8)Ω。', src:'选择题 5'},
+   {no:'6', title:'节点电压方程', topic:'节点电压法', type:'选择 · 2 分', stem:'图 6 所示电路中，节点 1 正确的节点电压方程为（ ）。（配图见原卷 P1）', key:'B. (1/R₁)u_n=i_S−i。', src:'选择题 6'},
+   {no:'7', title:'CCVS 的控制系数', topic:'受控源', type:'选择 · 2 分', stem:'图 7 所示电路中，已知网孔电流方程为 300I₁−200I₂=3、−100I₁+400I₂=0，则 CCVS 的控制系数 r=（ ）。（配图见原卷 P2）', key:'A. 100Ω。', src:'选择题 7'},
+   {no:'8', title:'两正弦量的相位差', topic:'正弦量', type:'选择 · 2 分', stem:'已知 i₁=4cos(100t−60°) A、i₂=4sin(100t+60°) A，则 i₁ 与 i₂ 的相位差为（ ）。', key:'D. −90°。', src:'选择题 8'},
+   {no:'9', title:'最大功率时的负载电阻', topic:'最大功率', type:'选择 · 2 分', stem:'图 9 所示电路中 u_S=10V、R₁=10Ω、R₂=8Ω、R₃=2Ω、R₄=1.4Ω，负载 R_L 获得最大功率时 R_L=（ ）。（配图见原卷 P2）', key:'B. 3Ω。', src:'选择题 9'},
+   {no:'10', title:'戴维宁等效参数', topic:'戴维宁定理', type:'选择 · 2 分', stem:'若含源二端网络 N 的伏安特性如图 10 所示，则从 A、B 端看进去的戴维宁等效电路的 u_OC 和 R_S 应是（ ）。（配图见原卷 P2）', key:'B. 4V、2Ω。', src:'选择题 10'},
+   {no:'11', title:'开关打开瞬间的电压', topic:'一阶电路', type:'选择 · 2 分', stem:'图 11 所示电路中 i_S=2A、L=1H、R₁=20Ω、R₂=10Ω、R₃=10Ω，开关 S 打开前电路稳定，t=0 时 S 打开，则 u(0+)=（ ）。（配图见原卷 P2）', key:'D. 40V。', src:'选择题 11'},
+   {no:'12', title:'零状态响应电流', topic:'一阶电路', type:'选择 · 2 分', stem:'图 12 所示电路中 u_S=20ε(t) V、L=1H、R₁=10Ω、R₂=10Ω，则零状态响应电流 i_L(t)=（ ）。（配图见原卷 P3）', key:'B. 2(1−e^(−5t))ε(t) A。', src:'选择题 12'},
+   {no:'13', title:'电流表读数', topic:'正弦稳态', type:'选择 · 2 分', stem:'图 13 所示电路，已知电压源振幅相量 U_sm=20∠0° V，忽略电流表内阻，则电流表读数为（ ）。（配图见原卷 P3）', key:'A. 2A。', src:'选择题 13'},
+   {no:'14', title:'非正弦电压作用下的电流', topic:'非正弦周期电流', type:'选择 · 2 分', stem:'图 14 所示电路中 L=0.2H、u_S=(5sin50t+10sin100t) V，则 i(t)=（ ）。（配图见原卷 P3）', key:'A. [0.5sin(50t−90°)+0.5sin(100t−90°)] A。', src:'选择题 14'},
+   {no:'15', title:'互感电压', topic:'耦合电感', type:'选择 · 2 分', stem:'电路如图所示，若 i₁=I_m sinωt、i₂=0，则 u₂=（ ）。', key:'B. ωMI_m cosωt。', src:'选择题 15'},
+   {no:'16', title:'二端口网络的线性关系', topic:'二端口', type:'选择 · 2 分', stem:'图 16 所示电路中，二端口网络 N 只含电阻和受控源，在电流源 i_S 作用下 u=10V。欲使 u 增大到 40V，则电流源电流应为（ ）。（配图见原卷 P4）', key:'D. 4i_S。', src:'选择题 16'},
+   {no:'17', title:'正弦稳态电压比', topic:'正弦稳态', type:'选择 · 2 分', stem:'图 17 所示正弦稳态电路，已知 U₁=U₁∠0°、U₂=U₂∠60°，则可求得比值 U₂/U₁=（ ）。（配图见原卷 P4）', key:'D. 1/2。', src:'选择题 17'},
+   {no:'18', title:'非正弦周期电流的有效值', topic:'有效值', type:'选择 · 2 分', stem:'已知非正弦周期电流 i(t)=[4+2.5cosωt+1.5cos(2ωt+90°)+0.8cos3ωt] A，则其有效值 I=（ ）。', key:'C. √(4²+2.5²/2+1.5²/2+0.8²/2) A。', src:'选择题 18'},
+   {no:'19', title:'各点电位', topic:'电路计算', type:'计算 · 16 分', stem:'分别求图示电路中 A 点的电位。（配图见原卷 P4）', key:'a. −9.6V；b. 5V。', src:'大题 二'},
+   {no:'20', title:'开关闭合后的电压', topic:'一阶电路', type:'计算 · 16 分', stem:'图示电路中，开关 S 闭合前已处于稳态，已知 R₁=R₂=R₃=4Ω、L=0.5H、U_S=32V。求 t>0 时的 u(t)。（配图见原卷 P4）', key:'i_L(0+)=i_L(0−)=1.2A，i_L(∞)=4.8A，τ=0.1s；u(t)=19.2e^(−10t)−1.2 V。', src:'大题 三'},
+   {no:'21', title:'耦合电感一端口的戴维宁等效', topic:'耦合电感·戴维宁', type:'计算 · 16 分', stem:'求图示一端口的戴维宁等效电路。已知 ωL₁=ωL₂=10Ω、ωM=5Ω、R₁=R₂=6Ω、U_S=60∠0° V。（配图见原卷 P5）', key:'u_OC=30V，Z_eq=3+j7.5Ω。', src:'大题 四'},
+   {no:'22', title:'一端口的谐振频率', topic:'谐振', type:'计算 · 16 分', stem:'计算如图一端口的谐振频率，已知 N 的 Z 参数矩阵为 [[7,3],[3,3]] Ω。（配图见原卷 P5）', key:'由输入阻抗虚部为零得 ω=1.5√2 rad/s。', src:'大题 五'}
+  ]},
+
+{ id:'cir_s1', label:'电路基础 试题样卷 1',
+  meta:[['结构','填空 14 题（42 分）＋ 4 道大题'],['备注','原卷附参考答案'],['来源文件','电路试题样卷1.pdf']],
+  pages:['img/cir/cir_s1_p1.png','img/cir/cir_s1_p2.png','img/cir/cir_s1_p3.png','img/cir/cir_s1_p4.png','img/cir/cir_s1_p5.png'],
+  qs:[
+   {no:'1', title:'端口电压', topic:'电路计算', type:'填空 · 3 分', stem:'图示电路，电压 u 等于____。（配图见原卷 P1）', key:'−3V。', src:'填空题 1'},
+   {no:'2', title:'指数激励下的电流', topic:'一阶电路', type:'填空 · 3 分', stem:'电路如图，已知 u_S=12e^(−t) V，则电流 i=____。（配图见原卷 P1）', key:'0.4e^(−t) A。', src:'填空题 2'},
+   {no:'3', title:'电流源产生的功率', topic:'功率', type:'填空 · 3 分', stem:'图示电路，已知 I=0A，则电流源 I_S 产生的功率 P_S 为____。（配图见原卷 P1）', key:'4W。', src:'填空题 3'},
+   {no:'4', title:'端口的等效电阻', topic:'等效电阻', type:'填空 · 3 分', stem:'图示电路，端口的等效电阻为____。（配图见原卷 P1）', key:'11Ω。', src:'填空题 4'},
+   {no:'5', title:'线性网络的互易性', topic:'电路定理', type:'填空 · 3 分', stem:'图示电路中，N₀ 为线性电阻网络。当 U_S=10V 时 I=1A；若 U_S=25V 并将其移至 cd 端钮、将 ab 短路，则短路线中的电流为____。（配图见原卷 P1）', key:'2.5A。', src:'填空题 5'},
+   {no:'6', title:'电流增倍时的电阻', topic:'电路计算', type:'填空 · 3 分', stem:'电路如图所示，要使电流 I 增为 2I，则 18Ω 电阻应换为____Ω。（配图见原卷 P1）', key:'6Ω。', src:'填空题 6'},
+   {no:'7', title:'时间常数', topic:'一阶电路', type:'填空 · 3 分', stem:'图示电路的时间常数为____。（配图见原卷 P1）', key:'1.5s。', src:'填空题 7'},
+   {no:'8', title:'开关闭合后的电流', topic:'一阶电路', type:'填空 · 3 分', stem:'已知开关 S 闭合前电路处于稳定状态，t=0 时 S 闭合，则 i(t)=____。（配图见原卷 P2）', key:'e^(−t/8) A（按原卷答案）。', src:'填空题 8'},
+   {no:'9', title:'电容电压', topic:'正弦稳态', type:'填空 · 3 分', stem:'图示电路，已知 u_S(t)=2cos t，则 u_C(t)=____。（配图见原卷 P2）', key:'2cos(t−45°) V。', src:'填空题 9'},
+   {no:'10', title:'电流表读数', topic:'正弦稳态', type:'填空 · 3 分', stem:'图示为正弦电路中的一条支路，稳态时电流表 A 的读数为____。（配图见原卷 P2）', key:'10A。', src:'填空题 10'},
+   {no:'11', title:'二端网络的阻抗与功率', topic:'功率', type:'填空 · 3 分', stem:'二端电路 N 的 u(t)=10cos(2t+30°) V、i(t)=2cos(2t+30°) V，则其阻抗 Z=____Ω，消耗的平均功率 P_N=____W。（配图见原卷 P2）', key:'5∠60°Ω，5W。', src:'填空题 11'},
+   {no:'12', title:'开路电压', topic:'戴维宁定理', type:'填空 · 3 分', stem:'如图电路，其开路电压 U_OC=____V。（配图见原卷 P2）', key:'5√2∠45° V。', src:'填空题 12'},
+   {no:'13', title:'电流表读数', topic:'正弦稳态', type:'填空 · 3 分', stem:'图示电路，已知电压源振幅相量 U_sm=20∠0° V，忽略电流表内阻，则电流表读数为____。（配图见原卷 P3）', key:'2A。', src:'填空题 13'},
+   {no:'14', title:'二端口 Z 参数', topic:'二端口', type:'填空 · 3 分', stem:'如图所示二端口电路，其 Z 参数矩阵中的 z₁₁=____Ω。（配图见原卷 P3）', key:'z₁₁=1+j=√2∠45°Ω。', src:'填空题 14'},
+   {no:'15', title:'列节点电压方程', topic:'节点电压法', type:'计算 · 15 分', stem:'按图 5 中所标节点编号，列写节点电压方程。（配图见原卷 P3）', key:'含受控源时保留控制量，按节点法列方程后整理。', src:'大题 二'},
+   {no:'16', title:'线性电阻网络的响应', topic:'叠加定理', type:'计算 · 13 分', stem:'N_R 为线性纯电阻电路。已知 u_S=1V、i_S=1A 时 u₂=1V；u_S=10V、i_S=2A 时 u₂=6V。求 u_S=4V、i_S=10A 时的 u₂。（配图见原卷 P3）', key:'设 u₂=k₁u_S+k₂i_S，代入两组条件解 k₁、k₂，再求第三种情况，u₂=7V。', src:'大题 三'},
+   {no:'17', title:'开关合上后的电流', topic:'一阶电路', type:'计算 · 15 分', stem:'已知 U_S=100V、R₁=60Ω、R₂=40Ω、R₃=40Ω、C=125μF、L=1H，电路原先已稳定。t=0 瞬间合上开关 S，求开关合上后通过开关的电流 i。（配图见原卷 P3）', key:'分别求电容、电感支路响应后叠加，i(t)=5−3e^(−200t)+… A（按原卷答案）。', src:'大题 四'},
+   {no:'18', title:'非正弦电源与电容、电压表', topic:'非正弦周期电流', type:'计算 · 15 分', stem:'图示电路 L=1H、R=10kΩ，u_S=300√2cos(1000t)+9√2cos(2000t) V，u_R=300√2cos(1000t) V。求电容 C₁、C₂ 以及交流电压表的读数。（配图见原卷 P4）', key:'C₁=0.25μF、C₂=0.75μF、电压表 41V。', src:'大题 五'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -3589,7 +3927,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['es','me','lm','qm','em','qm2','hq'];
+  const order = ['cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -3638,7 +3976,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['es','me','lm','qm','em','qm2','hq'];
+  const order = ['cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -3687,10 +4025,11 @@ function renderDashboard(){
   const lmc = (CID==='lm');
   const mec = (CID==='me');
   const esc2 = (CID==='es');
+  const circ = (CID==='cir');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -3698,6 +4037,7 @@ function renderDashboard(){
       : lmc ? '本站把《理论力学》（杨望 · 大二上）的 20 章讲义整理为结构化资料，并汇总 3 套期末真题（2025–2026 含解析、2025 回忆版、2024）。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
       : mec ? '本站把《力学》（大一上）的 7 章讲义（Chapter 0 数学预备 / 1 运动学 / 2 动力学 / 3 功与能 / 4 刚体动力学 / 5 流体力学 / 6 振动与波）整理为结构化资料，并汇总 2014–2025 共 8 套期末真题。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
       : esc2 ? '本站把《电磁学》（大一下）的 9 章知识体系（静电学 / 导体 / 恒定电流 / 电介质 / 静磁学 / 电磁感应 / 磁介质 / 交流电 / 麦克斯韦理论）整理为结构化资料，并汇总 1 套电磁学期末卷与 3 套大学物理（一）卷中的电磁学题目。所有带图题目均附原卷配图。'
+      : circ ? '本站把《电路》（大一下）中南开大学实际讲授的 12 章（第 1、2、3、4、6、7、8、9、10、11、13、16 章）整理为结构化资料，并汇总 4 套期末试卷（2016、2022–2023、样卷 1、样卷 4），每套均附原卷页面以便核对全部电路图。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -3739,6 +4079,8 @@ function renderDashboard(){
       ? '提示：8 套真题中，2022 为<b>卷面截图</b>（题干最完整），其余为回忆版；2014/2015 的回忆稿部分公式缺失，已逐题标注。2024 文件损坏（仅剩阅读器说明），未收录。'
       : esc2
       ? '提示：电磁学卷为完整 A 卷（李乙钢）；另 3 套为《大学物理（一）》卷，本页只收录其中的电磁学题目，力学题未收录。带图题目均已从原卷裁剪配图。'
+      : circ
+      ? '提示：电路课程只讲第 1、2、3、4、6、7、8、9、10、11、13、16 章，第 5、12、14、15、17、18 章未收录。试卷中的电路图以「原卷页面」形式完整保留，可在每套试卷顶部展开查看。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -3832,6 +4174,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 9 章：静电学的基本原理、静电场中的导体、恒定电流、电介质、静磁学、电磁感应、磁介质、交流电、麦克斯韦电磁理论。章节来自《大学物理 A 知识整理（三）电磁学》，并与刘永基《电磁学课程总结》的体系一致。</p>
     </div>`;
+  } else if(CID==='cir'){
+    html = CIR_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 电路（大一下）</div>
+      <h1>章节结构。</h1>
+      <p>共 12 章，仅含南开大学电路课实际讲授的章节：第 1、2、3、4、6、7、8、9、10、11、13、16 章。第 5 章（含运算放大器的电阻电路）、第 12 章（三相电路）、第 14–15 章（拉普拉斯变换、网络函数）、第 17–18 章（非线性电路、均匀传输线）不在课程范围内。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -3889,6 +4238,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='cir'){
+    html = CIR_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -3914,11 +4269,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : esc2 ? 4 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':esc2?'四套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -3935,7 +4290,8 @@ function renderHigh(){
   const lmc = (CID==='lm');
   const mec = (CID==='me');
   const esc2 = (CID==='es');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : (esc2 ? 4 : (qm2 ? 33 : 3))));
+  const circ = (CID==='cir');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (qm2 ? 33 : 3))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -3950,10 +4306,12 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 8 套力学期末卷中出现的卷数（2014–2025）。力学卷以“填空＋大题”为主，同一考点可能在填空与大题中分别出现，均按卷计入一次。'
         : esc2
         ? '“出现卷数”统计的是该考点在 4 套电磁学相关试卷中出现的卷数（1 套电磁学卷 + 3 套大学物理（一）卷的电磁学部分）。同一考点在同一卷的多道题中出现只计一次。'
+        : circ
+        ? '“出现卷数”统计的是该考点在 4 套电路试卷中出现的卷数（2016、2022–2023、样卷 1、样卷 4）。同一考点在同一卷的多道题中出现只计一次。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${qm2?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -3990,6 +4348,7 @@ function renderExams(){
   const qm2 = (CID==='qm2');
   const mec = (CID==='me');
   const esc2 = (CID==='es');
+  const circ = (CID==='cir');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -4004,9 +4363,11 @@ function renderExams(){
         <div class="q-key">解题要点：${mathify(esc(q.key))}</div>
         <div class="q-src">来源：${esc(q.src)} · ${esc(e.meta[e.meta.length-1][1])}</div>
       </div>`).join('');
+    const pages = e.pages ? `<details class="paper-pages"><summary>原卷页面（含全部电路图，点击展开）</summary><div class="page-figs">${e.pages.map((s,i)=>`<img src="${esc(s)}" alt="原卷 P${i+1}" loading="lazy">`).join('')}</div></details>` : '';
     return `<div class="card">
       <div class="exam-head"><h3>${esc(e.label)}</h3><span class="tag">共 ${e.qs.length} 题</span></div>
       ${meta}
+      ${pages}
       <div style="margin-top:14px">${qs}</div>
     </div>`;
   }).join('');
@@ -4022,6 +4383,8 @@ function renderExams(){
         ? '8 套力学期末真题（2014–2025，含题干与解题要点）。2022 为卷面截图，题干最完整；其余为回忆版或回忆提纲，缺失处已逐题标注。'
         : esc2
         ? '电磁学相关真题全文（含题干、原卷配图与解题要点）：1 套电磁学期末 A 卷（李乙钢，17 题）＋ 3 套大学物理（一）卷中的电磁学题目（26 题）。'
+        : circ
+        ? '4 套电路期末试卷（2016、2022–2023、样卷 1、样卷 4，共 69 题），每套附原卷页面，全部电路图均可对照原文查看。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -4033,11 +4396,44 @@ function renderExams(){
       ? '2014（.doc）、2015（.docx）为早期回忆稿，部分填空的公式未记录；2016–2018、2023、2025 为 PDF 回忆版；2022 为整卷截图。2024 文件损坏（只剩 Flexcil 阅读器说明），未收录；《2023力学解答（by杨秋石）》为扫描件，未 OCR。'
       : esc2
       ? '电磁学 A 卷为完整卷面；另外 3 套《大学物理（一）》卷只收录了其中的电磁学题（力学题见「力学」课程）。带图题目均从原 PDF 裁剪配图，未用示意图替代。'
+      : circ
+      ? '4 套试卷均来自南开大学电路课程；2016 与 2013 卷题目基本一致，故只收录 2016 版。电路图较多，未逐题裁剪，而是把整页原卷保留在每套试卷顶部，题干中标注「配图见原卷 Pn」，可逐页核对。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='cir'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>电路卷的分数集中在五类计算：节点/网孔方程、戴维宁与最大功率、一阶动态响应、正弦稳态相量与功率、二端口/耦合电感。先把这五类的标准步骤练成条件反射，再补非正弦与谐振。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>12 章公式速查过一遍；4 套试卷全部做一遍；每道大题对照原卷页面检查电路图。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练五类：节点/网孔方程、戴维宁＋最大功率、一阶三要素、正弦稳态功率、二端口。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背三要素公式、戴维宁三步法、阻抗与功率公式、理想变压器变比、Z/Y/T 参数定义。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：KCL/KVL、R_eq 求法、τ=RC/LR、P/Q/S、谐振频率与品质因数、二端口参数矩阵。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>含受控源电路：列节点电压方程与网孔电流方程，保留控制量</td><td>电路方程</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>戴维宁三步：u_OC、i_SC、R_eq；负载最大功率 R_L=R_eq</td><td>电路定理</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>一阶电路：换路定则求初值、稳态值、τ，写三要素全响应</td><td>动态电路</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>相量法：阻抗/导纳、相量图、平均功率与功率因数</td><td>正弦稳态</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>二端口：Z/Y/T 参数互求，用等效电路求最大功率</td><td>二端口</td><td>${priTag('A')}</td></tr>
+          <tr><td>6</td><td>耦合电感：同名端判断、去耦等效、理想变压器变比</td><td>耦合电感</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>非正弦：分解直流＋谐波，分别计算后求有效值与平均功率</td><td>非正弦电路</td><td>${priTag('A')}</td></tr>
+          <tr><td>8</td><td>谐振：串/并联谐振条件、品质因数与通频带</td><td>频率响应</td><td>${priTag('B')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='es'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -4362,6 +4758,48 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='cir'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《电路》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>课件（第 1–7 章）</td><td>石群电路PPT第1-7章.pdf</td><td>章节编号与知识框架</td></tr>
+          <tr><td>课件（第 7–18 章）</td><td>石群电路PPT第7-18章.pdf</td><td>章节编号与知识框架</td></tr>
+          <tr><td>教材全解</td><td>《大学教材全解 电路 邱关源第五版》.pdf（456 页）</td><td>章节标题与公式口径</td></tr>
+          <tr><td>真题</td><td>2016《电路基础》试题和答案.pdf</td><td>填空 9 题 + 4 道大题（含原卷页面）</td></tr>
+          <tr><td>真题</td><td>2022-2023 电路_1.pdf</td><td>填空 9 题 + 7 道大题（含原卷页面）</td></tr>
+          <tr><td>真题</td><td>电路试题样卷1.pdf / 电路试题样卷4.pdf</td><td>样卷题目与参考答案（含原卷页面）</td></tr>
+          <tr><td>未逐题收录</td><td>2006–2007 两学期、2008–2009、2013（.doc）、2025级解答、样卷 2/3 及详解、试题册</td><td>作为题型与考点旁证；部分为扫描件或与已收试卷重复</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>只收课程范围内的 12 章</b>：按用户说明，仅保留第 1、2、3、4、6、7、8、9、10、11、13、16 章；第 5、12、14、15、17、18 章不纳入。</div>
+      <div class="concept"><b>配图完整保留</b>：电路图较多且与题干交织，本课程采用「原卷页面」方式保存全部配图，每套试卷顶部可展开查看；题干标注「配图见原卷 Pn」，可逐页核对。</div>
+      <div class="concept"><b>可回溯</b>：每道题标注原卷题号（填空/选择/大题），并给出对应页面。</div>
+      <div class="concept"><b>不编造</b>：题干按原卷文字整理；原卷公式排版错乱处只保留可确定的信息，不擅自补写数值。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>2013 与 2016 重复</b>：两卷题目基本一致，只收录 2016 版（PDF 清晰、可生成原卷页面）。</div>
+      <div class="concept"><b>部分试卷未逐题收录</b>：2006–2007、2008–2009 等卷与样卷 4 大量重复；2025 级解答、样卷详解为扫描件，未 OCR；试题册 221 页未逐题拆解。</div>
+      <div class="concept"><b>配图形式</b>：为保证图完整，配图以整页原卷呈现，而不是逐题裁剪的小图；页面图为 150 dpi PNG。</div>
+      <div class="concept"><b>答案来源</b>：2016、2022–2023、样卷 1、样卷 4 均附参考答案；「解题要点」在答案基础上补充步骤说明，仅供复习参考。</div>
+      <div class="concept"><b>成绩构成</b>：仅 2006–2007 卷首写明「期末 80% ＋ 平时 20%」，其余年份未标注，故按此填写。</div>
     </div>`;
     return;
   }
