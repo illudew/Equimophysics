@@ -159,6 +159,7 @@ details.ch>summary .src{margin-left:auto;color:#555;font-size:10px;}
 .q-no{color:var(--green);font-size:12px;font-weight:700;flex:none;}
 .q-title{font-size:13.5px;font-weight:600;}
 .q-stem{font-size:12.5px;color:#b0b0b0;line-height:1.75;}
+.q-fig{display:block;max-width:min(100%,420px);height:auto;margin:10px 0 2px;border:1px solid #2a2a2a;border-radius:6px;background:#fff;padding:4px;}
 .q-key{font-size:12px;color:#7f9a5f;line-height:1.7;margin-top:6px;}
 .q-src{font-size:10.5px;color:#555;margin-top:8px;}
 
@@ -2206,7 +2207,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -3193,17 +3194,364 @@ const ME_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   电磁学（大一下）
+   ============================================================ */
+const COURSE_ES = {
+  name:'电磁学',
+  school:'南开大学 · 物理科学学院',
+  semester:'大一下',
+  textbook:'赵凯华、陈熙谋《电磁学》（据课程知识整理与作业题体系；原始资料未标注具体版次）',
+  teachers:'李乙钢（2017–2018 期末 A 卷命题人）、刘永基（2025 春作业与课程总结署名）',
+  examLen:'选择题 + 填空题 + 5 道解答题（电磁学卷）；大学物理（一）卷为 10 道解答题',
+  grade:'资料未注明',
+  paper:'2017–2018 电磁学 A 卷：选择 6×3 分 ＋ 填空 6×3 分 ＋ 解答 5 题共 64 分；大学物理（一）卷：填空 10 分 ＋ 10 道解答题×10 分（本页只收录其中的电磁学题）',
+  refs:['赵凯华、陈熙谋《电磁学》',
+        '《大学物理 A 知识整理（三）电磁学》',
+        '刘永基《电磁学课程总结》'],
+  src:'章节来自《大学物理A知识整理（3）电磁学》（9 章）与刘永基《电磁学课程总结》；真题来自 2017–2018 电磁学期末 A 卷（李乙钢）完整卷，以及 2017–2018、2018–2019、2019–2020 三套《大学物理（一）》期末 A 卷中的电磁学题目；作业题来自《刘永基老师2025春电磁学作业综合版.pdf》'
+};
+
+const ES_CHAPTERS = [
+{no:'1', title:'静电学的基本原理', en:'第一章', file:'大学物理A知识整理（3）电磁学.pdf 第一章',
+ sections:['库仑定律','电荷与电荷守恒','电场强度','高斯定理','电势','电偶极子','求解电场分布的常见方法'],
+ concepts:[
+  ['库仑定律','点电荷之间的作用力与电荷量乘积成正比、与距离平方成反比，方向沿连线。'],
+  ['电荷守恒与量子化','孤立体系电荷总量不变；电荷量是 e=1.6×10⁻¹⁹ C 的整数倍。'],
+  ['电场强度','E=F/q₀，由场源电荷分布决定，与试探电荷无关。'],
+  ['高斯定理','通过任意闭合曲面的电通量等于面内电荷的代数和除以 ε₀；对称场中可用来求 E。'],
+  ['电势','U=∫E·dl，电势差与路径无关（静电场为保守场）。'],
+  ['电偶极子','电偶极矩 p=qL；远场按 1/r³ 衰减，在外场中受力矩 p×E。']
+ ],
+ formulas:[
+  ['库仑定律', R`\vec F_{12}=\frac{1}{4\pi\varepsilon_0}\frac{q_1q_2}{r_{12}^2}\hat r_{12}`],
+  ['电场强度', R`\vec E=\frac{\vec F}{q_0},\qquad \vec E=\frac{1}{4\pi\varepsilon_0}\int\frac{dq}{r^2}\hat r`],
+  ['高斯定理', R`\oint_S\vec E\cdot d\vec S=\frac{1}{\varepsilon_0}\sum_{S内}q_i`],
+  ['电势', R`U_P=\int_P^{\infty}\vec E\cdot d\vec l,\qquad \vec E=-\nabla U`],
+  ['均匀带电直线的场', R`E=\frac{\lambda}{2\pi\varepsilon_0 r}\quad(\text{无限长})`],
+  ['电偶极子远场', R`E_r=\frac{1}{4\pi\varepsilon_0}\frac{2p\cos\theta}{r^3},\qquad E_\theta=\frac{1}{4\pi\varepsilon_0}\frac{p\sin\theta}{r^3}`]
+ ]},
+
+{no:'2', title:'静电场中的导体', en:'第二章', file:'大学物理A知识整理（3）电磁学.pdf 第二章',
+ sections:['导体的基本特征','静电平衡','电容器','静电能'],
+ concepts:[
+  ['静电平衡','导体内部 E=0，整个导体是等势体，电荷只分布在表面。'],
+  ['导体表面场','表面附近 E=σ/ε₀，方向垂直于表面。'],
+  ['静电屏蔽','空腔导体可屏蔽外场；接地空腔导体可屏蔽内场对外部的影响。'],
+  ['电容器','C=Q/U，只由几何形状与介质决定。'],
+  ['静电能','W=½QU=½CU²=Q²/(2C)；也可写成电场能量密度 ½D·E 的积分。']
+ ],
+ formulas:[
+  ['静电平衡条件', R`\vec E_{内}=0,\qquad U=\text{常量}`],
+  ['导体表面场', R`E=\frac{\sigma}{\varepsilon_0}`],
+  ['电容定义', R`C=\frac{Q}{U}`],
+  ['平行板电容器', R`C=\frac{\varepsilon_0\varepsilon_r S}{d}`],
+  ['球形电容器', R`C=\frac{4\pi\varepsilon_0\varepsilon_r R_1R_2}{R_2-R_1}`],
+  ['静电能', R`W=\tfrac12QU=\tfrac12CU^2=\frac{Q^2}{2C},\qquad w_e=\tfrac12\vec D\cdot\vec E`]
+ ]},
+
+{no:'3', title:'恒定电流', en:'第三章', file:'大学物理A知识整理（3）电磁学.pdf 第三章',
+ sections:['电流与电流密度','电阻','电动势','直流电路分析'],
+ concepts:[
+  ['电流与电流密度','I=∫j·dS；j=nev_d，方向为正电荷运动方向。'],
+  ['欧姆定律的微分形式','j=σE，σ 为电导率。'],
+  ['电阻','R=ρL/S；电阻率随温度变化。'],
+  ['电动势','非静电力把单位正电荷从负极搬到正极所做的功，ε=∫E_non·dl。'],
+  ['直流电路','基尔霍夫节点电流定律与回路电压定律。']
+ ],
+ formulas:[
+  ['电流密度', R`\vec j=ne\vec v_d,\qquad I=\int_S\vec j\cdot d\vec S`],
+  ['欧姆定律微分形式', R`\vec j=\sigma\vec E`],
+  ['电阻', R`R=\rho\frac{L}{S}`],
+  ['电动势', R`\varepsilon=\int_{-}^{+}\vec E_{\text{non}}\cdot d\vec l`],
+  ['基尔霍夫定律', R`\sum I=0,\qquad \sum \varepsilon=\sum IR`]
+ ]},
+
+{no:'4', title:'电介质', en:'第四章', file:'大学物理A知识整理（3）电磁学.pdf 第四章',
+ sections:['绝缘体的极化方式','极化电效应','电位移及其性质','全空间充满均匀介质时的静电学','电介质的常见问题'],
+ concepts:[
+  ['极化','无极分子位移极化、有极分子取向极化，宏观上用极化强度 P 描述。'],
+  ['极化电荷','ρ_P=−∇·P，σ_P=P·n̂；极化电荷不能自由移动。'],
+  ['电位移矢量','D=ε₀E+P；有介质时高斯定理只计自由电荷。'],
+  ['有介质高斯定理','∮D·dS=Σq_free。'],
+  ['介质中的场','均匀各向同性介质中 D=εE，ε=ε₀ε_r。']
+ ],
+ formulas:[
+  ['极化强度', R`\vec P=\frac{\sum\vec p}{\Delta V}`],
+  ['极化电荷', R`\rho_P=-\nabla\cdot\vec P,\qquad \sigma_P=\vec P\cdot\hat n`],
+  ['电位移', R`\vec D=\varepsilon_0\vec E+\vec P=\varepsilon\vec E`],
+  ['有介质高斯定理', R`\oint_S\vec D\cdot d\vec S=\sum_{S内}q_{\text{free}}`],
+  ['介质中的电容', R`C=\varepsilon_r C_0`]
+ ]},
+
+{no:'5', title:'静磁学', en:'第五章', file:'大学物理A知识整理（3）电磁学.pdf 第五章',
+ sections:['安培定律与毕奥—萨伐尔定律','磁场的基本属性','磁偶极子','安培力与洛伦兹力'],
+ concepts:[
+  ['毕奥—萨伐尔定律','电流元 Idl 在空间产生 dB，方向由右手螺旋定则确定。'],
+  ['安培环路定理','∮B·dl=μ₀ΣI，适用于稳恒电流的对称场。'],
+  ['磁场无源','∮B·dS=0，磁感应线闭合，无磁单极子。'],
+  ['磁偶极子','磁矩 m=I S n̂；远场为偶极场，在外场中受力矩 m×B。'],
+  ['洛伦兹力','F=qv×B；安培力是大量载流子洛伦兹力的宏观表现。']
+ ],
+ formulas:[
+  ['毕奥—萨伐尔定律', R`d\vec B=\frac{\mu_0}{4\pi}\frac{I\,d\vec l\times\hat r}{r^2}`],
+  ['安培环路定理', R`\oint_L\vec B\cdot d\vec l=\mu_0\sum I`],
+  ['磁通量', R`\Phi_m=\int_S\vec B\cdot d\vec S,\qquad \oint_S\vec B\cdot d\vec S=0`],
+  ['磁矩', R`\vec m=I\vec S,\qquad \vec M_{\text{mag}}=\vec m\times\vec B`],
+  ['洛伦兹力', R`\vec F=q\vec v\times\vec B`],
+  ['安培力', R`d\vec F=I\,d\vec l\times\vec B`]
+ ]},
+
+{no:'6', title:'电磁感应', en:'第六章', file:'大学物理A知识整理（3）电磁学.pdf 第六章',
+ sections:['电磁感应的基本规律','动生电动势','感生电动势','电感','位移电流'],
+ concepts:[
+  ['法拉第定律','ε=−dΦ/dt；楞次定律确定感应电流方向。'],
+  ['动生电动势','导体在磁场中运动，ε=∫(v×B)·dl。'],
+  ['感生电动势','变化磁场产生有旋电场，ε=∮E_ind·dl=−dΦ/dt。'],
+  ['自感与互感','L=Φ/I，M=Φ₂₁/I₁；互感具有对称性。'],
+  ['位移电流','I_d=ε₀dΦ_E/dt，与传导电流共同激发磁场。']
+ ],
+ formulas:[
+  ['法拉第定律', R`\varepsilon=-\frac{d\Phi}{dt}`],
+  ['动生电动势', R`\varepsilon=\int(\vec v\times\vec B)\cdot d\vec l`],
+  ['感生电动势', R`\oint_L\vec E_{\text{ind}}\cdot d\vec l=-\frac{d\Phi}{dt}`],
+  ['自感', R`\varepsilon_L=-L\frac{dI}{dt},\qquad L=\frac{\Phi}{I}`],
+  ['互感', R`\varepsilon_{21}=-M\frac{dI_1}{dt},\qquad M_{12}=M_{21}`],
+  ['位移电流', R`I_d=\varepsilon_0\frac{d\Phi_E}{dt}`]
+ ]},
+
+{no:'7', title:'磁介质', en:'第七章', file:'大学物理A知识整理（3）电磁学.pdf 第七章',
+ sections:['物质的磁性','非磁性物质的磁化','磁性的机制'],
+ concepts:[
+  ['磁化强度','M=Σm/ΔV；磁化电流密度 j_M=∇×M，面电流 i_M=M×n̂。'],
+  ['磁场强度','H=B/μ₀−M；有介质时安培环路定理只计传导电流。'],
+  ['介质分类','顺磁质 μ_r>1、抗磁质 μ_r<1、铁磁质 μ_r≫1 且有磁滞。'],
+  ['有介质安培环路','∮H·dl=ΣI_free。']
+ ],
+ formulas:[
+  ['磁化强度', R`\vec M=\frac{\sum\vec m}{\Delta V}`],
+  ['磁场强度', R`\vec H=\frac{\vec B}{\mu_0}-\vec M,\qquad \vec B=\mu\vec H=\mu_0\mu_r\vec H`],
+  ['有介质安培环路', R`\oint_L\vec H\cdot d\vec l=\sum I_{\text{free}}`],
+  ['磁化电流', R`\vec j_M=\nabla\times\vec M,\qquad \vec i_M=\vec M\times\hat n`]
+ ]},
+
+{no:'8', title:'交流电', en:'第八章', file:'大学物理A知识整理（3）电磁学.pdf 第八章',
+ sections:['简谐交流电','阻尼振荡电路（LCR）','受迫振荡电路','复数法','交流电的更多知识'],
+ concepts:[
+  ['简谐交流电','u=U₀cos(ωt+φ)，有效值 U=U₀/√2。'],
+  ['阻抗','R、L、C 的阻抗分别为 R、jωL、1/(jωC)。'],
+  ['LCR 谐振','ω₀=1/√(LC)，谐振时电流最大。'],
+  ['复数法','用相量表示电压电流，阻抗串联并联按复数运算。']
+ ],
+ formulas:[
+  ['简谐交流电', R`u=U_0\cos(\omega t+\varphi),\qquad U_{\text{rms}}=\frac{U_0}{\sqrt2}`],
+  ['阻抗', R`Z_R=R,\qquad Z_L=j\omega L,\qquad Z_C=\frac{1}{j\omega C}`],
+  ['谐振频率', R`\omega_0=\frac{1}{\sqrt{LC}}`],
+  ['RLC 阻抗', R`Z=R+j\left(\omega L-\frac{1}{\omega C}\right)`]
+ ]},
+
+{no:'9', title:'麦克斯韦电磁理论', en:'第九章', file:'大学物理A知识整理（3）电磁学.pdf 第九章',
+ sections:['麦克斯韦方程组','电磁波概念的建立','真空中的电磁场动力学'],
+ concepts:[
+  ['麦克斯韦方程组','四条方程统一描述电场与磁场的产生、变化与传播。'],
+  ['位移电流假设','变化的电场产生磁场，补全了安培环路定理。'],
+  ['电磁波','E 与 B 相互垂直、同相位，以 c=1/√(μ₀ε₀) 传播。'],
+  ['电磁波能量','能流密度由坡印廷矢量 S=E×H 描述。']
+ ],
+ formulas:[
+  ['麦克斯韦方程组（积分）', R`\oint_S\vec D\cdot d\vec S=\sum q_f,\quad \oint_L\vec E\cdot d\vec l=-\frac{d\Phi_B}{dt}`],
+  ['麦克斯韦方程组（续）', R`\oint_S\vec B\cdot d\vec S=0,\quad \oint_L\vec H\cdot d\vec l=I_f+\frac{d\Phi_D}{dt}`],
+  ['真空电磁波速度', R`c=\frac{1}{\sqrt{\mu_0\varepsilon_0}}`],
+  ['坡印廷矢量', R`\vec S=\vec E\times\vec H`]
+ ]}
+];
+
+const ES_TOPICS = [
+ {name:'高斯定理与对称场', ch:'第1/4章', pri:'S', stars:5, ev:[['2018','解答7'],['2019','解答6'],['2020','解答6·解答8']], note:'球对称、柱对称、无限大平面：先判断对称性再选高斯面'},
+ {name:'电势与电势差', ch:'第1章', pri:'S', stars:5, ev:[['2018','解答6'],['2019','解答6'],['2020','填空3']], note:'由 E 积分求 U、画 U-r 曲线；带电直线的电势是常考题'},
+ {name:'导体静电平衡与电容器', ch:'第2章', pri:'S', stars:5, ev:[['2018','填空2'],['2019','填空1'],['2020','解答8']], note:'导体内部 E=0、表面 E=σ/ε₀；平板/球形/圆柱形电容器'},
+ {name:'电介质与电位移', ch:'第4章', pri:'S', stars:5, ev:[['2018','填空2'],['2019','解答6'],['2020','解答6·解答8']], note:'D=εE、有介质高斯定理只计自由电荷；极化电荷面密度'},
+ {name:'毕奥—萨伐尔与磁场叠加', ch:'第5章', pri:'S', stars:5, ev:[['2018','解答8'],['2019','解答7'],['2020','解答7']], note:'半圆柱面、弯导线、圆盘线圈：分段积分后矢量叠加'},
+ {name:'安培环路与磁介质', ch:'第5/7章', pri:'S', stars:5, ev:[['2018','解答9'],['2019','解答9']], note:'∮H·dl=ΣI_free；求 H、B、M 与磁化面电流'},
+ {name:'电磁感应', ch:'第6章', pri:'S', stars:5, ev:[['2018','填空6'],['2019','解答8'],['2020','解答9']], note:'动生、感生电动势；楞次定律判断方向'},
+ {name:'互感与自感', ch:'第6章', pri:'A', stars:4, ev:[['2018','解答10'],['2019','解答9']], note:'先算磁通再求 M、L；输电线与线框、同轴电缆是典型模型'},
+ {name:'麦克斯韦方程组', ch:'第9章', pri:'A', stars:4, ev:[['2018','填空1'],['2019','填空5'],['2020','填空1']], note:'四条方程的积分/微分形式及物理意义'},
+ {name:'交流电', ch:'第8章', pri:'C', stars:2, ev:[], note:'讲义第 8 章覆盖，但四套真题未单独命题'}
+];
+
+const ES_TYPES = [
+ {name:'选择/填空·基本概念', cnt:14, topics:'麦克斯韦方程 / 导体 / 介质', pri:'S', ex:'补全麦克斯韦方程、判断电势高低、介质电容器变化'},
+ {name:'高斯定理求场', cnt:4, topics:'对称场', pri:'S', ex:'球形空腔、同心球面、圆柱导体'},
+ {name:'电势积分与梯度', cnt:3, topics:'电势', pri:'S', ex:'带电直线在中垂面上的电势与 E_r'},
+ {name:'导体与电容器', cnt:3, topics:'静电平衡·电容', pri:'S', ex:'导体球壳、两层介质平板电容器'},
+ {name:'电介质与 D', cnt:3, topics:'极化·电位移', pri:'S', ex:'介质球壳的 E、U 与极化电荷'},
+ {name:'磁场叠加', cnt:3, topics:'毕奥—萨伐尔', pri:'S', ex:'半圆柱面电流、弯导线、半木球线圈'},
+ {name:'安培环路与磁介质', cnt:2, topics:'H·M·磁化电流', pri:'S', ex:'同轴电缆、圆柱导体空腔'},
+ {name:'电磁感应与电感', cnt:3, topics:'动生/感生·互感', pri:'A', ex:'导轨、感生电场、输电线与线框互感'}
+];
+
+const ES_EXAMS = [
+{ id:'es2018', label:'电磁学 2017–2018 学年第二学期期末 A 卷（李乙钢）',
+  meta:[['命题人','李乙钢'],['日期','2018-06-28'],['结构','选择 6×3 分 ＋ 填空 6×3 分 ＋ 解答 5 题共 64 分'],['来源文件','2017-2018大班电磁学.pdf']],
+  qs:[
+   {no:'1', title:'导体壳内外的电势', topic:'导体静电平衡', type:'选择 · 3 分',
+    stem:'一封闭的导体壳 M 内有两个导体 A 和 B；M 与 B 不带电，A 带正电。则三导体的电势 U_A、U_B、U_M 的大小关系是？（原卷配图如下）<img class="q-fig" src="img/em/em2018_sel1.png" alt="导体壳 M 内 A、B 两导体">',
+    key:'A 带正电、B 与 M 不带电且 B 在空腔内：U_A>U_M=U_B。', src:'选择题 1'},
+   {no:'2', title:'高斯定理的适用条件', topic:'高斯定理', type:'选择 · 3 分',
+    stem:'如果下列假设成立，高斯定理将不适用的是：(1) 平方反比不准确成立；(2) μ₀、ε₀ 不是普适常数；(3) 有磁单极子存在。',
+    key:'高斯定理依赖库仑定律的平方反比；若平方反比不严格成立，高斯定理不再普遍适用。', src:'选择题 2'},
+   {no:'3', title:'阴极射线之间的相互作用', topic:'洛伦兹力', type:'选择 · 3 分',
+    stem:'两束阴极射线并列射出，它们之间的相互作用力有哪些？(1) 安培力、洛伦兹力、库仑力；(2) 其中 2 种；(3) 其中 1 种。',
+    key:'两束电子流之间同时存在库仑斥力与磁相互作用（运动电荷的洛伦兹力）。', src:'选择题 3'},
+   {no:'4', title:'静磁学边界条件', topic:'磁介质边界', type:'选择 · 3 分',
+    stem:'不同介质分界面上正确的静磁学条件是：(1) 垂直于界面的 B 分量相等；(2) 垂直于界面的 H 分量相等；(3) 平行于界面的 B 分量相等。',
+    key:'B 的法向分量连续；H 的切向分量连续（无自由面电流时）。', src:'选择题 4'},
+   {no:'5', title:'电介质受到的力', topic:'电介质', type:'选择 · 3 分',
+    stem:'一块电介质部分地放入一个孤立的已充电平行板电容器内，它受到的力作用是：(1) 大小为零；(2) 将电介质拉进去；(3) 将电介质推出来。',
+    key:'介质被吸入电容器（系统静电能降低），故选 (2)。', src:'选择题 5'},
+   {no:'6', title:'平行反向电流的相互作用', topic:'安培力', type:'选择 · 3 分',
+    stem:'两根平行的导线载有方向相反的电流 I₁、I₂，则两根导线之间：(1) 互相吸引；(2) 互相排斥；(3) 没有相互作用。',
+    key:'同向电流相吸、反向电流相斥，故选 (2)。', src:'选择题 6'},
+   {no:'7', title:'无限大导体板的电场', topic:'导体静电平衡', type:'填空 · 3 分',
+    stem:'一位于真空中的无限大导体平面，厚度为 d，面电荷密度为 σ，真空介电常数为 ε₀。导体内的电场强度大小为____，导体外的电场强度大小为____。',
+    key:'导体内部 E=0；导体外 E=σ/ε₀（两侧各 σ/2ε₀ 叠加）。', src:'填空题 1'},
+   {no:'8', title:'充入介质的电容器', topic:'电介质·电容', type:'填空 · 3 分',
+    stem:'一个接通电源的电容器中充入相对介电常数 ε_r 的电介质，则电容变为原来的____倍，电场变为原来的____倍，静电能变为原来的____倍。',
+    key:'电压不变：C→ε_rC，E 不变，W=½CU²→ε_r 倍。', src:'填空题 2'},
+   {no:'9', title:'补全麦克斯韦方程组', topic:'麦克斯韦方程组', type:'填空 · 3 分',
+    stem:'补全麦克斯韦方程组的积分形式：∮_S ( )·dS=∫_V ρ_f dV；∮_l E·dl=∫_S ( )·dS。',
+    key:'第一式填 D；第二式填 −∂B/∂t。', src:'填空题 3'},
+   {no:'10', title:'麦克斯韦的两个基本假设', topic:'麦克斯韦方程组', type:'填空 · 3 分',
+    stem:'麦克斯韦在提出麦克斯韦方程组时，所做出的两个基本假设是什么？(1)____；(2)____。',
+    key:'(1) 感生电场（涡旋电场）假设；(2) 位移电流假设。', src:'填空题 4'},
+   {no:'11', title:'三种回路的安培环路定理', topic:'安培环路定理', type:'填空 · 3 分',
+    stem:'两平行直导线通有方向相反的电流 I₀，求 A、B、C 三种环路情况下的安培环路定理 ∮H·dl 的值。（原卷配图如下）<img class="q-fig" src="img/em/em2018_fill5.png" alt="A、B、C 三个安培环路">',
+    key:'按环路所围电流的代数和计算：A 围 +I₀、C 围 −I₀、B 同时围住两线（代数和为零）。', src:'填空题 5'},
+   {no:'12', title:'感应电流的方向', topic:'电磁感应', type:'填空 · 3 分',
+    stem:'将滑动变阻器的阻值提高，作出右边环路的感应电流的方向。（原卷配图如下）<img class="q-fig" src="img/em/em2018_fill6.png" alt="变阻器与右侧导线框">',
+    key:'阻值增大→左侧电流减小→穿过右环的磁通量减小；由楞次定律，右环感应电流的磁场要维持原磁通，据此判断方向。', src:'填空题 6'},
+   {no:'13', title:'导体平面与点电荷（镜像法）', topic:'镜像法·导体', type:'解答 · 13 分',
+    stem:'无限大导体平面右侧距离为 d 处放置电荷 q，导体平面接地。求：(1) 右半空间（z≥0）的电势分布；(2) 导体平面上 A 点的电场分布；(3) A 点的极化电荷密度 σ_e；(4) 电荷 q 所受作用力。（原卷配图如下）<img class="q-fig" src="img/em/em2018_q1.png" alt="接地导体平面与点电荷 q">',
+    key:'镜像电荷 −q 位于平面另一侧对称点；φ=(q/4πε₀)(1/r₁−1/r₂)；表面 E=σ/ε₀，F=q²/(16πε₀d²) 指向导体。', src:'解答题 1'},
+   {no:'14', title:'球形电容器的双层介质', topic:'电介质·电容器', type:'解答 · 13 分',
+    stem:'空间中有一球形电容器，内部极板和外壳为导体。两层导体之间填充了相对极化强度不同的电介质，分别为 ε₁、ε₂；内层极板上带电量 Q₀。求：(1) 电容器中电场强度 E 和电位移 D 的分布；(2) 内极板的电荷面密度 σ_e；(3) 该电容器的电容 C。（原卷配图如下）<img class="q-fig" src="img/em/em2018_q2.png" alt="球形电容器双层介质">',
+    key:'由有介质高斯定理 D=Q₀/(4πr²)（两介质中相同），E=D/ε；两层串联，1/C=1/C₁+1/C₂。', src:'解答题 2'},
+   {no:'15', title:'三支路直流电路', topic:'直流电路', type:'解答 · 12 分',
+    stem:'如图所示电路，ε₁、ε₂、ε₃ 分别为 20V、10V、13V，内阻 r₁、r₂、r₃ 均为 1Ω，R₁、R₂、R₃ 分别为 6Ω、2Ω、4Ω。求：(1) 各支路的电流；(2) A、B 两点电势差 U_ab。（原卷配图如下）<img class="q-fig" src="img/em/em2018_q3.png" alt="三支路直流电路">',
+    key:'设支路电流方向，列基尔霍夫节点与回路方程，解得三条支路电流，再由 U_ab=Σ(ε−Ir) 求电势差。', src:'解答题 3'},
+   {no:'16', title:'带电圆盘与小线圈的互感', topic:'互感·磁场', type:'解答 · 13 分',
+    stem:'有一带电圆盘由导线密绕而成，单位长度上的匝数为 n，半径为 R；距其 l 处有一小线圈，半径为 r，且 r≪l，小线圈处的磁场可近似为均匀。迎着 z 轴方向看，圆盘通有逆时针方向的电流 I。求：(1) 小线圈处的磁场 B₁；(2) 小线圈与圆盘的互感系数 M；(3) 若线圈通有 I=Kt 的电流，求小线圈的感应电动势 ε₂；(4) 小线圈由两种材料构成，一半为 ρ_A、一半 ρ_B，求感应电流 I₂；(5)（选做）求两段导线中的静电场 E_A0、E_B0。（原卷配图如下）<img class="q-fig" src="img/em/em2018_q4.png" alt="带电圆盘与小线圈">',
+    key:'圆盘可看成一系列同心圆环叠加，B₁≈μ₀nIR²/[2(R²+l²)^{3/2}]；Φ=NB₁πr²，M=Φ/I；ε₂=−M dI/dt。', src:'解答题 4'},
+   {no:'17', title:'两圆柱导体空腔的磁场', topic:'安培环路·叠加', type:'解答 · 13 分',
+    stem:'如图，两个圆柱导体各挖去一部分后对接在一起，被挖掉的那一部分为真空。两导体通过的电流方向相反，电流密度大小为 j。已知两导体的磁导率等于真空磁导率 μ₀，求真空部分的磁感应强度分布。（原卷配图如下）<img class="q-fig" src="img/em/em2018_q5.png" alt="两圆柱导体对接与空腔">',
+    key:'用叠加原理：完整圆柱（+j）与挖去圆柱（−j）的场相加；空腔内 B=μ₀j a/2（均匀场），方向垂直于两轴连线。', src:'解答题 5'}
+  ]},
+
+{ id:'dp2018', label:'大学物理（一）2017–2018 学年第二学期期末 A 卷 · 电磁学部分',
+  meta:[['结构','填空 10 分（每空 1 分）＋ 10 道解答题×10 分；本套只收录电磁学题'],['备注','力学题（二、三、四、五）未收录'],['来源文件','2018.pdf（与 大物2017.pdf 内容相同）']],
+  qs:[
+   {no:'1', title:'麦克斯韦方程的积分形式', topic:'麦克斯韦方程组', type:'填空 · 4 分',
+    stem:'分别写出能够体现下列每个结论的麦克斯韦方程组普适（基本）方程积分形式：变化的磁场可以产生电场：____；磁感应线是无头无尾的：____；电荷总伴随着电场：____；变化的电场可以产生磁场：____。',
+    key:'∮E·dl=−dΦ_B/dt；∮B·dS=0；∮D·dS=Σq；∮H·dl=I_f+dΦ_D/dt。', src:'填空题 1'},
+   {no:'2', title:'保持电源连接时充入介质', topic:'电介质·电容', type:'填空 · 2 分',
+    stem:'一平行平板电容器充电后与电源保持连接，然后使两极板间充满相对介电常数为 ε_r 的各向同性均匀电介质。这时两极板上的电荷是原来的____倍，电场强度是原来的____倍。',
+    key:'电压不变：Q=ε_rQ₀，E 不变。', src:'填空题 2'},
+   {no:'3', title:'两类电流的微观本质', topic:'恒定电流', type:'填空 · 2 分',
+    stem:'磁场都可以看作是电流激发的。从本质上讲电流可分为两类：一类是传导电流、运流电流及磁化电流，这类电流的微观本质是____；另一类是位移电流，其本质是____。',
+    key:'前者是电荷的宏观/微观定向运动；后者是电场（电位移）随时间的变化。', src:'填空题 3'},
+   {no:'4', title:'温差电效应的应用', topic:'恒定电流', type:'填空 · 2 分',
+    stem:'写出温差电效应的两种主要应用：____和____。',
+    key:'温差发电、热电偶测温（或电制冷）。', src:'填空题 4'},
+   {no:'5', title:'带电直线的电势与场', topic:'电势·电场', type:'解答 · 10 分',
+    stem:'长为 2a 的直线段上均匀地分布着电荷量为 q 的电荷，P 点在线段的垂直平分面上，离线段中点 O 的距离为 r。求 P 点的电势和 OP 方向上的电场强度分量。（原卷配图如下）<img class="q-fig" src="img/em/dp2018_q6.png" alt="带电直线与 P 点">',
+    key:'U=(q/8πε₀a)ln[(√(a²+r²)+a)/(√(a²+r²)−a)]；E_r=−∂U/∂r=q/[4πε₀r√(a²+r²)]。', src:'解答题 六'},
+   {no:'6', title:'同心球面的电场与电势', topic:'高斯定理·电势', type:'解答 · 10 分',
+    stem:'两个同心导体球面的半径分别为 R₁ 和 R₂（R₁<R₂），各自带有电荷 Q₁ 和 Q₂，在两球面间充满相对介电常数为 ε_r 的电介质。求：(1) 内球面内部、两球面之间、外球面外部的电场强度矢量分布；(2) 上述各区域的电势分布；(3) 两球面间的电势差。',
+    key:'分区域用高斯定理：r<R₁ 时 E=0；R₁<r<R₂ 时 E=Q₁/(4πε₀ε_r r²)；r>R₂ 时 E=(Q₁+Q₂)/(4πε₀r²)；U 分段积分。', src:'解答题 七'},
+   {no:'7', title:'半圆柱面电流的磁场', topic:'毕奥—萨伐尔', type:'解答 · 10 分',
+    stem:'如图所示（横截面图），半径为 R 的无限长半圆柱面导体，沿长度方向流有强度为 I 的电流，电流在柱面上均匀分布。求半圆柱面轴线 OO′ 上任一点的磁感应强度。（原卷配图如下）<img class="q-fig" src="img/em/dp2018_q8.png" alt="半圆柱面电流横截面">',
+    key:'取窄条 dI=I dθ/π，dB=μ₀dI/(2πR)；沿半圆积分，垂直于对称面的分量抵消，B=μ₀I/(2π²R)，方向由右手定则确定。', src:'解答题 八'},
+   {no:'8', title:'圆柱导体外包磁介质', topic:'安培环路·磁介质', type:'解答 · 10 分',
+    stem:'一无限长圆柱形导体，半径为 R₁，其中均匀通过电流 I，方向如图。导体外紧包一层内外半径分别为 R₁ 和 R₂ 的圆柱筒顺磁介质，其相对磁导率为 μ_r。求：(1) 各区域磁场强度 H 的分布；(2) 不同区域磁感应强度 B 的分布；(3) 磁介质内磁化强度 M 的分布；(4) 磁介质内、外表面的磁化面电流密度。（导体的磁导率同真空）（原卷配图如下）<img class="q-fig" src="img/em/dp2018_q9.png" alt="圆柱导体与磁介质圆筒">',
+    key:'由 ∮H·dl=I_free 得 H=I/(2πr)（r>R₁）；B=μ₀H（导体外、介质外）、B=μ₀μ_rH（介质内）；M=(μ_r−1)H。', src:'解答题 九'},
+   {no:'9', title:'输电线回路与线框的互感', topic:'互感', type:'解答 · 10 分',
+    stem:'一个输电回路可看成如图所示的两条平行长直载流导线，电流为 I、方向相反。这两根导线与旁边的长和宽分别为 a 和 b 的导线框共面，导线框上有 N 匝导线。求：(1) 两条平行长直载流导线输电回路与导线框之间的互感系数 M；(2) 设电流 I=I₀sinωt，求导线框中的感应电动势 ε。（原卷配图如下）<img class="q-fig" src="img/em/dp2018_q10.png" alt="两平行导线与矩形线框">',
+    key:'B(r)=μ₀I/(2π)(1/r−1/(r+d))；Φ=∫B·dS 后乘 N，M=NΦ/I；ε=−M dI/dt=−M I₀ω cosωt。', src:'解答题 十'}
+  ]},
+
+{ id:'dp2019', label:'大学物理（一）2018–2019 学年第二学期期末 A 卷 · 电磁学部分',
+  meta:[['结构','填空 20 分（每空 2 分）＋ 9 道解答题×10 分；本套只收录电磁学题'],['备注','力学题（二、三、四、五）未收录'],['来源文件','2019.pdf（与 大物2018 1.doc 内容相同）']],
+  qs:[
+   {no:'1', title:'断开电源后拉大极板距离', topic:'电容器', type:'填空 · 6 分',
+    stem:'平行板电容器充电后与电源断开，然后将电容器两极板距离拉大，则两极板间电势差____，电场强度____，电场能量____。（填“减少”“增大”或“不变”）',
+    key:'Q 不变：C 减小→U 增大；E=σ/ε₀ 不变；W=Q²/(2C) 增大。', src:'填空题 1'},
+   {no:'2', title:'欧姆定律的微分形式', topic:'恒定电流', type:'填空 · 2 分',
+    stem:'欧姆定律的微分形式是____。',
+    key:'j=σE。', src:'填空题 2'},
+   {no:'3', title:'最大磁力矩之比', topic:'磁矩', type:'填空 · 2 分',
+    stem:'在匀强磁场中有两个平面线圈，其面积 A₁=2A₂，通有电流 I₁=2I₂，它们所受的最大磁力矩之比 M₁/M₂ 等于____。',
+    key:'M=mB=IAB，故 M₁/M₂=4。', src:'填空题 3'},
+   {no:'4', title:'霍尔效应与温差电效应', topic:'电磁学应用', type:'填空 · 4 分',
+    stem:'霍尔效应的主要应用是（写出一种即可）____；温差电效应的主要应用是（写出一种即可）____。',
+    key:'霍尔效应：测磁场/判断载流子类型；温差电：热电偶测温/温差发电。', src:'填空题 4'},
+   {no:'5', title:'结论与麦克斯韦方程的对应', topic:'麦克斯韦方程组', type:'填空 · 6 分',
+    stem:'下列结论分别等效于哪个麦克斯韦方程式？变化的磁场可以激发电场：____；变化的电场可以激发磁场：____；磁感应线是永远闭合的：____。',
+    key:'∮E·dl=−dΦ_B/dt；∮H·dl=I_f+dΦ_D/dt；∮B·dS=0。', src:'填空题 5'},
+   {no:'6', title:'导体球壳与介质', topic:'电介质·导体', type:'解答 · 10 分',
+    stem:'带电量为 +q 的点电荷处在导体球壳中心，球壳的内外半径分别为 R₁ 和 R₂，球壳内充满相对介电常数为 ε_r 的电介质。求球壳内外及球壳上任意一点的电场强度和电势的值，并画出 E-r 和 U-r 曲线草图。（原卷配图如下）<img class="q-fig" src="img/em/dp2019_q6.png" alt="导体球壳与介质">',
+    key:'r<R₁：E=q/(4πε₀ε_r r²)；R₁<r<R₂：E=0（导体）；r>R₂：E=q/(4πε₀r²)；U 分段积分，注意导体等势。', src:'解答题 六'},
+   {no:'7', title:'半木球上的线圈', topic:'毕奥—萨伐尔', type:'解答 · 10 分',
+    stem:'半径为 R 的半个木球上绕有细导线，线圈很紧密，相邻线圈彼此平行地在球面上靠紧，以单层盖住半个球面，共有 N 匝。设导线中通有电流 I，求球心 O 处的磁感应强度（木球磁导率与真空近似相等）。（原卷配图如下）<img class="q-fig" src="img/em/dp2019_q7.png" alt="半木球上的紧密线圈">',
+    key:'取球坐标，dN=(N/(π/2))dθ；圆环在球心的 dB=μ₀I dN sin²θ/(2R)；积分得 B=μ₀NI/(2πR)（方向沿 x 轴）。', src:'解答题 七'},
+   {no:'8', title:'圆柱形磁场与棒 AB 的感生电动势', topic:'感生电动势', type:'解答 · 10 分',
+    stem:'均匀磁场 B 被限制在圆心为 O、半径 R 的无限长圆柱空间内，方向垂直纸面向里。设磁场以 dB/dt=c 的匀速率增加，问：(1) 任意半径 r 处感应电场的大小；(2) 磁场外棒 AB 上的感生电动势，并判断感应电动势的方向。已知 AB=OA=OB=l。（原卷配图如下）<img class="q-fig" src="img/em/dp2019_q8.png" alt="圆柱形磁场与棒 AB">',
+    key:'r<R：E=c r/2；r>R：E=cR²/(2r)。AB 在磁场外，ε=∫E·dl，方向由楞次定律（B 向里增加，感生电场逆时针）确定。', src:'解答题 八'},
+   {no:'9', title:'同轴电缆的磁场与自感', topic:'安培环路·自感', type:'解答 · 10 分',
+    stem:'一同轴电缆由中心导体圆柱（不是圆筒，半径为 a）和外层导体圆管组成，圆管内外半径分别为 b 和 c，导体圆柱和圆管的绝对磁导率均为 μ₁，圆管与圆柱之间充满绝对磁导率为 μ₂ 的磁介质。电流 I 由中心圆柱流入、由圆管流回，且在导体横截面上均匀分布。求空间中各区域磁场强度 H 的大小分布，以及单位长度同轴电缆的自感系数 L。（原卷配图如下）<img class="q-fig" src="img/em/dp2019_q9.png" alt="同轴电缆截面">',
+    key:'分区域用安培环路：r<a 时 H=Ir/(2πa²)；a<r<b 时 H=I/(2πr)；b<r<c 时 H=I(c²−r²)/[2πr(c²−b²)]；r>c 时 H=0。L=∫B·H dS/I²。', src:'解答题 九'}
+  ]},
+
+{ id:'dp2020', label:'大学物理（一）2019–2020 学年第二学期期末 A 卷 · 电磁学部分',
+  meta:[['结构','填空 10 分（每空 1 分）＋ 10 道解答题×10 分；本套只收录电磁学题'],['备注','力学题（二、三、四、五）未收录'],['来源文件','大物2019.pdf（与 2020.pdf 内容相同）']],
+  qs:[
+   {no:'1', title:'静电场与感生电场', topic:'麦克斯韦方程组', type:'填空 · 6 分',
+    stem:'电场可大致分为静电场和感生电场（涡旋电场）。静电场是由____激发的，感生电场是由____激发的。静电场沿任意闭合环路的线积分为____；感生电场沿闭合环路的线积分可表示为____；真空中的静电场对任意闭合曲面的面积分可表示为____，感生电场对任意闭合曲面的面积分为____。',
+    key:'静电荷；变化的磁场。0；−dΦ_B/dt；Σq/ε₀；0。', src:'填空题 1'},
+   {no:'2', title:'位移电流', topic:'位移电流', type:'填空 · 2 分',
+    stem:'常见的电流除了“传导电流”和“磁化电流”外，还有“位移电流”。前两种电流由电荷的宏观或微观定向运动形成，而位移电流由____产生；二者本质不同，但都被称作电流，是因为它们具有共同的性质：____。',
+    key:'电场（电位移）随时间变化；都能激发磁场。', src:'填空题 2'},
+   {no:'3', title:'导体与电介质中的电场', topic:'导体·电介质', type:'填空 · 2 分',
+    stem:'在静电场中放入一块导体，经过很短的时间，导体内的电场就会变为____；在静电场中放入一块电介质，在场源不变的情况下，电介质所处空间的电场强度与原来相比将____（“保持不变”“变强”“变弱”）。',
+    key:'0；变弱（极化电荷削弱原场）。', src:'填空题 3'},
+   {no:'4', title:'球形空腔内的电场', topic:'高斯定理', type:'解答 · 10 分',
+    stem:'半径为 R、电荷体密度为 ρ 的均匀带电球内有一半径为 r 的球形空腔，求球形空腔内的电场分布，并简单说明空腔内电场分布是否与位置有关。（原卷配图如下）<img class="q-fig" src="img/em/dp2020_q6.png" alt="带电球与球形空腔">',
+    key:'用叠加原理：完整球（+ρ）与空腔球（−ρ）的场相加，空腔内 E=ρ a/(3ε₀)（a 为两球心矢量），为均匀场，与空腔内位置无关。', src:'解答题 六'},
+   {no:'5', title:'弯折导线的磁场', topic:'毕奥—萨伐尔', type:'解答 · 10 分',
+    stem:'一根无限长导线弯成如图形状，设各线段都在同一平面内（纸面内），其中第二段是半径为 R 的四分之一圆弧，其余为直线。导线中通有电流 I，求图中 O 点处的磁感应强度。（原卷配图如下）<img class="q-fig" src="img/em/dp2020_q7.png" alt="弯折导线与 O 点">',
+    key:'分段叠加：两段半无限长直导线与一段 1/4 圆弧；直导线用 B=μ₀I/(4πR)(sinθ₁+sinθ₂)，圆弧用 B=μ₀Iθ/(4πR)。', src:'解答题 七'},
+   {no:'6', title:'两层介质的平板电容器', topic:'电介质·电容器', type:'解答 · 10 分',
+    stem:'一平板电容器充满两层厚度各为 d₁ 和 d₂ 的电介质，它们的相对电容率分别为 ε_r1 和 ε_r2，极板面积为 S。求：(1) 电容器的电容（4 分）；(2) 当极板上的自由电荷面密度为 σ₀ 时，两介质分界面上的极化电荷面密度（4 分）、两层介质中的电位移（2 分）。（原卷配图如下）<img class="q-fig" src="img/em/dp2020_q8.png" alt="两层介质的平板电容器">',
+    key:'两层串联：1/C=d₁/(ε₀ε_r1S)+d₂/(ε₀ε_r2S)；D=σ₀（两层相同）；界面极化电荷 σ′=(1/ε_r2−1/ε_r1)σ₀。', src:'解答题 八'},
+   {no:'7', title:'导轨中的感应电动势', topic:'电磁感应', type:'解答 · 10 分',
+    stem:'在真空中有两条无限长平行直导线，载流大小均为 I、方向相反。在两直导线中间放置一 П 形导轨（固定），导轨由导线和电阻 R 连接而成。导轨两条边到相邻直导线的距离都为 r，导轨与两直导线在同一平面内。另一长为 L 的金属杆 ab 可在导轨上滑动并保持良好接触。若 ab 滑动的速度为 v，求：(1) ab 上的感应电动势（4 分）；(2) ab 中的感应电流（2 分）；(3) ab 所受的磁场力（4 分）。（原卷配图如下）<img class="q-fig" src="img/em/dp2020_q9.png" alt="平行导线间的 П 形导轨">',
+    key:'导轨内 B 方向相同（两导线在该区域磁场同向），B=μ₀I/(π)(1/r−1/(r+L)) 量级；ε=BLv，I=ε/R，F=ILB。', src:'解答题 九'},
+   {no:'8', title:'螺绕环的磁场、能量与自感', topic:'安培环路·自感', type:'解答 · 10 分',
+    stem:'螺绕环的横截面为矩形，内半径为 R₁，外半径为 R₂，高为 A，磁导率为 μ，总匝数为 N，通有电流 I。求：(1) 螺绕环管内的磁场强度 H 分布和磁感应强度 B 的分布；(2) 螺绕环内磁场的能量；(3) 螺绕环的自感 L。',
+    key:'H=NI/(2πr)；B=μNI/(2πr)；W=∫½BH dV=μN²I²A/(4π)ln(R₂/R₁)；L=2W/I²。', src:'解答题 十'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -3212,7 +3560,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['me','lm','qm','em','qm2','hq'];
+  const order = ['es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -3250,7 +3598,7 @@ function showLanding(){
 }
 /* 按培养方案的学期顺序渲染课程切换器：只列出已收录的课程，按学期分组 */
 function renderCourseSeg(){
-  const order = ['me','lm','qm','em','qm2','hq'];
+  const order = ['es','me','lm','qm','em','qm2','hq'];
   let html = '';
   CURRICULUM.forEach(sec=>{
     const avail = sec.courses
@@ -3276,7 +3624,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['me','lm','qm','em','qm2','hq'];
+  const order = ['es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -3324,16 +3672,18 @@ function renderDashboard(){
   const hq = (CID==='hq');
   const lmc = (CID==='lm');
   const mec = (CID==='me');
+  const esc2 = (CID==='es');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
       : hq ? '本站把《高等量子力学》（金亮）的 10 章讲义（希尔伯特空间 / 态和薛定谔方程 / 密度矩阵 / 自旋 / 二次量子化 / 相干态 / Bloch 方程 / 相对论量子力学 / 时间反演 / 量子信息）整理为结构化资料，并汇总 4 份考题回忆。按考点频率排出优先级。'
       : lmc ? '本站把《理论力学》（杨望 · 大二上）的 20 章讲义整理为结构化资料，并汇总 3 套期末真题（2025–2026 含解析、2025 回忆版、2024）。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
       : mec ? '本站把《力学》（大一上）的 7 章讲义（Chapter 0 数学预备 / 1 运动学 / 2 动力学 / 3 功与能 / 4 刚体动力学 / 5 流体力学 / 6 振动与波）整理为结构化资料，并汇总 2014–2025 共 8 套期末真题。按考点频率排出优先级，并把每个考点回溯到它出现的题号。'
+      : esc2 ? '本站把《电磁学》（大一下）的 9 章知识体系（静电学 / 导体 / 恒定电流 / 电介质 / 静磁学 / 电磁感应 / 磁介质 / 交流电 / 麦克斯韦理论）整理为结构化资料，并汇总 1 套电磁学期末卷与 3 套大学物理（一）卷中的电磁学题目。所有带图题目均附原卷配图。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -3373,6 +3723,8 @@ function renderDashboard(){
       ? '提示：3 套真题中，2025–2026 一套<b>含完整解析</b>（最可靠），另两套为回忆版；2025 的两版在个别系数/项上不一致，已在「历年真题」页标注。'
       : mec
       ? '提示：8 套真题中，2022 为<b>卷面截图</b>（题干最完整），其余为回忆版；2014/2015 的回忆稿部分公式缺失，已逐题标注。2024 文件损坏（仅剩阅读器说明），未收录。'
+      : esc2
+      ? '提示：电磁学卷为完整 A 卷（李乙钢）；另 3 套为《大学物理（一）》卷，本页只收录其中的电磁学题目，力学题未收录。带图题目均已从原卷裁剪配图。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -3459,6 +3811,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 7 章（Chapter 0–6）：第 0 章为数学预备（微积分与矢量代数），随后是运动学、动力学、功与能、刚体动力学、流体力学，最后是振动与波。讲义为英文 PPT，本站按中文整理并保留原始章节编号。</p>
     </div>`;
+  } else if(CID==='es'){
+    html = ES_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">知识体系 · 电磁学（大一下）</div>
+      <h1>章节结构。</h1>
+      <p>共 9 章：静电学的基本原理、静电场中的导体、恒定电流、电介质、静磁学、电磁感应、磁介质、交流电、麦克斯韦电磁理论。章节来自《大学物理 A 知识整理（三）电磁学》，并与刘永基《电磁学课程总结》的体系一致。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -3510,6 +3869,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='es'){
+    html = ES_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${t}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -3535,11 +3900,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : esc2 ? 4 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':esc2?'四套真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -3555,7 +3920,8 @@ function renderHigh(){
   const hq = (CID==='hq');
   const lmc = (CID==='lm');
   const mec = (CID==='me');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : (qm2 ? 33 : 3)));
+  const esc2 = (CID==='es');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : (esc2 ? 4 : (qm2 ? 33 : 3))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -3568,10 +3934,12 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在近 3 套理论力学期末卷中出现的卷数。杨望老师的考题结构高度稳定（4 道大题、按板块递进），因此每一行都列出了它出现的具体题号。'
         : mec
         ? '“出现卷数”统计的是该考点在 8 套力学期末卷中出现的卷数（2014–2025）。力学卷以“填空＋大题”为主，同一考点可能在填空与大题中分别出现，均按卷计入一次。'
+        : esc2
+        ? '“出现卷数”统计的是该考点在 4 套电磁学相关试卷中出现的卷数（1 套电磁学卷 + 3 套大学物理（一）卷的电磁学部分）。同一考点在同一卷的多道题中出现只计一次。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${qm2?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -3607,6 +3975,7 @@ function renderExams(){
   const em = (CID==='em');
   const qm2 = (CID==='qm2');
   const mec = (CID==='me');
+  const esc2 = (CID==='es');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -3637,6 +4006,8 @@ function renderExams(){
         ? '《量子力学（二）真题汇编》全文（33 题，按章节编排、覆盖 2017–2022，含题目与答案要点）。'
         : mec
         ? '8 套力学期末真题（2014–2025，含题干与解题要点）。2022 为卷面截图，题干最完整；其余为回忆版或回忆提纲，缺失处已逐题标注。'
+        : esc2
+        ? '电磁学相关真题全文（含题干、原卷配图与解题要点）：1 套电磁学期末 A 卷（李乙钢，17 题）＋ 3 套大学物理（一）卷中的电磁学题目（26 题）。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -3646,11 +4017,43 @@ function renderExams(){
       ? '真题来自学生整理的《量子力学2真题汇编_230130.pdf》；另有《南开大学量子力学历年考研真题》经逐题核查，内容全部属于量子力学（一），已归入该课程。'
       : mec
       ? '2014（.doc）、2015（.docx）为早期回忆稿，部分填空的公式未记录；2016–2018、2023、2025 为 PDF 回忆版；2022 为整卷截图。2024 文件损坏（只剩 Flexcil 阅读器说明），未收录；《2023力学解答（by杨秋石）》为扫描件，未 OCR。'
+      : esc2
+      ? '电磁学 A 卷为完整卷面；另外 3 套《大学物理（一）》卷只收录了其中的电磁学题（力学题见「力学」课程）。带图题目均从原 PDF 裁剪配图，未用示意图替代。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='es'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>电磁学的解答题高度模板化：先判断对称性（高斯面/安培环路），再分段积分，最后讨论边界。把「静电场—导体介质—稳恒磁场—电磁感应」四条主线各练透两道题即可覆盖大部分分值。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>S＋A＋B 级全部考点；9 章公式速查过一遍；4 套真题（含配图）全部做一遍。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练五大板块：高斯定理求场、电势积分、导体与介质、磁场叠加、电磁感应。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背麦克斯韦方程组、高斯/安培环路定理、D=εE、法拉第定律、动生/感生电动势公式。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：四条麦克斯韦方程、平行板/球形电容器、B 与 H 的边界条件、互感与自感定义。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>球/柱/平面三类对称场：选高斯面求 E，再积分求 U</td><td>高斯定理·电势</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>导体球壳、两层介质平板/球形电容器：求 E、D、σ′、C</td><td>导体·电介质</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>毕奥—萨伐尔分段积分：半圆柱面、弯导线、圆盘/半木球线圈</td><td>磁场叠加</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>安培环路 + 磁介质：H、B、M、磁化面电流、同轴电缆自感</td><td>磁介质</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>法拉第定律：动生（导轨）、感生（圆柱磁场）与方向判断</td><td>电磁感应</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>互感/自感：先算磁通再求 M、L，注意 N 匝与积分区间</td><td>电感</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>背熟麦克斯韦方程组（积分/微分）与两个基本假设</td><td>麦克斯韦理论</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='me'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -3958,6 +4361,47 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='es'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《电磁学》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>知识体系（9 章）</td><td>大学物理A知识整理（3）电磁学.pdf（41 页）</td><td>章节结构、核心概念、重要公式</td></tr>
+          <tr><td>课程总结</td><td>电磁学总结.pdf / 刘永基电磁学总结.pdf</td><td>对照章节体系与公式口径</td></tr>
+          <tr><td>作业题</td><td>刘永基老师2025春电磁学作业综合版.pdf（34 页）</td><td>题型与考点参考（未逐题收录）</td></tr>
+          <tr><td>真题（完整卷）</td><td>2017-2018大班电磁学.pdf（李乙钢，6 页）</td><td>选择 6 题 + 填空 6 题 + 解答 5 题</td></tr>
+          <tr><td>真题（电磁学部分）</td><td>2018.pdf / 2019.pdf / 大物2019.pdf</td><td>三套《大学物理（一）》卷中的电磁学题</td></tr>
+          <tr><td>重复文件（未重复收录）</td><td>大物2017.pdf = 2018.pdf；大物2018 1.doc = 2019.pdf；2020.pdf = 大物2019.pdf；18大物.doc = 1648471045860_18大物.doc</td><td>内容相同，只保留一份</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>原始文件不改动</b>：所有 PDF / DOC 均保持原样，仅在其上做提取与分析。</div>
+      <div class="concept"><b>配图从原卷裁剪</b>：题干中出现“如图”的题目，均用 PyMuPDF 按原卷坐标裁剪配图（<code>img/em/*.png</code>），不使用示意图替代。</div>
+      <div class="concept"><b>可回溯</b>：每道题标注原卷题号（选择/填空/解答），可回到 PDF 核对。</div>
+      <div class="concept"><b>不编造</b>：不凭空补写缺失题干；《大学物理（一）》卷只收录电磁学题，力学题明确标注未收录。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>教师与成绩构成</b>：2017–2018 电磁学卷署命题人李乙钢；刘永基为 2025 春作业与课程总结署名。成绩构成在现有资料中未给出，故标注“资料未注明”。</div>
+      <div class="concept"><b>课程边界</b>：三套《大学物理（一）》卷同时含力学与电磁学，本页只收电磁学部分；同一批力学题已归入「力学」课程。</div>
+      <div class="concept"><b>配图边缘</b>：扫描卷的配图与题干文字距离很近，个别裁剪图边缘可能保留少量题号文字，但图形本身完整。</div>
+      <div class="concept"><b>.doc 卷未收录</b>：18大物.doc（计算机学院大学物理）含答案，但图片嵌在 Word 二进制中、无法可靠逐题对齐，故未收录其题目。</div>
+      <div class="concept"><b>无官方答案</b>：电磁学卷未附标准答案；「解题要点」为依据讲义与物理推导的整理，仅供复习参考。</div>
     </div>`;
     return;
   }
