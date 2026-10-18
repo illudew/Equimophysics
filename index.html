@@ -2242,7 +2242,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -4358,17 +4358,309 @@ const TD_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   计算物理（大二下）
+   ============================================================ */
+const COURSE_CP = {
+  name:'计算物理',
+  school:'南开大学 · 物理科学学院',
+  semester:'大二下',
+  textbook:'《软件基础与计算物理》（李宝会、范万德）；参考刘金远《计算物理学》、Numerical Recipes',
+  teachers:'李宝会（数值方法）、范万德（UNIX）、胡振芃（2026 卷）',
+  examLen:'6–8 道大题：推导公式 + 数值计算（积分/求根/方程组/ODE）',
+  grade:'闭卷考试 50% ＋ 上机实践与编程、小论文 50%',
+  paper:'2016–2020 多为 7–8 题（命题人李宝会）；2024、2025、2026 为 6 题（含 QR、Hermite 插值等新考点）',
+  refs:['李宝会、范万德《软件基础与计算物理》讲义（第 1–10 章）',
+        '刘金远《计算物理学》科学出版社 2015',
+        'W. H. Press 等《Numerical Recipes》'],
+  src:'章节来自 lecture1–10 与《进阶模式》PPT（课程大纲 10 章）；成绩构成取自 lecture1 第 5 页；真题来自 2016–2020、2024、2025、2026 共 8 份（2016 含参考答案）'
+};
+
+const CP_CHAPTERS = [
+{no:'1', title:'绪论', en:'Introduction', file:'lecture1.pptx',
+ sections:['计算物理学的地位','课程内容与要求','误差与有效数字'],
+ concepts:[
+  ['计算物理的地位','计算物理是与理论、实验并列的物理学第三分支，可视为“理论的实验”。'],
+  ['课程主线','数值微分 → 插值 → 求根 → 线性方程组 → 数值积分 → ODE → PDE。'],
+  ['误差来源','模型误差、观测误差、截断误差、舍入误差；有效数字与精度。'],
+  ['数值稳定性','算法对输入微小扰动的敏感程度，决定结果是否可信。']
+ ],
+ formulas:[
+  ['绝对误差与相对误差', R`e_a=|x-x^*|,\qquad e_r=\frac{|x-x^*|}{|x|}`],
+  ['有效数字', R`x=\pm0.d_1d_2\cdots d_n\times10^m`]
+ ]},
+
+{no:'2', title:'数值微分', en:'Numerical differentiation', file:'Lecture2.pptx',
+ sections:['两点公式','三点公式','五点公式','二阶导数公式','截断误差'],
+ concepts:[
+  ['两点公式','用 f(x+h)−f(x) 或 f(x)−f(x−h) 近似一阶导数，误差 O(h)。'],
+  ['中心差分','三点公式 [f(x+h)−f(x−h)]/2h，误差 O(h²)。'],
+  ['五点公式','组合 f(x±h)、f(x±2h)，一阶导数精度 O(h⁴)。'],
+  ['二阶导数','三点公式 [f(x+h)−2f(x)+f(x−h)]/h²，误差 O(h²)。'],
+  ['截断误差','Taylor 展开截断造成，步长过大误差大；步长过小则舍入误差占优。']
+ ],
+ formulas:[
+  ['两点公式', R`f'(x)\approx\frac{f(x+h)-f(x)}{h}+O(h)`],
+  ['三点中心差分', R`f'(x)\approx\frac{f(x+h)-f(x-h)}{2h}+O(h^2)`],
+  ['五点一阶导', R`f'(x)\approx\frac{-f(x+2h)+8f(x+h)-8f(x-h)+f(x-2h)}{12h}+O(h^4)`],
+  ['二阶导三点公式', R`f''(x)\approx\frac{f(x+h)-2f(x)+f(x-h)}{h^2}+O(h^2)`],
+  ['五点二阶导', R`f''(x)\approx\frac{-f(x+2h)+16f(x+h)-30f(x)+16f(x-h)-f(x-2h)}{12h^2}+O(h^4)`]
+ ]},
+
+{no:'3', title:'插值', en:'Interpolation', file:'Lecture3.pptx',
+ sections:['插值定义','拉格朗日插值','牛顿差商插值','Hermite 插值','插值误差'],
+ concepts:[
+  ['插值定义','构造多项式 P(x) 使 P(x_i)=f(x_i)，用于估算中间点的函数值。'],
+  ['拉格朗日插值','用基函数 l_i(x) 线性组合，形式对称但增加节点需重算。'],
+  ['牛顿插值','用差商表逐步构造，增加节点只需追加一项。'],
+  ['差商','一阶差商 [f(x_i)−f(x_j)]/(x_i−x_j)，高阶差商递推定义。'],
+  ['Hermite 插值','同时匹配函数值与导数值，精度更高。']
+ ],
+ formulas:[
+  ['拉格朗日插值', R`P(x)=\sum_{i=0}^{n}f(x_i)\prod_{j\ne i}\frac{x-x_j}{x_i-x_j}`],
+  ['一阶差商', R`f[x_i,x_j]=\frac{f(x_i)-f(x_j)}{x_i-x_j}`],
+  ['牛顿插值', R`P(x)=f(x_0)+f[x_0,x_1](x-x_0)+\cdots`],
+  ['插值余项', R`R_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i=0}^{n}(x-x_i)`]
+ ]},
+
+{no:'4', title:'一维求根', en:'Root finding in one dimension', file:'lecture4.pptx',
+ sections:['二分法','牛顿法','割线法','直接迭代法','收敛性'],
+ concepts:[
+  ['二分法','利用介值定理不断缩小区间，线性收敛但稳健。'],
+  ['牛顿法','x_{n+1}=x_n−f(x_n)/f′(x_n)，二阶收敛，需初值足够接近根。'],
+  ['直接迭代法','把 f(x)=0 改写为 x=g(x)，迭代 x_{n+1}=g(x_n)，收敛条件 |g′|<1。'],
+  ['割线法','用差商代替导数，无需解析导数。'],
+  ['根的隔离','先用单调性/介值定理确定各根所在区间。']
+ ],
+ formulas:[
+  ['牛顿迭代', R`x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}`],
+  ['直接迭代', R`x_{n+1}=g(x_n),\qquad |g'(x)|<1`],
+  ['割线法', R`x_{n+1}=x_n-f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}`],
+  ['二分法误差', R`|x_n-x^*|\le\frac{b-a}{2^n}`]
+ ]},
+
+{no:'5', title:'线性方程组', en:'Linear equations', file:'（无 PPT，按真题与教材整理）',
+ sections:['高斯消元与高斯—若当消元','LU 分解','Jacobi 与 Gauss-Seidel 迭代','收敛性判据','本征值与 QR 分解'],
+ concepts:[
+  ['高斯消元','通过行变换化为上三角，再回代求解；高斯—若当消元化为单位矩阵。'],
+  ['LU 分解','A=LU，把求解化为前代与回代两步，适合多右端项。'],
+  ['Jacobi 迭代','用对角元解出每个分量，整体更新。'],
+  ['Gauss-Seidel 迭代','用已更新的分量立即参与计算，通常收敛更快。'],
+  ['收敛判据','对角占优矩阵保证迭代收敛。'],
+  ['QR 分解','A=QR，迭代 A_{k+1}=R_kQ_k 可求本征值。']
+ ],
+ formulas:[
+  ['Jacobi 迭代', R`x_i^{(k+1)}=\frac{1}{a_{ii}}\left(b_i-\sum_{j\ne i}a_{ij}x_j^{(k)}\right)`],
+  ['Gauss-Seidel 迭代', R`x_i^{(k+1)}=\frac{1}{a_{ii}}\left(b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}\right)`],
+  ['LU 分解', R`A=LU,\qquad Ax=b\Rightarrow Ly=b,\ Ux=y`],
+  ['对角占优', R`|a_{ii}|>\sum_{j\ne i}|a_{ij}|`],
+  ['本征方程', R`\det(A-\lambda I)=0`]
+ ]},
+
+{no:'6', title:'数值积分', en:'Numerical integration', file:'Lecture6.pptx',
+ sections:['梯形公式','中点公式','Simpson 公式','Romberg 积分','Gauss-Legendre 求积','多维积分'],
+ concepts:[
+  ['梯形公式','用直线连接端点，误差 O(h²)（复化后 O(h²)）。'],
+  ['中点公式','用区间中点函数值，误差 O(h²)。'],
+  ['Simpson 公式','用抛物线拟合三点，误差 O(h⁴)。'],
+  ['Romberg 积分','对梯形结果做 Richardson 外推，快速提高精度。'],
+  ['Gauss-Legendre','选取最优节点与权重，n 点可精确积分 2n−1 次多项式。']
+ ],
+ formulas:[
+  ['梯形公式', R`\int_a^b f\,dx\approx\frac{b-a}{2}[f(a)+f(b)]`],
+  ['中点公式', R`\int_a^b f\,dx\approx(b-a)f\!\left(\frac{a+b}{2}\right)`],
+  ['Simpson 公式', R`\int_a^b f\,dx\approx\frac{b-a}{6}\left[f(a)+4f\!\left(\frac{a+b}{2}\right)+f(b)\right]`],
+  ['两点 Gauss-Legendre', R`\int_{-1}^{1}f\,dx\approx f\!\left(-\frac{1}{\sqrt3}\right)+f\!\left(\frac{1}{\sqrt3}\right)`],
+  ['复化梯形', R`\int_a^b f\,dx\approx\frac h2\left[f_0+2\sum_{i=1}^{n-1}f_i+f_n\right]`]
+ ]},
+
+{no:'7', title:'一阶常微分方程', en:'First order ODE', file:'lecture7.pptx',
+ sections:['Taylor 级数法','有限差分法','Euler 法','隐式方法','截断误差与稳定性','多步法与预测校正'],
+ concepts:[
+  ['Euler 法','y_{n+1}=y_n+hf(x_n,y_n)，一阶精度。'],
+  ['隐式 Euler','用 y_{n+1} 处的斜率，无条件稳定但需迭代。'],
+  ['Runge-Kutta 法','用多个斜率加权平均，四阶 RK 精度 O(h⁴)。'],
+  ['稳定性','步长过大时数值解发散；刚性方程需隐式方法。'],
+  ['预测—校正','先用显式预测，再用隐式校正。']
+ ],
+ formulas:[
+  ['Euler 法', R`y_{n+1}=y_n+hf(x_n,y_n)`],
+  ['隐式 Euler', R`y_{n+1}=y_n+hf(x_{n+1},y_{n+1})`],
+  ['四阶 RK', R`y_{n+1}=y_n+\frac h6(k_1+2k_2+2k_3+k_4)`],
+  ['RK 系数', R`k_1=f(x_n,y_n),\ k_2=f\!\left(x_n+\tfrac h2,y_n+\tfrac h2k_1\right)`],
+  ['局部截断误差', R`\tau_n=O(h^{p+1})`]
+ ]},
+
+{no:'8', title:'高阶常微分方程', en:'Higher order ODE', file:'lecture8(1).pptx',
+ sections:['一阶方程组','高阶方程化为一阶方程组','初值问题','边值问题与打靶法'],
+ concepts:[
+  ['降阶','把 n 阶方程化为一阶方程组，再用 Euler/RK 求解。'],
+  ['初值问题','给定 y(t₀)、y′(t₀)，逐步推进。'],
+  ['边值问题','给定两端条件，用打靶法或差分法化为线性方程组。'],
+  ['打靶法','猜测初始斜率，用求根方法调整使其满足另一端条件。']
+ ],
+ formulas:[
+  ['二阶方程降阶', R`y''=f(t,y,y')\ \Rightarrow\ \begin{cases}x_1=y\\x_2=y'\end{cases}`],
+  ['差分法', R`\frac{y_{i+1}-2y_i+y_{i-1}}{h^2}=f_i`]
+ ]},
+
+{no:'9', title:'偏微分方程', en:'Partial differential equations', file:'lecture10.pptx',
+ sections:['二阶 PDE 分类','Laplace 方程','Poisson 方程','扩散方程','波动方程','稳定性'],
+ concepts:[
+  ['PDE 分类','B²−4AC<0 椭圆型、=0 抛物型、>0 双曲型。'],
+  ['Laplace/Poisson','椭圆型，用迭代松弛法求解。'],
+  ['扩散方程','抛物型，显式格式受稳定性限制。'],
+  ['波动方程','双曲型，显式格式需满足 CFL 条件。'],
+  ['稳定性','显式格式的稳定性由网格比决定。']
+ ],
+ formulas:[
+  ['Laplace 方程', R`\nabla^2u=0`],
+  ['扩散方程', R`\frac{\partial u}{\partial t}=D\frac{\partial^2u}{\partial x^2}`],
+  ['波动方程', R`\frac{\partial^2u}{\partial t^2}=c^2\frac{\partial^2u}{\partial x^2}`],
+  ['显式扩散格式', R`u_i^{n+1}=u_i^n+r(u_{i+1}^n-2u_i^n+u_{i-1}^n),\quad r=\frac{D\Delta t}{\Delta x^2}\le\frac12`]
+ ]},
+
+{no:'10', title:'UNIX 操作系统', en:'UNIX（范万德）', file:'lecture1.pptx（大纲）',
+ sections:['UNIX 基本命令','文件系统与权限','Shell 脚本','编译与调试'],
+ concepts:[
+  ['课程定位','第十章由范万德讲授，配合上机实践与编程训练。'],
+  ['基本命令','ls、cd、cp、mv、rm、grep、chmod 等。'],
+  ['编译流程','编辑 → 编译（gfortran/gcc）→ 链接 → 运行 → 调试。']
+ ],
+ formulas:[]
+}
+];
+
+const CP_TOPICS = [
+ {name:'五点公式推导', ch:'第2章', pri:'S', stars:5, ev:[['2016','一'],['2017','一'],['2018','一'],['2019','1'],['2020','1'],['2024','一'],['2025','1'],['2026','一']], note:'一阶/二阶导五点公式，用 Taylor 展开消项，几乎每年必考'},
+ {name:'差分、差商与牛顿插值', ch:'第3章', pri:'S', stars:5, ev:[['2016','二'],['2017','二'],['2018','二'],['2019','2'],['2020','2'],['2025','2']], note:'造差商表、写 Newton 插值多项式'},
+ {name:'有效数字与敏感度', ch:'第1章', pri:'S', stars:4, ev:[['2016','三'],['2017','三'],['2018','三'],['2019','4']], note:'√(x+1)−√x、 (1−cos)/sin 等相近数相减的精度处理'},
+ {name:'一维求根', ch:'第4章', pri:'S', stars:5, ev:[['2016','四'],['2017','四'],['2018','四'],['2019','3'],['2020','3'],['2024','三'],['2025','3'],['2026','三']], note:'根的区间判定 + 牛顿法/直接迭代法/二分法，迭代 2 次'},
+ {name:'数值积分', ch:'第6章', pri:'S', stars:5, ev:[['2016','五'],['2017','五'],['2018','五'],['2019','5'],['2020','4'],['2024','四'],['2025','4'],['2026','四']], note:'中点/梯形/Simpson/Gauss-Legendre/Romberg 与精确值对比'},
+ {name:'线性方程组与迭代法', ch:'第5章', pri:'S', stars:5, ev:[['2016','六'],['2017','六'],['2018','六'],['2019','6'],['2020','5'],['2024','五'],['2025','5'],['2026','五']], note:'Jacobi/Gauss-Seidel 前 2–3 次迭代、收敛性、精确解；LU/高斯-若当'},
+ {name:'Euler 法与四阶 RK', ch:'第7章', pri:'S', stars:5, ev:[['2016','七'],['2017','七'],['2018','七'],['2019','7'],['2020','6'],['2024','六'],['2025','6'],['2026','六']], note:'给定步长算前几步；u′=u/2、y′=x²−y 等经典题型'},
+ {name:'高阶 ODE 与差分法', ch:'第8章', pri:'A', stars:4, ev:[['2017','八'],['2026','六']], note:'二阶方程化一阶方程组；三点二阶导公式 + 矩阵求解'},
+ {name:'Hermite 插值', ch:'第3章', pri:'A', stars:4, ev:[['2024','二']], note:'同时匹配函数值与导数，估计中间点'},
+ {name:'本征值与 QR 分解', ch:'第5章', pri:'A', stars:4, ev:[['2026','二']], note:'久期方程与 QR 迭代求 2×2 矩阵本征值'}
+];
+
+const CP_TYPES = [
+ {name:'公式推导', cnt:8, topics:'数值微分', pri:'S', ex:'Taylor 展开推五点一阶/二阶导公式'},
+ {name:'插值计算', cnt:6, topics:'差分/差商/Hermite', pri:'S', ex:'差商表 + Newton 插值多项式'},
+ {name:'精度分析', cnt:4, topics:'有效数字', pri:'S', ex:'√(x+1)−√x 的精确计算'},
+ {name:'求根计算', cnt:8, topics:'牛顿/迭代/二分', pri:'S', ex:'x³−3x−1=0 的三个根'},
+ {name:'数值积分', cnt:8, topics:'梯形/Simpson/Gauss', pri:'S', ex:'四种方法算同一积分并与精确值比较'},
+ {name:'线性方程组', cnt:8, topics:'Jacobi/GS/LU/QR', pri:'S', ex:'前两次迭代 + 收敛性 + 精确解'},
+ {name:'ODE 数值解', cnt:8, topics:'Euler/RK4', pri:'S', ex:'给定 h 算前 2–4 步'},
+ {name:'高阶 ODE/矩阵', cnt:2, topics:'差分法/打靶法', pri:'A', ex:'二阶方程离散化为线性方程组'}
+];
+
+const CP_EXAMS = [
+{ id:'cp2026', label:'计算物理 2026 期末',
+  meta:[['命题','胡振芃（回忆人 John Jess）'],['结构','6 道大题，共 100 分'],['备注','回忆版，题面无参考答案']],
+  qs:[
+   {no:'1', title:'四点等距的一阶导公式', topic:'数值微分', type:'推导 · 20 分', stem:'已知等距四点 x₁<x₂<x₃<x₄，对应函数值 f(x₁)、f(x₂)、f(x₃)、f(x₄)，每点间隔为 h。(1) 用泰勒展开法求 f′(x₁)；(2) 用其他方法求 f′(x₃)。（每问 10 分）', key:'(1) 对 f(x₁+h)、f(x₁+2h)、f(x₁+3h) 作 Taylor 展开，组合消去 f″、f‴，得 f′(x₁)=[−11f₁+18f₂−9f₃+2f₄]/(6h)+O(h³)。(2) 可用拉格朗日插值求导或待定系数法，f′(x₃)=[−2f₁+3f₂−6f₃+f₄]/(6h)+O(h³)（以 x₃ 为中心对称整理）。', src:'大题 一'},
+   {no:'2', title:'久期方程与 QR 分解求本征值', topic:'本征值', type:'计算 · 16 分', stem:'请用久期方程和 QR 分解两种方法求解以下矩阵的本征值：(1) A₁=(−1 1; 1 −1)；(2) A₂=(0 2; 2 0)。（每问 8 分）', key:'(1) det(A−λI)=(−1−λ)²−1=0 → λ=0, −2；QR 迭代收敛到对角元 0、−2。(2) det(A−λI)=λ²−4=0 → λ=±2；QR 迭代保持对称，收敛到 ±2。', src:'大题 二'},
+   {no:'3', title:'三次方程的三个根', topic:'求根', type:'计算 · 16 分', stem:'已知方程 x³−x−0.1=0。(1) 求解的范围；(2) 用牛顿法求第一个根；(3) 用直接迭代法求第二个根；(4) 用直接迭代法求第三个根。（每问 4 分，结果保留小数点后五位）', key:'(1) f(−1)=−0.1<0、f(0)=−0.1<0、f(1)=−0.1<0、f(−2)=−6.1、f(2)=5.9，结合 f′(−1/√3)=0 的极值可判三个根分别落在 (−1.1,−1)、(−0.1,0)、(1,1.1)。(2) 牛顿法 xₙ₊₁=xₙ−(xₙ³−xₙ−0.1)/(3xₙ²−1)，取 x₀=1 收敛到 ≈1.04750。(3)(4) 改写 x=∛(x+0.1)，在对应区间迭代收敛。', src:'大题 三'},
+   {no:'4', title:'四种积分方法算 ∫₀¹x⁴dx', topic:'数值积分', type:'计算 · 18 分', stem:'已知 ∫₀¹x⁴dx（结果保留小数点后六位）。(1) 用梯形法求近似值；(2) 用辛普森法；(3) 用龙贝格法；(4) 用两点高斯-勒让德法；(5) 若要达到解析解精度，至少需要几点高斯-勒让德积分。（4+4+4+4+2 分）', key:'精确值 0.2。(1) 梯形 (0+1)/2=0.5。(2) Simpson (1/6)(0+4·(1/2)⁴+1)=0.208333。(3) Romberg 由梯形序列外推，逐步逼近 0.2。(4) 两点 Gauss：0.5[f(0.2113)+f(0.7887)]≈0.194444。(5) x⁴ 为 4 次多项式，n 点 Gauss 精确到 2n−1 次，需 n≥3（3 点即可精确）。', src:'大题 四'},
+   {no:'5', title:'4×4 方程组三种解法', topic:'线性方程组', type:'计算 · 18 分', stem:'已知方程组 A x=(1,0,0,1)ᵀ，A 为对角元 2、次对角 −1 的 4×4 三对角矩阵。(1) 用高斯-若当消元法求解；(2) 用 LU 分解求解；(3) 用高斯-赛德尔迭代，初值取 (0.9,0.9,0.9,0.9)ᵀ，迭代三次（保留小数点后五位）。（每问 6 分）', key:'(1)(2) 三对角矩阵可精确解出 x=(0.8,0.6,0.6,0.8)ᵀ 形式的对称解（按 A 的实际排布回代）。(3) Gauss-Seidel：利用已更新分量，三次迭代后接近精确解；矩阵对角占优，收敛。', src:'大题 五'},
+   {no:'6', title:'二阶方程用 Euler 法', topic:'ODE', type:'计算 · 12 分', stem:'请用欧拉法求解微分方程 d²y/dt²=−y，初始条件 y(0)=0、y′(0)=1，t∈[0,0.2]，取步长 h=0.1。', key:'令 x₁=y、x₂=y′，则 x₁′=x₂、x₂′=−x₁；Euler 推进：y₁=0+0.1·1=0.1，y₁′=1+0.1·(−0)=1；y₂=0.1+0.1·1=0.2，y₂′=1+0.1·(−0.1)=0.99。', src:'大题 六'}
+  ]},
+
+{ id:'cp2024', label:'计算物理 2024 期末',
+  meta:[['结构','6 道大题，共 100 分'],['备注','2023–2024 学年，回忆版']],
+  qs:[
+   {no:'1', title:'二阶导五点公式与数值验证', topic:'数值微分', type:'推导+计算 · 13 分', stem:'推导函数 f(x) 的二阶导五点公式，并计算 eˣ 在 x=2 处的二阶导数，取步长 h=0.1。', key:'f″≈[−f(x+2h)+16f(x+h)−30f(x)+16f(x−h)−f(x−2h)]/(12h²)；代入 e² 各点值与 h=0.1，结果与 e²≈7.389056 比较。', src:'第一题'},
+   {no:'2', title:'三次 Hermite 插值', topic:'插值', type:'计算 · 13 分', stem:'已知 f(1/4)=1/8、f(1)=1、f(9/4)=27/8、f′(1)=3/2，求三次 Hermite 插值，并估计 f(1/9)。', key:'构造 H(x)=Σ[f_i α_i(x)+f′_i β_i(x)]，三个节点 + 一个导数条件共 4 个条件确定三次多项式；代入 x=1/9 估算。', src:'第二题'},
+   {no:'3', title:'三次方程的三个根', topic:'求根', type:'计算 · 19 分', stem:'已知方程 x³−3x−1=0，分析方程的根的取值范围，并分别使用直接迭代法和 Newton 法估计其中一个解和另外两个解。', key:'f(−2)=−3、f(−1)=1、f(1)=−1、f(2)=1，三个根分别在 (−2,−1)、(−1,0)、(1,2)；牛顿法在各自区间取初值，直接迭代需把方程改写为收敛的 x=g(x) 形式。', src:'第三题'},
+   {no:'4', title:'四种积分方法算 ∫₀¹(x³+x)dx', topic:'数值积分', type:'计算 · 19 分', stem:'求积分 ∫₀¹(x³+x)dx：分别用中点法、梯形法、辛普森法、高斯-勒让德法，并给出精确解。', key:'精确值 1/4+1/2=0.75；梯形 0.5[f(0)+f(1)]=0.5；中点 f(0.5)=0.625；Simpson (1/6)[0+4·0.625+2]=0.75（三次多项式，Simpson 精确）；两点 Gauss 亦精确。', src:'第四题'},
+   {no:'5', title:'Jacobi 迭代', topic:'线性方程组', type:'计算 · 18 分', stem:'已知方程组（系数矩阵为对角 9、次对角 −1 的 3×3 矩阵，右端 (7,7,8)ᵀ），使用 Jacobi 迭代法求前两次迭代的结果，并求精确解。', key:'Jacobi：x_i^{(k+1)}=(b_i−Σ_{j≠i}a_{ij}x_j^{(k)})/a_{ii}；对角占优保证收敛，回代或消元得精确解。', src:'第五题'},
+   {no:'6', title:'Euler 法与 RK4', topic:'ODE', type:'计算 · 18 分', stem:'求初值问题 u′=u/2，u(0)=1。分别使用 Euler 法和四阶 R-K 法，取步长 h=0.2，求解区间 [0,0.4]。', key:'精确解 u=e^{t/2}。Euler：u₁=1.1、u₂=1.21；RK4 用 k₁…k₄ 加权，结果更接近 e^{0.2}=1.2214、e^{0.4}=1.4918。', src:'第六题'}
+  ]},
+
+{ id:'cp2020', label:'计算物理 2020 期末（软件基础与计算物理）',
+  meta:[['命题','李宝会'],['结构','7 道大题，共 100 分'],['备注','2019–2020 学年第二学期，回忆版无答案']],
+  qs:[
+   {no:'1', title:'二阶导五点公式', topic:'数值微分', type:'推导 · 13 分', stem:'使用 Taylor 展开法求解二阶导数的五点公式。', key:'组合 f(x±h)、f(x±2h) 的展开，消去奇次项与 f⁗，得 [−f(x+2h)+16f(x+h)−30f(x)+16f(x−h)−f(x−2h)]/(12h²)+O(h⁴)。', src:'第 1 题'},
+   {no:'2', title:'差商与牛顿插值', topic:'插值', type:'计算 · 12 分', stem:'已知 f(−1)=2、f(1)=1、f(2)=1，求 f(x) 的一阶差商和二阶差商，并写出 Newton 插值多项式。', key:'差商表：f[−1,1]=(1−2)/2=−0.5，f[1,2]=0，f[−1,1,2]=(0+0.5)/3=1/6；P(x)=2−0.5(x+1)+(1/6)(x+1)(x−1)。', src:'第 2 题'},
+   {no:'3', title:'三次方程的两根', topic:'求根', type:'计算 · 21 分', stem:'已知 f(x)=x³−3x+1，求出根的取值范围并说明理由，分别用直接迭代法和 Newton 迭代法求该方程任意两个根的近似值（迭代两次）。', key:'f(−2)=−1、f(−1)=3、f(0)=1、f(1)=−1、f(2)=3，三根分别在 (−2,−1)、(−1,0)、(0,1)；牛顿法在区间内取初值，直接迭代需选取 |g′|<1 的等价形式。', src:'第 3 题'},
+   {no:'4', title:'四种积分方法算 ∫₀¹(x²+1)dx', topic:'数值积分', type:'计算 · 20 分', stem:'使用中点法、梯形法、辛卜生法、高斯-勒让德方法计算 ∫₀¹(x²+1)dx，并求出精确值。', key:'精确值 4/3；梯形 1.5；中点 f(0.5)=1.25；Simpson (1/6)[1+4·1.25+2]=4/3（二次多项式，Simpson 精确）；两点 Gauss 亦精确。', src:'第 4 题'},
+   {no:'5', title:'Gauss-Seidel 解方程组', topic:'线性方程组', type:'计算 · 16 分', stem:'用 Gauss-Seidel 方法求解方程组（系数矩阵对角 9、次对角 −1，右端 (7,7,8)ᵀ），写出前两次迭代结果，分析收敛性，并求出精确解。', key:'对角占优，收敛；用已更新分量计算 x₁、x₂、x₃ 的两次迭代值，再回代求精确解。', src:'第 5 题'},
+   {no:'6', title:'Euler 法与 RK4', topic:'ODE', type:'计算 · 18 分', stem:'对初值问题 u′=u/2，u(0)=1，分别用 Euler 法和四阶 Runge-Kutta 法求其数值解，步长 h=0.1，求解区间 [0,0.2]。', key:'Euler：u₁=1.1、u₂=1.21；RK4 结果接近 e^{0.1}=1.10517、e^{0.2}=1.22140。', src:'第 6 题'}
+  ]},
+
+{ id:'cp2019', label:'计算物理 2019 期末',
+  meta:[['命题','李宝会'],['结构','7 道大题'],['备注','2018–2019 学年，回忆版']],
+  qs:[
+   {no:'1', title:'一阶导五点式', topic:'数值微分', type:'推导', stem:'用泰勒级数展开法求 f(x) 一阶导五点式。', key:'[−f(x+2h)+8f(x+h)−8f(x−h)+f(x−2h)]/(12h)+O(h⁴)。', src:'第 1 题'},
+   {no:'2', title:'差商与牛顿插值', topic:'插值', type:'计算', stem:'已知 f(−1)=2、f(1)=1、f(2)=1，求 f(x) 的差商并求出牛顿插值多项式。', key:'同 2020 第 2 题：P(x)=2−0.5(x+1)+(1/6)(x+1)(x−1)。', src:'第 2 题'},
+   {no:'3', title:'三次方程的两根', topic:'求根', type:'计算', stem:'分析 f(x)=x³−3x−1 根的取值范围，并分别用直接迭代法和牛顿法求该方程任意两个根的近似值（迭代 2 次）。', key:'三根分别在 (−2,−1)、(−1,0)、(1,2)；牛顿迭代两次与直接迭代两次分别给出近似值。', src:'第 3 题'},
+   {no:'4', title:'√(x+1)−√x 的精确计算', topic:'有效数字', type:'计算', stem:'x=162835，用较为精确的方法求 √(x+1)−√x（保留 5 位有效数字）。', key:'有理化：√(x+1)−√x=1/(√(x+1)+√x)，避免相近数相减的精度损失。', src:'第 4 题'},
+   {no:'5', title:'四种积分方法算 ∫₀¹x³dx', topic:'数值积分', type:'计算', stem:'分别用中点法、梯形法、辛普森法和高斯-勒让德法求 ∫₀¹x³dx，并求出精确值。', key:'精确值 0.25；梯形 0.5；中点 f(0.5)=0.125；Simpson (1/6)(0+4·0.125+1)=0.25（三次多项式，Simpson 精确）；两点 Gauss 亦精确。', src:'第 5 题'},
+   {no:'6', title:'Gauss-Seidel 迭代', topic:'线性方程组', type:'计算', stem:'用高斯-赛德尔迭代法求解方程组前三次迭代结果，取 x⁰=(0,0,0)ᵀ，判断敛散性，并求出精确解。', key:'系数矩阵对角占优，收敛；按 GS 公式逐分量更新三次。', src:'第 6 题'},
+   {no:'7', title:'Euler 法与 RK', topic:'ODE', type:'计算', stem:'用欧拉法和龙格库塔法解初值问题 y′=x²−y，步长 h=0.1，区间 [0,0.4]。', key:'Euler 逐步外推；RK4 用四段斜率加权，与解析解比较误差。', src:'第 7 题'}
+  ]},
+
+{ id:'cp2018', label:'计算物理 2018 期末（大梁回忆版）',
+  meta:[['命题','李宝会'],['结构','7 道大题，共 100 分'],['备注','2017–2018 学年第一学期']],
+  qs:[
+   {no:'1', title:'二阶导五点公式', topic:'数值微分', type:'推导 · 15 分', stem:'推导 f(x) 五点二阶导公式。', key:'[−f(x+2h)+16f(x+h)−30f(x)+16f(x−h)−f(x−2h)]/(12h²)+O(h⁴)。', src:'一'},
+   {no:'2', title:'各阶差分与牛顿插值', topic:'插值', type:'计算 · 10 分', stem:'当 x=0、1、5、6 时，f(x) 值分别为 0、1、125、216，求 f(x) 的一、二、三阶差分，并求牛顿插值多项式。', key:'差商表逐列构造：f[0,1]=1、f[1,5]=31、f[5,6]=91；二阶 7.5、30；三阶 4.5；P(x)=x+7.5x(x−1)+4.5x(x−1)(x−5)/6。', src:'二'},
+   {no:'3', title:'√(x+1)−√x', topic:'有效数字', type:'计算 · 5 分', stem:'x=142835，较精确地求 f(x)=√(x+1)−√x。', key:'有理化 1/(√(x+1)+√x)，避免相减损失有效数字。', src:'三'},
+   {no:'4', title:'三次方程的两根', topic:'求根', type:'计算 · 20 分', stem:'f(x)=x³−3x+1，求出根的取值范围并说明理由，分别用牛顿法和直接迭代法求出两根。', key:'结合 f(−2)、f(−1)、f(0)、f(1)、f(2) 的符号与单调区间判断三根位置；牛顿法、直接迭代法各取一个根。', src:'四'},
+   {no:'5', title:'四种积分方法算 ∫₀¹x³dx', topic:'数值积分', type:'计算 · 15 分', stem:'求积分 ∫₀¹x³dx，分别用梯形、中点、辛普生、高斯勒让德，并求出精确解。', key:'精确值 0.25；梯形 0.5；中点 0.125；Simpson 精确；两点 Gauss 精确。', src:'五'},
+   {no:'6', title:'Jacobi-Seidel 与收敛性', topic:'线性方程组', type:'计算 · 15 分', stem:'用 Jacobi-Seidel 解线性方程组（3×3，右端 (33,20,36)ᵀ），写出前两次迭代结果，讨论其收敛性，并求出精确解。', key:'先写迭代格式，再检查系数矩阵是否对角占优；若不占优需说明可能发散，最后用消元求精确解。', src:'六'},
+   {no:'7', title:'Euler 法与 RK4', topic:'ODE', type:'计算 · 20 分', stem:'解常微分方程 y′=x²−y，区间 [0,0.2]，h=0.1，y(0)=1，使用 Euler 法、四阶龙格库塔法。', key:'Euler：y₁=1+0.1(0−1)=0.9；RK4 用 k₁…k₄ 加权，精度更高。', src:'七'}
+  ]},
+
+{ id:'cp2017', label:'计算物理 2017 期末',
+  meta:[['命题','李宝会'],['结构','8 道大题，共 100 分'],['备注','2016–2017 学年第一学期，颜瑞民整理']],
+  qs:[
+   {no:'1', title:'五点一阶导公式', topic:'数值微分', type:'推导 · 15 分', stem:'推导 f(x) 五点一阶导公式。', key:'[−f(x+2h)+8f(x+h)−8f(x−h)+f(x−2h)]/(12h)+O(h⁴)。', src:'一'},
+   {no:'2', title:'差分与牛顿插值', topic:'插值', type:'计算 · 13 分', stem:'已知 f(−1)=2、f(1)=1、f(2)=1，求 f(x) 的一阶差分和二阶差分，并用 Newton 插值多项式。', key:'差商表 + P(x)=2−0.5(x+1)+(1/6)(x+1)(x−1)。', src:'二'},
+   {no:'3', title:'√(x+1)−√x', topic:'有效数字', type:'计算 · 9 分', stem:'x=142856，较精确地求 f(x)=√(x+1)−√x。', key:'有理化后计算，避免大数相减损失精度。', src:'三'},
+   {no:'4', title:'直接迭代法求根', topic:'求根', type:'计算 · 12 分', stem:'f(x)=x³−3x+1，在 [0,0.5] 用直接迭代法求根。', key:'改写为收敛的 x=g(x)（如 x=(x³+1)/3），检查 |g′|<1 后迭代。', src:'四'},
+   {no:'5', title:'四种积分方法', topic:'数值积分', type:'计算 · 15 分', stem:'分别用中点、梯形、Simpson、Gauss-Legendre 方法求 ∫₀.₅¹ 1/(x+1)² dx，并求精确解。', key:'精确值 1/1.5−1/2=1/6≈0.166667；各方法给出近似值并比较误差。', src:'五'},
+   {no:'6', title:'Jacobi-Seidel 解方程组', topic:'线性方程组', type:'计算 · 16 分', stem:'用 Jacobi-Seidel 解线性方程组，x⁰=(0,0,0)ᵀ，考虑较高精度，写出前 2 次迭代，并求精确解。', key:'按迭代格式更新两轮；精确解用消元回代。', src:'六'},
+   {no:'7', title:'Euler 法与 RK4', topic:'ODE', type:'计算 · 10 分', stem:'y′=y，y(0)=1，h=0.5，在 [0,1] 上用 Euler 法和四阶 Runge-Kutta 法求解。', key:'Euler：y₁=1.5、y₂=2.25；RK4 接近 e^{0.5}=1.6487、e^1=2.7183。', src:'七'},
+   {no:'8', title:'高阶 ODE 的差分与矩阵解法', topic:'高阶 ODE', type:'计算 · 10 分', stem:'高阶常微分方程 u″=f(x)，u(0)=1，u′(0)=0，用三点二阶导公式、差分法，用矩阵表示并求解。', key:'用 (u_{i+1}−2u_i+u_{i−1})/h²=f_i 离散，结合边界条件组装三对角矩阵，求解线性方程组。', src:'八'}
+  ]},
+
+{ id:'cp2016', label:'计算物理 2016 期末（含参考答案）',
+  meta:[['命题','李宝会（颜瑞民整理，含参考答案）'],['结构','7 道大题，共 100 分'],['备注','2015–2016 学年第一学期；原卷 OCR 部分数字缺失，题干按可辨认内容与参考答案整理']],
+  qs:[
+   {no:'1', title:'五点一阶导公式推导', topic:'数值微分', type:'推导 · 15 分', stem:'推导 f(x) 五点一阶导公式。', key:'对 f(x±h)、f(x±2h) 作 Taylor 展开，(1)−(2) 与 (3)−(4) 消去 f‴，得 [−f(x+2h)+8f(x+h)−8f(x−h)+f(x−2h)]/(12h)+O(h⁴)。', src:'一'},
+   {no:'2', title:'差分与 Newton 插值', topic:'插值', type:'计算 · 13 分', stem:'已知 f(−1)、f(0)、f(2) 的函数值，求 f(x) 的一阶差分和二阶差分，并用 Newton 插值多项式。', key:'构造差商表，按 P(x)=f(x₀)+f[x₀,x₁](x−x₀)+f[x₀,x₁,x₂](x−x₀)(x−x₁) 写出插值多项式（参考答案给出 P(x)=−x²+… 形式，原卷数值 OCR 缺失）。', src:'二'},
+   {no:'3', title:'相近数相减的精度处理', topic:'有效数字', type:'计算 · 9 分', stem:'x=0.007，sin x≈0.69999×10⁻²，cos x≈0.9998，较精确地求 f(x)=(1−cos x)/sin x。', key:'用半角公式化简：(1−cos x)/sin x=tan(x/2)≈0.0035。原式分子分母都接近 0，直接代入对精度极敏感，应避免。', src:'三'},
+   {no:'4', title:'Newton 法求根', topic:'求根', type:'计算 · 12 分', stem:'f(x)=x³−3x+1，用 Newton 法求二次迭代。', key:'x_{n+1}=x_n−(x_n³−3x_n+1)/(3x_n²−3)，两次迭代后 x₂≈1.879（参考答案）。', src:'四'},
+   {no:'5', title:'四种积分方法与精确解', topic:'数值积分', type:'计算 · 15 分', stem:'分别用中点、梯形、Simpson、Gauss-Legendre 方法求 ∫₀¹ 1/(x+1)² dx，并求精确解。', key:'精确值 1/2；梯形 3/8=0.375；中点 4/9≈0.444；Simpson 25/54≈0.463；两点 Gauss 更高精度（参考答案给出各近似值）。', src:'五'},
+   {no:'6', title:'Jacobi-Seidel 解方程组', topic:'线性方程组', type:'计算 · 16 分', stem:'用 Jacobi-Seidel 解线性方程组（3×3，右端 (20,33,36)ᵀ），x⁰=(0,0,0)ᵀ，写出前 2 次迭代，并求精确解。', key:'按迭代式更新两轮；精确解为 x=(3,2,1)ᵀ（参考答案）。', src:'六'},
+   {no:'7', title:'Euler 法与四阶 RK', topic:'ODE', type:'计算 · 20 分', stem:'u′=u/2，u(0)=1，h=0.2，在 [0,4] 上用 Euler 法和四阶 Runge-Kutta 法求解。', key:'Euler：u(0.2)=1.1、u(0.4)=1.21；RK4：u(0.2)=1.10517、u(0.4)=1.2214（参考答案）。', src:'七'}
+  ]},
+
+{ id:'cp2025', label:'计算物理 2025 期末（回忆骨架）',
+  meta:[['结构','6 道大题'],['备注','原文件《计算物理2025.docx》只保留题型与顺序，题干数值缺失']],
+  qs:[
+   {no:'1', title:'五点法求导', topic:'数值微分', type:'推导', stem:'用五点法求导（原题具体函数与阶数未记录）。', key:'按五点一阶/二阶导公式作答，推导用 Taylor 展开。', src:'第 1 题'},
+   {no:'2', title:'差分与牛顿插值', topic:'插值', type:'计算', stem:'求一阶和二阶差商，并写出牛顿插值多项式。', key:'造差商表 → 写 Newton 形式 → 化简。', src:'第 2 题'},
+   {no:'3', title:'三个根分别用三种方法', topic:'求根', type:'计算', stem:'求方程的三个根，两点法/牛顿法/直接迭代法各求一根（求区间的选择要给出理由），并达到指定精度。', key:'先用介值定理与单调性隔离三个根，再对每个根选用收敛的方法。', src:'第 3 题'},
+   {no:'4', title:'四种积分方法', topic:'数值积分', type:'计算', stem:'用中点/梯形/辛普森/高斯-勒让德求出数值解，并求出精确解。', key:'四种公式各算一次，与解析值比较误差阶。', src:'第 4 题'},
+   {no:'5', title:'Jacobi 迭代', topic:'线性方程组', type:'计算', stem:'用雅可比迭代求解线性方程组（要求达到指定精度），并求精确解。', key:'写出迭代式，按精度判据停止，再消元求精确解。', src:'第 5 题'},
+   {no:'6', title:'Euler 法与 RK4', topic:'ODE', type:'计算', stem:'用欧拉法和四阶龙格库塔法求解初值问题。', key:'按给定步长推进若干步，比较两种方法的精度。', src:'第 6 题'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -4377,7 +4669,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4426,7 +4718,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4478,10 +4770,11 @@ function renderDashboard(){
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
+  const cpc = (CID==='cp');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -4492,6 +4785,7 @@ function renderDashboard(){
       : circ ? '本站把《电路》（大一下）中南开大学实际讲授的 12 章（第 1、2、3、4、6、7、8、9、10、11、13、16 章）整理为结构化资料，并汇总 4 套期末试卷（2016、2022–2023、样卷 1、样卷 4），每套均附原卷页面以便核对全部电路图。'
       : ssc ? '本站把《固体物理（一）》（张立新 · 大三下）的 7 章 PPT（晶体结构 / 衍射 / 结合 / 晶格振动 / 缺陷 / 金属电子论 / 周期场中的电子态）整理为结构化资料，并收录 2026 期末完整卷（12 道简答＋3 道计算）。'
       : tdc ? '本站把《热力学与统计物理》（赵柳 / 常雷 · 大三下）的 11 章讲义（第 0–10 章：基本知识 / 热力学规律 / 系综 / 气体 / 固体 / 量子气体 / 电介质与磁介质 / 非平衡 / 相变 / 液体）整理为结构化资料，并汇总 3 套真题（2026、2021 级 A 卷、常雷 2024 小考）。'
+      : cpc ? '本站把《计算物理》（李宝会 / 范万德 · 大二下）的 10 章讲义（绪论 / 数值微分 / 插值 / 求根 / 线性方程组 / 数值积分 / ODE / 高阶 ODE / PDE / UNIX）整理为结构化资料，并汇总 8 套真题（2016–2020、2024、2025、2026，共 53 题）。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -4539,6 +4833,8 @@ function renderDashboard(){
       ? '提示：2026 卷为完整真题（简答 60 分＋计算 40 分）；《固体物理期末复习2014-2017》PDF 字体编码损坏、提取为乱码，仅作题型旁证，未逐题收录。'
       : tdc
       ? '提示：2026 卷与 2021 级 A 卷考点高度重合（经典极限、BEC、费米气体、固体热容、磁性/伊辛）；2021 级卷为扫描件，已附 7 页原卷；常雷 2024 为小考卷（一）。'
+      : cpc
+      ? '提示：题型八年高度稳定——五点公式推导、差商/牛顿插值、求根、四种积分、Jacobi/GS 迭代、Euler/RK4 几乎每年必考；2024 起新增 Hermite 插值，2026 新增 QR 分解。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -4653,6 +4949,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 11 章（第 0–10 章）：课程简介与预备知识、基本知识、热力学基本规律、统计系综、气体、固体、量子统计与量子气体、电介质和磁介质、非平衡理论、相变与化学反应、液体。讲义为赵柳《统计热物理学》（新体系）。</p>
     </div>`;
+  } else if(CID==='cp'){
+    html = CP_CHAPTERS.map((c,i)=> chCard(c, i<2, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 计算物理（大二下）</div>
+      <h1>章节结构。</h1>
+      <p>共 10 章：绪论、数值微分、插值、一维求根、线性方程组、数值积分、一阶 ODE、高阶 ODE、偏微分方程、UNIX 操作系统。前九章为数值方法（李宝会），第十章 UNIX 由范万德讲授。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4728,6 +5031,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='cp'){
+    html = CP_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为操作系统与上机实践内容，无核心公式。</div>'}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4753,11 +5062,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -4777,7 +5086,8 @@ function renderHigh(){
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (qm2 ? 33 : 3))))));
+  const cpc = (CID==='cp');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (qm2 ? 33 : 3)))))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -4798,10 +5108,12 @@ function renderHigh(){
         ? '“出现次数”统计的是该考点在 2026 期末卷中出现的题数（同一道题涉及多个考点时分别计入）。每一行都列出了具体题号，可回溯核对。'
         : tdc
         ? '“出现卷数”统计的是该考点在 3 套热统试卷中出现的卷数（2026、2021 级 A 卷、常雷 2024 小考）。同一考点在同一卷的多道题中出现只计一次。'
+        : cpc
+        ? '“出现卷数”统计的是该考点在 8 套计算物理试卷中出现的卷数（2016–2020、2024、2025、2026）。同一考点在同一卷的多道题中出现只计一次。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -4841,6 +5153,7 @@ function renderExams(){
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
+  const cpc = (CID==='cp');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -4881,6 +5194,8 @@ function renderExams(){
         ? '固体物理（一）2026 期末完整卷：12 道简答（60 分）＋ 3 道计算（40 分），每题附解题要点。'
         : tdc
         ? '3 套热统真题（2026、2021 级 A 卷、常雷 2024 小考，共 16 题），每题附解题要点；2021 级与常雷卷为扫描件，附原卷页面。'
+        : cpc
+        ? '8 套计算物理真题（2016–2020、2024、2025、2026，共 53 题）。2016 卷含参考答案；2016 与 2025 原卷部分数字缺失，已在备注中说明。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -4898,11 +5213,44 @@ function renderExams(){
       ? '2026 卷为目前拿到的最新完整真题；《固体物理期末复习2014-2017》PDF 字体编码损坏、文本为乱码，无法可靠还原题目，仅作题型旁证。'
       : tdc
       ? '2026 卷有文本层，按原文整理；2021 级 A 卷与常雷 2024 小考为扫描件，已逐页读图转写题干，并把 7 页 / 2 页原卷附在每套试卷顶部，公式与插图可直接对照原图。'
+      : cpc
+      ? '8 套卷均来自南开大学计算物理课程，2016–2020 命题人为李宝会，2026 为胡振芃。2016 卷含完整参考答案（颜瑞民整理）；2016 卷与 2025 docx 部分数字缺失，题干按可确认内容整理并标注，未补造数值。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='cp'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>计算物理卷八年题型几乎不变：一道公式推导（五点公式）＋ 差商/牛顿插值 ＋ 求根 ＋ 四种数值积分 ＋ 线性方程组迭代 ＋ Euler/RK4。把这六类各练到能独立写出完整步骤，分数就稳了。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>10 章公式过一遍；2016–2020 五套卷全部手算一遍；重点第 2、4、5、6、7 章。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练六类：五点公式推导、差商表、牛顿/直接迭代、四种积分、GS 迭代、Euler/RK4。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背公式：五点一阶/二阶导、Simpson、两点 Gauss、牛顿迭代、GS 迭代式、RK4 系数。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：五点公式推导步骤、四种积分公式、Euler 与 RK4 的算法流程。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>手推五点一阶导与五点二阶导公式（Taylor 展开消项）</td><td>五点公式</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>造差商表并写牛顿插值多项式</td><td>插值</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>三次方程先判根区间，再牛顿/直接迭代各算两次</td><td>求根</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>中点/梯形/Simpson/两点 Gauss 四种方法算同一积分</td><td>数值积分</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>Jacobi 与 Gauss-Seidel 前两/三次迭代 + 判收敛</td><td>线性方程组</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>Euler 与四阶 RK 按给定步长算前几步</td><td>ODE</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>√(x+1)−√x 类问题的有理化处理</td><td>有效数字</td><td>${priTag('S')}</td></tr>
+          <tr><td>8</td><td>QR 迭代求 2×2 本征值、Hermite 插值</td><td>新考点</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='td'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -5320,6 +5668,44 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='cp'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《计算物理》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义（10 章）</td><td>lecture1–10、进阶模式.pptx</td><td>章节结构、算法小节、课程大纲与成绩构成</td></tr>
+          <tr><td>真题</td><td>2016–2020、2024、2026 期末 + 计算物理2025.docx</td><td>8 套真题，共 53 题</td></tr>
+          <tr><td>参考答案</td><td>2016 卷（颜瑞民整理）</td><td>唯一带完整答案的年份，其余年份解题要点为依据讲义整理</td></tr>
+          <tr><td>复习资料</td><td>计算物理期末复习例题.pdf、计算物理复习（考后校正版）.pdf</td><td>题型归纳旁证，未逐页收录</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节以讲义为准</b>：10 章标题取自 lecture1 课程大纲，小节编号取自各讲 PPT 的 6.1、7.3 等编号。</div>
+      <div class="concept"><b>第 5 章无讲义</b>：线性方程组（第 5 章）没有对应 PPT，章节内容按真题题型（Jacobi/GS/LU/QR）与标准教材整理，并在 file 字段标注。</div>
+      <div class="concept"><b>不补造数值</b>：2016 原卷 OCR 部分数字缺失、2025 docx 只有题型骨架，题干只写可确认内容，缺失处明确标注，不用推测值填空。</div>
+      <div class="concept"><b>可回溯</b>：每题标注原卷题号（一/二/三 或 第 N 题），考点标注出现卷次与题号。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>多数为回忆版</b>：除 2016 卷外，2017–2020、2024、2026 均为回忆版，题干措辞与数值可能与原卷有出入。</div>
+      <div class="concept"><b>2016 卷数字缺失</b>：原 PDF 中公式与数字被拆散，第二题、第四题的部分系数无法可靠还原，已按参考答案可确认的部分整理。</div>
+      <div class="concept"><b>2025 卷仅存骨架</b>：docx 只保留 6 道题的题型与顺序，无具体函数与数值，收录时已标注「回忆骨架」。</div>
+      <div class="concept"><b>答案来源</b>：2016 卷答案来自颜瑞民整理的参考答案；其余年份的「解题要点」为依据讲义与标准数值方法整理的思路，非官方答案。</div>
     </div>`;
     return;
   }
