@@ -2242,7 +2242,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -4097,17 +4097,278 @@ const SS_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   热力学与统计物理（大三下）
+   ============================================================ */
+const COURSE_TD = {
+  name:'热力学与统计物理',
+  school:'南开大学 · 物理科学学院',
+  semester:'大三下',
+  textbook:'自编教材《统计热物理学》（新体系）；参考汪志诚《热力学·统计物理》、林宗涵《热力学与统计物理学》',
+  teachers:'赵柳（0–10 章讲义）、常雷（2024 小考卷）',
+  examLen:'5–7 道大题，每题含 2–4 个小问',
+  grade:'资料未注明（课程简介页未列成绩比例）',
+  paper:'2026：5 道大题；2023–2024 第二学期 A 卷：7 道大题；常雷 2024 小考（一）：4 道大题',
+  refs:['赵柳《统计热物理学》讲义（第 0–10 章）',
+        '汪志诚《热力学·统计物理》',
+        '林宗涵《热力学与统计物理学》'],
+  src:'章节来自 11 份 Statistical-0～10 讲义（赵柳，2020 版）；课程沿革与教材信息取自第 0 章；真题来自《热统2026.pdf》（文本）、2021 级 A 卷（7 页扫描）、《热统常雷 2024.pdf》（2 页扫描），扫描页均附原图'
+};
+
+const TD_CHAPTERS = [
+{no:'0', title:'课程简介与预备知识', en:'第零章', file:'Statistical-0.pdf',
+ sections:['热力学与统计物理课程简介','预备数学知识'],
+ concepts:[
+  ['课程体系','传统体系为“热力学＋统计物理”，现代体系为“统计热力学”；南开 2018 年起由赵柳、常雷分专业讲授，48 学时。'],
+  ['概率论基础','掌握离散/连续随机变量、期望、方差、二项分布、泊松分布与正态分布。'],
+  ['斯特林公式','ln N!≈N lnN−N，是统计物理中处理大数阶乘的基本工具。'],
+  ['常用积分','高斯积分 ∫e^{−ax²}dx=√(π/a)，以及 δ 函数的积分表示。']
+ ],
+ formulas:[
+  ['斯特林公式', R`\ln N!\approx N\ln N-N`],
+  ['高斯积分', R`\int_{-\infty}^{\infty}e^{-ax^2}dx=\sqrt{\frac{\pi}{a}}`],
+  ['二项分布', R`P(k)=\binom Nk p^k(1-p)^{N-k}`],
+  ['泊松分布', R`P(k)=\frac{\lambda^k}{k!}e^{-\lambda}`]
+ ]},
+
+{no:'1', title:'热力学与统计物理的基本知识', en:'第一章', file:'Statistical-1.pdf',
+ sections:['物理系统及其状态描述','微观系统的状态空间','宏观系统的状态空间','宏观系统的统计描述','联系微观与宏观的纽带——熵','宏观过程'],
+ concepts:[
+  ['微观状态与宏观状态','微观状态由相空间中的代表点描述；宏观状态由少数宏观参量描述，对应大量微观状态。'],
+  ['相空间','由广义坐标与广义动量张成的空间；保守系统的相轨道不相交。'],
+  ['统计描述','用分布函数 ρ(q,p) 描述系统处于各微观态的概率。'],
+  ['玻尔兹曼熵','S=k_B lnΩ，把微观状态数与宏观熵联系起来。'],
+  ['等概率原理','孤立系平衡时各可达微观状态出现的概率相等。']
+ ],
+ formulas:[
+  ['玻尔兹曼熵', R`S=k_B\ln\Omega`],
+  ['分布函数归一化', R`\int\rho(q,p)\,dq\,dp=1`],
+  ['刘维尔定理', R`\frac{\partial\rho}{\partial t}+\{\rho,H\}=0`],
+  ['统计平均', R`\langle A\rangle=\int A(q,p)\rho(q,p)\,dq\,dp`]
+ ]},
+
+{no:'2', title:'热力学基本规律', en:'第二章', file:'Statistical-2.pdf',
+ sections:['热力学第一定律','热力学第二定律','热力学势与封闭系的热力学关系','过程参量','热力学平衡的稳定性','热力学第三定律','开放系的热力学'],
+ concepts:[
+  ['第一定律','dU=δQ−δW，内能是状态函数，热量与功是过程量。'],
+  ['第二定律','孤立系熵不减；可逆过程熵变为 δQ_rev/T。'],
+  ['热力学势','U、H、F、G 及开放系的巨势，通过勒让德变换相互联系。'],
+  ['麦克斯韦关系','由热力学势的全微分交叉偏导相等得到。'],
+  ['第三定律','T→0 时系统熵趋于常数（通常取零），绝对零度不可达到。'],
+  ['稳定性条件','C_V>0、κ_T>0 等，保证平衡态是稳定极大熵态。']
+ ],
+ formulas:[
+  ['热力学基本方程', R`dU=T\,dS-p\,dV+\mu\,dN`],
+  ['亥姆霍兹自由能', R`F=U-TS,\qquad dF=-S\,dT-p\,dV+\mu\,dN`],
+  ['吉布斯函数', R`G=U-TS+pV,\qquad dG=-S\,dT+V\,dp+\mu\,dN`],
+  ['麦克斯韦关系', R`\left(\frac{\partial T}{\partial V}\right)_S=-\left(\frac{\partial p}{\partial S}\right)_V`],
+  ['卡诺效率', R`\eta=1-\frac{T_C}{T_H}`]
+ ]},
+
+{no:'3', title:'统计系综与统计平均', en:'第三章', file:'Statistical-3.pdf',
+ sections:['孤立系与微正则系综','封闭系与正则系综','开放系与巨正则系综','巨正则系综的应用实例：玻尔兹曼分布','统计涨落'],
+ concepts:[
+  ['微正则系综','孤立系（N、V、E 固定），各可达微观态等概率。'],
+  ['正则系综','封闭系与热浴接触（N、V、T 固定），概率 ∝e^{−βE}。'],
+  ['巨正则系综','开放系（μ、V、T 固定），概率 ∝e^{−β(E−μN)}。'],
+  ['配分函数','Z=Σe^{−βE}；所有热力学量可由 lnZ 求导得到。'],
+  ['统计涨落','涨落大小 ∝1/√N，宏观系统相对涨落可忽略。']
+ ],
+ formulas:[
+  ['正则配分函数', R`Z=\sum_i e^{-\beta E_i},\qquad \beta=\frac{1}{k_BT}`],
+  ['自由能', R`F=-k_BT\ln Z`],
+  ['巨配分函数', R`\Xi=\sum_{N,i}e^{-\beta(E_i-\mu N)},\qquad \Omega=-k_BT\ln\Xi`],
+  ['内能与熵', R`U=-\frac{\partial\ln Z}{\partial\beta},\qquad S=k_B(\ln Z+\beta U)`],
+  ['能量涨落', R`\langle(\Delta E)^2\rangle=k_BT^2C_V`]
+ ]},
+
+{no:'4', title:'气体', en:'第四章', file:'Statistical-4.pdf',
+ sections:['理想气体的经典描述','理想气体的量子描述','非理想气体','中性气态等离子体'],
+ concepts:[
+  ['经典理想气体','分子间无相互作用，配分函数分解为平动、转动、振动部分。'],
+  ['能量均分定理','每个二次型自由度平均能量 ½k_BT。'],
+  ['量子理想气体','当热波长与粒子间距可比时，必须使用量子统计。'],
+  ['非理想气体','用维里展开或集团展开处理分子间相互作用。'],
+  ['等离子体','电离气体，德拜屏蔽长度描述电荷屏蔽。']
+ ],
+ formulas:[
+  ['单原子理想气体配分函数', R`Z_1=V\left(\frac{2\pi mk_BT}{h^2}\right)^{3/2}`],
+  ['物态方程', R`pV=Nk_BT`],
+  ['能量均分', R`U=\frac{f}{2}Nk_BT`],
+  ['热波长', R`\lambda_T=\frac{h}{\sqrt{2\pi mk_BT}}`],
+  ['维里展开', R`\frac{pV}{Nk_BT}=1+\frac{B_2(T)}{V}+\cdots`]
+ ]},
+
+{no:'5', title:'固体', en:'第五章', file:'Statistical-5.pdf',
+ sections:['晶格振动的力学描述','固体热性质的经典描述','固体热性质的量子描述'],
+ concepts:[
+  ['晶格振动','原子在平衡位置附近振动，格波量子为声子。'],
+  ['经典热容','能量均分给出 3Nk_B，高温下与实验符合，低温下失效。'],
+  ['爱因斯坦模型','所有振子同频率，热容在低温指数衰减。'],
+  ['德拜模型','声子谱线性色散并截断于德拜频率，低温热容 ∝T³。'],
+  ['德拜温度','Θ_D=ℏω_D/k_B，表征固体硬度的特征温度。']
+ ],
+ formulas:[
+  ['爱因斯坦热容', R`C_V=3Nk_B\left(\frac{\Theta_E}{T}\right)^2\frac{e^{\Theta_E/T}}{(e^{\Theta_E/T}-1)^2}`],
+  ['德拜热容', R`C_V=9Nk_B\left(\frac{T}{\Theta_D}\right)^3\int_0^{\Theta_D/T}\frac{x^4e^x}{(e^x-1)^2}dx`],
+  ['低温德拜律', R`C_V=\frac{12\pi^4}{5}Nk_B\left(\frac{T}{\Theta_D}\right)^3`],
+  ['德拜温度', R`\Theta_D=\frac{\hbar\omega_D}{k_B}`]
+ ]},
+
+{no:'6', title:'量子统计与量子气体', en:'第六章', file:'Statistical-6.pdf',
+ sections:['玻色—爱因斯坦分布与费米—狄拉克分布','简并量子气体的宏观状态函数','金属导体中的自由电子气体与金属的热容理论','光子气体与声子气体'],
+ concepts:[
+  ['量子统计分布','玻色子服从 n=1/(e^{β(ε−μ)}−1)，费米子服从 n=1/(e^{β(ε−μ)}+1)。'],
+  ['经典极限条件','e^{βμ}≪1，即热波长远小于粒子间距、温度高、密度低。'],
+  ['玻色—爱因斯坦凝聚','理想玻色气体在临界温度以下宏观占据零动量态。'],
+  ['费米能','T=0 时最高占据能级；金属热容 ∝T。'],
+  ['光子气体','化学势为零，服从普朗克分布，总能量 ∝T⁴。'],
+  ['声子气体','格波量子，化学势为零，用于解释固体低温热容。']
+ ],
+ formulas:[
+  ['玻色分布', R`\langle n_\varepsilon\rangle=\frac{1}{e^{\beta(\varepsilon-\mu)}-1}`],
+  ['费米分布', R`\langle n_\varepsilon\rangle=\frac{1}{e^{\beta(\varepsilon-\mu)}+1}`],
+  ['BEC 临界温度', R`T_c=\frac{h^2}{2\pi mk_B}\left(\frac{n}{2.612}\right)^{2/3}`],
+  ['费米能', R`\varepsilon_F=\frac{\hbar^2}{2m}(3\pi^2n)^{2/3}`],
+  ['普朗克公式', R`u_\nu=\frac{8\pi h\nu^3}{c^3}\frac{1}{e^{h\nu/k_BT}-1}`],
+  ['斯特藩—玻尔兹曼', R`U=aT^4V,\qquad a=\frac{\pi^2k_B^4}{15\hbar^3c^3}`]
+ ]},
+
+{no:'7', title:'电介质和磁介质', en:'第七章', file:'Statistical-7.pdf',
+ sections:['电介质和磁介质的热力学','极性分子气体及其在外电场下的电极化现象','顺磁现象的统计解释','能量上限与负温度状态','电子回旋与抗磁现象'],
+ concepts:[
+  ['电介质热力学','外场做功项 −EdP 或 −HdM 进入热力学基本方程。'],
+  ['顺磁统计','自旋在磁场中取向，磁化率服从居里定律 χ∝1/T。'],
+  ['负温度','能级有上限的系统（如二能级系统）可出现粒子数反转，温度取负值。'],
+  ['抗磁','回旋电子的朗道抗磁性与泡利顺磁性竞争。'],
+  ['经典磁性','经典统计中配分函数与磁矢势无关，热平衡经典系统不显磁性。']
+ ],
+ formulas:[
+  ['居里定律', R`\chi=\frac{C}{T},\qquad C=\frac{N\mu_0\mu^2}{3k_B}`],
+  ['磁化强度', R`M=N\mu\tanh\left(\frac{\mu H}{k_BT}\right)`],
+  ['二能级布居', R`\frac{N_2}{N_1}=e^{-\Delta E/k_BT}`],
+  ['朗道抗磁', R`\chi_{\text{dia}}=-\frac{Ne^2}{6m}\langle r^2\rangle`]
+ ]},
+
+{no:'8', title:'非平衡热力学与统计物理简介', en:'第八章', file:'Statistical-8.pdf',
+ sections:['非平衡系统的分布函数与玻尔兹曼方程','弹性散射与 H 定理','弛豫时间近似','经典非平衡气体的统计热力学','金属导体中非平衡电子气体的统计热力学','局部平衡与局部熵产生','线性响应与涨落耗散定理','福克尔—普朗克方程','涨落定理'],
+ concepts:[
+  ['玻尔兹曼方程','分布函数随时间的演化由漂移项与碰撞项共同决定。'],
+  ['H 定理','碰撞使 H 函数单调减小，对应熵增，给出不可逆性的微观解释。'],
+  ['弛豫时间近似','用 −(f−f₀)/τ 近似碰撞项。'],
+  ['线性响应','外场较弱时响应与激励成正比，响应函数由平衡涨落决定。'],
+  ['涨落耗散定理','耗散系数与平衡涨落谱密度相联系。']
+ ],
+ formulas:[
+  ['玻尔兹曼方程', R`\frac{\partial f}{\partial t}+\vec v\cdot\nabla_r f+\vec F\cdot\nabla_p f=\left(\frac{\partial f}{\partial t}\right)_{\text{coll}}`],
+  ['弛豫时间近似', R`\left(\frac{\partial f}{\partial t}\right)_{\text{coll}}=-\frac{f-f_0}{\tau}`],
+  ['电导率', R`\sigma=\frac{ne^2\tau}{m}`],
+  ['涨落耗散定理', R`S(\omega)\propto\frac{k_BT}{\omega}\operatorname{Im}\chi(\omega)`]
+ ]},
+
+{no:'9', title:'相变与化学反应', en:'第九章', file:'Statistical-9.pdf',
+ sections:['单元系中的相变','多元系中的（广义）化学反应','吉布斯相律'],
+ concepts:[
+  ['相变分类','一级相变有潜热与体积突变；二级相变连续但比热等发散。'],
+  ['克拉珀龙方程','一级相变两相平衡曲线的斜率由潜热与体积差决定。'],
+  ['吉布斯相律','f=C−P+2，描述自由度与组分数、相数的关系。'],
+  ['伊辛模型','自旋取 ±1，近邻相互作用；一维无有限温相变，二维有。'],
+  ['平均场近似','用平均场替代近邻自旋，得到自洽方程与临界温度。'],
+  ['朗道理论','用序参量展开自由能，描述连续相变。']
+ ],
+ formulas:[
+  ['克拉珀龙方程', R`\frac{dp}{dT}=\frac{L}{T(V_2-V_1)}`],
+  ['吉布斯相律', R`f=C-P+2`],
+  ['伊辛哈密顿量', R`H=-J\sum_{\langle ij\rangle}s_i s_j-h\sum_i s_i`],
+  ['平均场自洽方程', R`m=\tanh\left(\frac{Jzm+h}{k_BT}\right)`],
+  ['朗道自由能', R`F(T,m)=F_0(T)+\frac a2m^2+\frac b4m^4`]
+ ]},
+
+{no:'10', title:'液体', en:'第十章', file:'Statistical-10.pdf',
+ sections:['经典液体','朗道费米液体理论简介','非费米量子液体'],
+ concepts:[
+  ['经典液体','短程有序、长程无序；用径向分布函数描述结构。'],
+  ['朗道费米液体','强相互作用费米系统的低能激发为费米液体准粒子，比热 ∝T。'],
+  ['非费米量子液体','一维系统可出现朝永—拉廷液体等非费米液体行为。'],
+  ['超流','液氦低温下黏度为零，临界速度以下无耗散流动。']
+ ],
+ formulas:[
+  ['径向分布函数', R`g(r)=\frac{V}{N^2}\left\langle\sum_{i\ne j}\delta(\vec r-\vec r_{ij})\right\rangle`],
+  ['费米液体比热', R`C_V=\frac{\pi^2}{3}Nk_B\frac{m^*}{m}\frac{T}{T_F}`],
+  ['超流临界速度', R`v_c=\min_p\frac{\varepsilon(p)}{p}`]
+ ]}
+];
+
+const TD_TOPICS = [
+ {name:'经典极限条件', ch:'第6章', pri:'S', stars:5, ev:[['2026','一'],['2021级','一'],['2021级','二·5']], note:'e^{βμ}≪1 或 nλ_T³≪1；空气满足、电子气体不满足、光子气 μ=0'},
+ {name:'玻色—爱因斯坦凝聚', ch:'第6章', pri:'S', stars:5, ev:[['2026','二·1–2'],['2021级','二·1–2']], note:'临界温度 T_c；无相互作用气体凝聚的物理解释（宏观占据零动量态）'},
+ {name:'理想费米气体', ch:'第6章', pri:'S', stars:5, ev:[['2026','二·3–4'],['2021级','二·3–6'],['2024','三']], note:'T=0 基态、C_V∝T、泡利顺磁、化学势随温度变化、一维/二维态密度'},
+ {name:'固体热容：经典、爱因斯坦、德拜', ch:'第5章', pri:'S', stars:5, ev:[['2026','三'],['2021级','三']], note:'3Nk_B 经典值；爱因斯坦指数衰减；德拜低温 T³；D 维德拜 T^D'},
+ {name:'物质磁性与伊辛模型', ch:'第7/9章', pri:'S', stars:5, ev:[['2026','五'],['2021级','七']], note:'经典配分函数与磁矢势无关；平均场自洽方程；一维无有限温相变、二维有'},
+ {name:'准粒子的态密度、热容与超流', ch:'第6/10章', pri:'A', stars:4, ev:[['2026','四'],['2021级','五']], note:'ε=cp 或 ε=αp^γ 的态密度；低温热容幂律；朗道超流临界速度'},
+ {name:'配分函数与氢原子', ch:'第3/4章', pri:'A', stars:4, ev:[['2021级','六']], note:'氢原子配分函数发散问题；激发态概率与宇宙 2.7K 黑体辐射'},
+ {name:'黑洞熵与负温度', ch:'第2/7章', pri:'A', stars:4, ev:[['2021级','四']], note:'S=k_Bc³A/4Gℏ；由 E=mc² 与热力学求黑洞温度；负温度与粒子数反转'},
+ {name:'相变与朗道理论', ch:'第9章', pri:'A', stars:4, ev:[['2026','五·3–4']], note:'自由能最小判据；一维/二维伊辛；连续自旋的下临界维度'},
+ {name:'非平衡与玻尔兹曼方程', ch:'第8章', pri:'B', stars:3, ev:[], note:'玻尔兹曼方程、H 定理、弛豫时间近似、涨落耗散定理'}
+];
+
+const TD_TYPES = [
+ {name:'简答·概念', cnt:9, topics:'经典极限/BEC/费米气体/固体热容/磁性', pri:'S', ex:'解释无相互作用玻色气体为何凝聚、经典系统为何无磁性'},
+ {name:'经典极限判定', cnt:3, topics:'空气/电子气/光子气', pri:'S', ex:'由 n、T 估算 nλ_T³ 判断是否满足经典极限'},
+ {name:'BEC 与费米气体', cnt:5, topics:'BEC/费米能/热容/磁化率', pri:'S', ex:'估算 T_c、求 T=0 基态、证明 C_V∝T、计算泡利磁化率'},
+ {name:'固体热容', cnt:6, topics:'能量均分/爱因斯坦/德拜', pri:'S', ex:'经典热容、爱因斯坦模型熵与热容、德拜 T³、D 维推广'},
+ {name:'磁性/伊辛模型', cnt:6, topics:'顺磁/平均场/相变', pri:'S', ex:'配分函数与磁矢势无关、平均场自洽方程、一维/二维相变'},
+ {name:'准粒子热容', cnt:4, topics:'态密度/超流', pri:'A', ex:'ε=αp^γ 的态密度、由 C~T^{3/2} 定 γ、超流临界速度'},
+ {name:'配分函数计算', cnt:3, topics:'氢原子/自由能', pri:'A', ex:'氢原子配分函数发散、激发态概率'},
+ {name:'黑洞熵/负温度', cnt:4, topics:'热力学第二定律/负温度', pri:'A', ex:'黑洞合并熵变、黑洞温度、比特数估算'}
+];
+
+const TD_EXAMS = [
+{ id:'td2026', label:'热力学与统计物理 2026 期末',
+  meta:[['结构','5 道大题，每题含 2–4 个小问'],['备注','原卷附「考前画的重点」5 条'],['来源文件','热统2026.pdf']],
+  qs:[
+   {no:'1', title:'经典极限条件及其判定', topic:'经典极限', type:'简答/计算 · 约 12 分', stem:'(1) 什么是经典极限条件？写出非定域子系的经典极限条件，解释每条的物理意义。(2) 判断下列系统是否满足经典极限条件：① 室温下的空气（n∼10²⁰ cm⁻³）；② 室温下的电子气体（n∼10²⁰ cm⁻³）；③ 光子气。（k_B=1.38×10⁻²³ J/K，h=6.626×10⁻³⁴ J·s）', key:'非定域子系：e^{α}≫1 且 e^{βμ}≫1，等价于 nλ_T³≪1（热波长远小于粒子间距）。空气：λ_T∼10⁻¹¹ m，nλ_T³∼10⁻¹³≪1，满足；电子气体：m 小、λ_T∼10⁻⁹ m，nλ_T³≫1，不满足；光子气 μ=0，e^{βμ}=1，不满足经典极限。', src:'大题 一'},
+   {no:'2', title:'玻色—爱因斯坦凝聚与费米气体', topic:'BEC/费米气体', type:'简答/计算 · 约 15 分', stem:'(1) 三维自由空间全同理想玻色气体在什么条件下发生玻色—爱因斯坦凝聚？(2) 有人质疑无相互作用气体怎么可能凝聚，如何从物理上解释？(3) 理想费米气体在绝对零度的基态是什么？低温热容与温度呈什么关系？如何用能量均分定理定性估算？(4) 计算泡利顺磁磁化率 χ。', key:'(1) T<T_c，临界温度由 nλ_T³=ζ(3/2)≈2.612 给出。(2) 粒子全同、不可分辨；低温下热波长增大，波包交叠，大量粒子宏观占据零动量基态。(3) T=0 时电子填满费米球，基态能量 ∝Nε_F；C_V∝T，因只有费米面附近 ∼T/T_F 的电子被激发。(4) 泡利顺磁：χ=3Nμ_B²/(2ε_F)（T=0），与温度近似无关。', src:'大题 二'},
+   {no:'3', title:'固体热容的经典与量子理论', topic:'固体热容', type:'简答/计算 · 约 16 分', stem:'(1) 用经典能量均分定理计算三维固体的热容（共 3N 个原子），解释为什么能量均分定理在低温下失效。(2) 用爱因斯坦模型计算固体的热容，为何热容是指数衰减的？指数上的因子与系统什么性质有关？(3) 简述德拜理论，低温热容与温度的关系是什么？与爱因斯坦模型的定性差别及物理原因。(4) 写出 D 维德拜模型热容与温度的依赖关系。', key:'(1) 3N 个原子、3N 个振动模，每个模 2 个二次型自由度，C_V=3Nk_B；低温下 ℏω≫k_BT，振动模冻结，能量均分失效。(2) C_V=3Nk_B(Θ_E/T)²e^{Θ_E/T}/(e^{Θ_E/T}−1)²，低温 ∝e^{−Θ_E/T}；指数因子 Θ_E=ℏω_E/k_B 由原子间键合强度决定。(3) 德拜：声子谱线性色散、截断于 ω_D；低温 C_V∝T³，因为低频声学模被激发；爱因斯坦模型只有单一频率，缺少低频声学模。(4) D 维：C_V∝T^D（D 维德拜）。', src:'大题 三'},
+   {no:'4', title:'液氦准粒子的态密度、热容与超流', topic:'准粒子', type:'计算 · 约 14 分', stem:'液氦低温下产生玻色型准粒子激发，色散关系 ε=cp（c 为声速）。(1) 计算准粒子的态密度；(2) 计算准粒子低温下的热容；(3) 计算准粒子的超流临界速度，证明速度小于临界速度的粒子在液氦中运动不受阻力。', key:'(1) D(ε)=4πVε²/(h³c³)（三维，ε=cp）。(2) 低温 C_V∝T³（声子型）。(3) 朗道判据 v_c=min ε(p)/p=c；v<v_c 时无法同时满足能量动量守恒产生准粒子，故无耗散。', src:'大题 四'},
+   {no:'5', title:'物质磁性、伊辛模型与连续自旋', topic:'磁性/相变', type:'简答/计算 · 约 18 分', stem:'(1) 从经典哈密顿量 H=(1/2m)Σ(p_i+q_iA_i/c)²+Φ(r₁…r_N) 出发计算配分函数，论证配分函数与磁矢势 A_i 无关。(2) 用平均场近似计算一维伊辛模型，求自洽方程，给出临界温度及其他物理量的依赖关系。(3) 从物理上解释为何一维伊辛模型不能发生有限温铁磁相变，二维可以（提示：自由能最小）。(4) 自旋连续 S_i=(cosθ_i,sinθ_i)，H=−JΣcos(θ_i−θ_j)，证明二维连续自旋系统不能发生非零温相变，写出非零温相变可以发生的最小维度。', key:'(1) 对 p_i 平移积分，配分函数只含 (p_i+q_iA_i/c)² 的高斯积分，平移后 A_i 消失，故与 A 无关，经典系统无磁性。(2) 一维伊辛平均场：m=tanh(Jzm/k_BT)，z=2；T_c=2J/k_B；m∝(T_c−T)^{1/2}。(3) 一维畴壁能量有限而熵增益 ∝lnL，自由能 F=E−TS 在 T>0 总降低，故无长程有序；二维畴壁能量 ∝√L，熵增益 ∝lnL，低温下能量占优，可有序。(4) 连续自旋的畴壁能量 ∝lnL，与熵同阶，Mermin–Wagner 定理：d≤2 无连续对称性自发破缺；最小维度 d=3。', src:'大题 五'}
+  ]},
+
+{ id:'td2021', label:'热力学与统计物理 2021 级（2023–2024 第二学期 A 卷）',
+  meta:[['结构','7 道大题，含附加题'],['备注','扫描件，原卷标注「2021 级」；卷面年份为 2023–2024 学年'],['来源文件','2021 级热统.pdf']],
+  pages:['img/td/td2021_p1.png','img/td/td2021_p2.png','img/td/td2021_p3.png','img/td/td2021_p4.png','img/td/td2021_p5.png','img/td/td2021_p6.png','img/td/td2021_p7.png'],
+  qs:[
+   {no:'1', title:'经典极限条件与适用性', topic:'经典极限', type:'简答 · 10 分', stem:'(1) 什么是经典极限条件？请写出非定域子系的经典极限条件，解释每条的物理意义（4 分）。(2) 对于室温下的空气（密度 n∼10²⁰/cm³），能否使用经典统计理论计算其热力学性质？为什么？（3 分）室温下的电子气体（n∼10²⁰/cm³）可否当作经典气体来处理？为什么？（3 分）', key:'非定域子系：e^{α}≫1、e^{βμ}≫1，即 nλ_T³≪1；空气满足，电子气体不满足。', src:'大题 一'},
+   {no:'2', title:'BEC、费米气体与金属电子', topic:'BEC/费米气体', type:'简答 · 25 分', stem:'(1) 三维自由空间全同理想玻色气体何时发生 BEC？估算临界温度（4 分）。(2) 如何从物理上解释无相互作用全同玻色系统会发生凝聚？（4 分）(3) 理想费米气体在绝对零度的基态是什么？低温热容与温度关系？如何用能量均分定理定性估算？（2+4 分）(4)【附加】立方体盒子突然撤掉后气体飞向真空，长时间飞行后空间分布的包络面形状？（4 分）(5)【附加】理想费米气体有限温度化学势比零温大还是小？为什么？（5 分）(6) 金属电子有强相互作用，为何无相互作用理想气体模型仍符合实验？（4 分）', key:'(1) nλ_T³≥2.612，T_c=(h²/2πmk_B)(n/2.612)^{2/3}。(2) 全同粒子波包交叠，低温下宏观占据零动量态。(3) 填满费米球；C_V∝T；只有费米面附近 ∼T/T_F 电子被激发。(4) 自由膨胀后动量分布不变，空间分布包络为球面（各向同性）。(5) 有限温化学势比零温小，μ≈ε_F[1−(π²/12)(T/T_F)²]。(6) 泡利原理抑制散射，电子平均自由程长，相互作用被屏蔽。', src:'大题 二'},
+   {no:'3', title:'固体热容的经典与量子理论', topic:'固体热容', type:'简答 · 27 分', stem:'(1) 用经典能量均分定理计算三维固体热容（N 个原子），解释低温失效原因（5 分）。(2) 简述爱因斯坦模型，计算固体的熵和热容（12 分）。(3) 为何爱因斯坦模型热容指数衰减？指数因子与系统什么性质有关？（5 分）(4) 简述德拜理论，低温热容与温度关系？与爱因斯坦模型的定性差别及物理原因（5 分）。', key:'(1) C_V=3Nk_B；低温 ℏω≫k_BT 振动冻结。(2) 爱因斯坦：Z=Σe^{−βℏω(n+½)}，F、S、C_V 由 Z 求导；C_V=3Nk_B(Θ_E/T)²e^{Θ_E/T}/(e^{Θ_E/T}−1)²。(3) 指数因子 Θ_E=ℏω_E/k_B，由键合强度决定。(4) 德拜低温 C_V∝T³；差别源于德拜包含低频声学模。', src:'大题 三'},
+   {no:'4', title:'黑洞熵与宇宙学的热力学', topic:'黑洞熵/热力学第二定律', type:'简答 · 14 分', stem:'(1) 黑洞熵 S=k_Bc³A/(4Gℏ)，视界面积与质量平方成正比。两个等质量黑洞倾向于合并还是保持独立？（3 分）(2) 黑洞内能 E=mc²，由热力学公式导出黑洞温度与质量关系（4 分）。(3) 若宇宙受熵增原理支配，宇宙最终命运是什么？（3 分）(4) 假设宇宙最终熵为 10¹²³k_B，至少需要多少比特才能模拟（每比特两个状态）？（4 分）', key:'(1) S∝A∝m²，合并后 S 增大，故倾向合并。(2) dE=TdS，S∝m²，得 T∝1/m（霍金温度）。(3) 趋向最大熵的平衡态（热寂）。(4) S=k_B ln2·N_bit，N_bit≈10¹²³/ln2≈1.44×10¹²³。', src:'大题 四'},
+   {no:'5', title:'磁振子的态密度与热容', topic:'准粒子', type:'计算 · 16 分', stem:'钛磁固体低温元激发为自旋波或磁振子，色散关系 ε=αp^γ（α、γ 为常数）。(1) 求这种准粒子的态密度 D(ε)（6 分）。(2) 已知低温 k_BT≪ε_max，实验测得热容 C∼T^{3/2}，确定 γ（10 分）。', key:'(1) D(ε)∝ε^{3/γ−1}（三维）。(2) 低温 C∝T^{3/γ}；由 3/γ=3/2 得 γ=2（铁磁自旋波 ε∝p²）。', src:'大题 五'},
+   {no:'6', title:'氢原子配分函数与宇宙激发态', topic:'配分函数', type:'简答/计算 · 10 分', stem:'(1) 假设有一个孤立的氢原子，计算氢原子的子系配分函数。对计算结果你发现了什么问题？遇到这种问题你该怎么办？（5 分）(2) 现在宇宙是温度约 2.7K 的黑体辐射，假设宇宙中物质由氢原子组成，且每个氢原子只有基态和第一激发态，估算此时宇宙中氢原子位于第一激发态的概率。这个概率意味着宇宙处于什么状态？（5 分）注：第一激发态能量 −3.4eV，基态 −13.6eV，1eV 对应温度约 10000K。', key:'(1) Z=Σg_n e^{−βE_n}，n→∞ 时能级无限密集且 g_n∝n²，配分函数发散；需考虑原子有限体积/电离截断。(2) ΔE=10.2eV 对应 1.02×10⁵K，2.7K 时 e^{−ΔE/k_BT}∼e^{−3.8×10⁴}，第一激发态概率几乎为零，宇宙物质处于基态。', src:'大题 六'},
+   {no:'7', title:'磁性起源与伊辛模型', topic:'磁性/伊辛', type:'简答 · 11 分', stem:'(1) 试证明：处于热平衡的经典系统不会出现磁性。（5 分）提示：从哈密顿量 H=(1/2m)Σ(p_i+q_iA_i/c)²+Φ(r₁…r_N) 出发计算配分函数，论证配分函数与磁矢势 A 无关。(2)【附加】写出伊辛模型的哈密顿量并解释每一项的物理含义，从物理上说明一维伊辛模型不会发生自发磁化。（6 分）', key:'(1) 对 p_i 作平移 p_i→p_i−q_iA_i/c，积分测度不变，A_i 从配分函数中消失，故 M=−∂F/∂B=0。(2) H=−JΣ_{⟨ij⟩}s_i s_j−hΣs_i；J 为交换积分，h 为外场。一维畴壁能量 2J 有限，熵增益 k_B lnL，T>0 时自由能总降低，无长程有序。', src:'大题 七'}
+  ]},
+
+{ id:'td2024', label:'热力学与统计物理 常雷 2024 小考（一）',
+  meta:[['结构','4 道大题，每题 20–25 分'],['备注','2023–2024 学年第二学期小考试卷（一），英文命题'],['来源文件','热统常雷 2024.pdf']],
+  pages:['img/td/td2024_p1.png','img/td/td2024_p2.png'],
+  qs:[
+   {no:'1', title:'由态密度求内能与熵的二阶导', topic:'统计热力学', type:'计算 · 20 分', stem:'Suppose g(U)=CU^{3N/2}, where C is a constant and N is the number of particles. (a) Show that U=(3/2)Nτ. (b) Show that (∂²σ/∂U²)_N is negative.', key:'(a) 由 lnΩ=ln g(U) 与 1/τ=∂σ/∂U，σ=ln g，得 3N/(2U)=1/τ，故 U=3Nτ/2。(b) ∂²σ/∂U²=−3N/(2U²)<0，对应 C_V>0。', src:'第一题'},
+   {no:'2', title:'能量概率与自由能', topic:'正则系综', type:'证明 · 20 分', stem:'Prove that the probability of finding an atom in any particular energy level is P[U]=e^{−τ/T}/Z, where F=U−τσ is the free energy.', key:'正则分布 P(E)=e^{−E/k_BT}/Z；利用 F=−k_BT lnZ 与 σ=∂(k_BT lnZ)/∂T 可把指数写成 e^{−τ/T}/Z 的形式（τ=k_BT，符号按课程约定）。', src:'第二题'},
+   {no:'3', title:'一维与二维自由电子态密度', topic:'费米气体', type:'计算 · 25 分', stem:'(a) Show that the density of orbitals of a free electron in one dimension is D₁(ε)=(L/π)(2m/h²ε)^{1/2}, where L is the length of the line. (b) Show that in two dimensions, for a square of area A, D₂(ε)=Am/πℏ².', key:'(a) 一维 k 空间态密度 L/(2π)，ε=ℏ²k²/2m，dk/dε=m/(ℏ²k)，D₁=2·(L/2π)·dk/dε=(L/π)(2m/h²ε)^{1/2}。(b) 二维 D₂=2·A/(2π)²·2πk·dk/dε=Am/(2πℏ²)，计入自旋后为 Am/πℏ²。', src:'第三题'},
+   {no:'4', title:'玻色气体热容随温度的变化', topic:'BEC', type:'作图/简答 · 25 分', stem:'Please qualitatively draw the variation of a Bose gas\'s heat capacity with temperature.', key:'T<T_c：C_V∝T^{3/2} 上升；T=T_c 处达到峰值约 1.93Nk_B；T>T_c 后下降并趋于经典值 3Nk_B/2。原卷附示意图。', src:'第四题'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -4116,7 +4377,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4165,7 +4426,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4216,10 +4477,11 @@ function renderDashboard(){
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
+  const tdc = (CID==='td');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -4229,6 +4491,7 @@ function renderDashboard(){
       : esc2 ? '本站把《电磁学》（大一下）的 9 章知识体系（静电学 / 导体 / 恒定电流 / 电介质 / 静磁学 / 电磁感应 / 磁介质 / 交流电 / 麦克斯韦理论）整理为结构化资料，并汇总 1 套电磁学期末卷与 3 套大学物理（一）卷中的电磁学题目。所有带图题目均附原卷配图。'
       : circ ? '本站把《电路》（大一下）中南开大学实际讲授的 12 章（第 1、2、3、4、6、7、8、9、10、11、13、16 章）整理为结构化资料，并汇总 4 套期末试卷（2016、2022–2023、样卷 1、样卷 4），每套均附原卷页面以便核对全部电路图。'
       : ssc ? '本站把《固体物理（一）》（张立新 · 大三下）的 7 章 PPT（晶体结构 / 衍射 / 结合 / 晶格振动 / 缺陷 / 金属电子论 / 周期场中的电子态）整理为结构化资料，并收录 2026 期末完整卷（12 道简答＋3 道计算）。'
+      : tdc ? '本站把《热力学与统计物理》（赵柳 / 常雷 · 大三下）的 11 章讲义（第 0–10 章：基本知识 / 热力学规律 / 系综 / 气体 / 固体 / 量子气体 / 电介质与磁介质 / 非平衡 / 相变 / 液体）整理为结构化资料，并汇总 3 套真题（2026、2021 级 A 卷、常雷 2024 小考）。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -4274,6 +4537,8 @@ function renderDashboard(){
       ? '提示：电路课程只讲第 1、2、3、4、6、7、8、9、10、11、13、16 章，第 5、12、14、15、17、18 章未收录。试卷中的电路图以「原卷页面」形式完整保留，可在每套试卷顶部展开查看。'
       : ssc
       ? '提示：2026 卷为完整真题（简答 60 分＋计算 40 分）；《固体物理期末复习2014-2017》PDF 字体编码损坏、提取为乱码，仅作题型旁证，未逐题收录。'
+      : tdc
+      ? '提示：2026 卷与 2021 级 A 卷考点高度重合（经典极限、BEC、费米气体、固体热容、磁性/伊辛）；2021 级卷为扫描件，已附 7 页原卷；常雷 2024 为小考卷（一）。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -4381,6 +4646,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 7 章：晶体结构、晶体中的衍射、晶体的结合、晶格振动和晶体的热学性质、晶体中的缺陷、金属电子论、周期场中的电子态。教材为陆栋、蒋平、徐至中《固体物理学》，参考黄昆与 Kittel。</p>
     </div>`;
+  } else if(CID==='td'){
+    html = TD_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 热力学与统计物理（大三下）</div>
+      <h1>章节结构。</h1>
+      <p>共 11 章（第 0–10 章）：课程简介与预备知识、基本知识、热力学基本规律、统计系综、气体、固体、量子统计与量子气体、电介质和磁介质、非平衡理论、相变与化学反应、液体。讲义为赵柳《统计热物理学》（新体系）。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4450,6 +4722,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
       </div>`).join('');
+  } else if(CID==='td'){
+    html = TD_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -4475,11 +4753,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -4498,7 +4776,8 @@ function renderHigh(){
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (qm2 ? 33 : 3)))));
+  const tdc = (CID==='td');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (qm2 ? 33 : 3))))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -4517,10 +4796,12 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 4 套电路试卷中出现的卷数（2016、2022–2023、样卷 1、样卷 4）。同一考点在同一卷的多道题中出现只计一次。'
         : ssc
         ? '“出现次数”统计的是该考点在 2026 期末卷中出现的题数（同一道题涉及多个考点时分别计入）。每一行都列出了具体题号，可回溯核对。'
+        : tdc
+        ? '“出现卷数”统计的是该考点在 3 套热统试卷中出现的卷数（2026、2021 级 A 卷、常雷 2024 小考）。同一考点在同一卷的多道题中出现只计一次。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -4559,6 +4840,7 @@ function renderExams(){
   const esc2 = (CID==='es');
   const circ = (CID==='cir');
   const ssc = (CID==='ss');
+  const tdc = (CID==='td');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -4597,6 +4879,8 @@ function renderExams(){
         ? '4 套电路期末试卷（2016、2022–2023、样卷 1、样卷 4，共 69 题），每套附原卷页面，全部电路图均可对照原文查看。'
         : ssc
         ? '固体物理（一）2026 期末完整卷：12 道简答（60 分）＋ 3 道计算（40 分），每题附解题要点。'
+        : tdc
+        ? '3 套热统真题（2026、2021 级 A 卷、常雷 2024 小考，共 16 题），每题附解题要点；2021 级与常雷卷为扫描件，附原卷页面。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -4612,11 +4896,44 @@ function renderExams(){
       ? '4 套试卷均来自南开大学电路课程；2016 与 2013 卷题目基本一致，故只收录 2016 版。电路图较多，未逐题裁剪，而是把整页原卷保留在每套试卷顶部，题干中标注「配图见原卷 Pn」，可逐页核对。'
       : ssc
       ? '2026 卷为目前拿到的最新完整真题；《固体物理期末复习2014-2017》PDF 字体编码损坏、文本为乱码，无法可靠还原题目，仅作题型旁证。'
+      : tdc
+      ? '2026 卷有文本层，按原文整理；2021 级 A 卷与常雷 2024 小考为扫描件，已逐页读图转写题干，并把 7 页 / 2 页原卷附在每套试卷顶部，公式与插图可直接对照原图。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='td'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>热统卷的分数高度集中在五块：经典极限条件、玻色—爱因斯坦凝聚、理想费米气体、固体热容（经典/爱因斯坦/德拜）、物质磁性与伊辛模型。2026 卷与 2021 级卷几乎逐题重合，把这五块的标准答案背熟即可覆盖大部分分值。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>11 章公式过一遍；2026 与 2021 级两套卷全部做一遍；重点第 5、6、7、9 章。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练五大块：经典极限判定、BEC 临界温度、费米气体热容、固体热容三模型、伊辛平均场。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：nλ_T³≪1、T_c 公式、C_V∝T、爱因斯坦/德拜热容、一维/二维伊辛结论。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看必背：经典极限、BEC 物理解释、费米面、德拜 T³、经典系统无磁性、Mermin–Wagner。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>写经典极限条件，判定空气/电子气体/光子气</td><td>经典极限</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>BEC：临界温度、无相互作用为何凝聚</td><td>BEC</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>费米气体：T=0 基态、C_V∝T、泡利磁化率、化学势随 T 变化</td><td>费米气体</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>固体热容：经典 3Nk_B、爱因斯坦指数、德拜 T³、D 维推广</td><td>固体热容</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>磁性：经典系统无磁性证明、一维伊辛平均场、二维相变</td><td>磁性/伊辛</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>准粒子：ε=αp^γ 的态密度、C∝T^{3/γ}、超流临界速度</td><td>准粒子</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>氢原子配分函数发散与宇宙激发态概率</td><td>配分函数</td><td>${priTag('A')}</td></tr>
+          <tr><td>8</td><td>黑洞熵、黑洞温度、比特数估算</td><td>黑洞熵</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='ss'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -5003,6 +5320,45 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='td'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《热力学与统计物理》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义（11 章）</td><td>Statistical-0.pdf ～ Statistical-10.pdf（赵柳，2020）</td><td>章节结构、小节划分、公式与习题</td></tr>
+          <tr><td>课程信息</td><td>Statistical-0.pdf 第 0 章</td><td>课程沿革、48 学时、教材体系、赵柳/常雷分专业讲授</td></tr>
+          <tr><td>真题</td><td>热统2026.pdf</td><td>5 道大题（文本层完整）</td></tr>
+          <tr><td>真题</td><td>2021 级热统.pdf</td><td>7 道大题（7 页扫描件，已读图转写）</td></tr>
+          <tr><td>真题</td><td>热统常雷 2024.pdf</td><td>4 道大题（2 页扫描件，英文命题）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节以讲义为准</b>：11 章标题与 § 小节编号直接取自 Statistical-0～10，不使用外部教材目录替换。</div>
+      <div class="concept"><b>扫描件逐页转写</b>：2021 级 A 卷与常雷 2024 卷无文本层，题干由逐页读图转写；公式用 LaTeX 重排，并把原卷页面附在试卷顶部，便于核对。</div>
+      <div class="concept"><b>可回溯</b>：每题标注原卷题号（大题 一/二…、第 N 题），考点标注出现卷次与题号。</div>
+      <div class="concept"><b>不编造</b>：2026 卷题干按 PDF 文本整理；扫描卷中个别符号（如下标、希腊字母）按物理语境还原，未改变题意。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>成绩构成未注明</b>：课程简介页只给学时与学分，未列平时/期末比例，故「成绩构成」标注为资料未注明。</div>
+      <div class="concept"><b>2021 级卷年份</b>：文件名写「2021 级」，卷面为「2023—2024 学年第 2 学期 A 卷」，实为 2021 级学生大三下学期的期末卷。</div>
+      <div class="concept"><b>常雷卷为小考</b>：2024 卷标题为「小考试卷（一）」，并非期末完整卷，题量与分值仅作参考。</div>
+      <div class="concept"><b>答案来源</b>：三套卷均未附标准答案，「解题要点」为依据讲义与标准教材的整理，仅供复习参考。</div>
     </div>`;
     return;
   }
