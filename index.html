@@ -2242,7 +2242,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 
 /* ============================================================
    理论力学
@@ -4650,17 +4650,283 @@ const CP_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   数学物理方法（大二下）
+   ============================================================ */
+const COURSE_MP = {
+  name:'数学物理方法',
+  school:'南开大学 · 物理科学学院',
+  semester:'大二下',
+  textbook:'梁昆淼《数学物理方法》',
+  teachers:'董校（第 1–8 章）、缪炎刚（2014–2018 卷）、李华楠（期中）、李种植（2025–2026 回忆/模拟卷）',
+  examLen:'复变 30–45 分 ＋ 积分变换 10–25 分 ＋ 数理方程 60 分（满分 110，超出 100 按 100 计）',
+  grade:'资料未注明（讲义未列成绩比例）',
+  paper:'2025–2026：复变 4 题 + 积分变换 2 题 + 数理方程 4 题（含附加题）；2014–2019：复变 5–8 题 + 积分变换 2 题 + 数理方程 3 题',
+  refs:['梁昆淼《数学物理方法》',
+        '董校《数学物理方法》讲义（第 1–8 章）',
+        '《期末复习》PPT（考点纲要）'],
+  src:'章节来自第1-2章～第8章 PPT（董校，教材梁昆淼）；考点纲要求自《期末复习.pptx》；真题来自 2014–2015、2017–2018、2018–2019、2024–2025、2025–2026 回忆版与模拟卷，以及 2022–2023 期中（李华楠）'
+};
+
+const MP_CHAPTERS = [
+{no:'1-2', title:'复变函数', en:'第一章、第二章', file:'第1-2章.pptx',
+ sections:['复数与复平面','复变函数','导数与柯西—黎曼条件','解析函数与调和函数','多值函数与反三角函数'],
+ concepts:[
+  ['复数的三种表示','代数式 z=x+iy、三角式 r(cosθ+isinθ)、指数式 re^{iθ}；辐角有多值性，主值记为 arg z。'],
+  ['柯西—黎曼条件','u_x=v_y、u_y=−v_x 是可导的必要条件；加上偏导连续则充分。'],
+  ['解析函数','在区域内处处可导；实部与虚部都是调和函数且互为共轭调和函数。'],
+  ['已知实部求虚部','用 C-R 条件积分或利用调和函数的共轭构造，可确定整个解析函数（差一个常数）。'],
+  ['多值函数','对数、根式、反三角函数为多值，需用支点与割线划分单值分支。']
+ ],
+ formulas:[
+  ['欧拉公式', R`e^{i\theta}=\cos\theta+i\sin\theta`],
+  ['柯西—黎曼条件', R`\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},\qquad \frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}`],
+  ['解析函数导数', R`f'(z)=\frac{\partial u}{\partial x}+i\frac{\partial v}{\partial x}`],
+  ['拉普拉斯方程', R`\nabla^2u=0,\qquad \nabla^2v=0`],
+  ['反余弦', R`\arccos z=-i\ln\left(z+i\sqrt{1-z^2}\right)`]
+ ]},
+
+{no:'3', title:'幂级数展开', en:'第三章', file:'第3章.pptx',
+ sections:['复数项级数','幂级数与收敛半径','泰勒展开','洛朗展开','奇点分类'],
+ concepts:[
+  ['收敛判别','比值判别法与根值判别法；收敛圆内绝对收敛。'],
+  ['泰勒级数','在解析点邻域展开，只含正幂次，收敛域为圆盘。'],
+  ['洛朗级数','在奇点邻域的环域展开，含负幂次，收敛域为圆环。'],
+  ['奇点分类','可去奇点、m 阶极点、本性奇点，由洛朗展开的主部判定。'],
+  ['收敛域确定','由到最近奇点的距离决定；不同环域对应不同展开。']
+ ],
+ formulas:[
+  ['泰勒级数', R`f(z)=\sum_{n=0}^{\infty}\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n`],
+  ['洛朗级数', R`f(z)=\sum_{n=-\infty}^{\infty}a_n(z-z_0)^n`],
+  ['收敛半径', R`R=\lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|`],
+  ['留数系数', R`a_{-1}=\frac{1}{2\pi i}\oint_l f(z)\,dz`]
+ ]},
+
+{no:'4', title:'留数定理', en:'第四章', file:'第4章.pptx',
+ sections:['留数定理','留数的计算','有理分式的实积分','含 e^{imx} 的实积分','实轴上有奇点的积分'],
+ concepts:[
+  ['留数定理','沿闭合围道的积分等于 2πi 乘以围道内各奇点留数之和。'],
+  ['一阶极点留数','Res f(z₀)=lim(z−z₀)f(z)。'],
+  ['m 阶极点留数','用 (m−1) 阶导数公式计算。'],
+  ['三类实积分','有理分式、三角函数在 [0,2π]、F(x)e^{imx} 在实轴，分别选半圆/单位圆围道。'],
+  ['实轴有奇点','用缩进围道，取主值，注意半留数贡献。']
+ ],
+ formulas:[
+  ['留数定理', R`\oint_l f(z)\,dz=2\pi i\sum_{k}\operatorname{Res}f(b_k)`],
+  ['一阶极点', R`\operatorname{Res}f(z_0)=\lim_{z\to z_0}(z-z_0)f(z)`],
+  ['m 阶极点', R`\operatorname{Res}f(z_0)=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{m-1}}{dz^{m-1}}\left[(z-z_0)^m f(z)\right]`],
+  ['有理分式积分', R`\int_{-\infty}^{\infty}\frac{P(x)}{Q(x)}dx=2\pi i\sum_{\operatorname{Im}z_k>0}\operatorname{Res}\frac{P(z)}{Q(z)}`],
+  ['约当引理', R`\int_{-\infty}^{\infty}F(x)e^{imx}dx=2\pi i\sum_{\operatorname{Im}z_k>0}\operatorname{Res}\left[F(z)e^{imz}\right]`]
+ ]},
+
+{no:'5', title:'傅里叶变换', en:'第五章', file:'第5章.pptx',
+ sections:['周期函数的傅里叶展开','傅里叶积分与傅里叶变换','δ 函数','函数空间与完备性'],
+ concepts:[
+  ['傅里叶级数','周期函数在一组正交三角函数上的展开，系数由正交性积分得到。'],
+  ['狄里希利条件','分段光滑、只有有限个极值点，级数收敛。'],
+  ['傅里叶变换','非周期函数表示为连续频率的叠加；变换与逆变换对称。'],
+  ['δ 函数','单位脉冲的广义函数，用于表示点源与频谱。'],
+  ['帕塞瓦尔定理','时域能量等于频域能量。']
+ ],
+ formulas:[
+  ['傅里叶级数', R`f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos\frac{n\pi x}{l}+b_n\sin\frac{n\pi x}{l}\right)`],
+  ['傅里叶变换', R`F(\omega)=\int_{-\infty}^{\infty}f(x)e^{-i\omega x}dx`],
+  ['逆变换', R`f(x)=\frac{1}{2\pi}\int_{-\infty}^{\infty}F(\omega)e^{i\omega x}d\omega`],
+  ['δ 函数表示', R`\delta(x)=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{i\omega x}d\omega`],
+  ['高斯变换', R`\mathscr F\left[e^{-ax^2}\right]=\sqrt{\frac{\pi}{a}}\,e^{-\omega^2/4a}`]
+ ]},
+
+{no:'6', title:'拉普拉斯变换', en:'第六章', file:'第6章.pptx',
+ sections:['拉普拉斯变换的定义','拉普拉斯变换的反演','卷积定理','常微分方程的拉氏变换解法'],
+ concepts:[
+  ['拉氏变换','对 f(t)e^{−σt} 作傅里叶变换，适合处理初值问题。'],
+  ['反演','用围道积分（Bruns 公式）或查表；反演常用留数定理。'],
+  ['微分性质','导数的变换化为乘以 p 减去初值，把微分方程化为代数方程。'],
+  ['卷积定理','时域卷积对应像函数相乘。'],
+  ['耦合方程','用拉氏变换把耦合的常微分方程组化为线性代数方程组。']
+ ],
+ formulas:[
+  ['拉氏变换', R`F(p)=\int_0^{\infty}f(t)e^{-pt}dt`],
+  ['反演公式', R`f(t)=\frac{1}{2\pi i}\int_{a-i\infty}^{a+i\infty}F(p)e^{pt}dp`],
+  ['导数变换', R`\mathscr L[f']=pF(p)-f(0)`],
+  ['卷积定理', R`\mathscr L[f*g]=F(p)G(p)`],
+  ['常用变换', R`\mathscr L[t^n]=\frac{n!}{p^{n+1}},\qquad \mathscr L[\sin\omega t]=\frac{\omega}{p^2+\omega^2}`]
+ ]},
+
+{no:'7', title:'数学物理方程定解问题', en:'第七章', file:'第7章.pptx',
+ sections:['三类数学物理方程的导出','定解条件','三类边界条件','齐次与非齐次'],
+ concepts:[
+  ['三类方程','波动方程（双曲型）、输运/扩散方程（抛物型）、稳定场方程（椭圆型）。'],
+  ['弦的横振动','由牛顿第二定律与胡克定律导出 u_tt=a²u_xx。'],
+  ['初始条件','给出位移与速度（或温度分布）。'],
+  ['三类边界条件','第一类（Dirichlet）给定函数值、第二类（Neumann）给定法向导数、第三类（Robin）给定组合。'],
+  ['齐次的意义','方程齐次表示无外源；边界齐次表示边界无外部驱动，是分离变数法适用的前提。']
+ ],
+ formulas:[
+  ['波动方程', R`u_{tt}=a^2\nabla^2u`],
+  ['输运方程', R`u_t=a^2\nabla^2u`],
+  ['稳定场方程', R`\nabla^2u=0\ \text{或}\ \nabla^2u=-f`],
+  ['第一类边界', R`u|_{\partial\Omega}=g`],
+  ['第二类边界', R`\left.\frac{\partial u}{\partial n}\right|_{\partial\Omega}=g`]
+ ]},
+
+{no:'8', title:'分离变数法', en:'第八章', file:'第8章.pptx',
+ sections:['齐次方程的分离变数法','非齐次振动与输运方程','行波法与达朗贝尔公式','球坐标系：勒让德函数与球谐函数','柱坐标系：贝塞尔函数'],
+ concepts:[
+  ['分离变数','设 u=X(x)T(t)，代入齐次方程与齐次边界条件，得到本征值问题。'],
+  ['本征值问题','由齐次边界条件确定本征值与正交本征函数族。'],
+  ['达朗贝尔公式','一维无界波动方程的通解，由初始条件决定左右行波。'],
+  ['勒让德方程','球坐标轴对称问题的角向方程，解为勒让德多项式。'],
+  ['贝塞尔方程','柱坐标径向方程，解为贝塞尔函数。'],
+  ['广义傅里叶展开','按本征函数族展开非齐次项或初始条件。']
+ ],
+ formulas:[
+  ['分离变数', R`u(x,t)=X(x)T(t)\ \Rightarrow\ \frac{X''}{X}=\frac{T''}{a^2T}=-\lambda`],
+  ['达朗贝尔公式', R`u(x,t)=\frac{1}{2}[\varphi(x-at)+\varphi(x+at)]+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)d\xi`],
+  ['勒让德方程', R`(1-x^2)y''-2xy'+l(l+1)y=0`],
+  ['贝塞尔方程', R`x^2y''+xy'+(x^2-m^2)y=0`],
+  ['球谐函数', R`Y_l^m(\theta,\varphi)=(-1)^m\sqrt{\frac{2l+1}{4\pi}\frac{(l-m)!}{(l+m)!}}P_l^m(\cos\theta)e^{im\varphi}`]
+ ]}
+];
+
+const MP_TOPICS = [
+ {name:'复数的三种表示与运算', ch:'第1-2章', pri:'S', stars:4, ev:[['2014-15','一·1'],['2017-18','一·1–2'],['2018-19','1.1–1.2']], note:'代数式/三角式/指数式互化，幂与根式运算'},
+ {name:'柯西—黎曼条件与解析函数', ch:'第1-2章', pri:'S', stars:4, ev:[['2014-15','一·3'],['2017-18','一·3'],['2018-19','1.3']], note:'验证 C-R、求 f′(z)、直角与极坐标形式'},
+ {name:'泰勒与洛朗展开', ch:'第3章', pri:'S', stars:5, ev:[['2014-15','一·4'],['2017-18','一·4'],['2018-19','1.4'],['2025-26','一·3'],['模拟卷','一·3'],['2024-25','2']], note:'指定点展开、判断奇点类型与级数类型、求收敛域'},
+ {name:'留数定理与实积分', ch:'第4章', pri:'S', stars:5, ev:[['2014-15','一·5–6'],['2017-18','一·5–6'],['2018-19','1.5'],['2025-26','一·4'],['模拟卷','一·4'],['期中','二']], note:'围道积分、有理分式、含 e^{imx}、含 cos ax/(x²+1)²'},
+ {name:'傅里叶变换', ch:'第5章', pri:'S', stars:4, ev:[['2014-15','一·7'],['2017-18','二·1'],['2018-19','2.1'],['2024-25','3']], note:'对 Schrödinger 方程作变换、动量表象、高斯函数变换'},
+ {name:'拉普拉斯变换', ch:'第6章', pri:'S', stars:5, ev:[['2014-15','一·8'],['2017-18','二·2'],['2018-19','2.2'],['模拟卷','二·2'],['期中','三']], note:'解常微分/耦合方程、反演围道积分、1/√p 反演'},
+ {name:'三类方程与三类边界条件', ch:'第7章', pri:'S', stars:5, ev:[['2014-15','二·9'],['2017-18','三·1'],['2018-19','3.1']], note:'波动/输运/稳定场方程；三类边界；齐次与非齐次的意义'},
+ {name:'分离变数法', ch:'第8章', pri:'S', stars:5, ev:[['2014-15','二·11'],['2017-18','三·3'],['2018-19','3.2–3.3'],['2025-26','三·3'],['模拟卷','三·1'],['2024-25','7']], note:'球坐标/柱坐标分离变量，写出各方程与本征解'},
+ {name:'特殊函数：勒让德、球谐、贝塞尔', ch:'第8章', pri:'A', stars:4, ev:[['2025-26','三·1'],['模拟卷','三·3'],['2024-25','8']], note:'勒让德展开、球谐正交性、球谐直角坐标表示'},
+ {name:'镜像法与导体球', ch:'第8章', pri:'A', stars:4, ev:[['2014-15','二·10'],['2017-18','三·2'],['2025-26','三·2'],['模拟卷','三·2'],['2024-25','9']], note:'接地导体球 + 点电荷、介质球壳的电势分布'}
+];
+
+const MP_TYPES = [
+ {name:'复数运算', cnt:5, topics:'三种表示', pri:'S', ex:'(cos3α+isin3α)²/(cos4α−isin4α)⁴ 的三种表示'},
+ {name:'解析函数', cnt:3, topics:'C-R 条件', pri:'S', ex:'(2z+5)² 表成 u+iv 并验证 C-R'},
+ {name:'级数展开', cnt:6, topics:'泰勒/洛朗', pri:'S', ex:'在指定环域展开并判断级数类型'},
+ {name:'留数积分', cnt:6, topics:'围道/实积分', pri:'S', ex:'含 cos ax/(x²+1)² 的实积分'},
+ {name:'积分变换', cnt:8, topics:'傅里叶/拉普拉斯', pri:'S', ex:'用 Laplace 变换解 ODE 或反演 1/√p'},
+ {name:'数理方程建立', cnt:3, topics:'三类方程/边界', pri:'S', ex:'写出三类泛定方程与三类边界条件'},
+ {name:'分离变数', cnt:6, topics:'球/柱坐标', pri:'S', ex:'柱坐标薛定谔方程分离变量'},
+ {name:'特殊函数/静电场', cnt:5, topics:'勒让德/球谐/镜像法', pri:'A', ex:'接地导体球外点电荷的电势'}
+];
+
+const MP_EXAMS = [
+{ id:'mp2026', label:'数学物理方法 2025–2026 期末（回忆版）',
+  meta:[['命题/回忆','李种植（回忆人）'],['结构','复变 4 题 45 分 ＋ 积分变换 2 题 25 分 ＋ 数理方程 4 题 40 分'],['备注','满分 110，超出 100 按 100 计；第二题第 2 小问原卷缺失']],
+  qs:[
+   {no:'1', title:'反余弦的复对数表示', topic:'复变函数', type:'证明 · 10 分', stem:'求证：arccos z = −i ln(z + i(1−z²)^{1/2})。', key:'令 w=arccos z，则 z=cos w=(e^{iw}+e^{−iw})/2，解关于 e^{iw} 的二次方程，取对数并整理即得。', src:'一·1'},
+   {no:'2', title:'绕数为整数', topic:'复变积分', type:'证明 · 10 分', stem:'设 γ 是复平面上不经过原点的光滑闭曲线，定义绕数 wind(γ,0)=(1/2πi)∮dz/z，证明 wind(γ,0) 为整数。', key:'把 γ 参数化为 z(t)，∮dz/z=∫d ln z=ln z(1)−ln z(0)，闭曲线两端只差 2πi 的整数倍，故结果为整数。', src:'一·2'},
+   {no:'3', title:'三个环域的洛朗展开', topic:'级数展开', type:'计算 · 15 分', stem:'已知 f(z)=1/[(z−1)(z−2)(z−3)]。(1) 在 (0,1) 展开；(2) 在 (1,2) 展开；(3) 在 (2,3) 展开。', key:'部分分式分解后，按 |z|、|z−1|、|z−2| 与各奇点距离选择等比级数展开；三个环域分别得到泰勒型、含有限负幂、含更多负幂的洛朗级数。', src:'一·3'},
+   {no:'4', title:'含 cos ax/(x²+1)² 的实积分', topic:'留数', type:'计算 · 10 分', stem:'求解积分 ∫_{−∞}^{+∞} cos ax/(x²+1)² dx，并分别讨论 a>0 与 a<0 的情况。', key:'取上半平面围道，z=±i 为二阶极点；I=2πi Res[e^{iaz}/(z²+1)², i]= (π/2)(1+|a|)e^{−|a|}；a<0 时由偶函数性对称。', src:'一·4'},
+   {no:'5', title:'δ 函数与主值关系', topic:'积分变换', type:'证明 · 10 分', stem:'求证：lim_{ε→0+} 1/(ε+iω) = πδ(ω) − i·P.V.(1/ω)。', key:'用 1/(ε+iω)=(ε−iω)/(ε²+ω²)，实部为洛伦兹型峰 →πδ(ω)，虚部在 ε→0 时趋于主值 −i/ω。', src:'二·1'},
+   {no:'6', title:'积分变换第二题（原卷缺失）', topic:'积分变换', type:'计算 · 15 分', stem:'原回忆版此处只有题图、无文字题干，无法可靠还原。', key:'原卷缺失，未作答要点；可参考同年度模拟卷第二题（拉普拉斯变换解 y″−2y′+y=t²e^t）。', src:'二·2'},
+   {no:'7', title:'勒让德多项式与球谐函数', topic:'特殊函数', type:'计算/证明 · 10 分', stem:'(1) 求 ∫_{−1}^{1}P_l(x)dx；(2) 已知 f(x)=x³，求其在勒让德多项式下的展开；(3) 证明球谐函数的正交性。', key:'(1) l=0 时为 2，l≥1 时为 0（奇偶性）。(2) x³=(2/5)P₃+(3/5)P₁。(3) 用球谐函数的显式表达式与 ∫P_l^mP_{l′}^m dx 的正交性证明。', src:'三·1'},
+   {no:'8', title:'接地导体球与点电荷', topic:'静电场', type:'计算 · 10 分', stem:'在点电荷 q 的电场中放置接地导体球，球半径为 a，球心与点电荷相距 r₁（r₁>a），求静电场。已知勒让德多项式母函数展开式。', key:'镜像法：在球内 r=a²/r₁ 处放镜像电荷 q′=−qa/r₁；球外电势为原电荷与镜像电荷之和，用母函数展开成勒让德级数，验证 r=a 处为零。', src:'三·2'},
+   {no:'9', title:'柱坐标薛定谔方程分离变量', topic:'分离变数', type:'计算 · 10 分', stem:'在柱坐标系下将定态薛定谔方程分离变量，并求出对应方程的本征值和本征解，其中 Z(±∞) 有限、Φ 满足自然边界条件。(1) 求 Z 和 Φ；(2) 求 R 的方程；(3) 令 v=√ρ R(ρ)，求 v 满足的方程。', key:'设 ψ=R(ρ)Φ(φ)Z(z)；Φ″+m²Φ=0 → Φ=e^{imφ}，m 为整数；Z″−k²Z=0，有限性给出 k=0 或指数衰减；R 满足贝塞尔型方程，代换 v=√ρR 化为标准贝塞尔方程。', src:'三·3'},
+   {no:'10', title:'约瑟夫森结（附加题）', topic:'数理方程应用', type:'推导 · 10 分', stem:'由双态薛定谔方程 iℏ∂_t(Ψ₁,Ψ₂)ᵀ=(eV,K;K,−eV)(Ψ₁,Ψ₂)ᵀ 出发：(1) 推导约瑟夫森方程 I=I₀sinφ、∂φ/∂t=2eV/ℏ；(2) 直流电压 U₀ 下求 I(t) 与周期 T，并说明 U₀=0 时仍存在电流；(3) 交流电压 V=U₀sinωt 下求 I(t)，证明频谱为 nω 谐波叠加，系数含贝塞尔函数 J_n(k)。', key:'(1) 代入振幅与相位，分离实虚部得相位演化与电流正比于 sinφ。(2) φ=φ₀+2eU₀t/ℏ，I=I₀sin(φ₀+ω_J t)，T=πℏ/(eU₀)；U₀=0 时 φ 恒定，仍有直流超导电流。(3) 用 sin(k sinωt) 与 cos(k sinωt) 的贝塞尔展开，得各阶谐波。', src:'三·4'}
+  ]},
+
+{ id:'mpmock', label:'数学物理方法 2025–2026 期末模拟卷',
+  meta:[['命题','李种植'],['结构','复变 4 题 30 分 ＋ 积分变换 2 题 20 分 ＋ 数理方程 4 题 60 分'],['备注','模拟卷，题型与同年回忆版一致']],
+  qs:[
+   {no:'1', title:'反余弦的复对数表示', topic:'复变函数', type:'证明 · 5 分', stem:'求证：arccos z = −i ln(z + √(z²−1))。', key:'由 z=cos w 解出 e^{iw}，取对数；与回忆版的 i(1−z²)^{1/2} 写法等价（差一个分支）。', src:'一·1'},
+   {no:'2', title:'绕数为整数', topic:'复变积分', type:'证明 · 5 分', stem:'设 γ 是不经过原点的光滑闭曲线，wind(γ,0)=(1/2πi)∮dz/z，证明其为整数。', key:'参数化后积分等于 ln z 的增量，闭曲线增量必为 2πi 的整数倍。', src:'一·2'},
+   {no:'3', title:'在 z=0 与 z=2 处展开', topic:'级数展开', type:'计算 · 10 分', stem:'f(z)=1/[(z−1)(z−2)(z−3)]。(1) 在 z=0 处展开，说明点的类型、级数类型并求收敛域；(2) 在 z=2 处展开，同样说明。', key:'(1) 三个一阶极点分别在 1、2、3，z=0 为解析点，泰勒展开收敛域 |z|<1。(2) z=2 为一阶极点，洛朗展开主部只有 1/(z−2) 项，收敛域 0<|z−2|<1。', src:'一·3'},
+   {no:'4', title:'含分数幂的实积分', topic:'留数', type:'计算 · 10 分', stem:'求解积分 ∫_{−∞}^{+∞} dx/(1−x^{2m+1})，m≥1。', key:'被积函数在实轴上有奇点，需用缩进围道并取主值；利用留数定理与半留数，结果为 π 的倍数（与 m 的具体取值相关）。', src:'一·4'},
+   {no:'5', title:'δ 函数与主值关系', topic:'积分变换', type:'证明 · 10 分', stem:'求证：lim_{ε→0+} 1/(ε+iω) = πδ(ω) − i·P.V.(1/ω)。', key:'拆成实部 ε/(ε²+ω²) 与虚部 −iω/(ε²+ω²)，分别取极限。', src:'二·1'},
+   {no:'6', title:'拉普拉斯变换解二阶方程', topic:'拉普拉斯变换', type:'计算 · 10 分', stem:'用拉普拉斯变换求解 y″−2y′+y=t²e^t，y(0)=y′(0)=0。', key:'两边取变换：(p−1)²Y=2/(p−1)³，Y=2/(p−1)⁵，反演得 y=(t⁴/12)e^t。', src:'二·2'},
+   {no:'7', title:'柱坐标薛定谔方程分离变量', topic:'分离变数', type:'计算 · 15 分', stem:'在柱坐标系下将定态薛定谔方程分离变量，求出 Z 与 Φ 的表达式、R 的方程，并令 v=√ρ R 求 v 的方程。', key:'与回忆版三·3 同一题型：Φ=e^{imφ}，Z 由有限性定 k，R 化为贝塞尔方程。', src:'三·1'},
+   {no:'8', title:'接地导体球与点电荷', topic:'静电场', type:'计算 · 20 分', stem:'点电荷 q 放置在接地导体球外，球半径 a，球心到电荷距离 r₁>a，求静电场。', key:'镜像电荷 q′=−qa/r₁，位置 r=a²/r₁；球外电势 φ=(1/4πε₀)[q/|r−r₁|+q′/|r−r′|]。', src:'三·2'},
+   {no:'9', title:'勒让德展开、球谐与正交性', topic:'特殊函数', type:'计算/证明 · 15 分', stem:'已知 f(x)=7x³+x²+x+1。(1) 以勒让德多项式为基底展开；(2) 写出用连带勒让德多项式 P_l^{|m|} 表示球谐函数 Y_l^m；(3) 证明球谐函数正交性。', key:'(1) 用 P₀=1、P₁=x、P₂=(3x²−1)/2、P₃=(5x³−3x)/2 逐项投影得系数。(2) Y_l^m 的归一化显式。(3) 由连带勒让德函数正交性与 e^{imφ} 正交性相乘得到。', src:'三·3'},
+   {no:'10', title:'约瑟夫森结（附加题）', topic:'数理方程应用', type:'推导 · 10 分', stem:'同回忆版附加题：由双态薛定谔方程推导约瑟夫森方程，讨论直流与交流电压下的电流及贝塞尔谐波结构。', key:'见回忆版三·4 的解题路径。', src:'三·4'}
+  ]},
+
+{ id:'mpmid', label:'数学物理方法 2022–2023 期中（李华楠）',
+  meta:[['命题','李华楠'],['结构','3 道大题：30+30+40 分'],['备注','扫描件为学生答卷，含手写解答；已附 3 页原卷']],
+  pages:['img/mp/mp_mid_p1.png','img/mp/mp_mid_p2.png','img/mp/mp_mid_p3.png'],
+  qs:[
+   {no:'1', title:'cos z=3 的所有复解', topic:'复变函数', type:'计算 · 30 分', stem:'cos z=3，求满足该方程的 z 的所有复解。（提示：cos z=(e^{iz}+e^{−iz})/2）', key:'令 u=e^{iz}，得 u²−6u+1=0，u=3±2√2；z=−i ln(3±2√2)+2kπ，k∈Z。', src:'一'},
+   {no:'2', title:'围道积分（顺时针）', topic:'留数', type:'计算 · 30 分', stem:'计算围道积分 ∮_{|z|=1} 2dz/(e^{iπ/4}z²+4z+e^{iπ/4})，所取围道 |z|=1 设为顺时针方向。', key:'分母两根 z₁,₂=2e^{i3π/4}(±√2−1) 形式的模小于 1 的为一阶极点；用留数定理并注意顺时针取负号，结果含 e^{i arctan 4} 因子。', src:'二'},
+   {no:'3', title:'L⁻¹(1/√p) 的围道积分', topic:'拉普拉斯变换', type:'计算 · 40 分', stem:'用留数定理计算 L⁻¹(1/√p)=(1/2πi)∫_{a−i∞}^{a+i∞} e^{pt}/√p dp，a>0，t>0。提示：√p=exp[(1/2)Ln(p)]，Ln 为对数函数主值；可取围道见原卷图。', key:'取含支割线的钥匙孔围道，大圆与小圆积分趋于零，上下岸积分相差一个相位；最终得 L⁻¹(1/√p)=1/√(πt)。', src:'三'}
+  ]},
+
+{ id:'mp2019', label:'数学物理方法 2018–2019 期末（回忆版）',
+  meta:[['结构','复变 5 题 30 分 ＋ 积分变换 2 题 10 分 ＋ 数理方程 3 题 60 分'],['备注','陶茂翔整理，致谢曹远帆、汪芷砚、王博斌']],
+  qs:[
+   {no:'1', title:'复数的三种表示', topic:'复数运算', type:'计算 · 6 分', stem:'求 (cos3α+isin3α)⁴/(cos4α−isin4α)³ 的三角式、指数式、标准式。', key:'分子用棣莫弗公式为 e^{i12α}，分母为 e^{−i12α}，商为 e^{i24α}；再化为三角式与代数式。', src:'1.1'},
+   {no:'2', title:'复数除法', topic:'复数运算', type:'计算 · 6 分', stem:'计算 (a+bi)/(c+di)。', key:'分子分母同乘 c−di，得 [(ac+bd)+i(bc−ad)]/(c²+d²)。', src:'1.2'},
+   {no:'3', title:'直角与极坐标的 C-R 条件', topic:'解析函数', type:'推导 · 6 分', stem:'(1) 推导或写出平面直角坐标系下的柯西—黎曼条件；(2) 根据 (1) 推导平面极坐标系下的柯西—黎曼条件。', key:'(1) u_x=v_y、u_y=−v_x。(2) 用 x=ρcosφ、y=ρsinφ 作链式法则，得 u_ρ=v_φ/ρ、u_φ=−ρv_ρ。', src:'1.3'},
+   {no:'4', title:'指定点的展开与奇点判定', topic:'级数展开', type:'计算 · 6 分', stem:'已知 f(z)=(z−1)/(z(z−i))，写出 f(z) 在 z₀=i 与 z₀=1 处的展开式，判断是常点还是奇点；若为极点写出阶数，判断泰勒/洛朗展开，并求收敛域。', key:'z=i 为一阶极点，洛朗展开主部为 (i−1)/(i(z−i))，收敛域 0<|z−i|<1；z=1 为解析点，泰勒展开收敛域 |z−1|<1。', src:'1.4'},
+   {no:'5', title:'菲涅耳型积分的围道证明', topic:'留数', type:'证明 · 6 分', stem:'已知 I₁=∫₀^∞cos x²dx、I₂=∫₀^∞sin x²dx，提示 I₁+iI₂=∫₀^∞e^{ix²}dx，取扇形围道。(1) 写出该区域内的留数定理；(2) 写出 l₂ 上的积分表达式；(3) 证明大圆弧 C_R 上的积分趋于 0。', key:'扇形围道内无奇点，留数定理给出三段积分之和为零；l₂ 沿 45° 射线化为高斯积分；C_R 上用约当引理估计。最终 I₁=I₂=√(2π)/4。', src:'1.5'},
+   {no:'6', title:'线性 ODE 的傅里叶变换', topic:'傅里叶变换', type:'计算 · 5 分', stem:'已知 af″(x)+bf′(x)+cf(x)=g(x)。(1) 写出傅里叶变换；(2) 写出像函数表达式；(3) 写出反演公式。', key:'变换后 (−aω²+ibω+c)F(ω)=G(ω)，F=G/(c−aω²+ibω)，再作逆变换。', src:'2.1'},
+   {no:'7', title:'含 sin(tx)/x 的拉普拉斯变换', topic:'拉普拉斯变换', type:'计算 · 5 分', stem:'令 f(t)=∫₀^∞ sin(tx)/x dx，求 f(t) 的拉普拉斯变换。提示：可把 p 看作正实数，sin(tx) 的像函数为 x/(p²+x²)。', key:'交换积分次序：∫₀^∞ [x/(p²+x²)]·(1/x)dx=∫₀^∞dx/(p²+x²)=π/(2p)。', src:'2.2'},
+   {no:'8', title:'三类方程与三类边界条件', topic:'数理方程', type:'简答 · 20 分', stem:'写出三类泛定方程及三类边界条件，并解释方程和边界条件齐次与非齐次的概念。', key:'波动 u_tt=a²∇²u、输运 u_t=a²∇²u、稳定场 ∇²u=0；三类边界为给定函数值、法向导数、二者线性组合；齐次指不含外源/边界驱动项。', src:'3.1'},
+   {no:'9', title:'球函数分离变量', topic:'分离变数', type:'计算 · 20 分', stem:'已知 u_tt=a²Δu−ω²u，边界条件 u|_{r=r₀}=g(θ)e^{iωt}、u|_{r=0} 有限。(1) 用分离变数法求出各变数的常微分方程；(2) 写出问题的解。', key:'设 u=R(r)Y(θ,φ)T(t)，角向得球谐方程，径向得球贝塞尔方程；由 r=0 有限与边界条件定系数。', src:'3.2'},
+   {no:'10', title:'柱函数分离变量', topic:'分离变数', type:'计算 · 20 分', stem:'已知 u_t=a²∇²u，柱坐标下分离变量。(1) 分离变量；(2) 解出 T(t)，用自然边界条件解出 Φ(φ)；(3) 上下底面第二类齐次边界条件下的解；(4) 侧面第一类齐次边界条件下的解；(5) 边界 u|_{r=r₀}=g(φ) 时的一般柱内解。', key:'T=e^{−a²λ²t}，Φ=e^{imφ}；Z 由上下底面边界定 k；R 为零阶贝塞尔函数，系数由侧面边界与广义傅里叶展开确定。', src:'3.3'}
+  ]},
+
+{ id:'mp2018', label:'数学物理方法 2017–2018 期末（A 卷）',
+  meta:[['命题','缪炎刚'],['结构','复变 6 题 30 分 ＋ 积分变换 2 题 10 分 ＋ 数理方程 3 题 60 分'],['备注','2017 年 6 月 5 日']],
+  qs:[
+   {no:'1', title:'复数的三种表示', topic:'复数运算', type:'计算 · 5 分', stem:'写出 (cos3α+isin3α)²/(cos4α−isin4α)⁴ 的代数式、三角式、指数式。', key:'分子 e^{i6α}，分母 e^{−i16α}，商 e^{i22α}；再展开为 cos22α+isin22α。', src:'一·1'},
+   {no:'2', title:'复数除法', topic:'复数运算', type:'计算 · 5 分', stem:'计算 i/(3+4i)。', key:'分子分母同乘 3−4i，得 (4+3i)/25。', src:'一·2'},
+   {no:'3', title:'表成 u+iv 并验证 C-R', topic:'解析函数', type:'计算 · 5 分', stem:'将 (2z+5)² 表成 u+iv，求实函数 u、v，并验证 Cauchy-Riemann 条件，求 ∂f/∂z。', key:'z=x+iy 展开得 u=4x²−4y²+20x+25、v=8xy+20y；验证 u_x=v_y、u_y=−v_x；f′(z)=2(2z+5)。', src:'一·3'},
+   {no:'4', title:'两个邻域的展开', topic:'级数展开', type:'计算 · 5 分', stem:'在 z₀=2 和 z₀=−2 的邻域内，分别将 (z−2)/(z(z+2)) 展开，并指出哪个是 Taylor 级数，哪个是 Laurent 级数。', key:'z=2 为解析点 → 泰勒级数；z=−2 为一阶极点 → 洛朗级数，主部为 −2/(z+2)。', src:'一·4'},
+   {no:'5', title:'围道积分', topic:'留数', type:'计算 · 5 分', stem:'计算 ∮_{|z|=1} [sinh z² + cosh(z²)]/z³ dz。', key:'展开分子，取 z² 项系数；由留数定理或直接读洛朗系数 a_{-1} 得结果。', src:'一·5'},
+   {no:'6', title:'含 sin²x 的实积分', topic:'留数', type:'计算 · 5 分', stem:'计算实积分 ∫_{−∞}^{+∞} sin²x/(x²+1)² dx。', key:'用 sin²x=(1−cos2x)/2，拆成两个上半平面围道积分；二阶极点 z=i。', src:'一·6'},
+   {no:'7', title:'动量平均的傅里叶表示', topic:'傅里叶变换', type:'计算 · 5 分', stem:'动量平均值 p=∫φ*(x)(−iℏ)d/dx φ(x)dx，已知 φ(x)=(1/√(2πℏ))∫ϕ(p)e^{ixp/ℏ}dp，要求用 ϕ(p) 表示平均动量。', key:'把 φ 的傅里叶表示代入，作用 ∂/∂x 产生 ip/ℏ，利用 δ 函数归一化，得 p=∫|ϕ(p)|²p dp。', src:'二·1'},
+   {no:'8', title:'拉普拉斯变换解受迫振动', topic:'拉普拉斯变换', type:'计算 · 5 分', stem:'利用 Laplace 变换求解 x″(t)+ω²x(t)=c sinωt。', key:'变换得 X(p)=cω/[(p²+ω²)²]，反演得共振解 x(t)=(c/2ω²)(sinωt−ωt cosωt)（零初值）。', src:'二·2'},
+   {no:'9', title:'三类方程与边界条件', topic:'数理方程', type:'简答 · 20 分', stem:'写出三类泛定方程和三类边界条件，以及方程齐次和边界齐次的意义。', key:'同 2018–2019 第 8 题。', src:'三·1'},
+   {no:'10', title:'无源球壳的电势', topic:'分离变数', type:'计算 · 20 分', stem:'无源球壳中，电势分布的边界条件为 u|_{r=a}=u₀+u₁P₂(cosθ)，u|_{r=b}=u₂P₁(cosθ)。求球壳内外半径之间的电势分布函数。', key:'轴对称拉普拉斯方程通解 u=Σ(A_l r^l+B_l r^{−l−1})P_l；代入两个边界按 P₀、P₁、P₂ 逐项比较系数求解。', src:'三·2'},
+   {no:'11', title:'柱坐标拉普拉斯方程分离变量', topic:'分离变数', type:'计算 · 20 分', stem:'将柱坐标系下的 Laplace 方程分离变量。(1) 写出上下底面第二类齐次边界条件下的各方程和本征解；(2) 写出侧面第二类齐次边界条件下的各方程和本征解；(3) 写出一般的柱内解。', key:'设 u=R(ρ)Φ(φ)Z(z)；Z 由上下底面边界定 k（第二类边界给 cos 型），Φ=e^{imφ}；侧面第二类边界给 J_m 的导数零点条件。', src:'三·3'}
+  ]},
+
+{ id:'mp2015', label:'数学物理方法 2014–2015 期末（回忆版）',
+  meta:[['命题','缪炎刚（颜瑞民回忆整理）'],['结构','8 道小题（每题 5 分）＋ 3 道大题（每题 20 分）'],['备注','原卷 OCR 公式错位，题干按可辨认内容整理']],
+  qs:[
+   {no:'1', title:'复数的三种表示', topic:'复数运算', type:'计算 · 5 分', stem:'写出 (cos4α+isin4α)³/(cos5α+isin5α)² 的代数式、三角式、指数式。', key:'分子 e^{i12α}，分母 e^{i10α}，商 e^{i2α}=cos2α+isin2α。', src:'一·1'},
+   {no:'2', title:'复数除法', topic:'复数运算', type:'计算 · 5 分', stem:'计算 (3+2i)/i。', key:'分子分母同乘 −i，得 2−3i。', src:'一·2'},
+   {no:'3', title:'表成 u+iv 并验证 C-R', topic:'解析函数', type:'计算 · 5 分', stem:'将 (2z+i)³ 表成 u+iv，求实函数 u、v，并验证柯西—黎曼条件，求 ∂f/∂z。', key:'展开后分离实虚部，验证 C-R，f′(z)=6(2z+i)²。', src:'一·3'},
+   {no:'4', title:'两个邻域的展开', topic:'级数展开', type:'计算 · 5 分', stem:'在 z₀=0 与 z₀=i 的邻域内，分别将 z²/(z(z−i)) 展开，并指出哪个是 Taylor 级数、哪个是 Laurent 级数。', key:'z=0 为解析点（可去）→ 泰勒；z=i 为一阶极点 → 洛朗。', src:'一·4'},
+   {no:'5', title:'围道积分', topic:'留数', type:'计算 · 5 分', stem:'计算 ∮_{|z|=1} [sinh z² + cosh(z²)]/z³ dz。', key:'同 2017–2018 一·5。', src:'一·5'},
+   {no:'6', title:'含 sin²x 的实积分', topic:'留数', type:'计算 · 5 分', stem:'计算实积分 ∫_{−∞}^{+∞} sin²x/(x²+9)² dx。', key:'用半角公式拆项，二阶极点 z=3i，结果含 e^{−6} 因子。', src:'一·6'},
+   {no:'7', title:'Schrödinger 方程的傅里叶变换', topic:'傅里叶变换', type:'计算 · 5 分', stem:'对 Schrödinger 方程 −(ℏ²/2m)ψ″+V(x)ψ=Eψ 进行 Fourier 变换。提示：把 V(x) 表成 ΣV_k x^k/k! 的形式。', key:'变换后动能项变为 (ℏ²p²/2m)ϕ(p)，势能项变为 V(iℏ∂_p)ϕ(p) 的卷积/微分形式，得到动量表象的定态方程。', src:'一·7'},
+   {no:'8', title:'耦合方程的拉普拉斯变换', topic:'拉普拉斯变换', type:'计算 · 5 分', stem:'用 Laplace 变换求解耦合常微分方程组 x″(t)+ω²x(t)=c₁y(t)、y″(t)+ω²y(t)=c₂x(t)。', key:'变换后得到关于 X、Y 的代数方程组，解出 X(p)、Y(p) 再反演。', src:'一·8'},
+   {no:'9', title:'三类方程与边界条件', topic:'数理方程', type:'简答 · 20 分', stem:'写出三类泛定方程和三类边界条件以及方程齐次和边界条件齐次的意义。', key:'同 2018–2019 第 8 题。', src:'二·9'},
+   {no:'10', title:'介质球壳与点电荷', topic:'静电场', type:'计算 · 20 分', stem:'均匀介质球壳，内半径 r₁、外半径 r₂，介电常数 ε，点电荷 q 距球心 d<r₁，求全空间的电势分布。', key:'分三个区域写拉普拉斯/泊松方程通解，在 r₁、r₂ 用切向 E 连续与法向 D 连续衔接，按勒让德多项式逐项定系数。', src:'二·10'},
+   {no:'11', title:'柱坐标拉普拉斯方程分离变量', topic:'分离变数', type:'计算 · 20 分', stem:'将柱坐标系下的 Laplace 方程分离变量。(1) 上下底面齐次边界条件下的各方程和本征解；(2) 侧面齐次边界条件下的各方程和本征解；(3) 一般的柱内解。', key:'同 2017–2018 三·3，但边界类型为第一类齐次。', src:'二·11'}
+  ]},
+
+{ id:'mp2025', label:'数学物理方法 2024–2025 期末（回忆骨架）',
+  meta:[['结构','约 10 道大题'],['备注','原 docx 只保留题型与顺序，多题题干缺失']],
+  qs:[
+   {no:'1', title:'往年期中第一题', topic:'复变函数', type:'计算', stem:'与往年期中第一题同类（cos z=3 求复解）。', key:'令 u=e^{iz} 解二次方程，再取对数。', src:'第 1 题'},
+   {no:'2', title:'级数展开与收敛域', topic:'级数展开', type:'计算', stem:'级数展开，说明收敛域，并说明为何不能换一种方式使用上面的展开。', key:'不同环域对应不同洛朗展开；换环域后展开不收敛。', src:'第 2 题'},
+   {no:'3', title:'傅里叶变换与收敛范围', topic:'傅里叶变换', type:'计算', stem:'求某函数的傅里叶变换，并给出收敛时的取值范围。', key:'按定义积分，注意狄里希利条件与参数取值范围。', src:'第 3 题'},
+   {no:'4', title:'题目缺失（第 4 题）', topic:'—', type:'—', stem:'原回忆稿此题为空。', key:'原卷未记录。', src:'第 4 题'},
+   {no:'5', title:'题目缺失（第 5 题）', topic:'—', type:'—', stem:'原回忆稿此题为空。', key:'原卷未记录。', src:'第 5 题'},
+   {no:'6', title:'级数法解厄米方程', topic:'特殊函数', type:'计算', stem:'用级数法解厄米方程（回忆版标注“不太确定”）。', key:'设 y=Σa_k x^k 代入，得递推关系，截断条件给出多项式解。', src:'第 6 题'},
+   {no:'7', title:'行波法与分离变数法', topic:'分离变数', type:'计算', stem:'(1) 用行波法解方程；(2) 用分离变量法解，带边界条件；(3) 通过傅里叶级数证明二者等价。', key:'行波解得达朗贝尔公式；分离变数得本征函数展开，二者用傅里叶级数恒等。', src:'第 7 题'},
+   {no:'8', title:'球谐函数', topic:'特殊函数', type:'计算', stem:'写出球谐函数的直角坐标表示，并证明球谐函数正交性。', key:'用 x=r sinθcosφ 等代换，正交性由连带勒让德函数与 e^{imφ} 的正交性得到。', src:'第 8 题'},
+   {no:'9', title:'介质球的电势与电场', topic:'静电场', type:'计算', stem:'求介质球的电势与电场（具体边界未记录）。', key:'分区写通解 + 边界衔接条件。', src:'第 9 题'},
+   {no:'10', title:'竞赛题前两问', topic:'综合', type:'计算', stem:'某物理竞赛题的前两问（原稿未记录具体内容）。', key:'原卷未记录。', src:'第 10 题'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -4669,7 +4935,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4718,7 +4984,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -4771,10 +5037,11 @@ function renderDashboard(){
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
   const cpc = (CID==='cp');
+  const mpc = (CID==='mp');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -4786,6 +5053,7 @@ function renderDashboard(){
       : ssc ? '本站把《固体物理（一）》（张立新 · 大三下）的 7 章 PPT（晶体结构 / 衍射 / 结合 / 晶格振动 / 缺陷 / 金属电子论 / 周期场中的电子态）整理为结构化资料，并收录 2026 期末完整卷（12 道简答＋3 道计算）。'
       : tdc ? '本站把《热力学与统计物理》（赵柳 / 常雷 · 大三下）的 11 章讲义（第 0–10 章：基本知识 / 热力学规律 / 系综 / 气体 / 固体 / 量子气体 / 电介质与磁介质 / 非平衡 / 相变 / 液体）整理为结构化资料，并汇总 3 套真题（2026、2021 级 A 卷、常雷 2024 小考）。'
       : cpc ? '本站把《计算物理》（李宝会 / 范万德 · 大二下）的 10 章讲义（绪论 / 数值微分 / 插值 / 求根 / 线性方程组 / 数值积分 / ODE / 高阶 ODE / PDE / UNIX）整理为结构化资料，并汇总 8 套真题（2016–2020、2024、2025、2026，共 53 题）。'
+      : mpc ? '本站把《数学物理方法》（董校 · 大二下，教材梁昆淼）的 8 章讲义（复变函数 / 幂级数展开 / 留数定理 / 傅里叶变换 / 拉普拉斯变换 / 数理方程定解问题 / 分离变数法）整理为结构化资料，并汇总 7 套真题（2014–2019、2024–2026、期中），共 65 题。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -4835,6 +5103,8 @@ function renderDashboard(){
       ? '提示：2026 卷与 2021 级 A 卷考点高度重合（经典极限、BEC、费米气体、固体热容、磁性/伊辛）；2021 级卷为扫描件，已附 7 页原卷；常雷 2024 为小考卷（一）。'
       : cpc
       ? '提示：题型八年高度稳定——五点公式推导、差商/牛顿插值、求根、四种积分、Jacobi/GS 迭代、Euler/RK4 几乎每年必考；2024 起新增 Hermite 插值，2026 新增 QR 分解。'
+      : mpc
+      ? '提示：卷面固定为三大块——复变（表示/C-R/级数展开/留数积分）、积分变换（傅里叶/拉普拉斯）、数理方程（三类方程 + 分离变数 + 特殊函数）。导体球与柱坐标分离变量几乎每年出现。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -4956,6 +5226,13 @@ function renderChapters(){
       <h1>章节结构。</h1>
       <p>共 10 章：绪论、数值微分、插值、一维求根、线性方程组、数值积分、一阶 ODE、高阶 ODE、偏微分方程、UNIX 操作系统。前九章为数值方法（李宝会），第十章 UNIX 由范万德讲授。</p>
     </div>`;
+  } else if(CID==='mp'){
+    html = MP_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 数学物理方法（大二下）</div>
+      <h1>章节结构。</h1>
+      <p>共 8 章：复变函数、幂级数展开、留数定理、傅里叶变换、拉普拉斯变换、数学物理方程定解问题、分离变数法。教材为梁昆淼《数学物理方法》，讲义由董校讲授。</p>
+    </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -5037,6 +5314,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为操作系统与上机实践内容，无核心公式。</div>'}
       </div>`).join('');
+  } else if(CID==='mp'){
+    html = MP_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -5062,11 +5345,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -5087,7 +5370,8 @@ function renderHigh(){
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
   const cpc = (CID==='cp');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (qm2 ? 33 : 3)))))));
+  const mpc = (CID==='mp');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (qm2 ? 33 : 3))))))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -5110,10 +5394,12 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 3 套热统试卷中出现的卷数（2026、2021 级 A 卷、常雷 2024 小考）。同一考点在同一卷的多道题中出现只计一次。'
         : cpc
         ? '“出现卷数”统计的是该考点在 8 套计算物理试卷中出现的卷数（2016–2020、2024、2025、2026）。同一考点在同一卷的多道题中出现只计一次。'
+        : mpc
+        ? '“出现卷数”统计的是该考点在 7 套数理方法试卷中出现的卷数（2014–2015、2017–2018、2018–2019、2024–2025、2025–2026×2、期中）。同一考点在同一卷的多道题中出现只计一次。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -5154,6 +5440,7 @@ function renderExams(){
   const ssc = (CID==='ss');
   const tdc = (CID==='td');
   const cpc = (CID==='cp');
+  const mpc = (CID==='mp');
   const html = examsOf().map(e=>{
     const meta = e.meta.map(([k,v])=>`<div class="kv"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
     const qs = e.qs.map(q=>`
@@ -5196,6 +5483,8 @@ function renderExams(){
         ? '3 套热统真题（2026、2021 级 A 卷、常雷 2024 小考，共 16 题），每题附解题要点；2021 级与常雷卷为扫描件，附原卷页面。'
         : cpc
         ? '8 套计算物理真题（2016–2020、2024、2025、2026，共 53 题）。2016 卷含参考答案；2016 与 2025 原卷部分数字缺失，已在备注中说明。'
+        : mpc
+        ? '7 套数理方法真题（2014–2019、2024–2026 回忆版与模拟卷、2022–2023 期中，共 65 题）。期中卷附 3 页原卷。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
     </div>
     ${html}
@@ -5215,11 +5504,44 @@ function renderExams(){
       ? '2026 卷有文本层，按原文整理；2021 级 A 卷与常雷 2024 小考为扫描件，已逐页读图转写题干，并把 7 页 / 2 页原卷附在每套试卷顶部，公式与插图可直接对照原图。'
       : cpc
       ? '8 套卷均来自南开大学计算物理课程，2016–2020 命题人为李宝会，2026 为胡振芃。2016 卷含完整参考答案（颜瑞民整理）；2016 卷与 2025 docx 部分数字缺失，题干按可确认内容整理并标注，未补造数值。'
+      : mpc
+      ? '真题来自缪炎刚（2014–2018）、李华楠（2022–2023 期中）、李种植（2025–2026 回忆版与模拟卷）三位老师；2014–2015 与 2024–2025 原稿为回忆版且有缺题，已在备注与题干中标注，未补造数值。'
       : '考研真题来自扫描版《量子力学考研真题答案（第二版）》（西伯利亚寒风 编著），经 OCR 整理，数学公式识别不完整，题意按物理常识还原并标注「OCR 整理」；原卷答案未收录。'}</div>`;
 }
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='mp'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>数理方法卷面固定三大块：复变（复数表示、C-R 条件、级数展开、留数积分）、积分变换（傅里叶、拉普拉斯）、数理方程（三类方程 + 分离变数 + 特殊函数）。导体球与柱坐标分离变量几乎每年必考。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>8 章公式过一遍；2017–2018 与 2018–2019 两套完整卷手做；重点第 3、4、6、8 章。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练：三种表示 + C-R、两个环域的洛朗展开、两类实积分、拉氏变换解 ODE、柱坐标分离变量。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：留数公式、拉氏变换表、三类方程与三类边界、勒让德/贝塞尔方程、球谐正交性。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：留数定理三种情形、δ 函数与主值、三类边界条件、导体球镜像电荷。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>复数三种表示互化 + 验证 C-R 并求 f′(z)</td><td>复数/解析函数</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>指定点/环域的泰勒与洛朗展开，判断奇点类型与收敛域</td><td>级数展开</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>留数定理算三类实积分（有理分式、三角、含 e^{imx}）</td><td>留数</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>拉氏变换解 ODE / 耦合方程 / 反演 1/√p</td><td>拉普拉斯变换</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>默写三类泛定方程、三类边界条件、齐次的意义</td><td>数理方程</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>柱坐标/球坐标分离变量，写出各方程与本征解</td><td>分离变数</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>接地导体球 + 点电荷的镜像法</td><td>静电场</td><td>${priTag('A')}</td></tr>
+          <tr><td>8</td><td>勒让德展开、球谐正交性、贝塞尔方程</td><td>特殊函数</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='cp'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -5668,6 +5990,44 @@ function renderAbout(){
       <div class="concept"><b>四套卷高度重合</b>：2017–2018、2022–2023、2025 三套题目类型高度相似（同一老师、同一风格），2025 卷自述“原题使用往年记录”，故频率统计会放大重复题目的权重。</div>
       <div class="concept"><b>2018–2019 卷不可用</b>：该 PDF 字体编码损坏，提取文本为乱码，只能保留题量结构（10 简答 60 分 + 综合 20 分 + 计算 20 分），题目内容无法可靠还原。</div>
       <div class="concept"><b>无官方答案</b>：考题均为学生回忆版，未附标准答案；本站「解题要点」为依据讲义的推断，仅供复习参考。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='mp'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《数学物理方法》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义（8 章）</td><td>第1-2章～第8章.pptx</td><td>章节结构、小节划分、公式与例题</td></tr>
+          <tr><td>考点纲要</td><td>期末复习.pptx、期中考试.pptx、数理21–30.pptx</td><td>复习重点、期中题型、习题课</td></tr>
+          <tr><td>真题</td><td>2014–2015、2017–2018、2018–2019、2024–2025、2025–2026 回忆版、模拟卷</td><td>6 套期末题</td></tr>
+          <tr><td>期中</td><td>李华楠期中.pdf</td><td>2022–2023 期中 3 题，附学生答卷原图</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节以讲义为准</b>：8 章标题取自第1-2章～第8章 PPT；第 1、2 章合并为一张，故章节编号为 1-2、3…8。</div>
+      <div class="concept"><b>题型按卷面分块</b>：所有试卷统一按「复变 — 积分变换 — 数理方程」三大块整理，保留原卷题号（一·1、3.2 等）。</div>
+      <div class="concept"><b>缺失处标注</b>：2025–2026 回忆版二·2 只有题图无文字、2024–2025 回忆稿第 4/5/10 题为空，均原样标注，不补造。</div>
+      <div class="concept"><b>可回溯</b>：每题标注原卷题号，考点标注出现卷次与题号。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>多数为回忆版</b>：除 2017–2018、2018–2019 较完整外，其余年份为回忆稿，题干措辞与数值可能与原卷有出入。</div>
+      <div class="concept"><b>2014–2015 卷 OCR 错位</b>：原 PDF 公式与数字被拆散，分式与指数位置可能错乱，题干按可辨认内容整理。</div>
+      <div class="concept"><b>模拟卷非真题</b>：2025–2026 模拟卷由李种植命题，题型与同年回忆版一致，但并非考场原卷，已单独标注。</div>
+      <div class="concept"><b>答案来源</b>：所有「解题要点」为依据讲义与标准教材整理的思路，非官方标准答案；期中卷原图含学生手写解答，可对照。</div>
     </div>`;
     return;
   }
