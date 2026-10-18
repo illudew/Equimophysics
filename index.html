@@ -169,8 +169,12 @@ details.ch>summary .src{margin-left:auto;color:#555;font-size:10px;}
 .paper-pages{margin-top:10px;border:1px solid #262626;border-radius:7px;padding:8px 10px;background:#101010;}
 .paper-pages summary{cursor:pointer;color:#9a9a9a;font-size:12px;}
 .paper-pages summary:hover{color:var(--green);}
-.page-figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px;}
-.page-figs img{width:100%;height:auto;border:1px solid #2a2a2a;border-radius:6px;background:#fff;}
+.page-figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:10px;}
+.page-figs figure{margin:0;}
+.page-figs a{display:block;border:1px solid #2a2a2a;border-radius:6px;background:#fff;overflow:hidden;}
+.page-figs a:hover{border-color:var(--green);}
+.page-figs img{display:block;width:100%;height:auto;max-height:420px;object-fit:contain;background:#fff;}
+.pp-cap{display:block;font-size:10.5px;color:#777;margin-top:4px;}
 .q-key{font-size:12px;color:#7f9a5f;line-height:1.7;margin-top:6px;}
 .q-src{font-size:10.5px;color:#555;margin-top:8px;}
 
@@ -5455,7 +5459,7 @@ function renderExams(){
         <div class="q-key">解题要点：${mathify(esc(q.key))}</div>
         <div class="q-src">来源：${esc(q.src)} · ${esc(e.meta[e.meta.length-1][1])}</div>
       </div>`).join('');
-    const pages = e.pages ? `<details class="paper-pages"><summary>原卷页面（含全部电路图，点击展开）</summary><div class="page-figs">${e.pages.map((s,i)=>`<img src="${esc(s)}" alt="原卷 P${i+1}" loading="lazy">`).join('')}</div></details>` : '';
+    const pages = e.pages ? `<details class="paper-pages"><summary>原卷页面（${circ?'含全部电路图':'扫描件'}，点击展开；单击图片可查看原图）</summary><div class="page-figs">${e.pages.map((s,i)=>`<figure><a href="${esc(s)}" target="_blank" rel="noopener"><img src="${esc(s)}" alt="原卷 P${i+1}" decoding="async"></a><span class="pp-cap">P${i+1}</span></figure>`).join('')}</div></details>` : '';
     return `<div class="card">
       <div class="exam-head"><h3>${esc(e.label)}</h3><span class="tag">共 ${e.qs.length} 题</span></div>
       ${meta}
