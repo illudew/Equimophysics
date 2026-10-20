@@ -177,6 +177,15 @@ details.ch>summary .src{margin-left:auto;color:#555;font-size:10px;}
 .pp-cap{display:block;font-size:10.5px;color:#777;margin-top:4px;}
 .q-key{font-size:12px;color:#7f9a5f;line-height:1.7;margin-top:6px;}
 .q-src{font-size:10.5px;color:#555;margin-top:8px;}
+details.q{margin:8px 0;border:1px solid #222;border-radius:6px;padding:6px 10px;background:#0e0e0e;}
+details.q summary{cursor:pointer;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;}
+details.q[open]{background:#111;}
+details.q summary:hover .q-title{color:var(--green);}
+.qtype-h{font-size:11.5px;color:#8a8a8a;margin:12px 0 4px;letter-spacing:.5px;}
+.deriv{font-size:12.5px;color:#a8b8c0;line-height:1.85;background:#0e1214;border-left:2px solid var(--green);padding:8px 12px;border-radius:0 6px 6px 0;margin:4px 0 8px;}
+.sub-h .cnt{color:#6f6f6f;font-size:10.5px;font-weight:400;margin-left:6px;}
+.q-open{color:var(--green);font-size:10.5px;margin-left:8px;text-decoration:none;}
+.q-open:hover{text-decoration:underline;}
 
 /* 冲刺 */
 .plan .t{color:var(--green);font-size:22px;font-weight:700;}
@@ -246,12 +255,11 @@ window.MathJax = {
     <div class="nav-label">系统</div>
     <button class="active" data-page="dashboard" onclick="showPage('dashboard',this)">总览</button>
     <div class="nav-label">知识</div>
-    <button data-page="chapters" onclick="showPage('chapters',this)">章节结构</button>
-    <button data-page="formulas" onclick="showPage('formulas',this)">公式速查</button>
+    <button data-page="chapters" onclick="showPage('chapters',this)">章节 · 概念 · 题目</button>
+    <button data-page="formulas" onclick="showPage('formulas',this)">公式与推导</button>
     <div class="nav-label">考试数据</div>
     <button data-page="high" onclick="showPage('high',this)">高频考点</button>
     <button data-page="types" onclick="showPage('types',this)">高频题型</button>
-    <button data-page="exams" onclick="showPage('exams',this)">历年真题</button>
     <div class="nav-label">备考</div>
     <button data-page="sprint" onclick="showPage('sprint',this)">冲刺方案</button>
     <div class="nav-label">说明</div>
@@ -2240,13 +2248,108 @@ const CURRICULUM = [
  {term:'大一下', courses:['高等数学（下）','电磁学','电路']},
  {term:'大二上', courses:['光学','理论力学','热学']},
  {term:'大二下', courses:['数学物理方法','原子物理','计算物理']},
- {term:'大三上', courses:['量子力学（一）','电动力学','专业英语']},
+ {term:'大三上', courses:['量子力学（一）','电动力学','专业英语','工程光学（选修）']},
  {term:'大三下', courses:['固体物理（一）','量子力学（二）','热力学与统计物理','材料物理']},
  {term:'A 课', courses:['思想道德与法治','马克思主义基本原理','中国近现代史纲要','毛泽东思想与中国特色社会主义理论体系概论','习近平中国特色社会主义思想概论','大学语文']},
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { eo:'工程光学（选修）', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+/* 每章「关键推导」：courseId → 章节号 → 推导文字（支持 $...$ 行内公式） */
+const DERIVS = {
+eo:{
+ '1':R`两个薄透镜相距 $d$：第一片对物点成像，$1/l_1'-1/l_1=1/f_1'$；第二片以 $l_2=l_1'-d$ 为物距，$1/l_2'-1/l_2=1/f_2'$。消去中间像距，把结果写成 $f'/l'+f/l=1$ 的形式，即得组合光焦度 $\Phi=\Phi_1+\Phi_2-d\Phi_1\Phi_2$，令 $\Phi=0$ 得无焦条件 $d=f_1'+f_2'$。`,
+ '2':R`球差来自球面折射不满足等光程：近轴光线与边缘光线经同一球面后交轴于不同点，轴向球差 $\delta L'=L'-l'$。把折射定律展开到高级项，一级球差与孔径平方成正比 $\delta L'\propto h^2$；彗差再乘视场一次方，像散与场曲乘视场平方，畸变只与视场有关，因此可由「像差随 $h$、$y$ 的幂次」判断主导项。`,
+ '3':R`透镜使入射平面波变为会聚球面波：要产生曲率半径 $f$ 的球面波前，需附加相位 $\phi(x,y)=-k(x^2+y^2)/(2f)$（傍轴近似下球面与抛物面等价），于是透镜的复振幅透过率 $t=\exp[-ik(x^2+y^2)/(2f)]$。物点球面波乘上该相位因子，即得出射场；孔径有限时对光瞳作傅里叶变换，模平方为点扩散函数。`,
+ '4':R`物面场 $U_0$ 经透镜后在距透镜 $f$ 的后焦面上：由菲涅耳衍射积分，二次相位因子在 $z=f$ 处恰好抵消，剩下 $U_f\propto\iint U_0 e^{-i2\pi(f_xx+f_yy)}dxdy$，即物场的傅里叶变换（空间频率 $f_x=x_f/\lambda f$）。因此透镜就是一个光学傅里叶变换器；在频谱面加光阑即实现空间滤波，系统的传递函数由光瞳自相关归一化得到。`,
+ '5':R`光栅相邻两缝到衍射角 $\theta$ 方向的光程差为 $d(\sin\theta-\sin\theta_0)$，主极大要求它等于 $k\lambda$，即光栅方程。全息记录时物光与参考光干涉，合强度 $I=I_1+I_2+2\sqrt{I_1I_2}\cos(\phi_2-\phi_1)$，把相位差编码进条纹；再现时用参考光照射，衍射光中的一项正比于原物光复振幅，故能同时还原振幅与相位。`
+},
+ap:{
+ '2':R`氢原子中电子作圆周运动：$e^2/(4\pi\varepsilon_0r^2)=m_ev^2/r$；玻尔角动量量子化 $m_evr=n\hbar$。两式联立得 $r_n=n^2a_0$、$v_n=e^2/(4\pi\varepsilon_0n\hbar)$，代入 $E=\frac12m_ev^2-e^2/(4\pi\varepsilon_0r)$ 得 $E_n=-13.6Z^2/n^2$ eV。相邻能级差给出里德伯公式。`,
+ '4':R`原子磁矩由轨道与自旋两部分组成，总磁矩在总角动量 $J$ 方向上的投影决定能级在磁场中的移动：$\Delta E=m_Jg_J\mu_BB$。$g_J$ 由把 $\mu_L$、$\mu_S$ 投影到 $J$ 上并对 $L$、$S$ 取平均得到，$g_J=1+\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)}$；由此可解释正常塞曼（$S=0$，$g=1$）与反常塞曼（$g$ 因态而异）。`,
+ '5':R`由电子组态定基态：先按泡利原理排出各子壳层，再对未满壳层求 $L$、$S$ 的可能值；洪特第一规则取 $S$ 最大者能量最低，第二规则在 $S$ 相同时取 $L$ 最大者，最后由 $J$ 的取值与壳层是否半满决定基态 $J$（少于半满取最小 $J$，多于半满取最大 $J$）。`,
+ '6':R`设入射光子能量 $h\nu$、散射光子 $h\nu'$、电子静能 $m_ec^2$。能量守恒：$h\nu+m_ec^2=h\nu'+\sqrt{p_e^2c^2+m_e^2c^4}$；动量守恒写成两个分量。消去电子动量 $p_e$，利用 $c/\nu-c/\nu'=\Delta\lambda$，得 $\Delta\lambda=\frac{h}{m_ec}(1-\cos\theta)$，即康普顿位移只与散射角有关。`
+},
+mp:{
+ '1-2':R`设 $f=u+iv$ 在 $z_0$ 可导，沿 $x$ 方向与沿 $y$ 方向求导应相等：$f'(z_0)=u_x+iv_x=v_y-iu_y$。比较实部虚部得 $u_x=v_y$、$u_y=-v_x$，即柯西—黎曼条件；再对两式求偏导并相加，得 $\nabla^2u=\nabla^2v=0$，说明解析函数的实部虚部都是调和函数。`,
+ '4':R`对围道 $l$ 内的每个奇点挖去小圆，把复连通区域化为单连通；由柯西定理，外边界积分等于各小圆积分之和。每个小圆上的积分由洛朗展开只留下 $a_{-1}$ 项，$\oint f dz=2\pi i a_{-1}$，即留数定理。计算实积分时选合适的闭合围道（半圆、单位圆、缩进围道），把实积分化为留数之和。`,
+ '6':R`由拉氏变换定义 $F(p)=\int_0^\infty f(t)e^{-pt}dt$ 分部积分：$\int_0^\infty f'e^{-pt}dt=[fe^{-pt}]_0^\infty+p\int_0^\infty fe^{-pt}dt=pF(p)-f(0)$。于是常系数线性 ODE 经变换后化为代数方程，解出 $F(p)$ 再查表或用留数反演即得 $f(t)$；耦合方程组则化为线性代数方程组。`,
+ '8':R`一维无界波动方程 $u_{tt}=a^2u_{xx}$ 作变量代换 $\xi=x-at$、$\eta=x+at$，方程化为 $u_{\xi\eta}=0$，通解 $u=F(\xi)+G(\eta)$。代入初始位移 $\varphi$ 与初始速度 $\psi$，积分定出 $F$、$G$，得达朗贝尔公式 $u=\frac12[\varphi(x-at)+\varphi(x+at)]+\frac{1}{2a}\int_{x-at}^{x+at}\psi d\xi$。`
+},
+cp:{
+ '2':R`把 $f(x\pm h)$、$f(x\pm2h)$ 在 $x$ 处作泰勒展开，保留到 $h^4$。用 $(1)-(2)$、$(3)-(4)$ 消去偶次项，再线性组合消去 $f'''$，只剩 $f'$ 与 $O(h^4)$，即得五点一阶导公式；同理组合可消去奇次项与 $f^{(4)}$ 得五点二阶导公式。`,
+ '4':R`把 $f(x)=0$ 在 $x_n$ 处一阶展开：$f(x)\approx f(x_n)+f'(x_n)(x-x_n)$，令其为零解出 $x$，即牛顿迭代 $x_{n+1}=x_n-f(x_n)/f'(x_n)$。在单根附近误差按平方收敛；初值离根太远或 $f'$ 接近零时会发散，故先用介值定理隔离根。`,
+ '6':R`把区间 $[a,b]$ 上的 $f$ 用二次插值多项式近似（过 $a$、中点、$b$ 三点），积分该抛物线得 Simpson 公式 $\frac{b-a}{6}[f(a)+4f(m)+f(b)]$。由于二次多项式被精确积分，余项从 $O(h^3)$ 提高到 $O(h^5)$；$n$ 点 Gauss-Legendre 通过选取最优节点与权重，可精确积分 $2n-1$ 次多项式。`,
+ '7':R`对 $y'=f(x,y)$ 在 $[x_n,x_{n+1}]$ 上积分：$y_{n+1}=y_n+\int f dx$。用左端点矩形近似得 Euler 法（一阶）；用四段斜率 $k_1..k_4$ 的加权平均近似积分（Simpson 型权重 $1:2:2:1$）得四阶 RK，局部截断误差 $O(h^5)$、全局 $O(h^4)$。`
+},
+td:{
+ '3':R`封闭系与热浴接触，系统处于能量 $E_i$ 的概率正比于热浴的态数 $\Omega_R(E_{tot}-E_i)\approx e^{-E_i/k_BT}$，归一化得 $p_i=e^{-\beta E_i}/Z$，$Z=\sum e^{-\beta E_i}$。由 $F=-k_BT\ln Z$ 可导出 $S=-\partial F/\partial T$、$U=-\partial\ln Z/\partial\beta$，所有热力学量都由 $\ln Z$ 的导数给出。`,
+ '5':R`德拜把声子谱近似为线性色散 $\omega=ck$，态密度 $g(\omega)\propto\omega^2$，并截断于德拜频率 $\omega_D$（总模数 $3N$）。低温 $T\ll\Theta_D$ 时只激发低频模，积分上限可延至无穷，$\int_0^\infty \frac{x^4e^x}{(e^x-1)^2}dx$ 为常数，故 $C_V\propto T^3$；高温时所有模被激发，回到 $3Nk_B$。`,
+ '6':R`玻色气体化学势 $\mu\le0$。温度降低时 $\mu\to0^-$，激发态能容纳的粒子数 $N_{ex}\propto T^{3/2}$ 随之减小；当 $N_{ex}$ 小于总粒子数时，多余粒子只能宏观占据 $\varepsilon=0$ 的基态，即发生凝聚。临界温度由 $N=\zeta(3/2)V(2\pi mk_BT_c/h^2)^{3/2}$ 给出，$T_c\propto n^{2/3}/m$。`
+},
+ss:{
+ '1':R`面心立方惯用胞基矢为 $a i,a j,a k$，原胞取最近邻的三个面心矢量 $a_1=\frac a2(j+k)$ 等，其体积 $W=a_1\cdot(a_2\times a_3)=a^3/4$，恰好是惯用胞的四分之一，说明一个惯用胞含 4 个格点。体心立方同理取 $a_1=\frac a2(-i+j+k)$ 等，$W=a^3/2$。`,
+ '4':R`一维单原子链中第 $n$ 个原子受力来自左右邻居：$m\ddot u_n=\beta(u_{n+1}-2u_n+u_{n-1})$。代入行波解 $u_n=Ae^{i(qna-\omega t)}$，得 $-\omega^2m=\beta(e^{iqa}-2+e^{-iqa})=-4\beta\sin^2(qa/2)$，故 $\omega=2\sqrt{\beta/m}|\sin(qa/2)|$，在布里渊区边界处频率最大。`,
+ '6':R`三维自由电子在 $k$ 空间占据费米球，$N=2\cdot\frac{V}{(2\pi)^3}\cdot\frac{4\pi}{3}k_F^3$，解出 $k_F=(3\pi^2n)^{1/3}$，$E_F=\hbar^2k_F^2/2m$。T=0 时电子填满费米球；温度升高只有费米面附近约 $k_BT$ 范围内的电子被激发，故电子比热 $C_e\propto T$，远小于晶格比热。`,
+ '7':R`周期势 $V(r+R)=V(r)$ 下，薛定谔方程的解可取布洛赫形式 $\psi_k=e^{ik\cdot r}u_k(r)$，$u_k$ 具有晶格周期性。近自由电子近似把周期势作微扰，在布里渊区边界 $k=G/2$ 处发生布拉格反射，简并微扰使能级劈裂，能隙 $E_g=2|V_G|$。`
+},
+cir:{
+ '1':R`集总参数电路由元件端子上的电压电流关系（VCR）与拓扑约束共同描述：KCL 来自电荷守恒，对任一节点 $\sum i=0$；KVL 来自电场保守性，对任一回路 $\sum u=0$。两者与元件 VCR 联立即得电路方程，参考方向决定各项符号。`,
+ '3':R`节点法以节点电压为未知量：对每个独立节点写 KCL，支路电流用节点电压与电导表示（$i=G(u_a-u_b)$），得到 $G U=J$ 的矩阵方程。节点数少于网孔数时节点法更省方程；含电压源时用超节点处理。`,
+ '7':R`一阶 RC 电路方程 $RC\,du_C/dt+u_C=u_S$ 是一阶线性常微分方程，通解为稳态值加暂态项 $u_C=u_C(\infty)+[u_C(0_+)-u_C(\infty)]e^{-t/\tau}$，$\tau=RC$。三要素（初值、稳态值、时间常数）确定后即可写出全响应；二阶电路由特征根判断过阻尼、临界与欠阻尼。`,
+ '9':R`正弦稳态下把 $u=\sqrt2U\cos(\omega t+\varphi)$ 写成相量 $\dot U=U\angle\varphi$，微分变为乘 $j\omega$，元件 VCR 变为复阻抗：$Z_R=R$、$Z_L=j\omega L$、$Z_C=1/(j\omega C)$。于是 KCL/KVL 与欧姆定律的相量形式与直流完全同构，可用节点法、戴维南定理求解。`
+},
+es:{
+ '1':R`库仑定律给出点电荷场 $E=q\hat r/(4\pi\varepsilon_0r^2)$。对任意闭合面，通量 $d\Phi=E\cdot dS$ 等于该面所张立体角乘 $q/\varepsilon_0$，立体角积分为 $4\pi$（面内有电荷）或 0（面外），故 $\oint E\cdot dS=Q_{内}/\varepsilon_0$，即高斯定理。`,
+ '2':R`导体内部自由电荷在电场作用下移动，直到内部场强为零、表面为等势面，否则电荷继续受力。由高斯定理，内部无净电荷，电荷只分布在表面，且表面场强 $E=\sigma/\varepsilon_0$ 垂直于表面；尖端曲率大处电荷密度高。`,
+ '5':R`电流元 $I dl$ 在 $r$ 处产生的磁场由毕奥—萨伐尔定律给出 $dB=\mu_0 I\,dl\times\hat r/(4\pi r^2)$。对闭合回路积分得总磁场；再由安培环路定理 $\oint B\cdot dl=\mu_0I_{内}$ 可简化对称电流分布的磁场计算。`,
+ '9':R`麦克斯韦引入位移电流 $I_d=\varepsilon_0 d\Phi_E/dt$，使安培环路定理在非稳恒情形下仍满足电荷守恒：$\oint B\cdot dl=\mu_0(I+\varepsilon_0 d\Phi_E/dt)$。与法拉第定律、高斯定理联立得麦克斯韦方程组；对其取旋度可导出电磁波方程，波速 $c=1/\sqrt{\mu_0\varepsilon_0}$。`
+},
+me:{
+ '1':R`位置矢量 $r(t)$ 对时间求导得速度 $v=dr/dt$，再求导得加速度 $a=dv/dt$。在自然坐标下分解为切向与法向：$a_t=dv/dt$、$a_n=v^2/\rho$，法向加速度指向曲率中心，用于分析圆周与曲线运动。`,
+ '2':R`牛顿第二定律 $F=dp/dt$，质量不变时 $F=ma$。在惯性系中对每个质点列方程，配合约束条件与初始条件即可求解运动；非惯性系需引入惯性力，使方程形式上仍成立。`,
+ '3':R`合外力做的功 $W=\int F\cdot dr$ 等于动能增量 $\Delta E_k$（动能定理）；保守力的功可写成势能减少 $W=-\Delta E_p$，于是机械能 $E_k+E_p$ 守恒。动量定理与角动量定理分别是力、力矩对时间的积分。`,
+ '4':R`刚体定轴转动惯量 $I=\sum m_ir_i^2=\int r^2dm$，转动定律 $M=I\beta$，转动动能 $\frac12I\omega^2$。平行轴定理 $I=I_C+md^2$ 把质心惯量平移到任意轴；组合体惯量按各部分求和。`,
+ '6':R`简谐振动回复力 $F=-kx$，方程 $m\ddot x+kx=0$，解 $x=A\cos(\omega t+\varphi)$，$\omega=\sqrt{k/m}$。阻尼振动按阻尼比分为欠阻尼、临界与过阻尼；受迫振动在驱动力频率接近固有频率时发生共振。`
+},
+lm:{
+ '3':R`由达朗贝尔原理 $\sum(F_i-m_i a_i)\cdot\delta r_i=0$，理想约束下约束力做功为零，用广义坐标表示虚位移，得 $\frac{d}{dt}\frac{\partial T}{\partial\dot q_j}-\frac{\partial T}{\partial q_j}=Q_j$。保守力时 $Q_j=-\partial V/\partial q_j$，写成拉格朗日方程。`,
+ '5':R`作用量 $S=\int L\,dt$ 取极值 $\delta S=0$，变分中端点固定、分部积分，得欧拉—拉格朗日方程 $\frac{d}{dt}\frac{\partial L}{\partial\dot q}-\frac{\partial L}{\partial q}=0$。它与牛顿方程等价，但从能量与对称性出发，更容易处理约束。`,
+ '7':R`若拉格朗日量不显含某广义坐标 $q_k$（循环坐标），则 $\partial L/\partial q_k=0$，由拉格朗日方程得 $p_k=\partial L/\partial\dot q_k$ 守恒。时间平移不变对应能量守恒，空间平移对应动量守恒，转动对应角动量守恒——这就是诺特定理。`,
+ '10':R`对拉格朗日量作勒让德变换 $H=\sum p_j\dot q_j-L$，把自变量从 $(\dot q,q)$ 换为 $(p,q)$，得哈密顿正则方程 $\dot q_j=\partial H/\partial p_j$、$\dot p_j=-\partial H/\partial q_j$。相空间维数加倍，但方程是一阶对称形式。`,
+ '11':R`泊松括号定义为 $\{f,g\}=\sum(\partial f/\partial q_j\,\partial g/\partial p_j-\partial f/\partial p_j\,\partial g/\partial q_j)$。任意力学量演化 $\dot f=\{f,H\}+\partial f/\partial t$；基本括号 $\{q_i,p_j\}=\delta_{ij}$，正则变换即保持该括号不变的变换。`,
+ '19':R`刚体姿态用三个欧拉角描述，角速度在体坐标系中分解为 $\omega=\dot\phi\hat z+\dot\theta\hat n+\dot\psi\hat z'$。惯量张量 $I_{ij}=\int(r^2\delta_{ij}-r_ir_j)dm$ 把角速度与角动量联系起来 $L=I\omega$，主轴坐标系下惯量张量对角化。`
+},
+qm:{
+ 'II':R`量子态用希尔伯特空间中的态矢 $|\psi\rangle$ 描述，力学量用厄米算符表示，测量结果为算符本征值。若 $[A,B]\ne0$，两力学量不能同时有确定值，其不确定度满足 $\Delta A\Delta B\ge\frac12|\langle[A,B]\rangle|$，这是对易关系与不确定性原理的代数表述。`,
+ 'III':R`一维无限深势阱中 $V=0$（$0<x<a$），薛定谔方程 $\psi''+k^2\psi=0$，边界条件 $\psi(0)=\psi(a)=0$ 给出 $k_n=n\pi/a$，能级 $E_n=n^2\pi^2\hbar^2/(2ma^2)$，波函数 $\psi_n=\sqrt{2/a}\sin(n\pi x/a)$。束缚态能级离散，零点能不为零。`,
+ 'IV':R`角动量算符满足 $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$。由 $L^2$ 与 $L_z$ 对易，可取共同本征态 $|l,m\rangle$，本征值 $l(l+1)\hbar^2$ 与 $m\hbar$，$m=-l..l$。升降算符 $L_\pm$ 在 $m$ 上加减 1，用于构造所有态并解释角动量量子化。`,
+ 'VI':R`全同粒子不可分辨，交换两个粒子波函数只能差一个相位：玻色子对称、费米子反对称（泡利原理）。多体波函数用 Slater 行列式（费米子）或对称化求和（玻色子）构造，交换相互作用与能级统计由此而来。`,
+ 'VII':R`微扰论把 $H=H_0+\lambda H'$ 按 $\lambda$ 展开，一阶能量修正 $E_n^{(1)}=\langle n|H'|n\rangle$，一阶态修正需叠加其他本征态；二阶能量修正 $E_n^{(2)}=\sum_{k\ne n}|H'_{kn}|^2/(E_n-E_k)$。简并时需在简并子空间对角化 $H'$。`,
+ 'VIII':R`散射理论用入射平面波加散射球面波描述，微分散射截面 $d\sigma/d\Omega=|f(\theta)|^2$。分波法把 $f$ 按角动量展开，每分波的贡献由相移 $\delta_l$ 给出；低能时只有 $l=0$ 分波重要。`
+},
+qm2:{
+ '2':R`把入射平面波按球面分波展开，每个分波经散射后只改变相移 $\delta_l$。散射振幅 $f(\theta)=\frac1k\sum(2l+1)e^{i\delta_l}\sin\delta_l P_l(\cos\theta)$，总截面 $\sigma=\frac{4\pi}{k^2}\sum(2l+1)\sin^2\delta_l$。低能极限下只有 s 波，$\sigma\to4\pi a^2$。`,
+ '7':R`玻恩近似把散射势当作微扰，散射振幅取一阶：$f(\theta)=-\frac{m}{2\pi\hbar^2}\int e^{i(k-k')\cdot r'}V(r')d^3r'$，即势的傅里叶变换。适用于势较弱或入射能量较高；对库仑势需屏蔽后取极限，回到卢瑟福公式。`
+},
+hq:{
+ '1':R`希尔伯特空间是完备的内积空间：态矢 $|\psi\rangle$ 有内积 $\langle\phi|\psi\rangle$，范数给出概率幅；一组正交归一完备基满足 $\sum_n|n\rangle\langle n|=1$，任意态可展开 $|\psi\rangle=\sum c_n|n\rangle$，$c_n=\langle n|\psi\rangle$ 为概率幅。`,
+ '4':R`自旋是内禀角动量，$S^2$ 与 $S_z$ 本征值 $s(s+1)\hbar^2$、$m_s\hbar$。$s=1/2$ 时用 Pauli 矩阵表示 $S_i=\frac\hbar2\sigma_i$，$\sigma$ 满足反对易关系。自旋空间与轨道空间张量积构成总态空间。`,
+ '5':R`二次量子化把多体态用占据数表示：$a^\dagger$ 产生、$a$ 湮灭，满足 $[a_i,a_j^\dagger]=\delta_{ij}$（玻色）或 $\{a_i,a_j^\dagger\}=\delta_{ij}$（费米）。多体哈密顿量与算符都用 $a,a^\dagger$ 重写，自动包含统计性质。`,
+ '6':R`相干态 $|\alpha\rangle$ 是湮灭算符本征态 $a|\alpha\rangle=\alpha|\alpha\rangle$，由真空态平移得到 $|\alpha\rangle=e^{-|\alpha|^2/2}\sum \alpha^n|n\rangle/\sqrt{n!}$。它是最小不确定态，$\Delta x\Delta p=\hbar/2$，且粒子数服从泊松分布，用于描述激光场。`,
+ '8':R`相对论量子力学要求方程对时间一阶且满足 $E^2=p^2c^2+m^2c^4$。Dirac 把标量波函数换成四分量旋量，构造 $\alpha_i,\beta$ 矩阵使 $(i\hbar\partial_t-H)^2$ 回到克莱因—戈尔登方程，自动给出自旋 1/2 与正电子解。`
+},
+em:{
+ '0':R`高斯定理 $\oint_S A\cdot dS=\int_V \nabla\cdot A\,dV$ 与斯托克斯定理 $\oint_L A\cdot dl=\int_S(\nabla\times A)\cdot dS$ 把面积分与体积分、线积分与面积分联系起来。它们是把麦克斯韦方程组的积分形式化为微分形式的数学工具；$\nabla\cdot(\nabla\times A)=0$、$\nabla\times(\nabla\phi)=0$ 给出场的基本性质。`,
+ '1':R`法拉第定律 $\oint E\cdot dl=-\frac{d}{dt}\int B\cdot dS$ 与安培—麦克斯韦定律联立，配合高斯定理与磁高斯定理，得麦克斯韦方程组。引入标势 $\phi$ 与矢势 $A$（$B=\nabla\times A$、$E=-\nabla\phi-\partial A/\partial t$）后，方程组化为关于势的波动方程，规范变换下物理量不变。`,
+ '2':R`静电场满足 $\nabla\times E=0$，可写 $E=-\nabla\phi$；代入 $\nabla\cdot E=\rho/\varepsilon_0$ 得泊松方程 $\nabla^2\phi=-\rho/\varepsilon_0$。无电荷区域退化为拉普拉斯方程，配合边界条件（导体等势、界面连续）求解；唯一性定理保证解唯一。`,
+ '3':R`稳恒电流满足 $\nabla\cdot J=0$，由安培环路定理 $\nabla\times B=\mu_0J$。引入矢势 $B=\nabla\times A$，在库仑规范 $\nabla\cdot A=0$ 下得 $\nabla^2A=-\mu_0J$，与静电场泊松方程同构；对称分布可直接用安培环路定理。`,
+ '4':R`对麦克斯韦方程组取旋度，利用 $\nabla\times(\nabla\times E)=\nabla(\nabla\cdot E)-\nabla^2E$，在无源区域得 $\nabla^2E-\mu\varepsilon\,\partial^2E/\partial t^2=0$，即电磁波方程，波速 $v=1/\sqrt{\mu\varepsilon}$。平面波解 $E=E_0e^{i(k\cdot r-\omega t)}$，$k\cdot E=0$ 说明横波性；介质中 $\varepsilon$ 随频率变化导致色散。`,
+ '5':R`电荷密度与电流密度随时间变化时，势的解为推迟势 $\phi(r,t)=\frac{1}{4\pi\varepsilon_0}\int\frac{\rho(r',t-|r-r'|/c)}{|r-r'|}dV'$、$A=\mu_0/(4\pi)\int J(r',t-|r-r'|/c)dV'/|r-r'|$：场的变化以光速传播，到达观察点需要时间。对振荡偶极子作多极展开，得偶极辐射场与辐射功率。`,
+ '6':R`狭义相对论要求物理规律在所有惯性系中形式相同，洛伦兹变换保持时空间隔 $s^2=c^2t^2-r^2$ 不变。四维形式下，电荷密度与电流构成四维流 $J^\mu=(c\rho,J)$，势构成四维势 $A^\mu=(\phi/c,A)$，麦克斯韦方程组写成 $\partial_\nu F^{\mu\nu}=\mu_0J^\mu$ 的协变形式。`,
+ '7':R`带电粒子在电磁场中受力 $F=q(E+v\times B)$（洛伦兹力），运动方程由 $dp/dt=F$ 给出。加速电荷会辐射，辐射阻尼力（阿伯拉罕—洛伦兹力）与加速度的时间导数成正比；同步辐射与韧致辐射都是这一机制的表现。`
+}
+};
 
 /* ============================================================
    理论力学
@@ -5149,17 +5252,198 @@ const AP_EXAMS = [
   ]}
 ];
 
+/* ============================================================
+   工程光学（大三上 · 选修）
+   ============================================================ */
+const COURSE_EO = {
+  name:'工程光学',
+  school:'南开大学 · 物理科学学院',
+  semester:'大三上（专业选修）',
+  textbook:'郁道银《工程光学》（天津大学）',
+  teachers:'课件 2026 版（未署名）',
+  examLen:'以教材各章课后习题为主，期末闭卷',
+  grade:'期末考试（闭卷）70% ＋ 平时 30%（出勤 10%）',
+  paper:'四套习题：第一章 11 题（教材 P124–125）、第二章 10 题（P193–194）、第三章 6 题（P257–259）、第四章 2 题（P328）',
+  refs:['郁道银《工程光学》',
+        '蔡怀宇《工程光学复习指导与习题解答》（第 2 版）'],
+  src:'章节来自工程光学课件（绪论 + 第一章 1-1～1-5 + 第二章 2-1～2-7 + 第三章 3-1～3-5 + 第四、五章）；成绩构成取自绪论页；习题来自《应用光学习题》第一～四章 PPT，题号按教材页码标注'
+};
+
+const EO_CHAPTERS = [
+{no:'0', title:'绪论', en:'Introduction', file:'202601--绪论.pptx',
+ sections:['课程内容与教材','考核方式','工程光学的研究对象'],
+ concepts:[
+  ['课程定位','工程光学由应用光学（几何光学成像）与物理光学（干涉、衍射、傅里叶光学）两部分组成。'],
+  ['考核方式','期末闭卷 70%，平时 30%（含出勤 10%）。'],
+  ['教材','郁道银《工程光学》，参考蔡怀宇《复习指导与习题解答》。']
+ ],
+ formulas:[]},
+
+{no:'1', title:'理想光学系统及其变换', en:'第一章', file:'202602–202605 第一章课件',
+ sections:['系统及其数学算符表示','共线变换','轴对称理想光学系统的物像变换关系','理想光学系统的组合','典型的组合系统及其功能'],
+ concepts:[
+  ['理想光学系统','满足共线变换（点成点、直线成直线、平面成平面）的光学系统。'],
+  ['基点与基面','焦点、主点、节点及对应的焦面、主面、节面，确定系统的成像性质。'],
+  ['光焦度','Φ=n′/f′=−n/f，描述系统对光线的会聚或发散能力。'],
+  ['组合系统','两个子系统组合后用等效光焦度与主面位置描述。'],
+  ['无焦系统','Φ=0、焦距无限大，平行光进平行光出，如望远镜、扩束器。']
+ ],
+ formulas:[
+  ['高斯公式', R`\frac{f'}{l'}+\frac{f}{l}=1`],
+  ['光焦度', R`\Phi=\frac{n'}{f'}=-\frac{n}{f}`],
+  ['双光组组合', R`\Phi=\Phi_1+\Phi_2-d\,\Phi_1\Phi_2`],
+  ['望远镜放大率', R`\Gamma=-\frac{f_1'}{f_2'}`],
+  ['显微镜放大率', R`\Gamma=-\frac{\Delta}{f_1'}\cdot\frac{250}{f_2'}`]
+ ]},
+
+{no:'2', title:'实际光学系统的几何成像特性', en:'第二章', file:'2-1～2-7 第二章课件',
+ sections:['概述与光学材料','光阑与光能','球差','彗差与轴外像差','像散与场曲','畸变与色差'],
+ concepts:[
+  ['球差','轴上物点发出的同心光束经系统后不再交于一点，用轴向球差 δL′ 描述。'],
+  ['彗差','轴外物点宽光束成像不对称，形成彗星状弥散斑。'],
+  ['像散与场曲','细光束子午/弧矢像点不重合，像面弯曲。'],
+  ['畸变','放大率随视场变化，像变形但清晰度不变。'],
+  ['色差','不同波长焦距不同（位置色差）与放大率不同（倍率色差）。']
+ ],
+ formulas:[
+  ['轴向球差', R`\delta L'=L'-l'`],
+  ['畸变', R`\delta y'=y'-y_0'`],
+  ['位置色差', R`\Delta L'_{FC}=L'_F-L'_C`],
+  ['初级球差', R`\delta L'\propto h^2`],
+  ['初级彗差', R`\delta y'\propto h^2 y`]
+ ]},
+
+{no:'3', title:'光学系统的衍射映像原理及像质评价', en:'第三章', file:'第三章课件',
+ sections:['光波场的数学描述','光波场的叠加特性','受限单色波场的衍射积分变换','光学系统的衍射映像','像质评价标准和测试方法'],
+ concepts:[
+  ['光波场描述','用复振幅与相位描述单色光波，平面波、球面波、柱面波是基本形式。'],
+  ['相干性','时间相干性由光谱宽度决定，空间相干性由光源尺寸决定。'],
+  ['衍射积分','受限波场的衍射由菲涅耳—基尔霍夫积分描述，远场为夫琅禾费衍射。'],
+  ['衍射受限系统','孔径有限导致点像扩展为艾里斑，用点扩散函数描述。'],
+  ['像质评价','星点检验、分辨率、MTF/OTF、波像差等。']
+ ],
+ formulas:[
+  ['透镜相位变换', R`t(x,y)=\exp\left[-i\frac{k}{2f}(x^2+y^2)\right]`],
+  ['艾里斑半径', R`r_0=1.22\frac{\lambda f}{D}`],
+  ['衍射受限截止频率', R`f_c=\frac{D}{\lambda f'}`],
+  ['点扩散函数', R`\text{PSF}(x',y')=\left|\mathscr F\{P(x,y)\}\right|^2`]
+ ]},
+
+{no:'4', title:'傅里叶光学映像原理和传递函数', en:'第四章', file:'第四-五章课件',
+ sections:['光信号的傅里叶分析','利用光学系统实现光信号的傅里叶变换','透镜的二维傅氏变换性质','光学系统的传递函数'],
+ concepts:[
+  ['光信号傅里叶分析','把光场分布分解为不同空间频率的平面波叠加。'],
+  ['透镜的傅里叶变换','透镜后焦面上的光场是物面光场的傅里叶变换（相差二次相位因子）。'],
+  ['空间滤波','在频谱面上遮挡或改变频谱，实现图像处理。'],
+  ['传递函数','OTF 为 PSF 的傅里叶变换，描述系统对各空间频率的传递能力。'],
+  ['截止频率','由光瞳尺寸与波长决定，超过截止频率的信息无法传递。']
+ ],
+ formulas:[
+  ['傅里叶变换', R`F(f_x,f_y)=\iint f(x,y)e^{-i2\pi(f_xx+f_yy)}dx\,dy`],
+  ['透镜后焦面场', R`U_f(x_f,y_f)\propto\mathscr F\{U_0\}\Big|_{f_x=\frac{x_f}{\lambda f},f_y=\frac{y_f}{\lambda f}}`],
+  ['传递函数', R`H(f_x,f_y)=\frac{\mathscr F\{\text{PSF}\}}{\mathscr F\{\text{PSF}\}\big|_{0}}`],
+  ['衍射受限截止频率', R`f_c=\frac{D}{\lambda f'}`]
+ ]},
+
+{no:'5', title:'光栅和全息术', en:'第五章', file:'5-1.2、5-3 课件',
+ sections:['光栅','全息术'],
+ concepts:[
+  ['光栅','周期性衍射屏，产生多级衍射峰，用于分光与频谱分析。'],
+  ['光栅方程','相邻缝的衍射光程差为波长整数倍时出现主极大。'],
+  ['全息记录','物光与参考光干涉，把振幅与相位信息记录在干板上。'],
+  ['全息再现','用参考光照射全息图，衍射产生原始物波。']
+ ],
+ formulas:[
+  ['光栅方程', R`d(\sin\theta\pm\sin\theta_0)=k\lambda`],
+  ['光栅分辨率', R`R=\frac{\lambda}{\Delta\lambda}=kN`],
+  ['全息干涉条纹', R`I=I_1+I_2+2\sqrt{I_1I_2}\cos(\phi_2-\phi_1)`]
+ ]}
+];
+
+const EO_TOPICS = [
+ {name:'理想光学系统的基点与光焦度', ch:'第1章', pri:'S', stars:5, ev:[['第一章','1-5、1-6、1-8'],['第三章','3-1']], note:'焦距、主面、光焦度、同心透镜'},
+ {name:'组合系统与无焦系统', ch:'第1章', pri:'S', stars:5, ev:[['第一章','1-1、1-2、1-3、1-4、1-10、1-11']], note:'双光组组合、远距型/短焦型、扩束器、显微镜'},
+ {name:'光路计算与符号规则', ch:'第1章', pri:'S', stars:4, ev:[['第一章','1-7、1-9']], note:'符号规则、反射镜系统、镀银透镜'},
+ {name:'球差与轴上像差', ch:'第2章', pri:'S', stars:4, ev:[['第二章','2-1、2-2、2-3']], note:'球差定义、无球差点、傍轴公式'},
+ {name:'轴外像差', ch:'第2章', pri:'S', stars:4, ev:[['第二章','2-4～2-8']], note:'彗差、像散、场曲、畸变'},
+ {name:'色差', ch:'第2章', pri:'A', stars:3, ev:[['第二章','2-9、2-10']], note:'位置色差与倍率色差'},
+ {name:'衍射与点扩散函数', ch:'第3章', pri:'S', stars:4, ev:[['第三章','3-1、3-2']], note:'受限波场衍射、透镜相位变换'},
+ {name:'傅里叶光学与传递函数', ch:'第3/4章', pri:'S', stars:5, ev:[['第三章','3-3～3-6'],['第四章','4-1、4-2']], note:'空间频谱、OTF、截止频率'},
+ {name:'光栅与全息', ch:'第5章', pri:'A', stars:3, ev:[], note:'光栅方程、全息记录与再现'},
+ {name:'反射镜与棱镜系统', ch:'第1章', pri:'A', stars:3, ev:[['第一章','1-9']], note:'平面镜旋转、双平面镜坐标系'}
+];
+
+const EO_TYPES = [
+ {name:'系统结构设计', cnt:6, topics:'长焦/短焦物镜、扩束器、显微镜', pri:'S', ex:'由筒长、后工作距离反求双组元结构'},
+ {name:'光焦度与基点', cnt:5, topics:'同心透镜、三薄透镜、水浸透镜', pri:'S', ex:'证明主面重合、求组合光焦度'},
+ {name:'光路与符号规则', cnt:3, topics:'反射镜、镀银透镜', pri:'S', ex:'两次折射+一次反射的等效系统'},
+ {name:'像差分析', cnt:10, topics:'球差/彗差/像散/畸变/色差', pri:'S', ex:'判断无球差点、分析像差随孔径视场变化'},
+ {name:'衍射计算', cnt:4, topics:'受限波场、点扩散函数', pri:'S', ex:'写透镜负振幅透过率与出射场'},
+ {name:'傅里叶与传递函数', cnt:4, topics:'矩形孔频谱、正弦光栅', pri:'S', ex:'求矩形孔/正弦光栅的空间频谱'}
+];
+
+const EO_EXAMS = [
+{ id:'eo1', label:'工程光学 第一章习题（教材 P124–125）',
+  meta:[['来源','《应用光学习题（第一章部分课后习题）》PPT'],['题号','按教材页码标注，如 P124_4'],['备注','原 PPT 中公式多为图片，题干按可辨认文字整理']],
+  qs:[
+   {no:'1-1', title:'长焦距物镜的结构设计', topic:'组合系统', type:'设计 · 计算', page:124, stem:'设计一个对无限远成像的长焦距物镜。焦距 f′ 给定，筒长（第一面顶点到像面）小于焦距，后工作距离给定。按最简单薄透镜系统考虑，求系统理想光学参数并画光路图。（教材 P124_4）', key:'筒长<焦距 ⇒ 采用远距型（正负组分离、正组在前）。由筒长=d+后工作距离、双光组组合公式 Φ=Φ₁+Φ₂−dΦ₁Φ₂ 与像方焦距关系联立求 Φ₁、Φ₂、d。', src:'P124_4'},
+   {no:'1-2', title:'短焦距物镜的结构设计', topic:'组合系统', type:'设计 · 计算', page:124, stem:'设计一个对无限远成像的短焦距物镜。焦距 f′ 给定，筒长给定，要求后工作距离大于焦距。求理想系统结构参数并画光路示意图。（教材 P124_5）', key:'后工作距离>焦距 ⇒ 反远距型（负组在前）。用双组元公式与筒长关系联立求解。', src:'P124_5'},
+   {no:'1-3', title:'双组元无焦系统', topic:'组合系统', type:'计算', page:124, stem:'由双组元构成无焦系统，给定 f₁′、f₂′ 与间距。物放在透镜 1 前焦面上并用平行光照明：(1) 求像的位置与放大倍率；(2) 确定物体成实像时物面位置范围；(3) 一正一负组元组成无焦系统时能否成实像？（教材 P124_7）', key:'无焦系统 Φ=0，d=f₁′+f₂′；物在 L1 前焦面 ⇒ 像在 L2 后焦面，Γ=−f₁′/f₂′；实像条件由物距范围给出；正负组元组合不能成实像。', src:'P124_7'},
+   {no:'1-4', title:'单透镜能否构成无焦系统', topic:'组合系统', type:'简答 · 推导', page:124, stem:'单透镜能构成无焦系统吗？如可能，求望远透镜结构参数之间的关系并画光学结构图。（教材 P124_8）', key:'单片透镜 Φ≠0，不能构成无焦系统；需两片分离，满足 d=f₁′+f₂′ 且 Φ₁+Φ₂−dΦ₁Φ₂=0。', src:'P124_8'},
+   {no:'1-5', title:'同心透镜的主面与光焦度', topic:'基点/光焦度', type:'证明 · 计算', page:124, stem:'证明同心透镜两主面重合在一起，其光焦度为给定形式，并画出对无限远成像的光路图。（教材 P124_9）', key:'同心透镜两球面球心重合，主面公式给出 H、H′ 重合于公共球心；Φ=(n−1)(1/r₁−1/r₂)+… 代入 r₁−r₂=−d 化简。', src:'P124_9'},
+   {no:'1-6', title:'水浸透镜的焦距', topic:'基点/光焦度', type:'计算', page:124, stem:'一透镜结构参数给定，当一边是空气、另一边是水（n=4/3）时，求透镜物方与像方焦距。（教材 P124_11）', key:'分别用物方/像方焦距公式 f=−n/Φ、f′=n′/Φ，注意两侧折射率不同，Φ 由透镜公式计算。', src:'P124_11'},
+   {no:'1-7', title:'镀银平凸透镜', topic:'光路计算', type:'计算', page:124, stem:'平行光垂直入射平凸透镜，会聚于透镜后 480 mm 处；若在凸面镀银，平行光会聚于透镜前 80 mm 处。求透镜折射率与凸面曲率半径。（教材 P124_12）', key:'未镀银时为一正透镜，Φ 由 f′=480 mm 给出；镀银后等效为“折射—反射—折射”三次变换，用等效光焦度公式联立两式解 n 与 r。', src:'P124_12'},
+   {no:'1-8', title:'三薄透镜组合的光焦度', topic:'基点/光焦度', type:'证明', page:125, stem:'求证由三个薄透镜组成的光学系统的光焦度为给定表达式。（教材 P125_13）', key:'两次使用双光组公式 Φ=Φ₁+Φ₂−dΦ₁Φ₂，逐次合并并整理。', src:'P125_13'},
+   {no:'1-9', title:'双平面反射镜的坐标系', topic:'反射镜系统', type:'作图', page:125, stem:'图 1-5.3 所示双平面反射镜系统中，输入光束方位用右手坐标系表示，xoy 平面为主截面，画出表示出射光束方位的坐标系。（教材 P125_16）', key:'平面镜反射改变坐标手性；两次反射后手性恢复，按入射方向与主截面逐次镜像。', src:'P125_16'},
+   {no:'1-10', title:'激光扩束器设计', topic:'组合系统', type:'设计 · 计算', page:125, stem:'设计光束扩束器：入射激光直径 2 mm，出射 40 mm，筒长 210 mm。求系统理想光学参量并画光路图。（教材 P125_19）', key:'扩束器为无焦系统，Γ=D出/D入=20；由 Γ=−f₁′/f₂′ 与筒长 d=f₁′+f₂′ 联立求两焦距。', src:'P125_19'},
+   {no:'1-11', title:'显微系统的放大率', topic:'组合系统', type:'计算', page:125, stem:'显微系统物镜焦距与目镜焦距给定，两者均为薄透镜、相距 190 mm。求显微镜放大率与物体位置；若看成放大镜，求等效焦距与倍率。（教材 P125_22）', key:'显微镜 Γ=−(Δ/f₁′)(250/f₂′)，Δ=d−f₁′−f₂′；物镜物距由高斯公式求；等效放大镜焦距由组合光焦度求。', src:'P125_22'}
+  ]},
+
+{ id:'eo2', label:'工程光学 第二章习题（教材 P193–194）',
+  meta:[['来源','《应用光学习题（第二章）》PPT'],['题号','按教材页码标注'],['备注','部分题干仅存题号，正文为公式图片']],
+  qs:[
+   {no:'2-1', title:'傍轴光路公式与理想成像公式', topic:'球差', type:'证明', page:193, stem:'证明傍轴光路公式即为单折射球面的理想成像公式。（教材 P193_2）', key:'由 n′/l′−n/l=(n′−n)/r 与傍轴折射定律 n′u′=nu−yΦ 联立，消去角度即得物像公式。', src:'P193_2'},
+   {no:'2-2', title:'球面反射镜的无球差点', topic:'球差', type:'简答', page:193, stem:'与单折射球面相对照，球面反射镜存在几个无球差点？（教材 P193_5）', key:'反射镜只有一对共轭无球差点（球心与顶点），与折射球面的三对（顶点、球心、齐明点）不同。', src:'P193_5'},
+   {no:'2-3', title:'球差的表示', topic:'球差', type:'计算', page:193, stem:'（教材 P193_6，题干为公式图片）', key:'按轴向球差 δL′=L′−l′ 与初级球差 δL′∝h² 计算。', src:'P193_6'},
+   {no:'2-4', title:'彗差', topic:'轴外像差', type:'计算', page:193, stem:'（教材 P193_7，题干为公式图片）', key:'彗差与孔径平方、视场一次方成正比，注意子午/弧矢分量。', src:'P193_7'},
+   {no:'2-5', title:'像散与场曲', topic:'轴外像差', type:'计算', page:193, stem:'（教材 P193_9，题干为公式图片）', key:'分别求子午与弧矢像点位置，像散为两者之差，场曲为像面弯曲量。', src:'P193_9'},
+   {no:'2-6', title:'畸变', topic:'轴外像差', type:'计算', page:193, stem:'（教材 P193_10，题干为公式图片）', key:'畸变 δy′=y′−y₀′，只与视场有关，不影响清晰度。', src:'P193_10'},
+   {no:'2-7', title:'轴外像差综合', topic:'轴外像差', type:'计算', page:194, stem:'（教材 P194_12，题干为公式图片）', key:'按孔径与视场的幂次判断主导像差。', src:'P194_12'},
+   {no:'2-8', title:'像差随视场的变化', topic:'轴外像差', type:'计算', page:194, stem:'（教材 P194_19，题干为公式图片）', key:'列出各初级像差与 h、y 的依赖关系。', src:'P194_19'},
+   {no:'2-9', title:'位置色差', topic:'色差', type:'计算', page:194, stem:'（教材 P194_20，题干为公式图片）', key:'ΔL′_FC=L′_F−L′_C，用不同波长的折射率计算。', src:'P194_20'},
+   {no:'2-10', title:'倍率色差', topic:'色差', type:'计算', page:194, stem:'（教材 P194_21，题干为公式图片）', key:'倍率色差 Δy′_FC=y′_F−y′_C，与视场有关。', src:'P194_21'}
+  ]},
+
+{ id:'eo3', label:'工程光学 第三章习题（教材 P257–259）',
+  meta:[['来源','《应用光学习题（第三章）》PPT'],['题号','按教材页码标注'],['备注','第 1 题题干完整，其余为公式图片']],
+  qs:[
+   {no:'3-1', title:'负透镜的透过率与场分布', topic:'衍射', type:'计算', page:257, stem:'一负透镜焦距 f′=−50 mm，轴上一实物点距透镜 50 mm。傍轴近似下：(1) 忽略光能损失，写出透镜的负振幅透过率；(2) 写出物点发出的单色光波在透镜平面上的场分布；(3) 写出透镜的出射场分布。（教材 P257_1）', key:'(1) t(x,y)=exp[−ik(x²+y²)/(2f)]，f 取负值即会聚变发散；(2) 物点球面波在透镜面为二次相位因子；(3) 两者相乘得出射场，可写成新的球面波。', src:'P257_1'},
+   {no:'3-2', title:'受限波场的衍射', topic:'衍射', type:'计算', page:257, stem:'（教材 P257_2，题干为公式图片）', key:'用菲涅耳—基尔霍夫积分，注意孔径限制与傍轴近似。', src:'P257_2'},
+   {no:'3-3', title:'衍射积分变换', topic:'衍射', type:'计算', page:258, stem:'（教材 P258_3，题干为公式图片）', key:'把衍射积分写成傅里叶变换形式，提取二次相位因子。', src:'P258_3'},
+   {no:'3-4', title:'点扩散函数', topic:'衍射', type:'计算', page:258, stem:'（教材 P258_6，题干为公式图片）', key:'PSF=|F{P}|²，光瞳为圆孔时得艾里斑。', src:'P258_6'},
+   {no:'3-5', title:'传递函数计算', topic:'傅里叶/传递函数', type:'计算', page:259, stem:'（教材 P259_20，题干为公式图片）', key:'OTF 为光瞳自相关归一化，先求光瞳函数再作自相关。', src:'P259_20'},
+   {no:'3-6', title:'截止频率', topic:'傅里叶/传递函数', type:'计算', page:259, stem:'（教材 P259_21，题干为公式图片）', key:'f_c=D/(λf′)，代入孔径与波长计算。', src:'P259_21'}
+  ]},
+
+{ id:'eo4', label:'工程光学 第四章习题（教材 P328）',
+  meta:[['来源','《应用光学习题（第四章）》PPT'],['题号','按教材页码标注']],
+  qs:[
+   {no:'4-1', title:'矩形孔的空间频谱', topic:'傅里叶', type:'计算', page:328, stem:'求空间尺寸为 2a×2b 的矩形孔函数的空间频谱分布。（教材 P328_5）', key:'rect(x/2a)rect(y/2b) 的傅里叶变换为 4ab sinc(2af_x)sinc(2bf_y)，频谱沿两轴出现零点。', src:'P328_5'},
+   {no:'4-2', title:'正弦光栅的频谱', topic:'傅里叶', type:'计算', page:328, stem:'一个正弦型光栅，其振幅透过率给定，求其强度透过率的傅里叶谱。（教材 P328_6）', key:'正弦振幅光栅的强度透过率含直流项与 2f₀ 分量，频谱为三个 δ 峰（0、±2f₀）。', src:'P328_6'}
+  ]}
+];
+
 /* ============ 渲染 ============ */
 const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='eo'?COURSE_EO : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='eo'?EO_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='eo'?EO_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='eo'?EO_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='eo'?EO_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -5168,7 +5452,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['eo','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -5209,7 +5493,7 @@ function setCourse(c){ CID = c; renderAll(); }
 function renderAll(){
   renderCurriculum();
   renderDashboard(); renderChapters(); renderFormulas(); renderHigh();
-  renderTypes(); renderExams(); renderSprint(); renderAbout();
+  renderTypes(); renderSprint(); renderAbout();
   $('#pageTitle').innerText = PAGE_NAMES[CURPAGE] || '';
   typeset();
 }
@@ -5217,7 +5501,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['eo','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -5272,10 +5556,11 @@ function renderDashboard(){
   const cpc = (CID==='cp');
   const mpc = (CID==='mp');
   const apc = (CID==='ap');
+  const eoc = (CID==='eo');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
       : qm2 ? '本站把《量子力学（二）》的 9 章散射理论讲义（散射过程 / 分波法 / 库仑势散射 / 共振散射 / 复势 / 带自旋粒子的散射 / 玻恩近似 / 跃迁矩阵 / 经典极限）整理为结构化资料，并收录《量子力学（二）真题汇编》的 33 道真题。按考点频率排出优先级。'
@@ -5289,6 +5574,7 @@ function renderDashboard(){
       : cpc ? '本站把《计算物理》（李宝会 / 范万德 · 大二下）的 10 章讲义（绪论 / 数值微分 / 插值 / 求根 / 线性方程组 / 数值积分 / ODE / 高阶 ODE / PDE / UNIX）整理为结构化资料，并汇总 8 套真题（2016–2020、2024、2025、2026，共 53 题）。'
       : mpc ? '本站把《数学物理方法》（董校 · 大二下，教材梁昆淼）的 8 章讲义（复变函数 / 幂级数展开 / 留数定理 / 傅里叶变换 / 拉普拉斯变换 / 数理方程定解问题 / 分离变数法）整理为结构化资料，并汇总 7 套真题（2014–2019、2024–2026、期中），共 65 题。'
       : apc ? '本站把《原子物理》（罗延安 · 大二下）的 7 章讲义（绪论 / 原子基本性质 / 玻尔模型 / 氢原子量子力学 / 精细结构 / 周期系结构 / X 射线）整理为结构化资料，并汇总 5 套真题（2019、2020、2021–2022、2025、2026），共 48 道题组（填空按题组合并）。'
+      : eoc ? '本站把《工程光学》（大三上 · 专业选修，教材郁道银）的 6 章课件（绪论 / 理想光学系统 / 几何像差 / 衍射映像与像质评价 / 傅里叶光学与传递函数 / 光栅与全息）整理为结构化资料，并收录 4 套教材习题（29 题，题号精确到教材页码 P124–P328）。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
 
@@ -5342,6 +5628,8 @@ function renderDashboard(){
       ? '提示：卷面固定为三大块——复变（表示/C-R/级数展开/留数积分）、积分变换（傅里叶/拉普拉斯）、数理方程（三类方程 + 分离变数 + 特殊函数）。导体球与柱坐标分离变量几乎每年出现。'
       : apc
       ? '提示：卷面固定为「填空 30 分 + 5 道大题」——卢瑟福散射、类氢光谱、电子组态与基态、塞曼效应、康普顿散射、L-S 耦合几乎每年轮换出现。'
+      : eoc
+      ? '提示：工程光学以教材课后习题为主，题号按教材页码标注（如 P124_4）。第四、五章的习题 PPT 公式多为图片，题干按可辨认文字整理。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
     <a href="#" onclick="showPage('about');return false" style="color:var(--green)">查看数据说明 →</a>
   </div>`;
@@ -5372,9 +5660,71 @@ function COURSE_INFO_ROWS(){
 
 function setTeacher(t){ TEACHER = t; renderAll(); }
 
+/* ---- 题目按章节聚合：用考点名做最长公共子串匹配，容错写法差异 ---- */
+function lcsLen(a,b){
+  a=a||''; b=b||'';
+  let best=0, prev=new Array(b.length+1).fill(0);
+  for(let i=1;i<=a.length;i++){
+    const cur=new Array(b.length+1).fill(0);
+    for(let j=1;j<=b.length;j++){
+      if(a[i-1]===b[j-1]){ cur[j]=prev[j-1]+1; if(cur[j]>best) best=cur[j]; }
+    }
+    prev=cur;
+  }
+  return best;
+}
+function chapterOfTopic(topic){
+  const ts=topicsOf(); let best=null, bs=0;
+  for(const t of ts){
+    const s=lcsLen(topic,t.name)/Math.max(2,Math.min((topic||'').length,(t.name||'').length));
+    if(s>bs){ bs=s; best=t; }
+  }
+  return (best && bs>=0.34) ? best.ch : '综合';
+}
+function chMatch(tch, cno){
+  if(!tch) return false;
+  const nums=String(tch).replace(/第/g,'').replace(/章/g,'').split(/[\/、,，]/).map(s=>s.trim()).filter(Boolean);
+  const c=String(cno).trim();
+  return nums.some(n=>{
+    if(n===c) return true;
+    const ns=n.split('-'), cs=c.split('-');
+    if(ns.length===2 && cs.length===1) return cs[0]===ns[0] || cs[0]===ns[1];
+    if(cs.length===2 && ns.length===1) return ns[0]===cs[0] || ns[0]===cs[1];
+    return false;
+  });
+}
+function courseQuestions(cno){
+  const out=[];
+  for(const e of examsOf()){
+    (e.qs||[]).forEach((q,i)=>{
+      if(chMatch(chapterOfTopic(q.topic), cno)) out.push({e,q,i});
+    });
+  }
+  return out;
+}
+function qBlock(e,q,i){
+  const pg = q.page ? ` · 原卷 P${q.page}` : '';
+  const link = e.pdf ? `<a href="${esc(e.pdf)}${q.page?'#page='+q.page:''}" target="_blank" rel="noopener" class="q-open">打开原卷${q.page?' P'+q.page:''} ↗</a>` : '';
+  return `<details class="q" id="q-${esc(e.id)}-${i}">
+    <summary><span class="q-no">${esc(q.no)}</span> <span class="q-title">${esc(q.title)}</span>
+      <span class="tag">${esc(q.type)}</span></summary>
+    <div class="q-stem">${mathify(q.stem)}</div>
+    <div class="q-key">解题要点：${mathify(esc(q.key))}</div>
+    <div class="q-src">来源：${esc(q.src)} · ${esc(e.label)}${esc(pg)} ${link}</div>
+  </details>`;
+}
+
 function chCard(c, open, prefix){
+  const dv = (DERIVS[CID]||{})[c.no];
+  const qs = courseQuestions(c.no);
+  const byType={};
+  qs.forEach(x=>{ const k=(x.q.type||'其他').split(/[ ·]/)[0]; (byType[k]=byType[k]||[]).push(x); });
+  const qHtml = qs.length ? `
+      <div class="sub-h">本章题目 <span class="cnt">${qs.length} 道</span></div>
+      ${Object.keys(byType).map(k=>`<div class="qtype-h">${esc(k)}（${byType[k].length}）</div>${byType[k].map(x=>qBlock(x.e,x.q,x.i)).join('')}`).join('')}`
+    : `<div class="sub-h">本章题目</div><div class="concept" style="color:#666">本章暂无可归类的真题。</div>`;
   return `
-  <details class="ch" ${open?'open':''}>
+  <details class="ch" ${open?'open':''} id="ch-${esc(c.no)}">
     <summary>
       <h3>${prefix}${esc(c.title)}</h3>
       <span class="en">${esc(c.en)}</span>
@@ -5385,8 +5735,10 @@ function chCard(c, open, prefix){
       <div class="section-list">${c.sections.map(s=>`<span>${esc(s)}</span>`).join('')}</div>
       <div class="sub-h">核心概念</div>
       ${c.concepts.map(([t,d])=>`<div class="concept"><b>${esc(t)}</b>：${mathify(esc(d))}</div>`).join('')}
+      ${dv?`<div class="sub-h">关键推导</div><div class="deriv">${mathify(dv)}</div>`:''}
       <div class="sub-h">重要公式</div>
       ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      ${qHtml}
     </div>
   </details>`;
 }
@@ -5476,6 +5828,13 @@ function renderChapters(){
       <div class="hero-label">课程结构 · 原子物理（大二下）</div>
       <h1>章节结构。</h1>
       <p>共 7 章：绪论、原子的基本性质、氢原子的玻尔模型、氢原子的量子力学、原子的精细结构、周期系结构、X 射线。教材为 Haken & Wolf，讲义由罗延安讲授。</p>
+    </div>`;
+  } else if(CID==='eo'){
+    html = EO_CHAPTERS.map((c,i)=> chCard(c, i<2, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 工程光学（大三上 · 选修）</div>
+      <h1>章节 · 概念 · 题目。</h1>
+      <p>共 6 章：绪论、理想光学系统及其变换、实际光学系统的几何成像特性、衍射映像与像质评价、傅里叶光学与传递函数、光栅和全息。教材为郁道银《工程光学》。每章末尾已并入该章教材习题。</p>
     </div>`;
   } else {
     const isHu2 = (TEACHER==='hu2');
@@ -5570,6 +5929,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为课程介绍与参考书，无核心公式。</div>'}
       </div>`).join('');
+  } else if(CID==='eo'){
+    html = EO_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为课程介绍与教材说明，无核心公式。</div>'}
+      </div>`).join('');
   } else {
     const isHu2 = (TEACHER==='hu2');
     const list = isHu2 ? HU_CHAPTERS : CHAPTERS;
@@ -5595,11 +5960,11 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap');
-    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo');
+    const total = em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
-      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':apc?'五套真题中未单独命题':'近'+total+'套期末未涉及');
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':apc?'五套真题中未单独命题':eoc?'四套习题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:#666;font-size:10.5px;margin-top:3px">${chLabel}</div></td>
@@ -5622,7 +5987,8 @@ function renderHigh(){
   const cpc = (CID==='cp');
   const mpc = (CID==='mp');
   const apc = (CID==='ap');
-  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (apc ? 5 : (qm2 ? 33 : 3)))))))));
+  const eoc = (CID==='eo');
+  const total = em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (apc ? 5 : (eoc ? 4 : (qm2 ? 33 : 3))))))))));
   $('#high').innerHTML = `
     <div class="hero">
       <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
@@ -5649,16 +6015,27 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 7 套数理方法试卷中出现的卷数（2014–2015、2017–2018、2018–2019、2024–2025、2025–2026×2、期中）。同一考点在同一卷的多道题中出现只计一次。'
         : apc
         ? '“出现卷数”统计的是该考点在 5 套原子物理试卷中出现的卷数（2019、2020、2021–2022、2025、2026）。同一考点在同一卷的多道题中出现只计一次。'
+        : eoc
+        ? '“出现卷数”统计的是该考点在 4 套工程光学习题中出现的次数（第一～四章，共 29 题）。题号精确到教材页码。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
     <div class="note">S 级＝每套必考；A 级＝多数卷考到；B 级＝两套及以上考到；C／D 级＝讲义覆盖但近 ${total} 套期末未单独命题。</div>`;
+}
+
+function gotoType(name){
+  showPage('chapters');
+  const key=String(name).split(/[ ·—]/)[0];
+  const hs=[...document.querySelectorAll('#chapters .qtype-h')].filter(e=>e.textContent.indexOf(key)>=0);
+  if(!hs.length){ return; }
+  const ch=hs[0].closest('details.ch'); if(ch) ch.open=true;
+  hs[0].scrollIntoView({block:'start',behavior:'smooth'});
 }
 
 function renderTypes(){
@@ -5668,17 +6045,18 @@ function renderTypes(){
       <td style="color:#8a8a8a">${esc(t.topics)}</td>
       <td style="color:#7a7a7a;font-size:11.5px">${esc(t.ex)}</td>
       <td>${priTag(t.pri)}</td>
+      <td><a href="#" class="q-open" onclick="gotoType('${esc(t.name)}');return false">查看题目 →</a></td>
     </tr>`).join('');
   $('#types').innerHTML = `
     <div class="hero">
       <div class="hero-label">题型稳定性</div>
       <h1>高频题型。</h1>
-      <p>同一个考点往往以固定题型反复出现。掌握题型，比零散背知识点更接近分数。</p>
+      <p>同一个考点往往以固定题型反复出现。掌握题型，比零散背知识点更接近分数。点击「查看题目」可跳到章节页中对应题型的全部题目。</p>
     </div>
     <div class="card">
       <div class="card-title">${esc(courseOf().name)} · 高频题型</div>
       <table class="tbl">
-        <thead><tr><th>题型</th><th>出现题数</th><th>对应考点</th><th>典型题</th><th>优先级</th></tr></thead>
+        <thead><tr><th>题型</th><th>出现题数</th><th>对应考点</th><th>典型题</th><th>优先级</th><th>题目</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
@@ -5769,6 +6147,36 @@ function renderExams(){
 
 function renderSprint(){
   const em = (CID==='em');
+  if(CID==='eo'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>工程光学以教材课后习题为主，分数集中在两块：几何光学（理想系统基点与光焦度、双光组组合、像差判断）与物理光学（透镜相位变换、衍射受限、傅里叶变换与传递函数）。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>6 章概念与公式过一遍；第一章 11 题与第二章 10 题全部手做；重点第 1、3、4 章。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练：双光组组合、无焦系统、球差/彗差/畸变判断、透镜相位变换、OTF 截止频率。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：高斯公式、Φ 组合公式、望远镜/显微镜放大率、各像差随孔径视场的变化、f_c=D/λf′。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：光焦度与主面、双光组组合、六种像差的定义、OTF 与截止频率。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>由筒长、后工作距离反求双组元结构（远距/反远距）</td><td>组合系统</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>高斯公式、光焦度、主面位置</td><td>基点/光焦度</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>无焦系统条件与放大率、扩束器设计</td><td>无焦系统</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>六种像差的定义与随 h、y 的变化</td><td>像差</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>透镜相位变换与受限波场衍射</td><td>衍射</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>矩形孔/正弦光栅的频谱</td><td>傅里叶</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>OTF 自相关计算与截止频率</td><td>传递函数</td><td>${priTag('S')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
   if(CID==='ap'){
     $('#sprint').innerHTML = `
     <div class="hero">
@@ -6282,6 +6690,45 @@ function renderAbout(){
     </div>`;
     return;
   }
+  if(CID==='eo'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《工程光学》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>课件</td><td>工程光学.zip（绪论 + 第一章～第五章 PPT）</td><td>章节结构、小节划分、公式与例题</td></tr>
+          <tr><td>课程信息</td><td>202601--绪论.pptx</td><td>教材（郁道银）、成绩构成（70%+30%，出勤 10%）</td></tr>
+          <tr><td>习题</td><td>应用光学习题（第一～四章）PPT</td><td>4 套习题，共 29 题</td></tr>
+          <tr><td>未逐题收录</td><td>工程光学复习指导与习题解答（蔡怀宇，222 页扫描）</td><td>无文本层，仅作题型旁证</td></tr>
+          <tr><td>未逐题收录</td><td>工程光学作业解答 syx（21 页）</td><td>作业解答，与教材习题重复</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节以课件为准</b>：绪论 + 第一～五章标题取自课件文件名与标题页；第四、五章合并为两张章节卡。</div>
+      <div class="concept"><b>题号精确到教材页码</b>：习题 PPT 中每题都标有 P124_4 这类教材页码，本站直接沿用，题目上显示「原卷 P124」。</div>
+      <div class="concept"><b>公式图片的取舍</b>：第一、三、四章题干完整；第二章多数题目在 PPT 中只有题号与公式图片，题干按可辨认内容整理，并明确标注「题干为公式图片」。</div>
+      <div class="concept"><b>可回溯</b>：每题标注教材题号（如 P124_12），考点标注出现卷次与题号。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>无历年期末真题</b>：本次资料只有教材习题与作业解答，没有考场原卷；期末题型以教材习题为参考。</div>
+      <div class="concept"><b>第二章题干缺失</b>：10 道题中 8 道只有题号与公式图片，题干无法可靠还原，已如实标注。</div>
+      <div class="concept"><b>复习指导未收录</b>：蔡怀宇 222 页复习指导为扫描件，无文本层，未逐题收录。</div>
+      <div class="concept"><b>答案来源</b>：解题要点为依据课件与教材整理的思路，非官方答案；第一、三章部分题目可对照习题 PPT 中的解答。</div>
+    </div>`;
+    return;
+  }
   if(CID==='ap'){
     $('#about').innerHTML = `
     <div class="hero">
@@ -6676,10 +7123,11 @@ function renderAbout(){
 }
 
 /* ============ 页面切换 ============ */
-const PAGE_NAMES = {curriculum:'课程体系',dashboard:'总览',chapters:'章节结构',formulas:'公式速查',high:'高频考点',
-  types:'高频题型',exams:'历年真题',sprint:'冲刺方案',about:'数据说明'};
+const PAGE_NAMES = {curriculum:'课程体系',dashboard:'总览',chapters:'章节 · 概念 · 题目',formulas:'公式与推导',high:'高频考点',
+  types:'高频题型',exams:'题目库',sprint:'冲刺方案',about:'数据说明'};
 
 function showPage(id, btn){
+  if(id==='exams') id='chapters';
   CURPAGE = id;
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
   const el=document.getElementById(id); if(el) el.style.display='block';
