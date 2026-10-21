@@ -2302,7 +2302,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', cry:'晶体物理', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', cry:'晶体物理', mat:'材料物理', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 /* 每章「关键推导」：courseId → 章节号 → 推导文字（支持 $...$ 行内公式） */
 const DERIVS = {
 eo:{
@@ -2424,6 +2424,16 @@ em:{
 
 /* 补充推导：独立对象，初始化时合并进 DERIVS，避免改动上面的结构 */
 const DERIVS_EXTRA = {
+mat:{
+ '0':R`材料物理的组织方式是「成分与结构 → 制备工艺 → 物理性能 → 器件使用」的一条链：结构（原子键合、晶体结构、显微组织）决定性能，工艺（熔体生长、烧结、薄膜沉积）决定结构，使用条件（温度、电场、光强）又反过来限定对性能的要求。因此本课程每章都按同一套路展开：先定义表征该性能的物理量，再给出微观机制，最后落到实际材料与器件。以铌酸锂为例：同成分晶体中类钛铁矿缺陷的存在改变了局部极化环境，从而影响其电光、光折变与抗光损伤能力；掺入 4.6 mol% 以上的镁可改变缺陷结构，使抗光损伤能力提高两个数量级以上——这正是「结构决定性能」的直接证据。`,
+ '1':R`设一圆杆原长 $l_0$、截面积 $A_0$，受拉力 $F$ 后伸长 $\Delta l$。定义名义应力 $\sigma_0=F/A_0$、名义应变 $\varepsilon_0=\Delta l/l_0$，弹性范围内二者成正比：$\sigma=E\varepsilon$，比例系数 $E$ 即杨氏模量。同理剪切下 $\tau=G\gamma$、静水压下 $P=B\Delta$。若同时考虑横向收缩，定义泊松比 $\nu=-\varepsilon_\text{横}/\varepsilon_\text{纵}$。对各向同性材料，应力张量与应变张量都是二阶对称张量，其最一般线性关系含两个独立常数，写成张量形式后取纯剪切与纯静水压两种特例，即得 $G=E/[2(1+\nu)]$、$B=E/[3(1-2\nu)]$——这就是四个弹性常数中只有两个独立的原因。对两相复合材料，等应变（并联）给出上限 $E_H=E_1V_1+E_2V_2$，等应力（串联）给出下限 $1/E_L=V_1/E_1+V_2/E_2$，实际值落在两者之间。`,
+ '2':R`热膨胀的根源是质点间作用力的非谐性。把质点间势能在平衡位置展开：$U(x)=U_0+\frac12kx^2+\frac16gx^3+\cdots$。若只有二次项（严格简谐），振动对时间的平均位移为零，升温只增大振幅、不改变平均间距，故没有热膨胀。三次项使势能曲线不对称（压缩侧陡、伸长侧缓），温度升高时平均间距 $\langle x\rangle\propto T$ 增大，宏观上表现为长度随温度线性增加：$\alpha_l=\frac{1}{l_0}\frac{\mathrm dl}{\mathrm dT}$。对立方体材料，三个方向同步膨胀，故 $\alpha_V\approx3\alpha_l$；各向异性晶体三个晶轴的 $\alpha$ 不同，体膨胀系数近似为三者之和。这就是「热膨胀来自非谐振动」的定量表述。`,
+ '3':R`在外电场 $E$ 下载流子受洛伦兹力加速，但每次散射后速度被随机化，故平均漂移速度取加速时间（平均自由时间 $\tau$）内的一半：$v_d=\frac{qE}{m^*}\tau$。定义迁移率 $\mu=v_d/E=q\tau/m^*$，可见散射越强（$\tau$ 越小）迁移率越低。单位体积内 $n$ 个载流子共同贡献的电流密度 $J=nqv_d=nq\mu E$，与欧姆定律 $J=\sigma E$ 比较得 $\sigma=nq\mu$。多种载流子并存时线性叠加：$\sigma=\sum_in_iq_i\mu_i$。金属中 $n$ 几乎不随温度变，而 $\tau$ 随声子数（$\propto T$）增加而减小，故电阻率随温度升高而增大；半导体中 $n$ 随温度指数增加，压过迁移率的下降，故电阻率随温度升高而减小。`,
+ '4':R`顺磁介质的原子具有永久磁矩 $\mu$。无外场时热运动使磁矩取向杂乱，宏观磁化为零；加磁场 $H$ 后磁矩倾向于沿场排列，但热运动不断破坏取向。统计平均给出朗之万函数 $M=n\mu L(\mu\mu_0H/k_0T)$，其中 $L(x)=\coth x-1/x$。在 $x\ll1$（常温、普通磁场）时 $L(x)\approx x/3$，于是 $M\approx\frac{n\mu^2\mu_0}{3k_0T}H$，磁化率 $\chi=M/H=\frac{n\mu^2\mu_0}{3k_0T}=\frac{C}{T}$，即居里定律。铁磁体在居里温度以上失去自发磁化，但交换作用仍使磁矩成短程关联，把 $T$ 换成 $T-\theta$ 即得居里—外斯定律 $\chi=C/(T-\theta)$。`,
+ '5':R`光通过厚度为 $\mathrm dx$ 的薄层时，被吸收的光强正比于入射光强与该层厚度：$\mathrm dI=-\alpha I\,\mathrm dx$，比例系数 $\alpha$ 是吸收系数。分离变量并从 $0$ 到 $x$ 积分：$\int_{I_0}^{I}\frac{\mathrm dI}{I}=-\alpha\int_0^x\mathrm dx$，得 $\ln(I/I_0)=-\alpha x$，即 $I=I_0e^{-\alpha x}$（朗伯—比尔定律）。若吸收来自浓度为 $c$ 的吸收中心，则 $\alpha=\sigma c$，$\sigma$ 为吸收截面，这就是比尔定律的形式。由此可知：要获得高透光材料，必须使工作波段的 $\alpha$ 尽量小；而吸收边附近的 $\alpha$ 急剧增大，正是材料呈现颜色的原因。`,
+ '6':R`声波是小振幅扰动在弹性介质中的传播。取三个方程：运动方程 $\rho\frac{\partial v}{\partial t}=-\frac{\partial p}{\partial x}$（牛顿第二定律）、连续性方程 $-\frac{\partial(\rho v)}{\partial x}=\frac{\partial\rho}{\partial t}$（质量守恒）、状态方程 $\mathrm dp=\left(\frac{\partial p}{\partial\rho}\right)_s\mathrm d\rho=c^2\mathrm d\rho$（绝热物态关系，$c^2$ 即声速平方）。把状态方程代入连续性方程消去 $\rho$，再对 $x$ 求导并与运动方程联立消去 $v$，得波动方程 $\frac{\partial^2p}{\partial x^2}=\frac{1}{c^2}\frac{\partial^2p}{\partial t^2}$。与标准波动方程比较，即得 $c=\sqrt{B/\rho}$（$B$ 为绝热体积模量）——介质的弹性越大、密度越小，声速越高；固体中还需区分纵波 $\sqrt{B/\rho}$ 与横波 $\sqrt{G/\rho}$。`,
+ '7':R`以电光效应为例说明功能转换的一般推导。无外场时折射率椭球为 $\beta_{ij}x_ix_j=1$，$\beta_{ij}=1/n_{ij}^2$。加电场后 $\Delta\beta_{ij}=r_{ijk}E_k$（泡克耳斯）或 $R_{ijkl}E_kE_l$（克尔）。取 $z$ 向电场、光沿 $y$ 传播：只有 $\Delta\beta_{11}$、$\Delta\beta_{22}$、$\Delta\beta_{33}$ 与 $\Delta\beta_{12}$ 不为零，代回椭球并把 $x$、$y$ 轴转动 $45^\circ$ 消去交叉项，得到两个新主轴的折射率 $n\pm\Delta n$，其中 $\Delta n=-\frac12n^3rE$。两偏振分量经长度 $L$ 后相位差 $\delta=\frac{2\pi}{\lambda}\Delta nL$，令 $\delta=\pi$ 得半波电压 $V_\pi=\frac{\lambda d}{n^3rL}$。压电、光弹、热释电的推导同构：都是「外场 → 张量系数的线性响应 → 可观测的宏观量」这条链。`
+},
 cry:{
  '1':R`设晶面在三个晶轴上的截距为 $OM_1=ra$、$OM_2=sb$、$OM_3=tc$。因晶面族必须包含所有格点，截距必为晶格常数的有理倍数。取倒数 $1/r:1/s:1/t$ 并化为互质整数比，即得米勒指数 $(hkl)$：$h:k:l=\frac1r:\frac1s:\frac1t$。若晶面与某轴平行，截距为无穷大，其倒数为 0，故对应指数为 0。例：$r=3,s=2,t=1$ 时倒数为 $\frac13:\frac12:1=2:3:6$，即 $(236)$ 面。指数越小，面间距 $d_{hkl}$ 越大、面网密度越高，晶面间结合力越弱，所以晶体易沿低指数面解理。`,
  '2':R`坐标变换 $x'_i=a_{ij}x_j$（$a$ 为正交矩阵，$a_{ik}a_{jk}=\delta_{ij}$）。要求物理量在新旧系中描述同一客观性质，二阶量的分量必须按 $T'_{ij}=a_{ik}a_{jl}T_{kl}$ 变换，这就是张量的严格定义。因为 $T$ 对称，总可找到一个正交变换使其对角化：解特征方程 $\det(T-\lambda I)=0$ 得三个主值，对应特征矢量即主轴。作二次型 $T_{ij}x_ix_j=1$ 得示性曲面，沿单位方向 $n$ 的矢径长度 $r=1/\sqrt{T(n)}$——测出矢径长度即可读出该方向的物理量值，这是用几何方法表示张量性质的依据。`,
@@ -5970,6 +5980,235 @@ const CRY_TOPICS = [
 ];
 
 /* ============================================================
+   材料物理（大三下）
+   ============================================================ */
+const COURSE_MAT = {
+  name:'材料物理',
+  school:'南开大学 · 物理科学学院',
+  semester:'大三下',
+  textbook:'课件未注明教材（按 20 份讲义 PDF 整理）',
+  teachers:'孔勇发 教授',
+  examLen:'资料未注明（本次不做真题与习题部分）',
+  grade:'资料未注明',
+  paper:'8 章讲义共 20 份 PDF：绪论、材料力学、材料热学、材料电学、材料磁学、材料光学、材料声学、材料的功能转换',
+  refs:['《材料物理》绪论（chap-0）','第一章 材料力学（chap-1-1、1-2）','第二章 材料热学（chap-2-2～2-5）','第三章 材料电学（chap-3-3、3-4、3-fe、3-5、3-LN）','第四章 材料磁学（chap-4）','第五章 材料光学（chap-5-1～5-4）','第六章 材料声学（chap-6）','第七章 材料的功能转换（chap-7-1、7-2）'],
+  src:'章节沿用讲义编号（第 0–7 章）；每章的节次按讲义文件名与目录页对齐，缺 1.3–1.5、2.1、3.1–3.2、6.2–6.4 的单独文件，已在数据说明中列出。按本次要求，真题与习题部分暂不做，各章「本章题目」为空'
+};
+
+const MAT_CHAPTERS = [
+{no:'0', title:'绪论：材料物理的研究对象', en:'chap-0', file:'chap-0（52 页）',
+ sections:['课程定位与教学安排','材料物理的主线：结构—工艺—性能—使用','光电功能材料专题：铌酸锂晶体'],
+ concepts:[
+  ['课程定位','《材料物理》是应用物理学专业必修课，3 学分、周学时 4，主讲孔勇发教授。'],
+  ['研究主线','以「成分与结构 → 制备工艺 → 物理性能 → 器件应用」为主线，把固体物理的基本规律落到具体材料上。'],
+  ['材料四要素','结构、工艺、性能、使用四者相互制约：结构决定性能，工艺决定结构，使用条件反过来限定对性能的要求。'],
+  ['结构层次','从原子结合键、晶体结构、显微组织（晶粒、晶界、气孔、缺陷）到宏观构型，不同层次对应不同的物理性质。'],
+  ['八大性能模块','力学、热学、电学、磁学、光学、声学、功能转换，分别对应本课程第 1–7 章。'],
+  ['铌酸锂','集电光、声光、压电、光弹、非线性、光折变与激光活性于一身的「多功能光电材料」，被称为「光学硅」。'],
+  ['高掺镁铌酸锂','掺入 4.6 mol% 以上的镁可使抗光损伤能力提高两个数量级以上，被称为「Star of China」。'],
+  ['缺陷—性能构效关系','同成分铌酸锂中的类钛铁矿缺陷结构决定其许多物理性能，是「结构决定性能」的典型例证。']
+ ],
+ formulas:[]},
+
+{no:'1', title:'材料力学', en:'第一章', file:'chap-1-1、chap-1-2',
+ sections:['材料的形变：应力与应变','三种基本应变与应变张量','弹性形变与胡克定律','弹性模量、泊松比与两相复合材料','粘性形变','材料的塑性：滑移与孪晶','材料的蠕变','材料的粘弹性与力学松弛'],
+ concepts:[
+  ['力学性能','材料承受外力、抵抗形变的能力及其破坏规律，也称机械性能。'],
+  ['应力','材料单位面积上所受的附加内力；名义应力用受力前面积 A₀，真实应力用受力后面积 A。'],
+  ['应力张量','法向应力 σ_xx、σ_yy、σ_zz 与剪切应力 τ_xy、τ_yz、τ_zx 共同构成；由切应力互等，独立分量只有 6 个。'],
+  ['三种基本应变','拉伸应变 ε=Δl/l₀、剪切应变 γ=tanθ≈θ、压缩应变 Δ=(V₀−V₁)/V₀；三者均为无量纲量。'],
+  ['弹性形变','应力撤除后能完全恢复的形变，服从胡克定律；比例系数即弹性模量，单位与应力相同。'],
+  ['三种弹性模量','杨氏模量 E（拉压）、剪切模量 G（剪切）、体积模量 B（静水压）；加上泊松比 ν，四个参数中只有两个独立。'],
+  ['泊松比','拉伸时横向单位长度的收缩与纵向单位长度伸长之比；E、G、B、ν 之间由各向同性弹性关系相联系。'],
+  ['两相复合材料模量','等应变（并联）给出上限 E_H，等应力（串联）给出下限 E_L，实际模量落在两者之间；含封闭气孔时用含气孔率 P 的经验式修正。'],
+  ['塑性形变','外力去除后仍保留的形变；两种基本形式是滑移（晶体一部分相对另一部分平移）与孪晶（两部分成对称关系）。'],
+  ['蠕变','恒定应力下应变随时间逐渐增大的现象；机理有位错蠕变、扩散蠕变与晶界蠕变，温度越高越显著。'],
+  ['粘弹性','介于理想弹性固体与理想粘性液体之间，兼具弹性与粘性，力学性质与时间有关，典型材料是高聚物。'],
+  ['力学松弛','蠕变、应力松弛、滞后与力损耗；应力松弛指恒定应变下应力随时间衰减。']
+ ],
+ formulas:[
+  ['名义应力', R`\sigma_0=\frac{F}{A_0}`],
+  ['真实应力', R`\sigma_T=\frac{F}{A}`],
+  ['名义应变', R`\varepsilon_0=\frac{\Delta l}{l_0}`],
+  ['真实应变', R`\varepsilon_T=\ln\frac{l}{l_0}`],
+  ['剪切应变', R`\gamma=\tan\theta\approx\theta`],
+  ['压缩应变', R`\Delta=\frac{V_0-V_1}{V_0}`],
+  ['胡克定律', R`\sigma=E\varepsilon,\qquad \tau=G\gamma,\qquad P=B\Delta`],
+  ['弹性常数关系', R`G=\frac{E}{2(1+\nu)},\qquad B=\frac{E}{3(1-2\nu)}`],
+  ['两相模量上下限', R`E_H=E_1V_1+E_2V_2,\qquad \frac{1}{E_L}=\frac{V_1}{E_1}+\frac{V_2}{E_2}`],
+  ['含气孔模量', R`E=E_0\left(1-1.9P+0.9P^2\right)`],
+  ['广义胡克定律', R`\sigma_i=C_{ij}\varepsilon_j\quad(i,j=1,\dots,6)`],
+  ['应力松弛', R`\sigma(t)=\sigma_0e^{-t/\tau}`]
+ ]},
+
+{no:'2', title:'材料热学', en:'第二章', file:'chap-2-2～chap-2-5',
+ sections:['材料的热容量','材料的热膨胀','材料的热传导','材料的热稳定性'],
+ concepts:[
+  ['热容量','材料温度升高 1 K 所吸收的热量；摩尔热容在高温下趋于杜隆—珀替值 3R。'],
+  ['热容的量子修正','低温下热容由声子贡献，按德拜 T³ 规律趋于零；爱因斯坦模型给出单频振动的下降趋势。'],
+  ['热膨胀','不加压力时材料长度或体积随温度升高而增大的现象，用线膨胀系数 α_l 与体膨胀系数 α_V 描述。'],
+  ['热膨胀的微观机理','质点间作用力是非线性的（势能曲线不对称），温度升高时平均间距增大；若严格简谐则不会膨胀。'],
+  ['各向异性膨胀','各晶轴方向的线膨胀系数可以不同；立方晶体各向同性，α_V≈3α_l。'],
+  ['热传导与傅里叶定律','热量自动由热端传向冷端，热流密度正比于温度梯度，比例系数为热导率 k。'],
+  ['固体导热的载流子','主要是晶格振动的格波（声子）与自由电子，高温时还有光子（辐射）贡献；金属因自由电子多而热导率高。'],
+  ['热稳定性','材料承受温度急变而不破坏的能力；温度梯度产生热应力，超过强度即开裂。'],
+  ['热应力断裂与损伤','急冷时表面收缩受内部约束产生拉应力；反复热冲击造成裂纹萌生与扩展（热疲劳）。'],
+  ['抗热震参数','综合强度、弹性模量、膨胀系数与泊松比的判据，R 越大抗热震越好。']
+ ],
+ formulas:[
+  ['热容量', R`C=\lim_{\Delta T\to0}\frac{\Delta Q}{\Delta T}`],
+  ['杜隆—珀替定律', R`C_V=3R\approx25\ \mathrm{J\cdot mol^{-1}\cdot K^{-1}}`],
+  ['线膨胀系数', R`\alpha_l=\frac{1}{l_0}\frac{\mathrm dl}{\mathrm dT}`],
+  ['体膨胀系数', R`\alpha_V=\frac{1}{V_0}\frac{\mathrm dV}{\mathrm dT}\approx3\alpha_l`],
+  ['傅里叶定律', R`Q=-kA\frac{\mathrm dT}{\mathrm dx}`],
+  ['热扩散方程', R`\frac{\partial T}{\partial t}=\frac{k}{\rho C_P}\frac{\partial^2T}{\partial x^2}`],
+  ['抗热震参数', R`R=\frac{\sigma_f(1-\nu)}{E\alpha}`]
+ ]},
+
+{no:'3', title:'材料电学', en:'第三章', file:'chap-3-3、3-4、3-fe、3-5、3-LN',
+ sections:['导体、半导体与绝缘体的区别','材料的电导：电子型与离子型','实际材料的电导','材料的电极化','介电损耗与电击穿','铁电体','材料的超导电性','专题：铌酸锂晶体'],
+ concepts:[
+  ['能带视角的三类材料','满带不导电；导体有部分填充带；半导体与绝缘体价带满、导带空，差别在禁带宽度。'],
+  ['电导率','各载流子贡献之和：σ=Σn_iq_iμ_i；迁移率 μ 是单位电场下的漂移速度，散射越强迁移率越小。'],
+  ['电子型与离子型电导','电子（空穴）导电见于金属与半导体；离子导电见于离子晶体与固体电解质，伴随物质迁移。'],
+  ['实际材料的电导','金属电阻率随温度升高而增大（声子散射）；半导体随温度升高而减小（载流子浓度指数增加）；合金与多相材料还受界面散射影响。'],
+  ['电极化','电介质通过感应而非传导传递电的作用；机制有电子位移极化、离子位移极化与固有电矩的取向极化。'],
+  ['介电常数','D=εE=ε₀ε_rE；相对介电常数 ε_r 反映材料储存电荷的能力，频率与温度依赖性显著。'],
+  ['介电损耗','交变场下极化跟不上电场变化而消耗能量，用损耗角正切 tanδ 衡量；频率、温度与缺陷影响很大。'],
+  ['电击穿','场强超过临界值时绝缘失效；形式有热击穿、电击穿（本征击穿）与局部放电击穿。'],
+  ['铁电体','存在自发极化且可被外电场反转；特征是电滞回线、居里温度与居里—外斯行为，典型如 BaTiO₃、LiNbO₃。'],
+  ['超导电性','低于临界温度 T_c 时电阻突然为零，并具有迈斯纳效应（完全抗磁）；由 BCS 理论用库珀对解释。'],
+  ['铌酸锂专题','集电光、声光、压电、非线性、光折变于一身的多功能晶体；同成分晶体的类钛铁矿缺陷决定其性能，掺镁可显著提高抗光损伤能力。']
+ ],
+ formulas:[
+  ['电导率', R`\sigma=\sum_i n_iq_i\mu_i`],
+  ['迁移率', R`\mu=\frac{v_d}{E}`],
+  ['电阻率', R`\rho=\frac{1}{\sigma}`],
+  ['电位移', R`D=\varepsilon E=\varepsilon_0\varepsilon_rE`],
+  ['极化强度', R`P=\varepsilon_0(\varepsilon_r-1)E`],
+  ['介电损耗', R`\tan\delta=\frac{\varepsilon''}{\varepsilon'}`],
+  ['超导临界场', R`B_c(T)=B_c(0)\left[1-\left(\frac{T}{T_c}\right)^2\right]`],
+  ['伦敦穿透深度', R`\lambda_L=\sqrt{\frac{m}{\mu_0n_se^2}}`]
+ ]},
+
+{no:'4', title:'材料磁学', en:'第四章', file:'chap-4（85 页）',
+ sections:['材料的磁性：磁矩与磁化','磁性的分类：抗磁、顺磁、铁磁、反铁磁、亚铁磁','材料的磁性能指标：磁导率','磁损耗与品质因子'],
+ concepts:[
+  ['磁矩的来源','电子自旋磁矩远大于轨道磁矩；晶体中轨道磁矩受晶格场作用方向不定，对外主要贡献来自自旋。'],
+  ['玻尔磁子','电子自旋磁矩的基本单位 μ_B=eh/(4πm_e)≈9.27×10⁻²⁴ J/T；原子核磁矩比电子小三个数量级，可忽略。'],
+  ['原子磁矩','取决于电子壳层是否未填满：未填满时自旋磁矩不能完全抵消，原子具有永久磁矩（如 Fe 的 3d 层剩 4 个未抵消）。'],
+  ['磁化强度','单位体积的磁矩 M=Σm/ΔV，表征材料被磁化的程度。'],
+  ['磁导率','B=μ₀(H+M)=μH；μ_r=1+χ 反映材料传导磁力线的能力。'],
+  ['抗磁性与顺磁性','抗磁：χ<0（约 10⁻⁵），源于外场感生的反向环流；顺磁：χ>0 很小，源于固有磁矩的取向，服从居里定律。'],
+  ['铁磁性','存在自发磁化与磁畴；χ 很大且非线性，超过居里温度后转为顺磁并服从居里—外斯定律。'],
+  ['反铁磁与亚铁磁','反铁磁：相邻自旋反平行且大小相等，净磁矩为零；亚铁磁：反平行但大小不等，仍有净磁矩（铁氧体）。'],
+  ['磁性能指标','饱和磁感应强度 B_s、剩磁 B_r、矫顽力 H_c、初始与最大磁导率、损耗与品质因子；软磁要求窄回线，永磁要求宽回线。'],
+  ['磁损耗','交变磁化中的磁滞损耗与涡流损耗，频率越高越显著；用品质因子 Q 或损耗角衡量。']
+ ],
+ formulas:[
+  ['磁感应强度', R`B=\mu_0(H+M)=\mu H`],
+  ['相对磁导率', R`\mu_r=1+\chi_m`],
+  ['磁化强度', R`M=\frac{\sum\mathbf m}{\Delta V}`],
+  ['玻尔磁子', R`\mu_B=\frac{eh}{4\pi m_e}`],
+  ['居里定律', R`\chi=\frac{C}{T}`],
+  ['居里—外斯定律', R`\chi=\frac{C}{T-\theta}`],
+  ['磁滞损耗', R`W_h=\oint H\,\mathrm dB`]
+ ]},
+
+{no:'5', title:'材料光学', en:'第五章', file:'chap-5-1～chap-5-4',
+ sections:['光的折射与反射','光的吸收','光的色散与散射','材料的透光性与颜色','发光及其材料','激光及激光器','光波的性质与光纤','光子晶体','非线性光学现象','二阶与三阶非线性光学','非线性光学材料'],
+ concepts:[
+  ['折射与反射','折射率 n=c/v；反射率由折射率与消光系数决定，垂直入射时 R=[(n−1)²+k²]/[(n+1)²+k²]。'],
+  ['光的吸收','强度按 I=I₀e^{−αx} 指数衰减，吸收系数 α 随波长变化形成吸收带；本征吸收对应电子从价带到导带的跃迁。'],
+  ['色散','折射率随波长变化：正常色散 dn/dλ<0，吸收带附近为反常色散。'],
+  ['散射','瑞利散射强度 ∝1/λ⁴（微粒远小于波长），米氏散射与波长关系弱；散射使材料呈乳浊或影响透光率。'],
+  ['透光性与颜色','透光率取决于反射、吸收与散射的总损失；颜色来自选择性吸收（体色）或干涉、散射（结构色）。'],
+  ['发光与激光材料','发光分光致、电致、热致等；激光材料需具备亚稳态、粒子数反转与合适的发射截面，如 Nd:YAG、红宝石。'],
+  ['光纤','由纤芯与包层折射率差导光，数值孔径 NA=√(n₁²−n₂²)，传输损耗与色散决定带宽。'],
+  ['光子晶体','折射率周期性调制形成光子带隙，可控制光的传播与自发辐射。'],
+  ['二阶非线性','χ⁽²⁾ 产生倍频、和频、差频，只在非中心对称介质中存在；需满足相位匹配。'],
+  ['三阶非线性','χ⁽³⁾ 产生四波混频、自相位调制、双光子吸收等，所有介质都有；折射率随光强变化 n=n₀+n₂I。'],
+  ['非线性光学材料','要求非线性系数大、透光范围宽、损伤阈值高、响应快，如 KDP、BBO、LiNbO₃、硫系玻璃。']
+ ],
+ formulas:[
+  ['折射率', R`n=\frac{c}{v}`],
+  ['反射率', R`R=\frac{(n-1)^2+k^2}{(n+1)^2+k^2}`],
+  ['朗伯吸收定律', R`I=I_0e^{-\alpha x}`],
+  ['瑞利散射', R`I_s\propto\frac{1}{\lambda^4}`],
+  ['光纤数值孔径', R`\mathrm{NA}=\sqrt{n_1^2-n_2^2}`],
+  ['光强相关折射率', R`n=n_0+n_2I`],
+  ['二阶非线性极化', R`P_i^{(2)}=\varepsilon_0\chi^{(2)}_{ijk}E_jE_k`]
+ ]},
+
+{no:'6', title:'材料声学', en:'第六章', file:'chap-6（102 页）',
+ sections:['声波的产生与传播','表征声场的声学量','介质运动方程、连续性方程与状态方程','声波传播速度与波动方程','声能密度、声能流密度与声强级','室内声学与吸声材料','水中声学与水声材料','其它声学及其材料'],
+ concepts:[
+  ['声波的本质','机械振动状态在弹性介质中的传播，需要声源与弹性介质，不能在真空中传播。'],
+  ['声场的基本量','声压 p、质点振速 v、介质密度 ρ 与声速 c 共同描述声场。'],
+  ['三个基本方程','运动方程（牛顿第二定律）、连续性方程（质量守恒）、状态方程（物态关系）联立得波动方程。'],
+  ['声速','由介质的弹性模量与密度决定：v=√(B/ρ)；固体中还区分纵波与横波速度。'],
+  ['声阻抗','Z=ρc，决定界面处的反射与透射；两种介质声阻抗差越大，反射越强。'],
+  ['声强与声强级','声强 I=p²/(2ρc)；声强级 L=10lg(I/I₀)，基准 I₀=10⁻¹² W/m²。'],
+  ['吸声材料','靠多孔结构的粘滞与热传导把声能转为热能；吸声系数随频率变化，低频需厚层或共振结构。'],
+  ['水声材料','水下声呐与换能器材料要求低声损耗、阻抗与水匹配（如透声橡胶、压电陶瓷）。'],
+  ['其它声学材料','隔声、减振、超声耦合与声隐身材料等，按阻抗匹配与损耗机制设计。']
+ ],
+ formulas:[
+  ['声速', R`v=\sqrt{\frac{B}{\rho}}`],
+  ['波动方程', R`\nabla^2p=\frac{1}{v^2}\frac{\partial^2p}{\partial t^2}`],
+  ['声阻抗', R`Z=\rho v`],
+  ['声强', R`I=\frac{p^2}{2\rho v}`],
+  ['声强级', R`L=10\lg\frac{I}{I_0},\qquad I_0=10^{-12}\ \mathrm{W/m^2}`],
+  ['吸声系数', R`\alpha=\frac{I_{\text{吸}}}{I_{\text{入}}}`]
+ ]},
+
+{no:'7', title:'材料的功能转换', en:'第七章', file:'chap-7-1、chap-7-2',
+ sections:['电光效应','光折变效应','压电效应','光弹效应','热释电效应','光电效应','热电效应','磁光效应','声光效应'],
+ concepts:[
+  ['电光效应','电场改变晶体折射率：泡克耳斯效应（线性，Δn∝E）与克尔效应（二次，Δn∝E²）；用于光调制与偏转。'],
+  ['光折变效应','光辐照使电光晶体折射率改变：光激发载流子→迁移→被陷阱俘获→空间电荷场→电光调制，可逆、非瞬时。'],
+  ['压电效应','应力产生极化（正压电），电场产生应变（逆压电）；只有非中心对称的 20 个点群具有，用于换能器与滤波器。'],
+  ['压电振子参数','谐振频率、机电耦合系数 k、机械品质因数 Q_m 与频率常数决定器件性能。'],
+  ['光弹效应','应力通过光弹张量改变折射率椭球，产生应力双折射；是声光效应的物理基础。'],
+  ['热释电效应','温度变化引起自发极化改变，p=dP/dT；只有极性晶类具有，用于红外探测。'],
+  ['光电效应','光照射使材料电导率改变（光电导）或产生电动势（光生伏特），用于探测器与太阳能电池。'],
+  ['热电效应','温差产生电动势（塞贝克）、电流致温差（珀尔帖）；用热电优值 ZT=S²σT/κ 衡量。'],
+  ['磁光效应','磁场使偏振面旋转（法拉第效应，θ=VBd）或产生双折射（科顿—穆顿），用于光隔离器。'],
+  ['声光效应','声波在介质中形成周期性折射率变化，起相位光栅作用；满足布拉格条件 2Λsinθ=λ 时衍射效率最高。']
+ ],
+ formulas:[
+  ['电光效应', R`\Delta\left(\frac{1}{n^2}\right)_{ij}=r_{ijk}E_k`],
+  ['光折变折射率变化', R`\Delta n=-\frac12n^3rE_{sc}`],
+  ['压电方程', R`D_i=d_{ijk}\sigma_{jk},\qquad \varepsilon_{jk}=d_{ijk}E_i`],
+  ['机电耦合系数', R`k^2=\frac{\text{电能}}{\text{机械能}}`],
+  ['光弹效应', R`\Delta\beta_{ij}=\pi_{ijkl}\sigma_{kl}`],
+  ['热释电系数', R`p_i=\frac{\partial P_i}{\partial T}`],
+  ['热电优值', R`ZT=\frac{S^2\sigma T}{\kappa}`],
+  ['法拉第旋转', R`\theta=VBd`],
+  ['布拉格条件', R`2\Lambda\sin\theta=\lambda`]
+ ]}
+];
+
+/* 本次不做真题与习题部分：题库与题型暂空 */
+const MAT_EXAMS = [];
+const MAT_TYPES = [];
+
+const MAT_TOPICS = [
+ {name:'应力应变与弹性模量', ch:'第1章', pri:'S', stars:5, ev:[['课件','1.1']], note:'名义/真实应力应变、三种模量、泊松比、两相复合材料模量上下限'},
+ {name:'塑性、蠕变与粘弹性', ch:'第1章', pri:'A', stars:4, ev:[['课件','1.2']], note:'滑移与孪晶、三种蠕变理论、Maxwell/Kelvin 模型与应力松弛'},
+ {name:'热膨胀与热传导', ch:'第2章', pri:'S', stars:5, ev:[['课件','2.3、2.4']], note:'α_l 与 α_V 的关系、非线性作用力机理、傅里叶定律与声子导热'},
+ {name:'热容量与热稳定性', ch:'第2章', pri:'B', stars:3, ev:[['课件','2.2、2.5']], note:'杜隆—珀替与德拜 T³、热应力断裂与抗热震参数'},
+ {name:'电导与介电性', ch:'第3章', pri:'S', stars:5, ev:[['课件','3.3、3.4']], note:'σ=Σnqμ、电子型与离子型电导、三种极化、介电损耗与击穿'},
+ {name:'铁电体与超导电性', ch:'第3章', pri:'S', stars:5, ev:[['课件','3-fe、3.5']], note:'电滞回线与居里温度、迈斯纳效应、临界场与 BCS'},
+ {name:'磁性的分类与指标', ch:'第4章', pri:'S', stars:5, ev:[['课件','4.1–4.3']], note:'五种磁性、居里与居里—外斯定律、磁导率与磁损耗'},
+ {name:'透光性、吸收与色散', ch:'第5章', pri:'S', stars:5, ev:[['课件','5.1']], note:'反射率、朗伯吸收、瑞利散射、颜色成因'},
+ {name:'激光、光纤与光子晶体', ch:'第5章', pri:'A', stars:4, ev:[['课件','5.2、5.3']], note:'发光与激光材料、数值孔径与损耗、光子带隙'},
+ {name:'非线性光学', ch:'第5章', pri:'A', stars:4, ev:[['课件','5.4']], note:'χ⁽²⁾ 与 χ⁽³⁾ 效应、相位匹配、典型非线性材料'},
+ {name:'声波传播与吸声', ch:'第6章', pri:'B', stars:3, ev:[['课件','6.1–6.4']], note:'三个基本方程、声速与声阻抗、声强级、吸声与隔声材料'},
+ {name:'功能转换效应', ch:'第7章', pri:'S', stars:5, ev:[['课件','7.1–7.9']], note:'电光、光折变、压电、光弹、热释电、光电、热电、磁光、声光'}
+];
+
+/* ============================================================
    工程光学（D 课）
    ============================================================ */
 const COURSE_EO = {
@@ -7449,11 +7688,11 @@ const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='cry'?COURSE_CRY : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='cry'?CRY_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='cry'?CRY_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='cry'?CRY_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='cry'?CRY_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='mat'?COURSE_MAT : id==='cry'?COURSE_CRY : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='mat'?MAT_CHAPTERS : id==='cry'?CRY_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='mat'?MAT_EXAMS : id==='cry'?CRY_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='mat'?MAT_TOPICS : id==='cry'?CRY_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='mat'?MAT_TYPES : id==='cry'?CRY_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -7462,7 +7701,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7511,7 +7750,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7569,11 +7808,12 @@ function renderDashboard(){
   const eoc = (CID==='eo');
   const semic = (CID==='semi');
   const cryc = (CID==='cry');
+  const matc = (CID==='mat');
   const opc = (CID==='op');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':cryc?'晶体物理':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':cryc?'晶体物理':matc?'材料物理':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       isA(CID) ? `本站把《${A_COURSES[CID].name}》按教材章节整理为背诵资料：每章含核心概念、背诵要点（问题 → 答案要点）与本章真题。文科课程无公式与推导，直接按条背。`
       : em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
@@ -7590,6 +7830,7 @@ function renderDashboard(){
       : apc ? '本站把《原子物理》（罗延安 · 大二下）的 7 章讲义（绪论 / 原子基本性质 / 玻尔模型 / 氢原子量子力学 / 精细结构 / 周期系结构 / X 射线）整理为结构化资料，并汇总 5 套真题（2019、2020、2021–2022、2025、2026），共 48 道题组（填空按题组合并）。'
       : opc ? '本站把《光学》（大二上，教材赵凯华）按 6 章整理：干涉 / 衍射 / 几何光学 / 光学仪器 / 偏振 / 光的量子性，并汇总 16 套真题与习题（2014–2026，含期中、月考、孙题集萃），题目按考点归入章节。'
       : eoc ? '本站把《工程光学》（D 课，教材郁道银）的 6 章课件（绪论 / 理想光学系统 / 几何像差 / 衍射映像与像质评价 / 傅里叶光学与传递函数 / 光栅与全息）整理为结构化资料，并收录 4 套教材习题（29 题，题号精确到教材页码 P124–P328）。'
+      : matc ? '本站把《材料物理》（大三下，孔勇发）的 20 份讲义整理为 8 章：绪论、材料力学、材料热学、材料电学、材料磁学、材料光学、材料声学、材料的功能转换。每章含核心概念、关键推导与重要公式；按本次要求，真题与习题部分暂不做，各章「本章题目」留空。'
       : cryc ? '本站把《晶体物理》（D 课）的 8 份讲义整理为结构化资料：晶体学基础 / 张量基础 / 弹性性质 / 电学性质 / 线性光学性质 / 非线性光学效应 / 外场下的光学性质 / 光折变。每章含核心概念、关键推导与重要公式；讲义中没有习题与真题，各章「本章题目」暂时留空。'
       : semic ? '本站把《半导体物理》（D 课，教材刘恩科第七版）按课件原始编号整理为 6 章：电子状态 / 杂质与缺陷能级 / 载流子统计分布 / 输运现象 / 非平衡载流子 / pn 结，并收录分章题库（填空 30 空 + 简答 17 题 + 计算 9 题）与 2021 填空回忆版。每章含核心概念、关键推导、重要公式与本章题目。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
@@ -7610,13 +7851,13 @@ function renderDashboard(){
     <div class="card-title">冲刺入口</div>
     <div class="grid4">
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':CID==='cry'?'8 章讲义逐章过 + 48 条公式':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
+        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':CID==='cry'?'8 章讲义逐章过 + 48 条公式':CID==='mat'?'8 章讲义逐章过 + 56 条公式':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">3 天</div><h3>高收益模式</h3><p>S 级 + A 级考点 + 近三套真题</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">24 小时</div><h3>紧急模式</h3><p>S 级 + 最高频题型 + 公式速查</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">2 小时</div><h3>最后机会</h3><p>${CID==='cry'?'核心概念 + 六条关键推导':'必背公式 + 必做真题'}</p></div>
+        <div class="t">2 小时</div><h3>最后机会</h3><p>${CID==='cry'?'核心概念 + 六条关键推导':CID==='mat'?'核心概念 + 八条关键推导':'必背公式 + 必做真题'}</p></div>
     </div>
   </div>
 
@@ -7649,6 +7890,8 @@ function renderDashboard(){
       ? '提示：光学题量很大（16 套、约 180 道题组），选择题与填空题按题组合并展示；每题都带「所属章节」链接，点击可直接跳到对应章节。'
       : eoc
       ? '提示：工程光学以教材课后习题为主，题号按教材页码标注（如 P124_4）。第四、五章的习题 PPT 公式多为图片，题干按可辨认文字整理。'
+      : matc
+      ? '提示：本课程共 20 份讲义 PDF，按本次要求<b>不做真题与习题部分</b>；高频考点按课件节次统计，各章「本章题目」暂时为空。'
       : cryc
       ? '提示：本课程只有 8 份讲义 PDF，<b>没有习题与真题</b>；高频考点按课件章节统计，各章「本章题目」暂时为空。等拿到习题或往年卷后会补入。'
       : semic
@@ -8030,6 +8273,13 @@ function renderChapters(){
       <h1>章节 · 概念 · 题目。</h1>
       <p>共 6 章：绪论、理想光学系统及其变换、实际光学系统的几何成像特性、衍射映像与像质评价、傅里叶光学与传递函数、光栅和全息。教材为郁道银《工程光学》。每章末尾已并入该章教材习题。</p>
     </div>`;
+  } else if(CID==='mat'){
+    html = MAT_CHAPTERS.map((c,i)=> chCard(c, i<1, c.no==='0'?'':'第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 材料物理（大三下 · 孔勇发）</div>
+      <h1>章节 · 概念 · 推导 · 公式。</h1>
+      <p>共 8 章：绪论、材料力学、材料热学、材料电学、材料磁学、材料光学、材料声学、材料的功能转换。章节沿用讲义编号（第 0–7 章），每章由若干节次文件合并而成（如第三章含 3.3 电导、3.4 介电性、铁电体专题、3.5 超导电性、铌酸锂专题）。按本次要求<b>暂不做真题与习题部分</b>，各章「本章题目」为空。</p>
+    </div>`;
   } else if(CID==='cry'){
     html = CRY_CHAPTERS.map((c,i)=> chCard(c, i<2, '第 '+c.no+' 章 · ')).join('');
     hero = `<div class="hero">
@@ -8157,6 +8407,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为课程介绍与教材说明，无核心公式。</div>'}
       </div>`).join('');
+  } else if(CID==='mat'){
+    html = MAT_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">${c.no==='0'?esc(c.title):'第 '+c.no+' 章 · '+esc(c.title)}</div>
+        ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">绪论为课程概述，无核心公式。</div>'}
+      </div>`).join('');
   } else if(CID==='cry'){
     html = CRY_CHAPTERS.map(c=>`
       <div class="card">
@@ -8206,15 +8462,15 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), cryc = (CID==='cry'), opc = (CID==='op');
-    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : cryc ? 1 : opc ? 16 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), cryc = (CID==='cry'), matc = (CID==='mat'), opc = (CID==='op');
+    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : opc ? 16 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||cryc||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||cryc||matc||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
       : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':apc?'五套真题中未单独命题':eoc?'四套习题中未单独命题':opc?'十六套真题中未单独命题':isA(CID)?'已收真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:var(--faint);font-size:10.5px;margin-top:3px">${chLabel}</div></td>
-      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq||ssc||cryc)?' 次':' / '+total}</td>
+      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq||ssc||cryc||matc)?' 次':' / '+total}</td>
       <td style="color:var(--muted)">${esc(ev)}</td>
       <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
       <td>${priTag(t.pri)}</td>
@@ -8236,11 +8492,12 @@ function renderHigh(){
   const eoc = (CID==='eo');
   const semic = (CID==='semi');
   const cryc = (CID==='cry');
+  const matc = (CID==='mat');
   const opc = (CID==='op');
-  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (apc ? 5 : (eoc ? 4 : (semic ? 4 : (cryc ? 1 : (opc ? 16 : (qm2 ? 33 : 3)))))))))))));
+  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lmc ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : opc ? 16 : qm2 ? 33 : 3;
   $('#high').innerHTML = `
     <div class="hero">
-      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':cryc?'考点分布 · 基于 8 份讲义':(semic?'考点频率 · 基于 4 组题源':'考点频率 · 基于 '+total+' 套期末真题')}</div>
+      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':cryc?'考点分布 · 基于 8 份讲义':matc?'考点分布 · 基于 20 份讲义':(semic?'考点频率 · 基于 4 组题源':'考点频率 · 基于 '+total+' 套期末真题')}</div>
       <h1>高频考点。</h1>
       <p>${qm2
         ? '“出现次数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
@@ -8268,6 +8525,8 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 4 套工程光学习题中出现的次数（第一～四章，共 29 题）。题号精确到教材页码。'
         : opc
         ? '“出现卷数”统计的是该考点在 16 套光学真题与习题中出现的次数（2014–2026，含期中、月考、孙题集萃）。同一套内多题只计一次。'
+        : matc
+        ? '本课程目前只有 20 份讲义 PDF，没有习题与真题。下表按「课件章节」列出考点分布：出现次数指的是该考点在几节讲到，证据列给出对应节次。'
         : cryc
         ? '本课程目前只有 8 份讲义 PDF，没有习题与真题。下表按「课件章节」列出考点分布：出现次数指的是该考点在几章讲到，证据列给出对应章节。'
         : semic
@@ -8275,13 +8534,13 @@ function renderHigh(){
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${cryc?'晶体物理':semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${matc?'材料物理':cryc?'晶体物理':semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
-        <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':(hq||cryc)?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
+        <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':(hq||cryc||matc)?'出现次数':'出现卷数'}</th><th>${(cryc||matc)?'证据（课件节次）':'证据（年份 · 题号）'}</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
-    <div class="note">${cryc
+    <div class="note">${(cryc||matc)
       ? 'S 级＝讲义核心章，后续命题概率最高；A 级＝重要章；B/C 级＝讲义覆盖但篇幅较少。本课程暂无真题，等级按讲义篇幅与知识依赖给，不是考频统计。'
       : 'S 级＝每套必考；A 级＝多数卷考到；B 级＝两套及以上考到；C／D 级＝讲义覆盖但近 '+total+' 套期末未单独命题。'}</div>`;
 }
@@ -8296,15 +8555,15 @@ function gotoType(name){
 }
 
 function renderTypes(){
-  if(CID==='cry'){
+  if(CID==='cry'||CID==='mat'){
     $('#types').innerHTML = `
     <div class="hero">
       <div class="hero-label">题型稳定性</div>
       <h1>高频题型。</h1>
-      <p>本课程目前只有 8 份讲义 PDF，<b>没有习题、也没有历年真题</b>，因此题型统计暂缺。</p>
+      <p>本课程目前只有讲义 PDF，<b>没有习题、也没有历年真题</b>，因此题型统计暂缺。</p>
     </div>
     <div class="card">
-      <div class="card-title">晶体物理 · 题型待补</div>
+      <div class="card-title">${esc(courseOf().name)} · 题型待补</div>
       <div class="concept">讲义只给出知识点与公式推导，没有配套习题与考卷。等拿到习题或真题后，这里会按「选择 / 填空 / 简答 / 计算」分组统计。</div>
       <div class="note">当前可先按章节页的核心概念、关键推导与重要公式复习；每章的「本章题目」也暂时为空。</div>
     </div>`;
@@ -8480,6 +8739,39 @@ function renderSprint(){
           <tr><td>8</td><td>量子性：光电效应、康普顿、玻尔能级、黑体辐射</td><td>量子性</td><td>${priTag('A')}</td></tr>
         </tbody>
       </table>
+    </div>`;
+    return;
+  }
+  if(CID==='mat'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>复习路线。</h1>
+      <p>按本次要求不做真题与习题，因此这里不给刷题方案，只按「一种外场对应一种性能」的主线排复习顺序：先力学（应力应变）打底，再热、电、磁、光、声五种性能，最后功能转换把各种外场串起来。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整过一遍</h3><p>第 0–1 章建框架（结构—工艺—性能—使用、应力应变与弹性模量），第 2–6 章逐章过性能，第 7 章抓九种转换效应。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>抓主线</h3><p>只读五块：应力应变与两相模量、热膨胀与热导、电导与介电、磁化与磁滞回线、透光与吸收。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：σ=Eε、α_V≈3α_l、傅里叶定律、σ=Σnqμ、B=μH、I=I₀e^{−αx}、Δn=−½n³rE。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：8 章各自的核心概念表与 8 条关键推导，理清每个公式里各符号的物理含义与适用条件。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">建议顺序（按知识依赖）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>内容</th><th>为什么先看</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>绪论：结构—工艺—性能—使用</td><td>后面每章都按这个套路展开，先建立框架</td><td>${priTag('C')}</td></tr>
+          <tr><td>2</td><td>材料力学：应力、应变、弹性模量、泊松比</td><td>「外场—响应」的最简单模型，后面所有性能都类比它</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>塑性、蠕变与粘弹性</td><td>解释材料在长时间、高温下的行为，与金属/陶瓷/高聚物对比</td><td>${priTag('A')}</td></tr>
+          <tr><td>4</td><td>材料热学：热容、热膨胀、热导、热稳定性</td><td>热膨胀来自非谐振动，是「微观机制决定宏观系数」的范例</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>材料电学：电导、介电、铁电、超导</td><td>内容最多的一章，也是后续光电、压电的基础</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>材料磁学：五种磁性、磁导率与磁损耗</td><td>与电学对称理解（χ↔ε），可对照记忆</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>材料光学：透光、吸收、色散、激光、光纤、非线性</td><td>把前面「场与响应」的线性关系推广到光频</td><td>${priTag('S')}</td></tr>
+          <tr><td>8</td><td>材料声学：声速、声阻抗、吸声</td><td>机械波与前面弹性模量直接相连，最易串起来</td><td>${priTag('B')}</td></tr>
+          <tr><td>9</td><td>材料的功能转换：电光、压电、热电、磁光、声光</td><td>把九种「外场→响应」统一到张量系数的框架下</td><td>${priTag('S')}</td></tr>
+        </tbody>
+      </table>
+      <div class="note">本次未提供习题与真题，故不列「必做题」。等有习题或往年卷后，会把题目按考点补进各章。</div>
     </div>`;
     return;
   }
@@ -9161,6 +9453,49 @@ function renderAbout(){
       <div class="concept"><b>数值以字母代替</b>：2024–2025 期中与期末原卷用具体数字、回忆稿改为字母，题干按字母给出方法。</div>
       <div class="concept"><b>孙题集萃为英文</b>：21 道英文题已译为中文摘要，配图未收录。</div>
       <div class="concept"><b>答案来源</b>：解题要点为依据课件、复习提纲与标准教材整理的思路，非官方答案；2014–2015 卷附原参考答案。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='mat'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《材料物理》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>章</th><th>文件</th><th>页数 / 内容</th></tr></thead>
+        <tbody>
+          <tr><td>第 0 章</td><td>chap-0</td><td>52 页 · 课程定位、研究主线、铌酸锂专题</td></tr>
+          <tr><td>第 1 章</td><td>chap-1-1、chap-1-2</td><td>28＋31 页 · 形变与应力应变、塑性/蠕变/粘弹性</td></tr>
+          <tr><td>第 2 章</td><td>chap-2-2 ～ chap-2-5</td><td>17＋37＋45＋46 页 · 热容量、热膨胀、热传导、热稳定性</td></tr>
+          <tr><td>第 3 章</td><td>chap-3-3、3-4、3-fe、3-5、3-LN</td><td>92＋74＋28＋53＋83 页 · 电导、介电性、铁电体、超导电性、铌酸锂专题</td></tr>
+          <tr><td>第 4 章</td><td>chap-4</td><td>85 页 · 磁性来源、五种磁性分类、磁性能指标</td></tr>
+          <tr><td>第 5 章</td><td>chap-5-1 ～ chap-5-4</td><td>58＋41＋63＋75 页 · 透光性、激光材料、光纤与光子晶体、非线性光学</td></tr>
+          <tr><td>第 6 章</td><td>chap-6</td><td>102 页 · 声波传播、室内/水声、其它声学材料</td></tr>
+          <tr><td>第 7 章</td><td>chap-7-1、chap-7-2</td><td>84＋58 页 · 电光、光折变、压电、光弹、热释电、光电、热电、磁光、声光</td></tr>
+          <tr><td>未提供</td><td>习题、历年真题</td><td>无 —— 按本次要求不做真题与习题部分，各章「本章题目」为空</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节按讲义编号</b>：第 0–7 章沿用讲义章号与章名；同一章的多个节次文件合并为一张章节卡（如第三章由 3.3、3.4、铁电体、3.5、铌酸锂五份合并）。全部资料共 <b>20 份 PDF、1152 页</b>。</div>
+      <div class="concept"><b>概念取讲义原话</b>：核心概念逐条取自讲义正文与目录页，长段落压缩为一句，术语不改（如「名义应力」「真实应变」「迈斯纳效应」）。</div>
+      <div class="concept"><b>公式按讲义符号整理</b>：讲义公式多为图片，文字层只剩标题与零散符号；本站公式按讲义标题、推导步骤与符号约定整理为标准形式，未改动定义。</div>
+      <div class="concept"><b>关键推导每章一条</b>：从定义出发写明链条（应力应变→模量关系、非谐振动→热膨胀、漂移与散射→电导率、朗之万函数→居里定律、朗伯吸收、三方程→波动方程、Δβ=rE→Δn），不是只给结论。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>不做真题与习题</b>：按本次要求，题库与题型页暂不建立；各章「本章题目」为空，高频考点按课件节次统计。</div>
+      <div class="concept"><b>部分节次无单独文件</b>：讲义目录含 1.3 断裂与机械强度、1.4 强化与增韧、1.5 力学与显微结构、2.1 热力学与统计力学概要、2.6 集成电路基片、3.1 自由电子论、3.2 能带理论、3.6 高温超导、6.2–6.4 声学专题，本次未提供对应 PDF，故未收录其内容。</div>
+      <div class="concept"><b>公式与图为图片</b>：20 份 PDF 共约 1100 页、约 5000 张插图，文字层只覆盖标题与正文片段；公式与图表未逐条转写。</div>
+      <div class="concept"><b>教材未注明</b>：讲义未写教材版本，故课程信息中如实标为“课件未注明教材”。</div>
     </div>`;
     return;
   }
