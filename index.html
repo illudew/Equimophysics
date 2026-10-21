@@ -2302,7 +2302,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', cry:'晶体物理', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 /* 每章「关键推导」：courseId → 章节号 → 推导文字（支持 $...$ 行内公式） */
 const DERIVS = {
 eo:{
@@ -2424,6 +2424,16 @@ em:{
 
 /* 补充推导：独立对象，初始化时合并进 DERIVS，避免改动上面的结构 */
 const DERIVS_EXTRA = {
+cry:{
+ '1':R`设晶面在三个晶轴上的截距为 $OM_1=ra$、$OM_2=sb$、$OM_3=tc$。因晶面族必须包含所有格点，截距必为晶格常数的有理倍数。取倒数 $1/r:1/s:1/t$ 并化为互质整数比，即得米勒指数 $(hkl)$：$h:k:l=\frac1r:\frac1s:\frac1t$。若晶面与某轴平行，截距为无穷大，其倒数为 0，故对应指数为 0。例：$r=3,s=2,t=1$ 时倒数为 $\frac13:\frac12:1=2:3:6$，即 $(236)$ 面。指数越小，面间距 $d_{hkl}$ 越大、面网密度越高，晶面间结合力越弱，所以晶体易沿低指数面解理。`,
+ '2':R`坐标变换 $x'_i=a_{ij}x_j$（$a$ 为正交矩阵，$a_{ik}a_{jk}=\delta_{ij}$）。要求物理量在新旧系中描述同一客观性质，二阶量的分量必须按 $T'_{ij}=a_{ik}a_{jl}T_{kl}$ 变换，这就是张量的严格定义。因为 $T$ 对称，总可找到一个正交变换使其对角化：解特征方程 $\det(T-\lambda I)=0$ 得三个主值，对应特征矢量即主轴。作二次型 $T_{ij}x_ix_j=1$ 得示性曲面，沿单位方向 $n$ 的矢径长度 $r=1/\sqrt{T(n)}$——测出矢径长度即可读出该方向的物理量值，这是用几何方法表示张量性质的依据。`,
+ '3':R`设位移场 $u_i(x)$，相邻两点的相对位移为 $\mathrm du_i=\frac{\partial u_i}{\partial x_j}\mathrm dx_j$。把位移梯度张量分解为对称与反对称两部分：$e_{ij}=\frac12\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right)$ 与 $\omega_{ij}=\frac12\left(\frac{\partial u_i}{\partial x_j}-\frac{\partial u_j}{\partial x_i}\right)$。反对称部分对应纯刚性转动——线元只转向、长度不变，故不产生应变；对称部分才是真正的形变。$e_{ii}$ 是沿 $x_i$ 的相对伸长，$e_{ij}$ 是原平行于 $x_i$、$x_j$ 的两线元夹角改变量的一半。弹性限度内 $\sigma_{ij}=c_{ijkl}e_{kl}$，由 $e$、$\sigma$ 的对称性及应变能存在，$c_{ijkl}$ 前后指标各自对称且可交换，独立分量由 $3^4=81$ 降为 21。`,
+ '4':R`各向同性介质 $P=\varepsilon_0\chi E$，$D=\varepsilon_0E+P=\varepsilon_0(1+\chi)E$。晶体中各向异性，$P_i$ 不仅由 $E_i$ 决定，还受 $E_j$、$E_k$ 影响，写成 $P_i=\varepsilon_0\chi_{ij}E_j$；由能量守恒（极化功可积）可证 $\chi_{ij}=\chi_{ji}$，独立分量由 9 个减为 6 个。于是 $D_i=\varepsilon_0E_i+P_i=\varepsilon_{ij}E_j$，其中 $\varepsilon_{ij}=\varepsilon_0(\delta_{ij}+\chi_{ij})$ 也是二阶对称张量。坐标变换把 $[\varepsilon]$ 对角化后，新轴即晶体的主轴，对角元为主介电常数；三个主值相等为光学各向同性，两个相等为单轴晶，互不相等为双轴晶。`,
+ '5':R`非磁性、电各向异性晶体中，由麦克斯韦旋度方程与 $\mathbf D=\varepsilon\mathbf E$ 得 $\mathbf k\times\mathbf E=\omega\mu_0\mathbf H$、$\mathbf k\times\mathbf H=-\omega\mathbf D$。消去 $\mathbf H$ 得 $\mathbf D=\frac{1}{\mu_0\omega^2}\left[k^2\mathbf E-(\mathbf k\cdot\mathbf E)\mathbf k\right]$。取主轴坐标并把 $\mathbf D=\varepsilon_iE_i$ 代入，利用 $D_ik_i=0$（横波条件），得到菲涅耳方程 $\sum_i\frac{k_i^2}{\varepsilon_i-\varepsilon_0n^2}=0$ 的常用形式 $\sum_i\frac{D_i^2}{\varepsilon_i-\varepsilon_0n^2}=0$。这是 $n^2$ 的二次方程，故给定波法线方向有两个解 $n_1,n_2$，对应两个互相垂直的 $D$ 振动方向。单轴晶取 $n_x=n_y=n_o$、$n_z=n_e$，波法线与 $z$ 轴夹角 $\theta$ 时解得 $n_1=n_o$（与方向无关，o 光）与 $1/n_2^2=\cos^2\theta/n_o^2+\sin^2\theta/n_e^2$（e 光）；$\theta=0$ 时两者相等、无双折射，故 $z$ 轴为光轴。`,
+ '6':R`把极化按场强展开 $P=\varepsilon_0(\chi^{(1)}E+\chi^{(2)}E^2+\cdots)$，入射 $E=E_1\cos\omega t$ 时，$\chi^{(2)}E^2$ 项含 $\cos^2\omega t=\frac12(1+\cos2\omega t)$，其中 $2\omega$ 分量即二次谐波极化 $P(2\omega)=\frac12\varepsilon_0\chi^{(2)}E_1^2$，它作为源项辐射倍频光。倍频光沿传播方向累积时相位为 $2k_1z$，而极化波的相位为 $k_2z$，两者相位差 $\Delta kz$，振幅按 $\int_0^L e^{i\Delta kz}\mathrm dz$ 叠加，得 $E_2\propto E_1^2L\,\mathrm{sinc}(\Delta kL/2)$；强度即 $\eta\propto(\chi^{(2)})^2I_1L^2\mathrm{sinc}^2(\Delta kL/2)$。当 $\Delta k=0$（$n(2\omega)=n(\omega)$）时单调增长、效率最高；相位失配时第一个极大在 $L=\pi/\Delta k$，即相干长度。实际用单轴晶的双折射（角度匹配）或温度调折射率（温度匹配）来满足 $\Delta k=0$。`,
+ '7':R`无外场时折射率椭球为 $\beta_{ij}x_ix_j=1$，$\beta_{ij}=1/n_{ij}^2$。加电场后 $\beta_{ij}(E)=\beta_{ij}(0)+r_{ijk}E_k+R_{ijkl}E_kE_l$，一次项为泡克耳斯效应、二次项为克尔效应。对常用的 $z$ 向电场、光沿 $y$ 传播的横向调制：$\Delta\beta_{11}=r_{13}E_z$ 等，代回椭球并把坐标轴转动 $45^\circ$ 消去交叉项，得两个新主轴的折射率差 $\Delta n=-\frac12n^3r_{ij}E$。两偏振分量通过长度 $L$ 后相位差 $\delta=\frac{2\pi}{\lambda}\Delta nL$；令 $\delta=\pi$ 得半波电压 $V_\pi=\frac{\lambda d}{n^3rL}$，可见 $r$ 越大、晶体越长，所需电压越低。中心对称晶体 $r_{ijk}\equiv0$，只剩与 $E^2$ 成正比的克尔效应。`,
+ '8':R`光照在晶体中产生非均匀的载流子分布：光强 $I(x)$ 大处载流子多，被陷阱俘获后形成电荷密度 $\rho(x)$。由泊松方程 $\nabla\cdot(\varepsilon\mathbf E_{sc})=\rho$ 与连续性方程 $\frac{\partial\rho}{\partial t}=\nabla\cdot(\mu\rho\mathbf E+D\nabla\rho)+G-R$ 联立，可解出空间电荷场。纯扩散机制下，稳态解为 $E_{sc}=\frac{k_0T}{q}\cdot\frac{1}{I}\frac{\mathrm dI}{\mathrm dx}$，量级约 $10^3$–$10^5$ V/cm。该场经电光效应改变折射率：$\Delta n=-\frac12n^3r_{\mathrm{eff}}E_{sc}$，于是光强图样被写成折射率光栅。由于扩散型机制下载流子迁移与光强分布有 $\pi/2$ 相移，光栅与光强图样错开，两束光耦合时能量单向转移，形成两波耦合增益 $\Gamma=\frac{2\pi n^3r_{\mathrm{eff}}E_{sc}}{\lambda\cos\theta}$。光栅可用均匀光或加热擦除，故光折变器件可反复写入。`
+},
 semi:{
  '1':R`由布洛赫定理 $\psi_k=u_k(r)e^{i\mathbf k\cdot\mathbf r}$，把波函数代入薛定谔方程可得 $E(k)$ 是 $k$ 的周期函数。在能带底 $k=0$ 附近把 $E(k)$ 展开：$E(k)=E_c+\frac{\hbar^2k^2}{2m_n^*}+\cdots$。由 $v=\frac{1}{\hbar}\frac{\mathrm dE}{\mathrm dk}=\frac{\hbar k}{m_n^*}$，再对时间求导 $a=\frac{1}{\hbar}\frac{\mathrm d^2E}{\mathrm dk^2}\frac{\mathrm dk}{\mathrm dt}$，而晶体动量定理给出 $\hbar\frac{\mathrm dk}{\mathrm dt}=F$，于是 $F=\frac{\hbar^2}{\mathrm d^2E/\mathrm dk^2}a$，即 $m^*=\frac{\hbar^2}{\mathrm d^2E/\mathrm dk^2}$。能带越平（曲率越小）有效质量越大，带顶曲率为负故 $m^*<0$，取空状态即得正质量空穴。`,
  '2':R`把浅能级杂质看成晶体中的“氢原子”：电子受杂质正电中心库仑吸引，但处于介电常数 $\varepsilon=\varepsilon_r\varepsilon_0$ 的介质中，且质量应取有效质量 $m^*$。氢原子基态能量 $E_1=-\frac{m_0e^4}{2(4\pi\varepsilon_0)^2\hbar^2}=-13.6$ eV，把 $m_0\to m^*$、$\varepsilon_0\to\varepsilon_r\varepsilon_0$ 作替换，能量式中 $\varepsilon_0$ 出现两次（平方），故 $\Delta E_D=\frac{m_n^*}{m_0}\cdot\frac{13.6\ \mathrm{eV}}{\varepsilon_r^2}$；同理 $\Delta E_A=\frac{m_p^*}{m_0}\cdot\frac{13.6}{\varepsilon_r^2}$。代入 Si（$\varepsilon_r=12$、$m_n^*=0.26m_0$）得 0.025 eV，与实验的 0.04–0.05 eV 同量级；半径同时放大为 $r_1=\frac{\varepsilon_r m_0}{m^*}a_0$，说明杂质电子的轨道半径远大于晶格常数，模型才自洽。`,
@@ -5741,6 +5751,225 @@ const SEMI_EXAMS = [
 ];
 
 /* ============================================================
+   晶体物理（D 课）
+   ============================================================ */
+const COURSE_CRY = {
+  name:'晶体物理',
+  school:'南开大学 · 物理科学学院',
+  semester:'D 课',
+  textbook:'课件未注明教材（按 8 份讲义 PDF 整理）',
+  teachers:'课件未署名',
+  examLen:'资料未注明（暂无习题与真题）',
+  grade:'资料未注明',
+  paper:'8 份讲义：晶体学基础、张量基础、弹性性质、电学性质、线性光学性质、非线性光学效应、外场下的光学性质、光折变',
+  refs:['《Chapter 1》（128 页）','《chapter2-张量基础》（22 页）','《chapter3-弹性性质》（36 页）','《Chapter4-电学性质》（86 页）','《Chapter5-线性光学性质》（48 页）','《Chapter6-非线性光学效应》（57 页）','《Chapter7-外场下的光学性质》（29 页）','《chapter7-光折变》（35 页）'],
+  src:'章节沿用课件原始编号与文件标题；第 7 章有两份文件（外场下的光学性质、光折变），按内容拆为第 7、8 章，编号差异已在数据说明中注明。全部 8 份资料均为讲义 PPT 导出的 PDF，没有习题与真题，故各章「本章题目」暂空'
+};
+
+const CRY_CHAPTERS = [
+{no:'1', title:'晶体学基础', en:'Chapter 1', file:'Chapter 1（128 页）',
+ sections:['晶体的概念与基本性质','点阵、结构基元与晶胞','晶向指数与晶面指数（米勒指数）','六方晶系的四轴定向','七大晶系与十四种布拉菲格子','晶体的宏观对称要素与点群'],
+ concepts:[
+  ['晶体','具有格子构造的固体，即内部质点在三维空间作周期性重复排列的固体；长程有序，而液体只有短程有序、气体两者皆无。'],
+  ['点阵与结构基元','点阵是一组无限的点，每个点具有完全相同的周围环境，平移后能复原；结构基元是每个点阵点所代表的具体内容。晶体结构 = 点阵 + 结构基元。'],
+  ['晶胞与晶胞参数','按周期性划分出的最小平行六面体重复单位；用 a、b、c 与 α、β、γ 六个参数描述其大小与形状，另需给出晶胞内粒子的种类、数目与位置。'],
+  ['素单位与复单位','一个单位只含一个点阵点称素单位；含两个及以上点阵点称复单位（体心、面心、底心）。'],
+  ['晶向指数','由原点指向格点的矢量 l₁a+l₂b+l₃c，取 l₁:l₂:l₃ 的互质比写成 [l₁l₂l₃]；负指数在数字上加横线，如 [1̄10]。'],
+  ['米勒指数','晶面在三个晶轴上截距 r、s、t 的倒数化成的互质整数比 (hkl)；与某轴平行时截距为无穷大，对应指数为 0。指数越小，晶面间距越大、面网密度越高，晶体越易沿该面解理。'],
+  ['六方晶系四轴定向','用 a₁、a₂、a₃（互成 120°）与 c 四轴，晶面写成 (hkil)，恒有 h+k+i=0，已知其中两个即可定第三个。'],
+  ['七大晶系','按晶胞参数差异分为立方、三方、四方、六方、正交、单斜、三斜；再按带心型式细分为 14 种布拉维格子（如立方只有简单 cP、体心 cI、面心 cF，因底心会破坏三重轴）。'],
+  ['晶体的基本性质','均一性（内部各部分的组成与性质相同）、异向性（性质随方向而异）、对称性、自范性（自发形成封闭凸多面体外形）、最小内能性。'],
+  ['对称要素','包括对称面、对称轴、对称中心、旋转倒反轴（只可能有 2、3、4、6 次，不可能有 5 次或 8 次以上），组合后归为 32 个点群。']
+ ],
+ formulas:[
+  ['晶向矢量', R`\mathbf r=l_1\mathbf a+l_2\mathbf b+l_3\mathbf c`],
+  ['米勒指数', R`(hkl)=\left(\frac1r:\frac1s:\frac1t\right)_{\text{互质}}`],
+  ['六方指数约束', R`h+k+i=0`],
+  ['晶面间距（正交）', R`d_{hkl}=\frac{1}{\sqrt{(h/a)^2+(k/b)^2+(l/c)^2}}`],
+  ['晶胞体积', R`V=abc\sqrt{1-\cos^2\alpha-\cos^2\beta-\cos^2\gamma+2\cos\alpha\cos\beta\cos\gamma}`]
+ ]},
+
+{no:'2', title:'张量基础', en:'chapter2', file:'chapter2-张量基础（22 页）',
+ sections:['标量、矢量与张量的阶','二阶张量与高阶张量的物理实例','坐标变换与张量变换定律','张量的严格定义与矩阵表示','对称张量与反对称张量','二阶张量的示性曲面','晶体对称性对物理性质的影响（Neumann 原则）','晶体物理坐标轴的选择规则'],
+ concepts:[
+  ['张量的阶','标量为零阶张量、矢量为一阶张量；介电常数、电导率、热膨胀等为二阶张量；压电模量、线性电光系数为三阶；弹性劲度、弹光系数为四阶。'],
+  ['正交变换','具有公共原点、轴比例保持不变的两套坐标系之间的变换，对应共点刚性转动，变换矩阵满足 a_ik a_jk=δ_ij。'],
+  ['张量变换定律','T′_ij=a_ik a_jl T_kl；凡在坐标变换下按此规律变换的物理量才是张量，这是张量的严格定义。'],
+  ['对称与反对称张量','满足 T_ij=T_ji 为对称张量，T_ij=−T_ji 为反对称张量；任何二阶非对称张量都可分解为对称部分与反对称部分之和。'],
+  ['二阶张量的示性曲面','x_iT_ijx_j=1 给出一个二次曲面；矢径长度 r 等于该方向上物理量值的平方根倒数，矢径方向与曲面法线方向一般不同。'],
+  ['主轴与主值','把二阶对称张量对角化，得到的三个互相垂直方向即主轴，对角元 T₁、T₂、T₃ 为主值；主轴方向物理量为极值。'],
+  ['Neumann 原则','晶体的任一物理性质所具有的对称元素，必须包含晶体所属点群的全部对称元素——性质不能比晶体本身更对称。'],
+  ['外场降低对称性','加外场后，晶体只保留原有对称要素中与外场对称要素一致的那部分。'],
+  ['三条判据','有对称中心的晶体不可能具有奇数阶张量描述的物理性质；偶阶张量的性质都是中心对称的，所有晶体都有；只有极性晶类才可能具有一阶张量性质（如热释电）。'],
+  ['坐标轴选择','立方取三个四重轴为 x、y、z；三方、四方、六方取高次轴为 z；正交取三个二重轴；单斜取二重轴为 y、法线为 z。']
+ ],
+ formulas:[
+  ['二阶张量变换', R`T'_{ij}=a_{ik}a_{jl}T_{kl}`],
+  ['正交条件', R`a_{ik}a_{jk}=\delta_{ij}`],
+  ['示性曲面', R`T_{ij}x_ix_j=1`],
+  ['矢径长度', R`r=\frac{1}{\sqrt{T(\mathbf n)}}`],
+  ['对称性判据', R`T_{ij}=T_{ji}\ \Rightarrow\ \text{二阶对称张量}`]
+ ]},
+
+{no:'3', title:'弹性性质', en:'chapter3', file:'chapter3-弹性性质（36 页）',
+ sections:['形变的分类与连续介质近似','应力与应力张量','切应力互等定律','位移矢量与应变张量','应变张量的物理意义与矩阵表示','晶体的热膨胀','广义胡克定律与弹性劲度张量','弹性张量的对称性与独立分量数'],
+ concepts:[
+  ['弹性','外力撤除后晶体能消除形变、恢复原状的性质；形变分为弹性形变、范性形变与碎裂三类。'],
+  ['连续介质近似','把晶体看作均匀连续弹性体，在弹性限度内讨论；当弹性波波长大于 10⁻⁶ m（频率低于 10¹² Hz）时该近似成立。'],
+  ['应力张量','物体形变时内部相邻部分间相互作用力与作用面积之比；σ_ij 表示沿 x_i 正方向作用在垂直于 x_j 的面上的力的分量。'],
+  ['正应力与切应力','力的方向垂直于作用面为正应力（σ_11、σ_22、σ_33），平行于作用面为切应力（σ_ij，i≠j）。'],
+  ['切应力互等定律','由内力矩平衡得 σ_ij=σ_ji，故应力张量为二阶对称张量，独立分量由 9 个减为 6 个。'],
+  ['应变张量','e_ij=½(∂u_i/∂x_j+∂u_j/∂x_i)；对角元 e_ii 为沿 x_i 的相对伸长，非对角元 e_ij 为两条原平行于 x_i、x_j 的线元夹角改变量的一半。'],
+  ['一般形变＝应变＋刚性转动','位移梯度张量可分解为对称的应变张量与反对称的转动张量，纯刚性转动不产生应变。'],
+  ['广义胡克定律','应力与应变在弹性限度内成线性关系：σ_ij=c_ijkl e_kl，e_ij=s_ijkl σ_kl；c 为弹性劲度张量、s 为弹性顺服张量，均为四阶张量。'],
+  ['弹性张量的对称性','c_ijkl=c_jikl=c_ijlk（前两个指标、后两个指标各自对称）且 c_ijkl=c_klij（能量守恒），独立分量由 81 个减为 21 个。'],
+  ['热膨胀','温度变化引起的应变，由二阶对称张量 α_ij 描述，其形式受晶体对称性约束（立方晶系各向同性，单斜、三斜有非对角分量）。']
+ ],
+ formulas:[
+  ['应力张量元', R`\sigma_{ij}=\lim_{\Delta S_j\to0}\frac{\Delta F_i}{\Delta S_j}`],
+  ['切应力互等', R`\sigma_{ij}=\sigma_{ji}`],
+  ['应变张量', R`e_{ij}=\frac12\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right)`],
+  ['胡克定律（劲度）', R`\sigma_{ij}=c_{ijkl}e_{kl}`],
+  ['胡克定律（顺服）', R`e_{ij}=s_{ijkl}\sigma_{kl}`],
+  ['弹性张量对称性', R`c_{ijkl}=c_{jikl}=c_{ijlk}=c_{klij}`],
+  ['热膨胀', R`e_{ij}=\alpha_{ij}\Delta T`]
+ ]},
+
+{no:'4', title:'电学性质', en:'Chapter4', file:'Chapter4-电学性质 H（86 页）',
+ sections:['电极化机制（电子、离子、取向）','各向异性介质中 P、D、E 的关系','介电张量与主介电常数','介电常数与极化率的关系','压电效应及其描述','热释电效应','铁电性与电滞回线','电致伸缩效应'],
+ concepts:[
+  ['三种极化机制','电子位移极化（电子云相对原子核位移，极化率约 10⁻⁴⁰ F·m²）、离子位移极化（正负离子间距与键角改变，约 10⁻³⁸）、固有电矩的取向极化（极性分子转向，约 10⁻³⁸）。'],
+  ['介电张量','各向异性介质中 P_i=ε₀χ_ijE_j、D_i=ε_ijE_j，χ 与 ε 都是二阶对称张量，各只有 6 个独立分量。'],
+  ['主介电常数','坐标变换可把 [ε] 对角化，新坐标轴即晶体的主轴方向，对角元 ε_x、ε_y、ε_z 为主介电常数。'],
+  ['介电常数与极化率','ε_ij=ε₀(δ_ij+χ_ij)；真空介电常数 ε₀≈8.85×10⁻¹² F/m。'],
+  ['压电效应','应力使晶体产生与应力成正比的极化（正压电效应），电场使晶体产生与电场成正比的应变（逆压电效应）；只有 20 个非中心对称点群中的 20 个（除 432）具有压电性。'],
+  ['压电张量','压电模量 d_ijk 为三阶张量，d_ijk=d_ikj，独立分量最多 18 个，常写成 3×6 的 d 矩阵。'],
+  ['热释电效应','温度均匀变化引起自发极化改变的现象，用热释电系数 p_i=∂P_i/∂T 描述；只有极性晶类（10 个）才具有。'],
+  ['铁电性','存在自发极化且自发极化可被外电场反转的性质；特征是电滞回线、居里温度与居里—外斯行为。'],
+  ['电滞回线','P 随 E 的变化呈回线：饱和极化 P_s、剩余极化 P_r、矫顽场 E_c；回线是铁电畴转向的宏观表现。'],
+  ['电致伸缩','应变与电场平方成正比的效应，任何晶体都有；与压电效应的区别在于它不要求非中心对称。']
+ ],
+ formulas:[
+  ['极化强度', R`P_i=\varepsilon_0\chi_{ij}E_j`],
+  ['电位移', R`D_i=\varepsilon_{ij}E_j=\varepsilon_0E_i+P_i`],
+  ['介电常数关系', R`\varepsilon_{ij}=\varepsilon_0(\delta_{ij}+\chi_{ij})`],
+  ['正压电效应', R`P_i=d_{ijk}\sigma_{jk}`],
+  ['逆压电效应', R`e_{jk}=d_{ijk}E_i`],
+  ['热释电系数', R`p_i=\left.\frac{\partial P_i}{\partial T}\right|_{E}`],
+  ['电致伸缩', R`e_{ij}=Q_{ijkl}E_kE_l`]
+ ]},
+
+{no:'5', title:'线性光学性质', en:'Chapter5', file:'Chapter5-线性光学性质（48 页）',
+ sections:['晶体中 E、D、H、k、S 的关系','晶体的各向异性与介电张量','主介电常数与双轴、单轴晶体','晶体光学第一、第二基本方程','菲涅耳方程与双折射','单轴晶中的 o 光与 e 光','折射率椭球','相速度、光线速度与走离角'],
+ concepts:[
+  ['晶体光学的核心差异','D=εE 中 ε 是张量，故 D 与 E 一般不同向；这导致同一波法线方向存在两个折射率、两个互相垂直的 D 振动方向——双折射。'],
+  ['右手螺旋正交关系','D、H、k 构成右手正交系，E、H、S 构成右手正交系；D、E、k、S 共面，E 与 D 之间夹角等于 k 与 S 之间夹角。'],
+  ['相速度与光线速度','相速度（法线速度）v_k 沿 k，光线速度 v_S 沿坡印亭矢量 S；因 D 与 E 不平行，一般 v_k<v_S。'],
+  ['主介电常数与晶体分类','ε_x=ε_y=ε_z 为光学各向同性；ε_x=ε_y≠ε_z 为单轴晶（n_o、n_e）；三者互不相等为双轴晶。'],
+  ['菲涅耳方程','由 D·k₀=0 与晶体光学基本方程导出，是 n² 的二次方程；给定 k₀ 有两个正根 n₁、n₂，对应两个互相垂直的 D 方向。'],
+  ['o 光与 e 光','单轴晶中折射率与方向无关的一支为寻常光（o 光，n_o），与方向有关的一支为非寻常光（e 光）；沿光轴（z 轴）传播时二者折射率相同，不发生双折射。'],
+  ['e 光折射率','1/n_eff²=cos²θ/n_o²+sin²θ/n_e²，随波法线与光轴夹角 θ 变化；θ=0 时 n=n_o，θ=90° 时 n=n_e。'],
+  ['折射率椭球','x²/n_x²+y²/n_y²+z²/n_z²=1；给定波法线方向作中心截面，截面的两个半轴长度即两个允许的折射率，方向即 D 的振动方向。'],
+  ['走离角','e 光的光线方向 S 与波法线方向 k 不重合，二者夹角称走离角；在 θ=45° 附近最大。'],
+  ['光学活性','某些晶体（如石英）使线偏振面沿传播方向旋转的现象，需用旋光张量描述，属线性光学范畴。']
+ ],
+ formulas:[
+  ['各向异性本构', R`D_i=\varepsilon_{ij}E_j`],
+  ['主折射率', R`n_i=\sqrt{\varepsilon_i/\varepsilon_0}`],
+  ['折射率椭球', R`\frac{x^2}{n_x^2}+\frac{y^2}{n_y^2}+\frac{z^2}{n_z^2}=1`],
+  ['e 光折射率', R`\frac{1}{n_{\mathrm{eff}}^2}=\frac{\cos^2\theta}{n_o^2}+\frac{\sin^2\theta}{n_e^2}`],
+  ['相速度', R`v_k=\frac{c}{n}`],
+  ['走离角', R`\tan\alpha=\frac{(n_o^2-n_e^2)\sin\theta\cos\theta}{n_o^2\sin^2\theta+n_e^2\cos^2\theta}`]
+ ]},
+
+{no:'6', title:'非线性光学效应', en:'Chapter6', file:'Chapter6-非线性光学效应（57 页）',
+ sections:['非线性极化的幂级数展开','非线性光学效应的三大类','二次谐波发生与二阶非线性极化率','克莱曼近似对称','相位匹配','三波混频、和频与差频','参量放大与参量振荡','倍频效率与有效非线性系数'],
+ concepts:[
+  ['非线性极化的来源','D=ε₀E+P，把 P 按 E 的幂级数展开：P=ε₀(χ⁽¹⁾E+χ⁽²⁾E²+χ⁽³⁾E³+…)。各项系数逐项下降约 7–8 个数量级，只有激光这类强场（>10⁷ V/cm）才能观测到高次项。'],
+  ['三大类效应','第一类与介质固有频率无关（倍频、和频、差频、高次谐波、参量振荡）；第二类固有频率参与作用（受激喇曼、受激布里渊散射）；第三类与非线性吸收相关（多光子吸收、光致电离、光损伤）。'],
+  ['二次谐波发生（SHG）','频率为 ω 的光通过二阶非线性介质产生 2ω 的极化，从而辐射倍频光；是激光技术中最常用的变频手段。'],
+  ['二阶非线性极化率','χ⁽²⁾_ijk 为三阶张量，其矩阵形式与压电张量相同，但机制不同（压电源于离子位移，χ⁽²⁾ 源于电子云畸变），数值上无相关性。'],
+  ['克莱曼近似','在近中红外与可见波段，离子跟不上光频振动，若忽略色散，则 χ⁽²⁾ 对下标全对称；此时 422、622 点群的 χ⁽²⁾ 全部为零，不具二阶非线性。'],
+  ['相位匹配','要求参与互作用的波矢守恒 Δk=0，即 n(2ω)=n(ω)；否则倍频光与极化波相位失配、能量来回转换，效率随长度振荡。'],
+  ['相干长度','相位失配时倍频光先增强后减弱，第一个极大对应的长度 l_c=π/Δk；Δk 越大相干长度越短。'],
+  ['双折射相位匹配','利用单轴晶 n_o 与 n_e 随角度变化，选择合适角度使基频与倍频折射率相等（角度匹配），或用温度改变折射率（温度匹配）。'],
+  ['三波混频','频率满足 ω₃=ω₁+ω₂ 的三个波在二阶非线性介质中耦合：和频、差频、参量放大与参量振荡都是它的特例。'],
+  ['倍频效率','小信号近似下 η∝(χ⁽²⁾)²I₁L²sinc²(ΔkL/2)；转换效率高时出现泵浦耗尽，需用耦合波方程求解。']
+ ],
+ formulas:[
+  ['非线性极化', R`P_i=\varepsilon_0\left(\chi^{(1)}_{ij}E_j+\chi^{(2)}_{ijk}E_jE_k+\chi^{(3)}_{ijkl}E_jE_kE_l+\cdots\right)`],
+  ['二次谐波极化', R`P_i(2\omega)=\varepsilon_0\chi^{(2)}_{ijk}E_j(\omega)E_k(\omega)`],
+  ['相位匹配条件', R`\Delta\mathbf k=\mathbf k_1+\mathbf k_2-\mathbf k_3=0`],
+  ['倍频相位匹配', R`n(2\omega)=n(\omega)`],
+  ['相干长度', R`l_c=\frac{\pi}{\Delta k}`],
+  ['倍频效率', R`\eta\propto\left(\chi^{(2)}\right)^2I_1L^2\,\mathrm{sinc}^2\!\left(\frac{\Delta kL}{2}\right)`],
+  ['克莱曼近似', R`\chi^{(2)}_{ijk}=\chi^{(2)}_{ikj}=\chi^{(2)}_{jik}=\cdots`]
+ ]},
+
+{no:'7', title:'外场下的光学性质', en:'Chapter7', file:'Chapter7-外场下的光学性质（29 页）',
+ sections:['电光效应的发现与分类','线性电光效应（泡克耳斯效应）','二次电光效应（克尔效应）','电光效应的机理与晶体对称性','热光效应','弹光效应'],
+ concepts:[
+  ['电光效应','外加电场使晶体折射率发生变化的现象；1875 年 Kerr 发现各向同性介质在电场下出现双折射，1893 年 Pockels 建立线性电光效应理论。'],
+  ['线性电光效应（泡克耳斯）','折射率变化与电场一次方成正比，只存在于非中心对称晶体；用三阶张量 r_ijk 描述。'],
+  ['二次电光效应（克尔）','折射率变化与电场平方成正比，所有介质都有；用四阶张量 R_ijkl（或 Kerr 常数）描述。'],
+  ['折射率椭球的微扰','外场使逆介电张量 β_ij=1/ε_ij 变化：Δβ_ij=r_ijkE_k+R_ijklE_kE_l；再由 Δβ 求主轴与折射率的变化。'],
+  ['半波电压','使两个偏振分量的相位差达到 π 所需的电压，是电光调制器的重要指标，与 r 和晶体尺寸有关。'],
+  ['电光效应的对称性','r_ijk 的形式由晶体点群决定；中心对称晶体 r=0，只有克尔效应；常用晶体有 LiNbO₃（3m）、KDP（4̄2m）、GaAs（4̄3m）。'],
+  ['热光效应','温度变化引起折射率变化的现象，Δβ_ij=b_ijΔθ；单轴晶中 n_e 随温度的变化通常大于 n_o，可用于实现温度相位匹配。'],
+  ['弹光效应','应力（或应变）使折射率发生变化的现象，Δβ_ij=π_ijklσ_kl，π 为四阶弹光张量；声光效应即弹光效应的动态表现。']
+ ],
+ formulas:[
+  ['逆介电张量', R`\beta_{ij}=\frac{1}{\varepsilon_{ij}},\qquad \beta_{ij}=\frac{1}{n_{ij}^2}`],
+  ['电光效应', R`\Delta\beta_{ij}=r_{ijk}E_k+R_{ijkl}E_kE_l`],
+  ['线性电光', R`\Delta\beta_{ij}=r_{ijk}E_k`],
+  ['折射率变化', R`\Delta n=-\frac{1}{2}n^3rE`],
+  ['热光效应', R`\Delta\beta_{ij}=b_{ij}\Delta\theta`],
+  ['弹光效应', R`\Delta\beta_{ij}=\pi_{ijkl}\sigma_{kl}`]
+ ]},
+
+{no:'8', title:'光折变效应', en:'chapter7（光折变）', file:'chapter7-光折变（35 页）',
+ sections:['光折变效应的发现与定义','光折变效应的物理机制','主要特征（饱和非线性、空间非局域性、非瞬时响应、可逆性）','光折变效应存在的条件','空间电荷场与折射率光栅','两波耦合与相位共轭'],
+ concepts:[
+  ['光折变效应','光辐照使电光晶体的折射率发生改变的现象；本质是光激发载流子、电荷重新分布建立空间电荷场，再经电光效应调制折射率。'],
+  ['物理机制四步','①光激发产生载流子；②载流子迁移（扩散或漂移）；③被陷阱俘获、形成空间电荷分布；④空间电荷场通过电光效应改变折射率。'],
+  ['饱和非线性','漂移型与光生伏打型光折变中，折射率变化随光强增大而趋于饱和，与克尔型非线性不同。'],
+  ['空间非局域性','扩散型机制下，折射率光栅与光强分布存在约 π/2 的相移，使能量能从一束光单向转移到另一束（两波耦合）。'],
+  ['非瞬时响应','光折变需要电荷的激发、迁移与俘获，响应时间从毫秒到秒，远慢于电子非线性；可用响应时间与暗存储时间描述。'],
+  ['可逆性','光折变光栅可被均匀光照或加热擦除，因而可反复写入，适用于实时全息与光存储。'],
+  ['存在条件','晶体必须同时具有光导性和电光效应；中心对称晶体虽有光导性但无线性电光效应，不能产生光折变。'],
+  ['空间电荷场','由泊松方程与连续性方程联立求出，量级约 10³–10⁵ V/cm；折射率变化 Δn=−½n³rE_sc。'],
+  ['两波耦合','信号光与泵浦光在晶体内写入相移光栅，能量单向转移，可获得增益；增益系数 Γ 与有效电光系数、空间电荷场有关。'],
+  ['应用','实时全息存储、相位共轭镜、光放大、图像增强与光学信息处理。']
+ ],
+ formulas:[
+  ['折射率变化', R`\Delta n=-\frac12n^3rE_{sc}`],
+  ['空间电荷场（扩散型）', R`E_{sc}=\frac{k_0T}{q}\cdot\frac{1}{I}\frac{\mathrm dI}{\mathrm dx}`],
+  ['泊松方程', R`\nabla\cdot(\varepsilon\mathbf E_{sc})=\rho`],
+  ['两波耦合增益', R`\Gamma=\frac{2\pi n^3r_{\mathrm{eff}}E_{sc}}{\lambda\cos\theta}`],
+  ['响应时间', R`\tau\propto\frac{1}{\sigma I}`]
+ ]}
+];
+
+/* 讲义没有配套习题与真题：题库与题型暂空，章节页「本章题目」会显示为空 */
+const CRY_EXAMS = [];
+const CRY_TYPES = [];
+
+const CRY_TOPICS = [
+ {name:'晶体结构与晶向晶面指数', ch:'第1章', pri:'A', stars:4, ev:[['课件','第 1 章']], note:'点阵与晶胞、晶向 [uvw]、米勒指数 (hkl)、六方四轴指数 h+k+i=0'},
+ {name:'七大晶系与布拉维格子', ch:'第1章', pri:'B', stars:3, ev:[['课件','第 1 章']], note:'晶胞参数分类、14 种空间点阵型式、带心格子的取舍'},
+ {name:'张量变换与示性曲面', ch:'第2章', pri:'S', stars:5, ev:[['课件','第 2 章']], note:'变换定律、主轴化、示性曲面与物理量值的关系'},
+ {name:'Neumann 原则与对称性判据', ch:'第2章', pri:'S', stars:5, ev:[['课件','第 2 章']], note:'性质对称性包含点群对称性、奇偶阶张量的存在条件、外场降低对称性'},
+ {name:'应力与应变张量', ch:'第3章', pri:'S', stars:5, ev:[['课件','第 3 章']], note:'切应力互等、应变张量定义与物理意义、一般形变＝应变＋刚性转动'},
+ {name:'广义胡克定律与弹性张量', ch:'第3章', pri:'A', stars:4, ev:[['课件','第 3 章']], note:'四阶张量 c、s 的对称性与 21 个独立分量、热膨胀张量'},
+ {name:'介电张量与极化机制', ch:'第4章', pri:'S', stars:5, ev:[['课件','第 4 章']], note:'三种极化机制、χ 与 ε 的二阶张量形式、主介电常数'},
+ {name:'压电、热释电与铁电', ch:'第4章', pri:'S', stars:5, ev:[['课件','第 4 章']], note:'d 张量、热释电系数、电滞回线与居里温度、电致伸缩'},
+ {name:'晶体光学与双折射', ch:'第5章', pri:'S', stars:5, ev:[['课件','第 5 章']], note:'菲涅耳方程、o 光与 e 光、折射率椭球、走离角'},
+ {name:'二阶非线性与相位匹配', ch:'第6章', pri:'S', stars:5, ev:[['课件','第 6 章']], note:'χ⁽²⁾ 与倍频、克莱曼近似、Δk=0 与相干长度、三波混频'},
+ {name:'电光、热光与弹光效应', ch:'第7章', pri:'A', stars:4, ev:[['课件','第 7 章']], note:'泡克耳斯与克尔效应、Δβ 表示、半波电压、热光与弹光张量'},
+ {name:'光折变效应', ch:'第8章', pri:'A', stars:4, ev:[['课件','第 8 章（光折变）']], note:'四步机制、空间电荷场、Δn=−½n³rE、两波耦合与可逆性'}
+];
+
+/* ============================================================
    工程光学（D 课）
    ============================================================ */
 const COURSE_EO = {
@@ -7220,11 +7449,11 @@ const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='cry'?COURSE_CRY : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='cry'?CRY_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='cry'?CRY_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='cry'?CRY_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='cry'?CRY_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -7233,7 +7462,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7282,7 +7511,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7339,11 +7568,12 @@ function renderDashboard(){
   const apc = (CID==='ap');
   const eoc = (CID==='eo');
   const semic = (CID==='semi');
+  const cryc = (CID==='cry');
   const opc = (CID==='op');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':cryc?'晶体物理':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       isA(CID) ? `本站把《${A_COURSES[CID].name}》按教材章节整理为背诵资料：每章含核心概念、背诵要点（问题 → 答案要点）与本章真题。文科课程无公式与推导，直接按条背。`
       : em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
@@ -7360,6 +7590,7 @@ function renderDashboard(){
       : apc ? '本站把《原子物理》（罗延安 · 大二下）的 7 章讲义（绪论 / 原子基本性质 / 玻尔模型 / 氢原子量子力学 / 精细结构 / 周期系结构 / X 射线）整理为结构化资料，并汇总 5 套真题（2019、2020、2021–2022、2025、2026），共 48 道题组（填空按题组合并）。'
       : opc ? '本站把《光学》（大二上，教材赵凯华）按 6 章整理：干涉 / 衍射 / 几何光学 / 光学仪器 / 偏振 / 光的量子性，并汇总 16 套真题与习题（2014–2026，含期中、月考、孙题集萃），题目按考点归入章节。'
       : eoc ? '本站把《工程光学》（D 课，教材郁道银）的 6 章课件（绪论 / 理想光学系统 / 几何像差 / 衍射映像与像质评价 / 傅里叶光学与传递函数 / 光栅与全息）整理为结构化资料，并收录 4 套教材习题（29 题，题号精确到教材页码 P124–P328）。'
+      : cryc ? '本站把《晶体物理》（D 课）的 8 份讲义整理为结构化资料：晶体学基础 / 张量基础 / 弹性性质 / 电学性质 / 线性光学性质 / 非线性光学效应 / 外场下的光学性质 / 光折变。每章含核心概念、关键推导与重要公式；讲义中没有习题与真题，各章「本章题目」暂时留空。'
       : semic ? '本站把《半导体物理》（D 课，教材刘恩科第七版）按课件原始编号整理为 6 章：电子状态 / 杂质与缺陷能级 / 载流子统计分布 / 输运现象 / 非平衡载流子 / pn 结，并收录分章题库（填空 30 空 + 简答 17 题 + 计算 9 题）与 2021 填空回忆版。每章含核心概念、关键推导、重要公式与本章题目。'
       : '本站把《量子力学（一）》按班型整理：<b>伯苓班</b>（胡金牛 · Sakurai 体系，I–IX 章）与<b>大类班</b>（胡毅 · 周世勋体系，A–H 章），并汇总 3 套期末真题 + 10 年考研真题（2012–2022，经核查均属本课程）。'}仅 <b>Equimophysics</b> 保留英文，其余内容均为中文。</p>
   </div>
@@ -7379,13 +7610,13 @@ function renderDashboard(){
     <div class="card-title">冲刺入口</div>
     <div class="grid4">
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
+        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':CID==='cry'?'8 章讲义逐章过 + 48 条公式':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">3 天</div><h3>高收益模式</h3><p>S 级 + A 级考点 + 近三套真题</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">24 小时</div><h3>紧急模式</h3><p>S 级 + 最高频题型 + 公式速查</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">2 小时</div><h3>最后机会</h3><p>必背公式 + 必做真题</p></div>
+        <div class="t">2 小时</div><h3>最后机会</h3><p>${CID==='cry'?'核心概念 + 六条关键推导':'必背公式 + 必做真题'}</p></div>
     </div>
   </div>
 
@@ -7418,6 +7649,8 @@ function renderDashboard(){
       ? '提示：光学题量很大（16 套、约 180 道题组），选择题与填空题按题组合并展示；每题都带「所属章节」链接，点击可直接跳到对应章节。'
       : eoc
       ? '提示：工程光学以教材课后习题为主，题号按教材页码标注（如 P124_4）。第四、五章的习题 PPT 公式多为图片，题干按可辨认文字整理。'
+      : cryc
+      ? '提示：本课程只有 8 份讲义 PDF，<b>没有习题与真题</b>；高频考点按课件章节统计，各章「本章题目」暂时为空。等拿到习题或往年卷后会补入。'
       : semic
       ? '提示：现有 4 组题源（分章题库填空/简答/计算 + 2021 填空回忆版）；计算题的数值在原 PDF 中为<b>公式图片</b>，文字层缺失，已逐题注明。考点频率按题库分章统计。'
       : '提示：3 套期末真题为<b>回忆版</b>；考研真题（2012–2022）为扫描件 OCR 整理，公式识别不完整。频率统计样本有限，仅供复习排序参考。'}
@@ -7797,6 +8030,13 @@ function renderChapters(){
       <h1>章节 · 概念 · 题目。</h1>
       <p>共 6 章：绪论、理想光学系统及其变换、实际光学系统的几何成像特性、衍射映像与像质评价、傅里叶光学与传递函数、光栅和全息。教材为郁道银《工程光学》。每章末尾已并入该章教材习题。</p>
     </div>`;
+  } else if(CID==='cry'){
+    html = CRY_CHAPTERS.map((c,i)=> chCard(c, i<2, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 晶体物理（D 课）</div>
+      <h1>章节 · 概念 · 推导 · 公式。</h1>
+      <p>共 8 章：晶体学基础、张量基础、弹性性质、电学性质、线性光学性质、非线性光学效应、外场下的光学性质、光折变。章节沿用讲义文件标题；第 7 章有两份文件（外场下的光学性质、光折变），按内容拆为第 7、8 章。8 份资料均为讲义 PDF，<b>没有习题与真题</b>，因此每章「本章题目」暂时为空。</p>
+    </div>`;
   } else if(CID==='semi'){
     html = SEMI_CHAPTERS.map((c,i)=> chCard(c, i<1, '第 '+c.no+' 章 · ')).join('');
     hero = `<div class="hero">
@@ -7917,6 +8157,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为课程介绍与教材说明，无核心公式。</div>'}
       </div>`).join('');
+  } else if(CID==='cry'){
+    html = CRY_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else if(CID==='semi'){
     html = SEMI_CHAPTERS.map(c=>`
       <div class="card">
@@ -7960,15 +8206,15 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), opc = (CID==='op');
-    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : opc ? 16 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), cryc = (CID==='cry'), opc = (CID==='op');
+    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : cryc ? 1 : opc ? 16 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||cryc||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
       : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':apc?'五套真题中未单独命题':eoc?'四套习题中未单独命题':opc?'十六套真题中未单独命题':isA(CID)?'已收真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
       <td style="min-width:180px"><b>${esc(t.name)}</b><div style="color:var(--faint);font-size:10.5px;margin-top:3px">${chLabel}</div></td>
-      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq||ssc)?' 次':' / '+total}</td>
+      <td style="white-space:nowrap">${t.ev.length}${(qm2||hq||ssc||cryc)?' 次':' / '+total}</td>
       <td style="color:var(--muted)">${esc(ev)}</td>
       <td style="white-space:nowrap"><span class="stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</span></td>
       <td>${priTag(t.pri)}</td>
@@ -7989,11 +8235,12 @@ function renderHigh(){
   const apc = (CID==='ap');
   const eoc = (CID==='eo');
   const semic = (CID==='semi');
+  const cryc = (CID==='cry');
   const opc = (CID==='op');
-  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (apc ? 5 : (eoc ? 4 : (semic ? 4 : (opc ? 16 : (qm2 ? 33 : 3))))))))))));
+  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : (lmc ? 3 : (mec ? 8 : ((esc2||circ) ? 4 : (ssc ? 1 : (tdc ? 3 : (cpc ? 8 : (mpc ? 7 : (apc ? 5 : (eoc ? 4 : (semic ? 4 : (cryc ? 1 : (opc ? 16 : (qm2 ? 33 : 3)))))))))))));
   $('#high').innerHTML = `
     <div class="hero">
-      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':'考点频率 · 基于 '+total+' 套期末真题'}</div>
+      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':cryc?'考点分布 · 基于 8 份讲义':(semic?'考点频率 · 基于 4 组题源':'考点频率 · 基于 '+total+' 套期末真题')}</div>
       <h1>高频考点。</h1>
       <p>${qm2
         ? '“出现次数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
@@ -8021,18 +8268,22 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 4 套工程光学习题中出现的次数（第一～四章，共 29 题）。题号精确到教材页码。'
         : opc
         ? '“出现卷数”统计的是该考点在 16 套光学真题与习题中出现的次数（2014–2026，含期中、月考、孙题集萃）。同一套内多题只计一次。'
+        : cryc
+        ? '本课程目前只有 8 份讲义 PDF，没有习题与真题。下表按「课件章节」列出考点分布：出现次数指的是该考点在几章讲到，证据列给出对应章节。'
         : semic
         ? '“出现卷数”统计的是该考点在 4 组题源（分章题库填空 / 简答 / 计算 + 2021 填空回忆版）中出现的组数。每一行都列出了可回溯的出处（题库小节号或考纲物理问题编号）。'
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${cryc?'晶体物理':semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
-        <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':hq?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
+        <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':(hq||cryc)?'出现次数':'出现卷数'}</th><th>证据（年份 · 题号）</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
-    <div class="note">S 级＝每套必考；A 级＝多数卷考到；B 级＝两套及以上考到；C／D 级＝讲义覆盖但近 ${total} 套期末未单独命题。</div>`;
+    <div class="note">${cryc
+      ? 'S 级＝讲义核心章，后续命题概率最高；A 级＝重要章；B/C 级＝讲义覆盖但篇幅较少。本课程暂无真题，等级按讲义篇幅与知识依赖给，不是考频统计。'
+      : 'S 级＝每套必考；A 级＝多数卷考到；B 级＝两套及以上考到；C／D 级＝讲义覆盖但近 '+total+' 套期末未单独命题。'}</div>`;
 }
 
 function gotoType(name){
@@ -8045,6 +8296,20 @@ function gotoType(name){
 }
 
 function renderTypes(){
+  if(CID==='cry'){
+    $('#types').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">题型稳定性</div>
+      <h1>高频题型。</h1>
+      <p>本课程目前只有 8 份讲义 PDF，<b>没有习题、也没有历年真题</b>，因此题型统计暂缺。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">晶体物理 · 题型待补</div>
+      <div class="concept">讲义只给出知识点与公式推导，没有配套习题与考卷。等拿到习题或真题后，这里会按「选择 / 填空 / 简答 / 计算」分组统计。</div>
+      <div class="note">当前可先按章节页的核心概念、关键推导与重要公式复习；每章的「本章题目」也暂时为空。</div>
+    </div>`;
+    return;
+  }
   const rows = typesOf().map(t=>`<tr>
       <td><b>${esc(t.name)}</b></td>
       <td style="white-space:nowrap">${t.cnt} 题</td>
@@ -8215,6 +8480,38 @@ function renderSprint(){
           <tr><td>8</td><td>量子性：光电效应、康普顿、玻尔能级、黑体辐射</td><td>量子性</td><td>${priTag('A')}</td></tr>
         </tbody>
       </table>
+    </div>`;
+    return;
+  }
+  if(CID==='cry'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>复习路线。</h1>
+      <p>本课程只有 8 份讲义、没有习题与真题，因此不给「刷题」方案，只按讲义的知识依赖关系排一条复习路线：先晶体学与张量（工具），再弹性、电学、线性光学（三大性质），最后非线性、外场、光折变（应用）。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整过一遍</h3><p>第 1–2 章打底（点阵/指数、张量变换与示性面），第 3–5 章逐章推公式，第 6–8 章抓机制与相位匹配。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>抓主线</h3><p>只读四块：张量主轴化、应力应变与胡克定律、介电张量与压电、晶体光学双折射。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：米勒指数、Neumann 原则、e 光折射率、Δβ=rE、Δn=−½n³rE、相位匹配与相干长度。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：八大章的核心概念表与六条关键推导（每章一条），把符号含义与适用条件过一遍。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">建议顺序（按知识依赖）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>内容</th><th>为什么先看</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>晶体学基础：点阵、晶胞、晶向与米勒指数</td><td>后面所有方向、张量下标都建立在这里</td><td>${priTag('A')}</td></tr>
+          <tr><td>2</td><td>张量基础：变换定律、主轴化、示性曲面、Neumann 原则</td><td>弹性、介电、光学性质全用二阶/三阶/四阶张量描述</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>弹性性质：应力应变张量、胡克定律、21 个独立分量</td><td>四阶张量第一次完整出现，是后续压电、弹光的模板</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>电学性质：介电张量、压电、热释电、铁电</td><td>三阶张量的典型应用；与线性光学的介电张量直接衔接</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>线性光学：菲涅耳方程、双折射、折射率椭球</td><td>非线性与外场效应都要先有折射率椭球的概念</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>非线性光学：χ⁽²⁾、倍频、相位匹配</td><td>把「折射率随场变化」推广到光频强场</td><td>${priTag('S')}</td></tr>
+          <tr><td>7</td><td>外场下的光学性质：泡克耳斯、克尔、热光、弹光</td><td>用 Δβ 统一描述各类外场对折射率椭球的微扰</td><td>${priTag('A')}</td></tr>
+          <tr><td>8</td><td>光折变效应：空间电荷场、两波耦合</td><td>电光效应 + 光导性的综合应用</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+      <div class="note">讲义中没有习题与真题，本节不列「必做题」；等拿到习题或往年卷后，会把题目按考点补进各章。</div>
     </div>`;
     return;
   }
@@ -8864,6 +9161,49 @@ function renderAbout(){
       <div class="concept"><b>数值以字母代替</b>：2024–2025 期中与期末原卷用具体数字、回忆稿改为字母，题干按字母给出方法。</div>
       <div class="concept"><b>孙题集萃为英文</b>：21 道英文题已译为中文摘要，配图未收录。</div>
       <div class="concept"><b>答案来源</b>：解题要点为依据课件、复习提纲与标准教材整理的思路，非官方答案；2014–2015 卷附原参考答案。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='cry'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《晶体物理》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>页数 / 用途</th></tr></thead>
+        <tbody>
+          <tr><td>讲义</td><td>Chapter 1</td><td>128 页 · 晶体学基础（点阵、指数、晶系、对称、基本性质）</td></tr>
+          <tr><td>讲义</td><td>chapter2-张量基础</td><td>22 页 · 张量定义、变换定律、示性曲面、Neumann 原则</td></tr>
+          <tr><td>讲义</td><td>chapter3-弹性性质</td><td>36 页 · 应力应变、胡克定律、热膨胀</td></tr>
+          <tr><td>讲义</td><td>Chapter4-电学性质 H</td><td>86 页 · 介电、压电、热释电、铁电、电致伸缩</td></tr>
+          <tr><td>讲义</td><td>Chapter5-线性光学性质</td><td>48 页 · 晶体光学、菲涅耳方程、双折射、折射率椭球</td></tr>
+          <tr><td>讲义</td><td>Chapter6-非线性光学效应</td><td>57 页 · χ⁽²⁾、倍频、相位匹配、三波混频</td></tr>
+          <tr><td>讲义</td><td>Chapter7-外场下的光学性质</td><td>29 页 · 电光、热光、弹光效应</td></tr>
+          <tr><td>讲义</td><td>chapter7-光折变</td><td>35 页 · 光折变机制、特征、两波耦合</td></tr>
+          <tr><td>未提供</td><td>习题、历年真题</td><td>无 —— 因此各章「本章题目」为空，题型页只放说明</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节按讲义文件标题</b>：第 1–6 章直接对应 6 份文件；第 7 章有两份文件（外场下的光学性质、光折变），两者内容互相独立，按内容拆为第 7 章（外场）与第 8 章（光折变），编号差异在此说明。</div>
+      <div class="concept"><b>概念取讲义原话</b>：核心概念逐条取自讲义正文，长段落压缩为一句，专有名词与符号不改（如 χ⁽²⁾、β_ij、d_ijk）。</div>
+      <div class="concept"><b>公式按讲义标题与推导整理</b>：讲义 PDF 的公式多为图片，文字层只剩标题与零散符号；本站公式按讲义标题、推导步骤与符号约定整理为标准形式，未改动任何定义。</div>
+      <div class="concept"><b>关键推导每章一条</b>：从定义出发写明推导链条（如米勒指数、张量主轴化、应变分解、介电张量、菲涅耳方程、倍频相位匹配、电光 Δβ、光折变空间电荷场），不是只给结论。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>没有习题与真题</b>：本次只提供 8 份讲义 PDF，没有作业、习题册与往年卷。各章「本章题目」为空，高频题型页只有说明，高频考点页按课件章节而非考卷统计。</div>
+      <div class="concept"><b>公式为图片，文字层稀疏</b>：8 份 PDF 共约 440 页、约 500 张插图，文字层只覆盖标题与正文片段；公式与图表未逐条转写。</div>
+      <div class="concept"><b>第 7 章编号重复</b>：两份文件名都含 chapter7，本站按内容拆成第 7、8 章；若你的课件把光折变并入第 7 章，可视为同一章的两节。</div>
+      <div class="concept"><b>教材未注明</b>：讲义未写教材与教师，故课程信息中如实标为“课件未注明”。</div>
     </div>`;
     return;
   }
