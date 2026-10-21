@@ -2302,7 +2302,7 @@ const CURRICULUM = [
  {term:'D 课', courses:['高等量子力学','工程光学','半导体物理','晶体物理','粒子物理导论','材料制备技术']}
 ];
 /* 课程 id → 培养方案中的课程名（用于学期分组与「已收录」标记） */
-const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', cry:'晶体物理', mat:'材料物理', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
+const COURSE_NAME = { sx:'思想道德与法治', my:'马克思主义基本原理', sg:'中国近现代史纲要', mg:'毛泽东思想与中国特色社会主义理论体系概论', xg:'习近平中国特色社会主义思想概论', op:'光学', eo:'工程光学', semi:'半导体物理', cry:'晶体物理', mat:'材料物理', heat:'热学', ap:'原子物理', mp:'数学物理方法', cp:'计算物理', td:'热力学与统计物理', ss:'固体物理（一）', cir:'电路', es:'电磁学', me:'力学', lm:'理论力学', qm:'量子力学（一）', em:'电动力学', qm2:'量子力学（二）', hq:'高等量子力学' };
 /* 每章「关键推导」：courseId → 章节号 → 推导文字（支持 $...$ 行内公式） */
 const DERIVS = {
 eo:{
@@ -2424,6 +2424,15 @@ em:{
 
 /* 补充推导：独立对象，初始化时合并进 DERIVS，避免改动上面的结构 */
 const DERIVS_EXTRA = {
+heat:{
+ '1':R`由理想气体状态方程 $pV=\nu RT$，把 $\nu=m/M$、$n=N/V$ 代入：$p=\frac{mRT}{MV}$。注意到 $m/V=\rho$ 是密度，故 $p=\rho RT/M$；再把 $R=N_Ak$、$n=N/V=\nu N_A/V$ 代入，得 $p=\frac{N}{V}\cdot\frac{R}{N_A}T=nkT$。三式完全等价，选用哪一个取决于已知量是物质的量、密度还是数密度。范德瓦尔斯方程在此基础上作两处修正：分子有自身体积使可压缩空间减小为 $(V_m-b)$；分子间吸引使实际压强小于器壁感受到的压强，故 $p\to p+a/V_m^2$。临界点由等温线的拐点条件 $\partial p/\partial V_m=0$、$\partial^2p/\partial V_m^2=0$ 联立解出 $V_c=3b$、$p_c=a/27b^2$、$T_c=8a/27Rb$。`,
+ '2':R`设容器内有 $n$ 个分子/单位体积，每个分子质量 $m$、速度分量 $v_x$。取器壁面元 $\mathrm dS$，在 $\mathrm dt$ 内能撞到该面元的是速度 $v_x>0$ 且距壁不超过 $v_x\mathrm dt$ 的分子，数目为 $n f(v_x)\mathrm dv_x\cdot v_x\mathrm dt\,\mathrm dS$。每次弹性碰撞传给器壁的动量为 $2mv_x$，故冲量为 $\int_0^\infty 2mv_x\cdot nf(v_x)v_x\mathrm dv_x\,\mathrm dt\,\mathrm dS=nm\overline{v_x^2}\,\mathrm dt\,\mathrm dS$。压强即单位面积单位时间的冲量：$p=nm\overline{v_x^2}$。由各向同性 $\overline{v_x^2}=\overline{v_y^2}=\overline{v_z^2}=\frac13\overline{v^2}$，得 $p=\frac13nm\overline{v^2}=\frac23n\left(\frac12m\overline{v^2}\right)=\frac23n\bar\varepsilon$。再与 $p=nkT$ 比较，即得 $\bar\varepsilon=\frac32kT$——这是温度微观意义的来源。`,
+ '3':R`麦克斯韦速率分布 $f(v)=4\pi\left(\frac{m}{2\pi kT}\right)^{3/2}v^2e^{-mv^2/2kT}$。(1) 归一化：令 $\alpha=m/2kT$，$\int_0^\infty v^2e^{-\alpha v^2}\mathrm dv=\frac{\sqrt\pi}{4}\alpha^{-3/2}$，代入即得 1，说明系数 $4\pi(m/2\pi kT)^{3/2}$ 正是由归一化确定的。(2) 最可几速率：令 $\mathrm df/\mathrm dv=0$，得 $2v-2\alpha v^3=0$，故 $v_p=\sqrt{1/\alpha}=\sqrt{2kT/m}$。(3) 平均速率：$\bar v=\int_0^\infty vf(v)\mathrm dv$，用 $\int v^3e^{-\alpha v^2}=\frac{1}{2\alpha^2}$，得 $\bar v=2\sqrt{\alpha/\pi}\cdot\frac{1}{2\alpha^2}\cdot4\pi(\alpha/\pi)^{3/2}=\sqrt{8kT/\pi m}$。(4) 方均根：$\overline{v^2}=\int v^2f\,\mathrm dv=\frac{3}{2\alpha}=\frac{3kT}{m}$，故 $v_{\mathrm{rms}}=\sqrt{3kT/m}$。三者为 $\sqrt2:\sqrt{8/\pi}:\sqrt3$。`,
+ '4':R`设分子平均速率 $\bar v$、数密度 $n$、有效直径 $d$。一个分子在 $\mathrm dt$ 内扫过的「碰撞圆柱」体积为 $\sigma\bar v_{\mathrm{rel}}\mathrm dt$，$\sigma=\pi d^2$。若把其他分子看作静止，圆柱内分子数为 $n\sigma\bar v\mathrm dt$，故碰撞频率 $Z=n\sigma\bar v$；但其他分子也在运动，需用相对速度，对麦克斯韦分布求平均得 $\bar v_{\mathrm{rel}}=\sqrt2\bar v$，于是 $Z=\sqrt2\pi d^2n\bar v$。平均自由程即两次碰撞间走过的路程：$\lambda=\bar v/Z=\frac{1}{\sqrt2\pi d^2n}$。再由 $p=nkT$ 换成 $\lambda=\frac{kT}{\sqrt2\pi d^2p}$——这解释了为什么 $\eta=\frac13\rho\bar v\lambda$ 中 $\rho\propto n$、$\lambda\propto1/n$ 相消，使黏滞系数与压强无关。`,
+ '5':R`绝热过程 $Q=0$，第一定律给出 $\mathrm dU=-p\,\mathrm dV$。对理想气体 $\mathrm dU=\nu C_V\mathrm dT$，状态方程 $pV=\nu RT$ 微分得 $p\,\mathrm dV+V\,\mathrm dp=\nu R\,\mathrm dT$。把 $\mathrm dT$ 代入 $\mathrm dU$ 并消去 $\nu R$：$\frac{C_V}{R}(p\,\mathrm dV+V\,\mathrm dp)=-p\,\mathrm dV$，整理得 $\frac{\mathrm dp}{p}=-\frac{C_p}{C_V}\frac{\mathrm dV}{V}=-\gamma\frac{\mathrm dV}{V}$。积分即 $\ln p+\gamma\ln V=\text{const}$，故 $pV^\gamma=C$。再用状态方程消去 $p$ 或 $V$，得 $TV^{\gamma-1}=C$、$p^{1-\gamma}T^\gamma=C$。$\gamma=C_p/C_V=1+R/C_V$，单原子 $5/3$、刚性双原子 $7/5$。`,
+ '6':R`熵的定义来自可逆路径：$\mathrm dS=\frac{\delta Q_{\mathrm{rev}}}{T}$。对理想气体，$\delta Q_{\mathrm{rev}}=\mathrm dU+p\,\mathrm dV=\nu C_V\mathrm dT+\frac{\nu RT}{V}\mathrm dV$，两边除以 $T$ 积分：$\Delta S=\nu C_V\ln\frac{T_2}{T_1}+\nu R\ln\frac{V_2}{V_1}$。等温时第一项为零，得 $\Delta S=\nu R\ln(V_2/V_1)$；等体时第二项为零。熵是状态函数，故对不可逆过程也可设计一条连接同样初末态的可逆路径来算。克劳修斯不等式 $\oint\frac{\delta Q}{T}\le0$ 表明：任意循环中 $\frac{\delta Q}{T}$ 的积分不大于零，等号仅对可逆循环成立；把它用于「可逆路径 + 不可逆路径」组成的循环，即得 $\Delta S\ge\int\frac{\delta Q}{T}$，孤立系统 $\delta Q=0$ 故 $\Delta S\ge0$。`,
+ '7':R`两相平衡时，两相的化学势（摩尔吉布斯函数）相等：$\mu_1(T,p)=\mu_2(T,p)$。沿相平衡曲线移动 $\mathrm dT$、$\mathrm dp$，等式仍成立，故 $\mathrm d\mu_1=\mathrm d\mu_2$。由 $\mathrm d\mu=-s\,\mathrm dT+v\,\mathrm dp$（$s$、$v$ 为摩尔熵与摩尔体积）得 $-s_1\mathrm dT+v_1\mathrm dp=-s_2\mathrm dT+v_2\mathrm dp$，整理为 $\frac{\mathrm dp}{\mathrm dT}=\frac{s_2-s_1}{v_2-v_1}$。相变熵 $s_2-s_1=\frac{L}{T}$（$L$ 为摩尔潜热），$v_2-v_1=\Delta V$，即得克拉珀龙方程 $\frac{\mathrm dp}{\mathrm dT}=\frac{L}{T\Delta V}$。冰熔化成水时 $\Delta V<0$，故熔化曲线斜率为负——加压使冰的熔点降低，这正是滑冰的原理。`
+},
 mat:{
  '0':R`材料物理的组织方式是「成分与结构 → 制备工艺 → 物理性能 → 器件使用」的一条链：结构（原子键合、晶体结构、显微组织）决定性能，工艺（熔体生长、烧结、薄膜沉积）决定结构，使用条件（温度、电场、光强）又反过来限定对性能的要求。因此本课程每章都按同一套路展开：先定义表征该性能的物理量，再给出微观机制，最后落到实际材料与器件。以铌酸锂为例：同成分晶体中类钛铁矿缺陷的存在改变了局部极化环境，从而影响其电光、光折变与抗光损伤能力；掺入 4.6 mol% 以上的镁可改变缺陷结构，使抗光损伤能力提高两个数量级以上——这正是「结构决定性能」的直接证据。`,
  '1':R`设一圆杆原长 $l_0$、截面积 $A_0$，受拉力 $F$ 后伸长 $\Delta l$。定义名义应力 $\sigma_0=F/A_0$、名义应变 $\varepsilon_0=\Delta l/l_0$，弹性范围内二者成正比：$\sigma=E\varepsilon$，比例系数 $E$ 即杨氏模量。同理剪切下 $\tau=G\gamma$、静水压下 $P=B\Delta$。若同时考虑横向收缩，定义泊松比 $\nu=-\varepsilon_\text{横}/\varepsilon_\text{纵}$。对各向同性材料，应力张量与应变张量都是二阶对称张量，其最一般线性关系含两个独立常数，写成张量形式后取纯剪切与纯静水压两种特例，即得 $G=E/[2(1+\nu)]$、$B=E/[3(1-2\nu)]$——这就是四个弹性常数中只有两个独立的原因。对两相复合材料，等应变（并联）给出上限 $E_H=E_1V_1+E_2V_2$，等应力（串联）给出下限 $1/E_L=V_1/E_1+V_2/E_2$，实际值落在两者之间。`,
@@ -6209,6 +6218,322 @@ const MAT_TOPICS = [
 ];
 
 /* ============================================================
+   热学（大二上）
+   ============================================================ */
+const COURSE_HEAT = {
+  name:'热学',
+  school:'南开大学 · 物理科学学院',
+  semester:'大二上',
+  textbook:'课件未注明教材（2016 卷按教材章-题号引用，如 5-14）',
+  teachers:'张浩（课件）、刘松芬（2017 A 卷）',
+  examLen:'判断题 ＋ 简答题 ＋ 解答题（2017 卷：20＋20＋60）',
+  grade:'资料未注明',
+  paper:'2017 A 卷为 5 判断 + 4 简答 + 4 解答；2016 卷为填空题组 + 8 道题（多为教材原题）；另有 450 题题库（138 页扫描件）',
+  refs:['《热学》课件（ppt 全打印版）','《公式总结》（Chapter 1–5）','《热学450题题库》（138 页）','2017 年热学期末 A 卷（刘松芬）','2015–2016 年热学期末（大梁回忆版）'],
+  src:'章节按《公式总结》的 Chapter 1–5（温度 / 分子动理论 / 速率统计分布 / 输运 / 第一定律）与 2016 卷引用的第 5–7 章编号，补第 6 章（第二定律与熵）与第 7 章（相变）；公式取自《公式总结》与 2017 卷；题目取自 2017 A 卷、2016 卷，以及从 450 题库中逐页读图转写的选择题节选'
+};
+
+const HEAT_CHAPTERS = [
+{no:'1', title:'温度与状态方程', en:'Chapter 1', file:'公式总结 Ch.1 · 课件第 1 章',
+ sections:['热力学第零定律与温度','温标：华氏、摄氏与理想气体温标','理想气体状态方程','混合理气体与分压定律','实际气体与范德瓦尔斯方程'],
+ concepts:[
+  ['热力学第零定律','若 A 与 C、B 与 C 分别处于热平衡，则 A 与 B 也必定热平衡。它保证「温度」这一状态量可以被定义，也是温度计得以使用的理由。'],
+  ['热平衡与温度','两个系统接触后宏观性质不再变化即为热平衡；处于热平衡的系统具有相同的温度。'],
+  ['温标的三个要素','选择测温物质与测温属性、规定固定点、规定温度随属性变化的函数关系。三者不同即得到不同温标。'],
+  ['理想气体温标','以气体体积（或压强）为测温属性，取水的三相点为 273.16 K；在气体压强趋于零的极限下，不同气体的温标趋于一致，等价于热力学温标。'],
+  ['摄氏、华氏与热力学温度','t=T−273.15；t_F=32+1.8t。热力学温标不依赖任何具体物质，是最基本的温标。'],
+  ['理想气体状态方程','pV=νRT；也可写成 p=nkT 或 p=ρRT/M。R=8.314 J/(mol·K)，k=R/N_A=1.38×10⁻²³ J/K。'],
+  ['分压定律','混合理气体的总压强等于各组分单独占据同一体积时的分压之和；平均摩尔质量按体积（摩尔）分数加权。'],
+  ['范德瓦尔斯方程','考虑分子自身体积（b）与分子间吸引（a）对理想气体方程作修正：(p+a/V_m²)(V_m−b)=RT，可描述气液相变与临界点。'],
+  ['临界参量','范德瓦尔斯气体的等温线在 T_c 以下出现极大极小，T_c 以上单调；临界点满足 ∂p/∂V=0 与 ∂²p/∂V²=0。']
+ ],
+ formulas:[
+  ['理想气体状态方程', R`pV=\nu RT`],
+  ['数密度形式', R`p=nkT`],
+  ['密度形式', R`p=\frac{\rho RT}{M}`],
+  ['温度换算', R`t=T-273.15,\qquad t_F=32+1.8t`],
+  ['分压定律', R`p=\sum_i p_i,\qquad p_i=\frac{\nu_iRT}{V}`],
+  ['平均摩尔质量', R`\bar M=\sum_i x_iM_i`],
+  ['范德瓦尔斯方程', R`\left(p+\frac{a}{V_m^2}\right)\left(V_m-b\right)=RT`],
+  ['临界参量', R`V_c=3b,\qquad p_c=\frac{a}{27b^2},\qquad T_c=\frac{8a}{27Rb}`]
+ ]},
+
+{no:'2', title:'分子动理论的基本概念', en:'Chapter 2', file:'公式总结 Ch.2 · 课件第 2 章',
+ sections:['分子模型与分子间作用力','压强的微观表达式','温度的微观意义','能量按自由度均分定理','理想气体的内能'],
+ concepts:[
+  ['分子模型','理想气体分子视为弹性小球，分子线度远小于平均间距，除碰撞外无相互作用；刚性球模型给出分子的有效直径 d。'],
+  ['分子力与势能','分子间引力与斥力并存，合力在平衡距离 r₀ 处为零；r<r₀ 斥力占优、r>r₀ 引力占优。势能曲线在 r₀ 处取极小。'],
+  ['压强的微观本质','压强是大量分子频繁碰撞器壁、单位时间单位面积上传递的冲量；p=(2/3)nε̄，与数密度和平均平动动能成正比。'],
+  ['温度的微观意义','温度是分子平均平动动能的量度：ε̄=(3/2)kT。温度只对大量分子才有意义，是统计量，单个分子无温度可言。'],
+  ['自由度','确定分子空间位置所需的独立坐标数：单原子 i=3，刚性双原子 i=5，刚性多原子 i=6。'],
+  ['能量均分定理','平衡态下每个自由度平均分得 kT/2 的能量；一个分子的平均总能量为 (i/2)kT。'],
+  ['理想气体内能','U=(i/2)νRT，只与温度有关，与体积、压强无关；这是理想气体内能仅由 T 决定的直接结论。'],
+  ['非理想气体的内能','实际气体内能还包含分子间势能，因而与体积有关；范德瓦尔斯气体内能随体积增大而增大。']
+ ],
+ formulas:[
+  ['压强公式', R`p=\frac{2}{3}n\bar\varepsilon`],
+  ['平均平动动能', R`\bar\varepsilon=\frac{3}{2}kT`],
+  ['能量均分', R`\bar\varepsilon=\frac{i}{2}kT`],
+  ['理想气体内能', R`U=\frac{i}{2}\nu RT`],
+  ['方均根速率', R`v_{\mathrm{rms}}=\sqrt{\frac{3kT}{m}}=\sqrt{\frac{3RT}{M}}`],
+  ['摩尔热容', R`C_V=\frac{i}{2}R,\qquad C_p=C_V+R`]
+ ]},
+
+{no:'3', title:'分子热运动速率的统计分布', en:'Chapter 3', file:'公式总结 Ch.3 · 课件第 3 章',
+ sections:['速率分布函数及其归一化','麦克斯韦速率分布律','三种统计速率','玻尔兹曼分布','重力场中的分子分布'],
+ concepts:[
+  ['速率分布函数','f(v)dv 表示速率在 v~v+dv 间隔内的分子数占总分子数的比率；f(v) 满足归一化条件 ∫₀^∞f(v)dv=1。'],
+  ['麦克斯韦速率分布','f(v)=4π(m/2πkT)^{3/2}v²e^{−mv²/2kT}；曲线随温度升高整体右移、峰值降低、分布变宽。'],
+  ['三种统计速率','最可几速率 v_p=√(2kT/m)（f 取极大）、平均速率 v̄=√(8kT/πm)、方均根速率 v_rms=√(3kT/m)；三者之比 v_p:v̄:v_rms=√2:√(8/π):√3。'],
+  ['最可几动能不等于 ½mv_p²','由 f(v) 换成能量分布 f(ε) 后多出一个 √ε 因子，最可几动能 ε_p=kT/2，与 ½mv_p² 不相等——这是 2017 卷第 2 题的考点。'],
+  ['玻尔兹曼分布','在势场中分子数密度按 n=n₀e^{−E_p/kT} 分布；重力场中 p=p₀e^{−Mgh/RT}，即气压随高度指数衰减。'],
+  ['速度分布与速率分布','速度分布 f(v_x,v_y,v_z) 是三维高斯分布；对方向积分后得到速率分布，多出的 4πv² 是速度空间的球壳体积。'],
+  ['统计规律的特征','个别分子的速率随机，大量分子的分布确定；涨落随分子数增大而减小。']
+ ],
+ formulas:[
+  ['归一化条件', R`\int_0^\infty f(v)\,\mathrm dv=1`],
+  ['麦克斯韦速率分布', R`f(v)=4\pi\left(\frac{m}{2\pi kT}\right)^{3/2}v^2e^{-\frac{mv^2}{2kT}}`],
+  ['最可几速率', R`v_p=\sqrt{\frac{2kT}{m}}=\sqrt{\frac{2RT}{M}}`],
+  ['平均速率', R`\bar v=\sqrt{\frac{8kT}{\pi m}}=\sqrt{\frac{8RT}{\pi M}}`],
+  ['方均根速率', R`v_{\mathrm{rms}}=\sqrt{\frac{3kT}{m}}`],
+  ['能量分布', R`f(\varepsilon)=\frac{2}{\sqrt\pi}(kT)^{-3/2}\sqrt{\varepsilon}\,e^{-\varepsilon/kT}`],
+  ['最可几动能', R`\varepsilon_p=\frac{1}{2}kT`],
+  ['玻尔兹曼分布', R`n=n_0e^{-\frac{E_p}{kT}}`],
+  ['气压公式', R`p=p_0e^{-\frac{Mgh}{RT}}`]
+ ]},
+
+{no:'4', title:'气体内的输运过程', en:'Chapter 4', file:'公式总结 Ch.4 · 课件第 4 章',
+ sections:['平均自由程与碰撞频率','黏滞现象（内摩擦）','热传导','扩散','三种输运系数的微观表达'],
+ concepts:[
+  ['平均自由程','分子连续两次碰撞之间走过的平均路程 λ；碰撞频率 Z 是单位时间内的平均碰撞次数，λ=v̄/Z。'],
+  ['碰撞截面','把分子看成直径 d 的刚性球，碰撞截面 σ=πd²；考虑相对运动后有效碰撞截面为 √2πd²，故 λ=1/(√2πd²n)。'],
+  ['输运过程的共同本质','当系统各处的某一物理量（动量、能量、分子数）不均匀时，分子无规热运动把该量从一处搬到另一处，使分布趋于均匀。'],
+  ['黏滞现象','速度梯度引起动量输运，黏滞系数 η=(1/3)ρλv̄；宏观表现为相邻流层间的内摩擦力。'],
+  ['热传导','温度梯度引起能量输运，热导率 κ=(1/3)ρλv̄c_V；气体导热靠分子碰撞传递能量。'],
+  ['扩散','浓度梯度引起质量输运，扩散系数 D=(1/3)λv̄；自扩散与互扩散的差别在于是否同种分子。'],
+  ['输运系数与状态参量的关系','η、κ 与压强无关（因为 λ∝1/n 而 ρ∝n 相消），随温度升高而增大（∝√T）；D 随压强增大而减小（∝1/p）。'],
+  ['低压与高压的偏离','压强极低时 λ 与容器尺寸相当，η 随压强下降；压强极高时分子间距接近 d，输运理论需修正。']
+ ],
+ formulas:[
+  ['平均自由程', R`\lambda=\frac{\bar v}{Z}=\frac{1}{\sqrt2\pi d^2n}=\frac{kT}{\sqrt2\pi d^2p}`],
+  ['碰撞频率', R`Z=\sqrt2\pi d^2n\bar v`],
+  ['黏滞系数', R`\eta=\frac13\rho\bar v\lambda`],
+  ['热导率', R`\kappa=\frac13\rho\bar v\lambda c_V`],
+  ['扩散系数', R`D=\frac13\bar v\lambda`],
+  ['黏滞定律', R`\mathrm dK=-\eta\frac{\partial u}{\partial z}\mathrm dS`],
+  ['傅里叶定律', R`\mathrm dQ=-\kappa\frac{\partial T}{\partial x}\mathrm dS\,\mathrm dt`]
+ ]},
+
+{no:'5', title:'热力学第一定律', en:'Chapter 5', file:'公式总结 Ch.5 · 课件第 5 章',
+ sections:['准静态过程与功','热量、内能与热容','热力学第一定律','理想气体的等体、等压、等温与绝热过程','循环过程与热机效率'],
+ concepts:[
+  ['准静态过程','过程进行得足够慢，系统每一步都无限接近平衡态；只有准静态过程才能在状态图上用曲线表示，且做功可用 ∫p dV 计算。'],
+  ['功与热量的符号约定','系统对外做功 W>0、吸热 Q>0；功和热量都是过程量，内能是状态量。'],
+  ['热力学第一定律','Q=ΔU+W，即吸收的热量一部分增加内能、一部分对外做功；本质是能量守恒，对任何过程都成立。'],
+  ['定容与定压热容','C_V=(i/2)R 用于等体过程；C_p=C_V+R，多出的 R 是等压膨胀时对外做功所需的热量。'],
+  ['焓','H=U+pV 是状态函数；等压过程中吸收的热量等于焓的增量，即 Q_p=ΔH。'],
+  ['四种等值过程','等体 W=0；等压 W=pΔV；等温 ΔU=0、W=νRTln(V₂/V₁)；绝热 Q=0、pV^γ=C。'],
+  ['绝热方程','pV^γ=C，等价于 TV^{γ−1}=C、p^{1−γ}T^γ=C；γ=C_p/C_V，单原子 5/3、双原子 7/5。'],
+  ['循环过程','系统经一系列过程回到初态，ΔU=0，净功等于 p-V 图上闭合曲线围成的面积；热机效率 η=W/Q₁=1−Q₂/Q₁。'],
+  ['制冷系数','逆循环中 ε=Q₂/W=Q₂/(Q₁−Q₂)；卡诺制冷机 ε=T₂/(T₁−T₂)。']
+ ],
+ formulas:[
+  ['第一定律', R`Q=\Delta U+W`],
+  ['准静态做功', R`W=\int_{V_1}^{V_2}p\,\mathrm dV`],
+  ['内能增量', R`\Delta U=\nu C_V\Delta T`],
+  ['定压热容', R`C_p=C_V+R`],
+  ['焓', R`H=U+pV,\qquad Q_p=\Delta H`],
+  ['等温过程做功', R`W=\nu RT\ln\frac{V_2}{V_1}`],
+  ['绝热方程', R`pV^\gamma=C,\qquad TV^{\gamma-1}=C`],
+  ['热机效率', R`\eta=\frac{W}{Q_1}=1-\frac{Q_2}{Q_1}`],
+  ['卡诺效率', R`\eta_C=1-\frac{T_2}{T_1}`],
+  ['制冷系数', R`\varepsilon=\frac{Q_2}{Q_1-Q_2},\qquad \varepsilon_C=\frac{T_2}{T_1-T_2}`]
+ ]},
+
+{no:'6', title:'热力学第二定律与熵', en:'Chapter 6', file:'公式总结（续）· 课件第 6 章',
+ sections:['可逆过程与不可逆过程','第二定律的两种表述','卡诺定理','克劳修斯不等式与熵','熵增原理','熵的统计意义'],
+ concepts:[
+  ['可逆过程','无耗散、无限缓慢、能沿原路径反向复原且外界也复原的过程；它是理想极限，实际过程都是不可逆的。'],
+  ['克劳修斯表述','热量不可能自发地从低温物体传到高温物体而不引起其他变化；制冷机必须消耗外功。'],
+  ['开尔文表述','不可能从单一热源吸热使之完全变为有用功而不产生其他影响；第二类永动机不可能制成。'],
+  ['两种表述等价','若一种表述不成立，可构造循环使另一种表述也不成立；二者都指向「自然过程具有方向性」。'],
+  ['卡诺定理','工作于两恒温热源之间的一切热机，可逆机效率最高且等于 1−T₂/T₁；不可逆机效率必低于此值。'],
+  ['克劳修斯不等式','∮δQ/T≤0，等号对应可逆循环；它是熵存在的判据，也给出过程方向的判据。'],
+  ['熵与熵增原理','dS=δQ_rev/T 是状态函数；孤立系统（或绝热过程）中 ΔS≥0，等号仅对可逆过程成立。'],
+  ['熵的统计意义','S=k lnΩ，Ω 为热力学概率（宏观态对应的微观态数）；自发过程总是从概率小的宏观态走向概率大的宏观态。'],
+  ['自由膨胀','理想气体真空自由膨胀：温度不变、内能不变，但体积增大使 Ω 增大，故熵增加——说明「内能不变」不等于「过程可逆」。']
+ ],
+ formulas:[
+  ['熵的定义', R`\mathrm dS=\frac{\delta Q_{\mathrm{rev}}}{T}`],
+  ['克劳修斯不等式', R`\oint\frac{\delta Q}{T}\le0`],
+  ['熵增原理', R`\Delta S_{\mathrm{iso}}\ge0`],
+  ['理想气体熵变', R`\Delta S=\nu C_V\ln\frac{T_2}{T_1}+\nu R\ln\frac{V_2}{V_1}`],
+  ['等温熵变', R`\Delta S=\nu R\ln\frac{V_2}{V_1}`],
+  ['玻尔兹曼熵', R`S=k\ln\Omega`],
+  ['卡诺定理', R`\eta\le1-\frac{T_2}{T_1}`]
+ ]},
+
+{no:'7', title:'相变', en:'Chapter 7', file:'课件第 7 章 · 2016 卷相变题',
+ sections:['相与相变','一级相变与潜热','克拉珀龙方程','相图与三相点','过冷、过热与临界点'],
+ concepts:[
+  ['相与相变','系统中物理性质均匀的部分称相；单元系中固、液、气三相之间的转变即相变。'],
+  ['一级相变','相变时两相化学势连续但一阶导数（熵、体积）突变，伴随潜热与体积变化；熔化、汽化、升华都是一级相变。'],
+  ['潜热','单位质量物质在相变中吸收或放出的热量：熔化热 l、汽化热 k、升华热；汽化热随温度升高而减小，临界点处为零。'],
+  ['克拉珀龙方程','相平衡曲线的斜率 dp/dT=L/(TΔV)，由两相化学势相等导出；ΔV>0 时熔化曲线斜率为正（冰除外，ΔV<0 故斜率为负）。'],
+  ['相图','p-T 图上三条相平衡曲线交于三相点；三相点是确定的温度与压强，气化曲线终止于临界点。'],
+  ['过冷与过热','相变需要成核，缺乏凝结核时可暂时停留在亚稳态：过冷蒸气、过热液体；它们是亚稳态而非平衡态。'],
+  ['临界点','气液差别消失的状态；临界温度以上无论加多大压强都不能液化。'],
+  ['相变熵','相变熵 ΔS=L/T，是可逆相变过程中熵的跃变；计算冰→水→水蒸气的总熵变时分段相加。']
+ ],
+ formulas:[
+  ['克拉珀龙方程', R`\frac{\mathrm dp}{\mathrm dT}=\frac{L}{T\Delta V}`],
+  ['相变熵', R`\Delta S=\frac{L}{T}`],
+  ['蒸气压近似式', R`p=p_0e^{-\frac{L}{R}\left(\frac1T-\frac1{T_0}\right)}`],
+  ['熔化曲线斜率', R`\frac{\mathrm dp}{\mathrm dT}=\frac{l}{T(V_l-V_s)}`],
+  ['总熵变（分段）', R`\Delta S=\sum_i\frac{L_i}{T_i}+\int\frac{C_p\,\mathrm dT}{T}`]
+ ]}
+];
+
+const HEAT_TOPICS = [
+ {name:'温度、温标与状态方程', ch:'第1章', pri:'A', stars:4, ev:[['2017','判断 2'],['题库','1、9、331']], note:'第零定律、温标三要素、理想气体温标、pV=νRT 与分压定律'},
+ {name:'压强与温度的微观意义', ch:'第2章', pri:'S', stars:5, ev:[['题库','29、172、309'],['2016','简答']], note:'p=(2/3)nε̄、ε̄=(3/2)kT、能量均分与自由度'},
+ {name:'理想气体内能与热容', ch:'第2/5章', pri:'S', stars:5, ev:[['题库','147、148、310、312'],['2017','解答 4']], note:'U=(i/2)νRT、C_V 与 C_p 的关系、焓与等压热容'},
+ {name:'麦克斯韦速率分布', ch:'第3章', pri:'S', stars:5, ev:[['2017','简答 1、解答 2'],['题库','223、224、226']], note:'f(v) 的归一化与物理意义、三种速率、最可几动能'},
+ {name:'玻尔兹曼分布与气压公式', ch:'第3章', pri:'B', stars:4, ev:[['题库','分布题'],['2017','判断 3']], note:'势场中数密度分布、重力场气压随高度衰减'},
+ {name:'平均自由程与输运过程', ch:'第4章', pri:'A', stars:4, ev:[['2017','简答 2'],['题库','27、61']], note:'λ=1/(√2πd²n)、黏滞/热导/扩散系数及与 p、T 的关系'},
+ {name:'准静态过程与第一定律', ch:'第5章', pri:'S', stars:5, ev:[['2017','解答 4'],['题库','65、310']], note:'Q=ΔU+W、四种等值过程、绝热方程、功的图示'},
+ {name:'循环过程与热机效率', ch:'第5章', pri:'S', stars:5, ev:[['2017','解答 1'],['题库','271、311、377、378']], note:'η=1−Q₂/Q₁、卡诺效率、制冷系数、p-V 图面积'},
+ {name:'第二定律与可逆性', ch:'第6章', pri:'S', stars:5, ev:[['2017','判断 3、简答 4'],['题库','116、149、150']], note:'两种表述及等价性、可逆判据、第二类永动机'},
+ {name:'熵与熵增原理', ch:'第6章', pri:'S', stars:5, ev:[['2016','第 7 题'],['2017','解答 3'],['题库','熵变题']], note:'dS=δQ/T、理想气体熵变、自由膨胀、玻尔兹曼熵'},
+ {name:'相变与克拉珀龙方程', ch:'第7章', pri:'A', stars:4, ev:[['2016','第 7 题'],['课件','第 7 章']], note:'潜热、相图与三相点、dp/dT=L/(TΔV)、相变熵'},
+ {name:'范德瓦尔斯方程与临界点', ch:'第1章', pri:'C', stars:3, ev:[['题库','范氏气体题'],['课件','第 1 章']], note:'a、b 的物理意义、临界参量、临界温度以上不能液化'}
+];
+
+const HEAT_TYPES = [
+ {name:'判断', cnt:5, topics:'概念辨析', pri:'B', ex:'温度的定义、匀速车厢内气体是否平衡、自发过程熵增'},
+ {name:'简答', cnt:4, topics:'分布函数、输运、熵', pri:'S', ex:'f(v_y)dv_y 的物理意义、牛顿黏滞定律中的速率能否替换、自由膨胀内能不变'},
+ {name:'解答', cnt:4, topics:'循环效率、熵变、自由度', pri:'S', ex:'制冷机循环效率、二维气体熵函数、绝热活塞两侧的温度与熵变'},
+ {name:'填空', cnt:1, topics:'基本概念填空组', pri:'B', ex:'准静态过程、卡诺循环、克劳修斯与开尔文表述'},
+ {name:'计算', cnt:6, topics:'教材原题与熵差计算', pri:'S', ex:'冰 −40 ℃ → 水蒸气 100 ℃ 的熵差、教材 5-14 与 6-14'},
+ {name:'证明', cnt:2, topics:'克拉珀龙方程与第二定律表述等价', pri:'A', ex:'证明课本 7.5.5 公式、证明三种表述等价'},
+ {name:'单选', cnt:5, topics:'全章基本概念', pri:'A', ex:'输运现象、由内能求压强、等压吸热做功之比'},
+ {name:'多选', cnt:5, topics:'温度、热容、焓、内能', pri:'A', ex:'混合气体压强与温度、关于热容与焓的说法、内能变化的判断'}
+];
+
+const HEAT_EXAMS = [
+{ id:'heat2017', label:'2017 期末 A 卷（刘松芬）',
+  meta:[['命题','刘松芬'],['时间','2017-06-07'],['结构','判断 5 题（20 分）＋ 简答 4 题（20 分）＋ 解答 4 题（60 分）']],
+  qs:[
+   {no:'判1', title:'抓球概率', topic:'第二定律与可逆性', type:'判断 · 4 分', page:1,
+    stem:'一个袋中有 2 只红球、3 只蓝球、4 只黑球，从袋中一次性抓出 2 只球，均为红球的概率为 2/9。',
+    key:'错。总取法 C(9,2)=36，两红只有 C(2,2)=1 种，概率为 1/36，不是 2/9。', src:'一、1'},
+   {no:'判2', title:'温度的定义', topic:'温度、温标与状态方程', type:'判断 · 4 分', page:1,
+    stem:'温度的定义是解决两个物体之间的热平衡问题。',
+    key:'对。热力学第零定律保证热平衡具有传递性，温度正是用来判断两系统是否热平衡的物理量。', src:'一、2'},
+   {no:'判3', title:'匀速车厢中的气体是否平衡', topic:'玻尔兹曼分布与气压公式', type:'判断 · 4 分', page:1,
+    stem:'在匀速行驶的汽车车厢中的气体，必是不平衡气体。',
+    key:'错。匀速行驶是惯性系，车厢内气体可以处于平衡态；只有加速（非惯性系）时才会因惯性力形成密度梯度，那时才是非平衡。', src:'一、3'},
+   {no:'判4', title:'理想气体分子间是否有碰撞', topic:'平均自由程与输运过程', type:'判断 · 4 分', page:1,
+    stem:'对理想气体分子而言，在计算碰撞的时候没有考虑气体分子间的碰撞；这说明理想气体分子间不会有碰撞。',
+    key:'错。理想气体模型忽略的是分子间除碰撞外的相互作用（吸引与分子体积），但分子间仍发生弹性碰撞——没有碰撞就没有压强与输运。', src:'一、4'},
+   {no:'判5', title:'自发过程的熵', topic:'熵与熵增原理', type:'判断 · 4 分', page:1,
+    stem:'自发过程的熵必然增加。',
+    key:'错。应说「孤立系统（或绝热系统）中自发过程的熵不减少」。若系统放热给环境，系统自身熵可以减小，总熵仍增加。', src:'一、5'},
+   {no:'简1', title:'速度分布函数表达式的物理意义', topic:'麦克斯韦速率分布', type:'简答 · 5 分', page:1,
+    stem:'对于速度分布函数，以下表达式的物理意义是什么？(1) f(v_y)dv_y·f(v_z)dv_z；(2) Nf(v_x,v_y,v_z)；(3) f(v_x,v_y,v_z)。',
+    key:'(1) 速度 y、z 分量分别落在 dv_y、dv_z 内（x 分量任意）的分子数占总分子数的比率。(2) 速度落在 (v_x,v_y,v_z) 附近单位速度空间体积内的分子数。(3) 速度分布函数本身，即单位速度空间体积内的分子数占比，满足三重归一化。', src:'二、1'},
+   {no:'简2', title:'黏滞定律中的速率能否替换', topic:'平均自由程与输运过程', type:'简答 · 5 分', page:2,
+    stem:'牛顿黏滞定律 dK=−η(∂u/∂z)|_{z₀} 中的 u，与 η=(1/3)ρλv̄ 中的 v̄ 可否替换？为什么？',
+    key:'不能。u 是气体宏观定向流速（流层速度），是输运的「被搬运的量」的载体；v̄ 是分子热运动平均速率，决定分子跨越流层的频率。二者物理来源不同，量级也差很多（通常 u≪v̄）。', src:'二、2'},
+   {no:'简3', title:'真空自由膨胀内能为何不变', topic:'准静态过程与第一定律', type:'简答 · 5 分', page:2,
+    stem:'真空自由膨胀，内能不变，为什么？',
+    key:'绝热（Q=0）且向真空膨胀（外部无压强，W=0），由第一定律 ΔU=Q−W=0。理想气体内能只与温度有关，故温度也不变。注意此过程是非准静态的，不能用 ∫p dV 计算功。', src:'二、3'},
+   {no:'简4', title:'可逆绝热膨胀时热力学概率的变化', topic:'第二定律与可逆性', type:'简答 · 5 分', page:2,
+    stem:'可逆绝热过程，气体膨胀，热力学概率怎么变化？',
+    key:'不变。可逆绝热过程是等熵过程（ΔS=0），由 S=klnΩ 知热力学概率 Ω 也不变。虽然体积增大使位置空间的微观态数增加，但温度降低使速度空间的微观态数同量减少，两者恰好抵消。若换成「绝热自由膨胀」（不可逆），则温度不变而体积增大，Ω 与熵都增大。', src:'二、4'},
+   {no:'解1', title:'两等压两等温制冷循环的效率', topic:'循环过程与热机效率', type:'解答 · 12 分', page:2,
+    stem:'如图所示制冷机循环由两个等压过程与两个等温过程构成，高温热源 T₁、低温热源 T₂。试用 T₁、T₂ 表示该制冷机的制冷系数。',
+    key:'四个过程依次为：等温压缩（T₂）→ 等压升温 → 等温膨胀（T₁）→ 等压降温。等压过程吸放热 Q=νC_pΔT，等温过程 Q=νRTln(V₂/V₁)。求出净功 W 与从低温源吸热 Q₂ 后，ε=Q₂/W。对理想气体可证该循环的制冷系数与卡诺循环相同：ε=T₂/(T₁−T₂)。', src:'三、1'},
+   {no:'解2', title:'由麦克斯韦分布求平动动能分布与最可几动能', topic:'麦克斯韦速率分布', type:'解答 · 13 分', page:3,
+    stem:'从麦克斯韦速率分布出发，已知平动动能 ε=½mv²。(1) 写出平动动能分布率 f(ε)；(2) 求出最可几平动动能 ε_p，并判断是否有 ε_p=½mv_p²（v_p 为最可几速率）。',
+    key:'(1) 由 f(v)dv=f(ε)dε 与 dε=mv dv 得 f(ε)=(2/√π)(kT)^{−3/2}√ε e^{−ε/kT}。(2) 令 df/dε=0 得 ε_p=kT/2；而 ½mv_p²=½m·(2kT/m)=kT，二者不等，因为能量分布多乘了 √ε 因子。', src:'三、2'},
+   {no:'解3', title:'二维气体的熵函数', topic:'熵与熵增原理', type:'解答 · 15 分', page:3,
+    stem:'推导面积为 A、温度为 T 的二维平面上理想气体的熵函数 S(A,T)。',
+    key:'二维平动自由度 i=2，配分函数 Z∝A·T（每个自由度贡献 √T）。由 S=k(lnZ+T∂lnZ/∂T) 得 S=νR[ln A+ln T]+S₀，即 S 随面积与温度均按对数增长；也可由 dS=(∂S/∂A)_T dA+(∂S/∂T)_A dT 与二维状态方程 pA=νRT 积分得到同式。', src:'三、3'},
+   {no:'解4', title:'绝热活塞两侧的加热问题', topic:'理想气体内能与热容', type:'解答 · 20 分', page:4,
+    stem:'绝热气缸中用绝热光滑活塞分成体积相同的 A、B 两部分，各含 1 mol 刚性双原子分子气体，初态均为 p₀、V₀、T₀。A 室装有电热丝，加热使 A 室压强变为 2p₀。求：(1) A、B 两室的温度；(2) A 对 B 做功；(3) 电热丝供热；(4) 系统熵变。',
+    key:'(1) B 室绝热压缩：p_B V_B^γ=const，且两室体积之和为 2V₀，联立求出 V_B、V_A 后由 pV=νRT 得 T_A、T_B。(2) W_AB=ΔU_B=νC_V(T_B−T₀)。(3) 对 A 用第一定律：Q=ΔU_A+W_AB，其中 ΔU_A=νC_V(T_A−T₀)。(4) ΔS=νC_V ln(T_A/T₀)+νR ln(V_A/V₀) 加 B 室的同类项；因过程绝热不可逆，ΔS>0。', src:'三、4'}
+  ]},
+
+{ id:'heat2016', label:'2015–2016 期末（大梁回忆版）',
+  meta:[['来源','物理科学学院学术部 大梁回忆版'],['时间','2016-06-17'],['结构','填空/简答 20 分 ＋ 8 道题（每题 10 分）'],['备注','多数题目按教材「章-题号」引用（如 5-14），题干需对照教材']],
+  qs:[
+   {no:'1', title:'基本概念填空组', topic:'准静态过程与第一定律', type:'填空 · 20 分', page:1,
+    stem:'(1) 准静态过程是____。(2) 效率最高的循环是____循环，包括两个____过程和两个____过程。(3) 克劳修斯表述是____；开尔文表述是____。(4) 标准状况下 22.4 L 氦氧混合气中，氦原子方均根速率、氧原子动能、氦原子动能、氦内能占总内能的比值各为多少？(5) 等温、等压、等体、绝热四种过程的对外做功与内能变化各如何？',
+    key:'(1) 过程进行得无限缓慢，系统每一步都无限接近平衡态。(2) 卡诺循环；两个等温过程和两个绝热过程。(3) 热量不能自发地从低温传到高温而不引起其他变化；不可能从单一热源吸热全部变功而不产生其他影响。(4) v_rms=√(3RT/M_He)；氧、氦均为 (3/2)kT；氦内能占比按物质的量（体积比）分配。(5) 等温 ΔU=0、W=νRTln(V₂/V₁)；等压 W=pΔV、ΔU=νC_VΔT；等体 W=0、ΔU=Q；绝热 Q=0、W=−ΔU。', src:'1'},
+   {no:'2', title:'教材 5-14', topic:'准静态过程与第一定律', type:'计算 · 10 分', page:2,
+    stem:'教材第 5 章第 14 题（题干见教材 P…；原卷只写题号）。',
+    key:'按教材原题解答；本题属第一定律的功、热、内能计算，方法为先判断过程类型，再用 Q=ΔU+W 与状态方程联立。', src:'2'},
+   {no:'3', title:'教材 6-14', topic:'第二定律与可逆性', type:'计算 · 10 分', page:2,
+    stem:'教材第 6 章第 14 题（题干见教材）。',
+    key:'按教材原题解答；属第二定律与循环效率类问题，注意区分可逆与不可逆、效率上限 1−T₂/T₁。', src:'3'},
+   {no:'4', title:'教材 6-42', topic:'熵与熵增原理', type:'计算 · 10 分', page:2,
+    stem:'教材第 6 章第 42 题（题干见教材）。',
+    key:'按教材原题解答；熵变计算的关键是设计一条连接初末态的可逆路径，再用 dS=δQ_rev/T 积分。', src:'4'},
+   {no:'5', title:'教材 7-5', topic:'相变与克拉珀龙方程', type:'计算 · 10 分', page:2,
+    stem:'教材第 7 章第 5 题（题干见教材）。',
+    key:'按教材原题解答；第 7 章为相变，注意潜热、相变熵与克拉珀龙方程 dp/dT=L/(TΔV)。', src:'5'},
+   {no:'6', title:'教材 7-6', topic:'相变与克拉珀龙方程', type:'计算 · 10 分', page:2,
+    stem:'教材第 7 章第 6 题（题干见教材）。',
+    key:'按教材原题解答；若涉及相图，先判断落在哪条相平衡曲线上，再代入克拉珀龙方程。', src:'6'},
+   {no:'7', title:'冰升温为水蒸气的熵差', topic:'熵与熵增原理', type:'计算 · 10 分', page:2,
+    stem:'将 30 g 的 −40 ℃ 冰变成 100 ℃ 的水蒸气，求熵差。已知熔解热 l=334 J/g，汽化热 k=2240 J/g，水的比热容 4.2 J/(g·℃)，冰的比热容 2.1 J/(g·℃)。',
+    key:'分四段：冰升温 ΔS₁=mc_冰 ln(273/233)；熔化 ΔS₂=ml/273；水升温 ΔS₃=mc_水 ln(373/273)；汽化 ΔS₄=mk/373。四项相加，代入 m=30 g 得约 232 J/K（量级核对：熔化 36.7、汽化 180、两段升温各约 9 与 25）。', src:'7'},
+   {no:'8', title:'证明课本 7.5.5 公式', topic:'相变与克拉珀龙方程', type:'证明 · 10 分', page:2,
+    stem:'证明课本 P211 的 7.5.5 公式。',
+    key:'该式即克拉珀龙方程的推导：两相平衡时化学势相等 μ₁(T,p)=μ₂(T,p)，沿相平衡曲线求导得 −s₁dT+v₁dp=−s₂dT+v₂dp，整理即 dp/dT=(s₂−s₁)/(v₂−v₁)=L/(TΔV)。', src:'8'},
+   {no:'9', title:'证明熔解、开尔文与克劳修斯表述等价', topic:'第二定律与可逆性', type:'证明 · 10 分', page:2,
+    stem:'证明熔解过程、开尔文表述与克劳修斯表述三者等价。',
+    key:'思路是用「若一个不成立则另一个也不成立」构造循环：若热量能自发由低温到高温（克劳修斯不成立），可设计可逆卡诺机把净功全部用于把热量送回高温源，从而构成从单一热源吸热全部变功的循环（开尔文不成立）；反之亦然。熔解过程的不可逆性可用「熔化—凝固」循环配合卡诺机做同样论证。', src:'9'}
+  ]},
+
+{ id:'heatBank', label:'450 题题库 · 选择题节选',
+  meta:[['来源','《热学450题题库》（138 页扫描件）'],['结构','逐页读图转写，10 题'],['备注','原 PDF 无文本层，OCR 后题干与选项混杂严重，故只收录逐页看图核对过的题目，未批量导入']],
+  qs:[
+   {no:'1', title:'混合后气体的压强与温度', topic:'温度、温标与状态方程', type:'多选 · 2 分', page:1,
+    stem:'一定质量的理想气体，压强为 p₁、温度为 T₁，与同体积、压强为 p₂、温度为 T₂ 的同种理想气体相混合。混合后体积为原来体积之和，混合过程中未与外界交换能量，气体比热可视为常数。下列关于混合后气体特性的表述，错误的是（ ）。',
+    key:'答案 B、D。能量守恒（内能相加）给出混合温度 T=(p₁T₁+p₂T₂)/(p₁+p₂)；再由状态方程得 p=(p₁+p₂)/2。故 A、C 正确，B、D 错误。', src:'题库 1'},
+   {no:'2', title:'关于热容的说法', topic:'理想气体内能与热容', type:'多选 · 2 分', page:1,
+    stem:'下列关于热容的说法，错误的是（ ）。A. 一个物体的热容与它具有的物质的量的多少无关；B. 物体的热容是该物体改变单位温度所吸收或放出的热量；C. 热容是过程参量；D. 热容是状态参量。',
+    key:'答案 A、D。热容与物质的量成正比（A 错）；热容与过程有关（等压与等体热容不同），是过程参量而非状态参量（D 错）。B、C 正确。', src:'题库 2'},
+   {no:'3', title:'关于焓的说法', topic:'理想气体内能与热容', type:'多选 · 2 分', page:1,
+    stem:'下列关于焓的说法，正确的是（ ）。A. 焓的变化量可表示为等压过程中吸收或放出的热量；B. 焓的定义为 H=U+pV；C. 焓的定义为 H=U−pV；D. 焓是一个状态参量。',
+    key:'答案 A、B、D。焓 H=U+pV 是状态函数，等压过程 Q_p=ΔH；C 的符号写反了。', src:'题库 3'},
+   {no:'4', title:'输运现象的描述', topic:'平均自由程与输运过程', type:'单选 · 2 分', page:9,
+    stem:'下列对输运现象的描述，正确的是（ ）。A. 输运仅与动量的梯度成正比；B. 气体系统中主要依靠气体分子间的碰撞进行物理量的输运；C. 输运是一个平衡态向着另外一个平衡态方向进行的；D. 输运现象仅发生在近平衡态附近，并且随着输运过程的进行，系统终将达到平衡态。',
+    key:'答案 B。输运是由分子无规热运动携带物理量（动量、能量、分子数）实现的，碰撞决定平均自由程；A 只提动量、漏了能量与质量；C、D 的表述把「近平衡」说成唯一条件，且 D 的「必将达到平衡」与「近平衡假设」混淆。', src:'题库 27'},
+   {no:'5', title:'由内能求压强', topic:'压强与温度的微观意义', type:'单选 · 2 分', page:9,
+    stem:'在体积为 2.0×10⁻³ m³ 的容器中，内能为 6.57×10² J 的刚性双原子分子理想气体，则气体的压强为（ ）。已知国际单位制下气体普适常量 R=8.31 J/(mol·K)。A. 1.314×10⁵ Pa；B. 2.19×10⁵ Pa；C. 9.386×10⁴ Pa；D. 6.57×10⁴ Pa。',
+    key:'答案 A。刚性双原子 i=5，U=(i/2)νRT=(i/2)pV，故 p=2U/(iV)=2×657/(5×2.0×10⁻³)≈1.314×10⁵ Pa。', src:'题库 29'},
+   {no:'7', title:'等压吸热相同时对外做功之比', topic:'准静态过程与第一定律', type:'单选 · 2 分', page:47,
+    stem:'压强、体积和温度都相同（常温常压）的氧气和氦气，在等压过程中吸收了相等的热量，它们对外做功的功之比为（ ）。A. 1:1；B. 5:9；C. 5:7；D. 9:5。',
+    key:'答案 C。等压时 Q=νC_pΔT、W=νRΔT，故 W/Q=R/C_p=2/(i+2)。氧 i=5 得 2/7，氦 i=3 得 2/5，二者之比 (2/7):(2/5)=5:7。', src:'题库 148'},
+   {no:'8', title:'理想气体恒温膨胀对外做功的评论', topic:'第二定律与可逆性', type:'单选 · 2 分', page:47,
+    stem:'「理想气体与单一热源接触作等温膨胀时，吸收的热量全部用来对外做功。」对此说法，正确的评论是（ ）。A. 不违反热力学第一定律，但违反热力学第二定律；B. 不违反热力学第二定律，但违反热力学第一定律；C. 既不违反热力学第一定律，也不违反热力学第二定律；D. 既违反第一定律，也违反第二定律。',
+    key:'答案 C。等温膨胀 ΔU=0，Q=W 满足第一定律；第二定律禁止的是「循环地」把热全部变功，而这里气体膨胀后状态改变、并非循环，故不违反第二定律。', src:'题库 149'},
+   {no:'9', title:'平均平动动能相等的气体', topic:'压强与温度的微观意义', type:'单选 · 2 分', page:95,
+    stem:'两种不同种类的气体分子平均平动动能相等，但气体密度不同，则（ ）。A. 温度相同、压强相同；B. 温度相同、内能相同；C. 温度相同、压强不同；D. 温度不同、压强不同。',
+    key:'答案 C。平均平动动能只由温度决定，故温度相同；压强 p=nkT=(ρ/M)RT，密度不同而摩尔质量不同，压强是否相同取决于 ρ/M，题设只给密度不同，故压强一般不同。', src:'题库 309'},
+   {no:'11', title:'关于热机效率的正确说法', topic:'循环过程与热机效率', type:'多选 · 2 分', page:95,
+    stem:'以下说法正确的是（ ）。A. 由热力学第一定律可证明任何热机的效率不可能等于 1；B. 热力学第二定律可表述为效率等于 100% 的热机不可能制造成功；C. 由热力学第一定律可证明任何卡诺循环的效率都等于 1−T₂/T₁；D. 由热力学第一定律可证明理想气体卡诺热机（可逆的）循环的效率等于 1−T₂/T₁。',
+    key:'答案 B、D。效率不能为 1 是第二定律的结论，不是第一定律（A 错）；卡诺效率等于 1−T₂/T₁ 对可逆卡诺机成立（D 对），但不能说「任何卡诺循环」都由第一定律推出（C 错）。', src:'题库 311'},
+   {no:'12', title:'气缸中气体的内能变化', topic:'理想气体内能与热容', type:'多选 · 2 分', page:95,
+    stem:'在气缸中有一定质量的气体，下面说法中错误的是（ ）。A. 保持它热量不变，其内能一定改变；B. 对它做功，其内能一定改变；C. 它与外界交换热量又交换功，其内能一定改变；D. 若系统内能改变了，它的温度一定增大了。',
+    key:'答案 A、B、C、D。内能变化由 Q 与 W 共同决定：绝热做功可同时升温，等温压缩内能不变（B 错）；绝热且不做功则内能不变（A 错）；交换热与功可以相互抵消（C 错）；内能改变也可能伴随体积变化而温度不变（D 错）。', src:'题库 312'}
+  ]}
+];
+
+/* ============================================================
    工程光学（D 课）
    ============================================================ */
 const COURSE_EO = {
@@ -7688,11 +8013,11 @@ const priTag = (p)=>`<span class="badge ${p.toLowerCase()}">${p} 级</span>`;
 /* ---- 课程分派 ---- */
 let CID = 'qm';
 let TEACHER = 'hu';
-function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='mat'?COURSE_MAT : id==='cry'?COURSE_CRY : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
-function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='mat'?MAT_CHAPTERS : id==='cry'?CRY_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
-function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='mat'?MAT_EXAMS : id==='cry'?CRY_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
-function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='mat'?MAT_TOPICS : id==='cry'?CRY_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
-function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='mat'?MAT_TYPES : id==='cry'?CRY_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
+function courseById(id){ return id==='em'?COURSE_EM : id==='qm2'?COURSE_QM2 : id==='hq'?COURSE_HQ : id==='lm'?COURSE_LM : id==='me'?COURSE_ME : id==='es'?COURSE_ES : id==='cir'?COURSE_CIR : id==='ss'?COURSE_SS : id==='td'?COURSE_TD : id==='cp'?COURSE_CP : id==='mp'?COURSE_MP : id==='ap'?COURSE_AP : id==='heat'?COURSE_HEAT : id==='mat'?COURSE_MAT : id==='cry'?COURSE_CRY : id==='semi'?COURSE_SEMI : id==='eo'?COURSE_EO : isA(id)?A_COURSES[id] : id==='op'?COURSE_OPT : COURSE; }
+function chaptersById(id){ return id==='em'?EM_CHAPTERS : id==='qm2'?QM2_CHAPTERS : id==='hq'?HQ_CHAPTERS : id==='lm'?LM_CHAPTERS : id==='me'?ME_CHAPTERS : id==='es'?ES_CHAPTERS : id==='cir'?CIR_CHAPTERS : id==='ss'?SS_CHAPTERS : id==='td'?TD_CHAPTERS : id==='cp'?CP_CHAPTERS : id==='mp'?MP_CHAPTERS : id==='ap'?AP_CHAPTERS : id==='heat'?HEAT_CHAPTERS : id==='mat'?MAT_CHAPTERS : id==='cry'?CRY_CHAPTERS : id==='semi'?SEMI_CHAPTERS : id==='eo'?EO_CHAPTERS : isA(id)?A_CHAPTERS[id] : id==='op'?OPT_CHAPTERS : CHAPTERS; }
+function examsById(id){ return id==='em'?EM_EXAMS : id==='qm2'?QM2_EXAMS : id==='hq'?HQ_EXAMS : id==='lm'?LM_EXAMS : id==='me'?ME_EXAMS : id==='es'?ES_EXAMS : id==='cir'?CIR_EXAMS : id==='ss'?SS_EXAMS : id==='td'?TD_EXAMS : id==='cp'?CP_EXAMS : id==='mp'?MP_EXAMS : id==='ap'?AP_EXAMS : id==='heat'?HEAT_EXAMS : id==='mat'?MAT_EXAMS : id==='cry'?CRY_EXAMS : id==='semi'?SEMI_EXAMS : id==='eo'?EO_EXAMS : isA(id)?A_EXAMS[id] : id==='op'?OPT_EXAMS : EXAMS.concat(KY_EXAMS); }
+function topicsById(id){ return id==='em'?EM_TOPICS : id==='qm2'?QM2_TOPICS : id==='hq'?HQ_TOPICS : id==='lm'?LM_TOPICS : id==='me'?ME_TOPICS : id==='es'?ES_TOPICS : id==='cir'?CIR_TOPICS : id==='ss'?SS_TOPICS : id==='td'?TD_TOPICS : id==='cp'?CP_TOPICS : id==='mp'?MP_TOPICS : id==='ap'?AP_TOPICS : id==='heat'?HEAT_TOPICS : id==='mat'?MAT_TOPICS : id==='cry'?CRY_TOPICS : id==='semi'?SEMI_TOPICS : id==='eo'?EO_TOPICS : isA(id)?A_TOPICS[id] : id==='op'?OPT_TOPICS : TOPICS; }
+function typesById(id){ return id==='em'?EM_TYPES : id==='qm2'?QM2_TYPES : id==='hq'?HQ_TYPES : id==='lm'?LM_TYPES : id==='me'?ME_TYPES : id==='es'?ES_TYPES : id==='cir'?CIR_TYPES : id==='ss'?SS_TYPES : id==='td'?TD_TYPES : id==='cp'?CP_TYPES : id==='mp'?MP_TYPES : id==='ap'?AP_TYPES : id==='heat'?HEAT_TYPES : id==='mat'?MAT_TYPES : id==='cry'?CRY_TYPES : id==='semi'?SEMI_TYPES : id==='eo'?EO_TYPES : isA(id)?A_TYPES[id] : id==='op'?OPT_TYPES : TYPES; }
 function courseOf(){ return courseById(CID); }
 function chaptersOf(){ return CID==='qm' ? (TEACHER==='hu2'?HU_CHAPTERS:CHAPTERS) : chaptersById(CID); }
 function topicsOf(){ return topicsById(CID); }
@@ -7701,7 +8026,7 @@ function examsOf(){ return examsById(CID); }
 
 /* 开屏主页：选择课程（含尚未收录的课程） */
 function renderLanding(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','heat','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const grid = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7750,7 +8075,7 @@ let CURPAGE = 'dashboard';
 
 /* 课程体系：按学期列出培养方案，标注哪些课程已收录 */
 function renderCurriculum(){
-  const order = ['sx','my','sg','mg','xg','op','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
+  const order = ['sx','my','sg','mg','xg','op','heat','eo','semi','cry','mat','ap','mp','cp','td','ss','cir','es','me','lm','qm','em','qm2','hq'];
   const rows = CURRICULUM.map(sec=>{
     const items = sec.courses.map(name=>{
       const id = order.find(k=>COURSE_NAME[k]===name);
@@ -7809,11 +8134,12 @@ function renderDashboard(){
   const semic = (CID==='semi');
   const cryc = (CID==='cry');
   const matc = (CID==='mat');
+  const heatc = (CID==='heat');
   const opc = (CID==='op');
   $('#dashboard').innerHTML = `
   <div class="hero">
     <div class="hero-label">南开大学 · 物理科学学院 · 期末考试复习</div>
-    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':cryc?'晶体物理':matc?'材料物理':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
+    <h1>${isA(CID)?A_COURSES[CID].name:em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':semic?'半导体物理':cryc?'晶体物理':matc?'材料物理':heatc?'热学':opc?'光学':'量子力学（一）'}<br>期末复习系统</h1>
     <p>${
       isA(CID) ? `本站把《${A_COURSES[CID].name}》按教材章节整理为背诵资料：每章含核心概念、背诵要点（问题 → 答案要点）与本章真题。文科课程无公式与推导，直接按条背。`
       : em ? '本站把《电动力学》按两位老师的讲义（杨茂志 · 第 1–7 章；蔡卫 · 第 0 章 + 第 1–6 章，均基于郭硕鸿教材）整理为结构化资料，并汇总 4 套期末真题（蔡卫 2023、2024×2；杨茂志 2025–2026）。按考点频率排出优先级，并把每个考点回溯到它出现的真题。'
@@ -7830,6 +8156,7 @@ function renderDashboard(){
       : apc ? '本站把《原子物理》（罗延安 · 大二下）的 7 章讲义（绪论 / 原子基本性质 / 玻尔模型 / 氢原子量子力学 / 精细结构 / 周期系结构 / X 射线）整理为结构化资料，并汇总 5 套真题（2019、2020、2021–2022、2025、2026），共 48 道题组（填空按题组合并）。'
       : opc ? '本站把《光学》（大二上，教材赵凯华）按 6 章整理：干涉 / 衍射 / 几何光学 / 光学仪器 / 偏振 / 光的量子性，并汇总 16 套真题与习题（2014–2026，含期中、月考、孙题集萃），题目按考点归入章节。'
       : eoc ? '本站把《工程光学》（D 课，教材郁道银）的 6 章课件（绪论 / 理想光学系统 / 几何像差 / 衍射映像与像质评价 / 傅里叶光学与传递函数 / 光栅与全息）整理为结构化资料，并收录 4 套教材习题（29 题，题号精确到教材页码 P124–P328）。'
+      : heatc ? '本站把《热学》（大二上）按 7 章整理：温度与状态方程 / 分子动理论的基本概念 / 速率统计分布 / 气体内的输运过程 / 热力学第一定律 / 第二定律与熵 / 相变。每章含核心概念、关键推导与重要公式，并收录 2017 期末 A 卷（13 题）、2015–2016 回忆版（9 题）与 450 题题库的选择题节选（10 题）。'
       : matc ? '本站把《材料物理》（大三下，孔勇发）的 20 份讲义整理为 8 章：绪论、材料力学、材料热学、材料电学、材料磁学、材料光学、材料声学、材料的功能转换。每章含核心概念、关键推导与重要公式；按本次要求，真题与习题部分暂不做，各章「本章题目」留空。'
       : cryc ? '本站把《晶体物理》（D 课）的 8 份讲义整理为结构化资料：晶体学基础 / 张量基础 / 弹性性质 / 电学性质 / 线性光学性质 / 非线性光学效应 / 外场下的光学性质 / 光折变。每章含核心概念、关键推导与重要公式；讲义中没有习题与真题，各章「本章题目」暂时留空。'
       : semic ? '本站把《半导体物理》（D 课，教材刘恩科第七版）按课件原始编号整理为 6 章：电子状态 / 杂质与缺陷能级 / 载流子统计分布 / 输运现象 / 非平衡载流子 / pn 结，并收录分章题库（填空 30 空 + 简答 17 题 + 计算 9 题）与 2021 填空回忆版。每章含核心概念、关键推导、重要公式与本章题目。'
@@ -7851,13 +8178,13 @@ function renderDashboard(){
     <div class="card-title">冲刺入口</div>
     <div class="grid4">
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':CID==='cry'?'8 章讲义逐章过 + 48 条公式':CID==='mat'?'8 章讲义逐章过 + 56 条公式':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
+        <div class="t">7 天</div><h3>完整备考</h3><p>${CID==='semi'?'6 章概念 + 公式 + 全部分章题库':CID==='cry'?'8 章讲义逐章过 + 48 条公式':CID==='mat'?'8 章讲义逐章过 + 56 条公式':CID==='heat'?'7 章 + 52 条公式 + 两套卷':'S 级 + A 级 + B 级 + 全部高频题型'}</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">3 天</div><h3>高收益模式</h3><p>S 级 + A 级考点 + 近三套真题</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
         <div class="t">24 小时</div><h3>紧急模式</h3><p>S 级 + 最高频题型 + 公式速查</p></div>
       <div class="plan" onclick="showPage('sprint')" style="cursor:pointer">
-        <div class="t">2 小时</div><h3>最后机会</h3><p>${CID==='cry'?'核心概念 + 六条关键推导':CID==='mat'?'核心概念 + 八条关键推导':'必背公式 + 必做真题'}</p></div>
+        <div class="t">2 小时</div><h3>最后机会</h3><p>${CID==='cry'?'核心概念 + 六条关键推导':CID==='mat'?'核心概念 + 八条关键推导':CID==='heat'?'第二定律表述 + 熵变 + 克拉珀龙':'必背公式 + 必做真题'}</p></div>
     </div>
   </div>
 
@@ -7890,6 +8217,8 @@ function renderDashboard(){
       ? '提示：光学题量很大（16 套、约 180 道题组），选择题与填空题按题组合并展示；每题都带「所属章节」链接，点击可直接跳到对应章节。'
       : eoc
       ? '提示：工程光学以教材课后习题为主，题号按教材页码标注（如 P124_4）。第四、五章的习题 PPT 公式多为图片，题干按可辨认文字整理。'
+      : heatc
+      ? '提示：3 组题源——2017 A 卷（13 题，全文）、2016 回忆版（9 题）、450 题题库节选（10 题，逐页读图转写）。题库原为 138 页扫描件，OCR 质量不足，未批量导入。'
       : matc
       ? '提示：本课程共 20 份讲义 PDF，按本次要求<b>不做真题与习题部分</b>；高频考点按课件节次统计，各章「本章题目」暂时为空。'
       : cryc
@@ -8273,6 +8602,13 @@ function renderChapters(){
       <h1>章节 · 概念 · 题目。</h1>
       <p>共 6 章：绪论、理想光学系统及其变换、实际光学系统的几何成像特性、衍射映像与像质评价、傅里叶光学与传递函数、光栅和全息。教材为郁道银《工程光学》。每章末尾已并入该章教材习题。</p>
     </div>`;
+  } else if(CID==='heat'){
+    html = HEAT_CHAPTERS.map((c,i)=> chCard(c, i<2, '第 '+c.no+' 章 · ')).join('');
+    hero = `<div class="hero">
+      <div class="hero-label">课程结构 · 热学（大二上）</div>
+      <h1>章节 · 概念 · 推导 · 题目。</h1>
+      <p>共 7 章，章号与《公式总结》的 Chapter 1–5 及 2016 卷引用的第 5–7 章一致：温度与状态方程、分子动理论的基本概念、分子热运动速率的统计分布、气体内的输运过程、热力学第一定律、热力学第二定律与熵、相变。每章含核心概念、关键推导、重要公式与本章题目；题目按判断 / 简答 / 选择 / 计算分组，可回溯到 2017 A 卷、2016 回忆版与 450 题题库。</p>
+    </div>`;
   } else if(CID==='mat'){
     html = MAT_CHAPTERS.map((c,i)=> chCard(c, i<1, c.no==='0'?'':'第 '+c.no+' 章 · ')).join('');
     hero = `<div class="hero">
@@ -8407,6 +8743,12 @@ function renderFormulas(){
         <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
         ${c.formulas.length ? c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('') : '<div class="concept">本章为课程介绍与教材说明，无核心公式。</div>'}
       </div>`).join('');
+  } else if(CID==='heat'){
+    html = HEAT_CHAPTERS.map(c=>`
+      <div class="card">
+        <div class="card-title">第 ${c.no} 章 · ${esc(c.title)}</div>
+        ${c.formulas.map(([n,t])=>`<div class="fml"><div class="fn">${esc(n)}</div><div class="ft">\\[${esc(t)}\\]</div></div>`).join('')}
+      </div>`).join('');
   } else if(CID==='mat'){
     html = MAT_CHAPTERS.map(c=>`
       <div class="card">
@@ -8462,10 +8804,10 @@ function renderFormulas(){
 
 function renderHigh(){
   const rows = topicsOf().map(t=>{
-    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), cryc = (CID==='cry'), matc = (CID==='mat'), opc = (CID==='op');
-    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : opc ? 16 : (qm2 ? 33 : 3);
+    const em = (CID==='em'), qm2 = (CID==='qm2'), hq = (CID==='hq'), lm = (CID==='lm'), mec = (CID==='me'), esc2 = (CID==='es'), circ = (CID==='cir'), ssc = (CID==='ss'), tdc = (CID==='td'), cpc = (CID==='cp'), mpc = (CID==='mp'), apc = (CID==='ap'), eoc = (CID==='eo'), semic = (CID==='semi'), cryc = (CID==='cry'), matc = (CID==='mat'), heatc = (CID==='heat'), opc = (CID==='op');
+    const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lm ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : heatc ? 3 : opc ? 16 : (qm2 ? 33 : 3);
     const ev = t.ev.length
-      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||cryc||matc||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
+      ? t.ev.map(([y,q])=> (lm||mec||esc2||circ||ssc||tdc||cpc||mpc||apc||eoc||semic||cryc||matc||heatc||opc||isA(CID)) ? `${y} · ${q}` : `${y} ${/^\d+$/.test(q)?('第 '+q+' 题'):q}`).join('、')
       : (qm2?'真题汇编中未单独命题':lm?'近 3 套期末未单独命题':mec?'八套真题中未单独命题':(esc2||circ)?'四套真题中未单独命题':ssc?'2026 卷未单独命题':tdc?'三套真题中未单独命题':cpc?'八套真题中未单独命题':mpc?'七套真题中未单独命题':apc?'五套真题中未单独命题':eoc?'四套习题中未单独命题':opc?'十六套真题中未单独命题':isA(CID)?'已收真题中未单独命题':'近'+total+'套期末未涉及');
     const chLabel = t.ch.indexOf('章')>=0 ? esc(t.ch) : ('第 '+esc(t.ch)+' 章');
     return `<tr>
@@ -8493,11 +8835,12 @@ function renderHigh(){
   const semic = (CID==='semi');
   const cryc = (CID==='cry');
   const matc = (CID==='mat');
+  const heatc = (CID==='heat');
   const opc = (CID==='op');
-  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lmc ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : opc ? 16 : qm2 ? 33 : 3;
+  const total = isA(CID) ? A_EXAMS[CID].length : em ? 4 : lmc ? 3 : mec ? 8 : (esc2||circ) ? 4 : ssc ? 1 : tdc ? 3 : cpc ? 8 : mpc ? 7 : apc ? 5 : eoc ? 4 : semic ? 4 : (cryc||matc) ? 1 : heatc ? 3 : opc ? 16 : qm2 ? 33 : 3;
   $('#high').innerHTML = `
     <div class="hero">
-      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':cryc?'考点分布 · 基于 8 份讲义':matc?'考点分布 · 基于 20 份讲义':(semic?'考点频率 · 基于 4 组题源':'考点频率 · 基于 '+total+' 套期末真题')}</div>
+      <div class="hero-label">${qm2?'考点频率 · 基于真题汇编 33 题':hq?'考点频率 · 基于 4 份考题回忆':cryc?'考点分布 · 基于 8 份讲义':matc?'考点分布 · 基于 20 份讲义':heatc?'考点频率 · 基于 3 组题源':(semic?'考点频率 · 基于 4 组题源':'考点频率 · 基于 '+total+' 套期末真题')}</div>
       <h1>高频考点。</h1>
       <p>${qm2
         ? '“出现次数”统计的是该考点在《量子力学（二）真题汇编》33 道题中出现的次数。每一行都列出了它出现的具体题号，可回溯核对。'
@@ -8525,6 +8868,8 @@ function renderHigh(){
         ? '“出现卷数”统计的是该考点在 4 套工程光学习题中出现的次数（第一～四章，共 29 题）。题号精确到教材页码。'
         : opc
         ? '“出现卷数”统计的是该考点在 16 套光学真题与习题中出现的次数（2014–2026，含期中、月考、孙题集萃）。同一套内多题只计一次。'
+        : heatc
+        ? '“出现卷数”统计的是该考点在 3 组题源（2017 A 卷、2016 回忆版、450 题库节选）中出现的次数。每一行都列出了具体题号，可回溯核对。'
         : matc
         ? '本课程目前只有 20 份讲义 PDF，没有习题与真题。下表按「课件章节」列出考点分布：出现次数指的是该考点在几节讲到，证据列给出对应节次。'
         : cryc
@@ -8534,7 +8879,7 @@ function renderHigh(){
         : '“出现次数”统计的是该考点在近 '+total+' 套期末卷中出现的卷数。每一行都列出了它出现的具体真题，可回溯核对。'}</p>
     </div>
     <div class="card">
-      <div class="card-title">${matc?'材料物理':cryc?'晶体物理':semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
+      <div class="card-title">${heatc?'热学':matc?'材料物理':cryc?'晶体物理':semic?'半导体物理':em?'电动力学':qm2?'量子力学（二）':hq?'高等量子力学':lmc?'理论力学':mec?'力学':esc2?'电磁学':circ?'电路':ssc?'固体物理（一）':tdc?'热力学与统计物理':cpc?'计算物理':mpc?'数学物理方法':apc?'原子物理':eoc?'工程光学':opc?'光学':'量子力学（一）'} · 考点频率</div>
       <table class="tbl">
         <thead><tr><th>考点</th><th>${(qm2||ssc)?'出现题数':(hq||cryc||matc)?'出现次数':'出现卷数'}</th><th>${(cryc||matc)?'证据（课件节次）':'证据（年份 · 题号）'}</th><th>星级</th><th>优先级</th><th>说明</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -8649,6 +8994,8 @@ function renderExams(){
         ? '7 套数理方法真题（2014–2019、2024–2026 回忆版与模拟卷、2022–2023 期中，共 65 题）。期中卷附 3 页原卷。'
         : apc
         ? '5 套原子物理真题（2019、2020、2021–2022、2025、2026，共 48 道题组；填空按题组合并）。2026 卷由两份回忆交叉核对合并；2025 为回忆骨架。'
+        : (CID==='heat')
+        ? '3 组题源：2017 期末 A 卷（判断 5 + 简答 4 + 解答 4，共 13 题）、2015–2016 大梁回忆版（9 题，多为教材原题号）、450 题题库选择题节选（10 题，逐页读图转写）。'
         : (CID==='semi')
         ? '《半导体666》分章题库全文（填空 6 组、简答 17 题、计算 9 题）＋ 2021 期末填空回忆版（6 题），共 38 题。计算题的数值在原卷中为公式图片，缺失处已逐题标注。'
         : '量子力学（一）历年真题：3 套期末回忆卷 + 10 年考研真题（2012–2022，OCR 整理）。真题是识别考试规律的唯一证据源。'}</p>
@@ -8737,6 +9084,37 @@ function renderSprint(){
           <tr><td>6</td><td>几何成像：球面折射、薄透镜、放大率、棱镜</td><td>几何光学</td><td>${priTag('B')}</td></tr>
           <tr><td>7</td><td>偏振：偏振度、三偏振片、波片与偏振干涉</td><td>偏振/波片</td><td>${priTag('S')}</td></tr>
           <tr><td>8</td><td>量子性：光电效应、康普顿、玻尔能级、黑体辐射</td><td>量子性</td><td>${priTag('A')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+    return;
+  }
+  if(CID==='heat'){
+    $('#sprint').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">分数最大化</div>
+      <h1>冲刺方案。</h1>
+      <p>卷面稳定为「判断 + 简答 + 解答」：判断考概念辨析（温度、可逆、熵增），简答考分布函数与输运的物理意义，解答集中在循环效率、熵变、自由度与绝热过程。2017 卷解答题 60 分，是分数主体。</p>
+    </div>
+    <div class="grid4">
+      <div class="card plan"><div class="t">7 天</div><h3>完整备考</h3><p>7 章概念过一遍；2017、2016 两套卷手做；450 题库选择题按章刷一遍。</p></div>
+      <div class="card plan"><div class="t">3 天</div><h3>高收益模式</h3><p>只练五类：循环效率与制冷系数、熵变计算、麦克斯韦分布三种速率、绝热过程、平均自由程与输运系数。</p></div>
+      <div class="card plan"><div class="t">24 小时</div><h3>紧急模式</h3><p>背：pV=νRT、p=(2/3)nε̄、v_p/v̄/v_rms、λ=1/(√2πd²n)、pV^γ=C、η=1−T₂/T₁、ΔS 公式。</p></div>
+      <div class="card plan"><div class="t">2 小时</div><h3>最后机会</h3><p>只看：两种第二定律表述的等价性、可逆判据、自由膨胀为何熵增、克拉珀龙方程。</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">考前必做（按优先级）</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>任务</th><th>对应考点</th><th>优先级</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>2017 卷解答 1：两等压两等温制冷循环，用 T₁、T₂ 表示制冷系数</td><td>循环过程</td><td>${priTag('S')}</td></tr>
+          <tr><td>2</td><td>2017 卷解答 2：由麦克斯韦分布求动能分布与最可几动能</td><td>麦克斯韦分布</td><td>${priTag('S')}</td></tr>
+          <tr><td>3</td><td>2017 卷解答 3：二维气体的熵函数</td><td>熵</td><td>${priTag('S')}</td></tr>
+          <tr><td>4</td><td>2017 卷解答 4：绝热活塞两侧加热的温度、功与熵变</td><td>第一定律 + 熵</td><td>${priTag('S')}</td></tr>
+          <tr><td>5</td><td>2016 卷第 7 题：冰 −40 ℃ → 水蒸气 100 ℃ 的熵差（分段求和）</td><td>熵 + 相变</td><td>${priTag('S')}</td></tr>
+          <tr><td>6</td><td>2016 卷第 8 题：克拉珀龙方程的证明</td><td>相变</td><td>${priTag('A')}</td></tr>
+          <tr><td>7</td><td>简答题四连：分布函数意义、黏滞定律速率、自由膨胀、可逆绝热与热力学概率</td><td>简答</td><td>${priTag('S')}</td></tr>
+          <tr><td>8</td><td>判断题五连：概率、温度定义、匀速车厢、分子碰撞、自发过程熵</td><td>概念辨析</td><td>${priTag('A')}</td></tr>
         </tbody>
       </table>
     </div>`;
@@ -9453,6 +9831,48 @@ function renderAbout(){
       <div class="concept"><b>数值以字母代替</b>：2024–2025 期中与期末原卷用具体数字、回忆稿改为字母，题干按字母给出方法。</div>
       <div class="concept"><b>孙题集萃为英文</b>：21 道英文题已译为中文摘要，配图未收录。</div>
       <div class="concept"><b>答案来源</b>：解题要点为依据课件、复习提纲与标准教材整理的思路，非官方答案；2014–2015 卷附原参考答案。</div>
+    </div>`;
+    return;
+  }
+  if(CID==='heat'){
+    $('#about').innerHTML = `
+    <div class="hero">
+      <div class="hero-label">数据说明</div>
+      <h1>数据说明。</h1>
+      <p>本页说明《热学》数据的来源、处理方式与局限，遵循“所有结论必须可回溯到原始资料”的原则。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">数据来源</div>
+      <table class="tbl">
+        <thead><tr><th>类别</th><th>文件</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>课件</td><td>ppt全打印版（中文）.pdf（23 页）</td><td>课程框架、研究方</td></tr>
+          <tr><td>公式</td><td>公式总结.pdf（6 页，Chapter 1–5）</td><td>章节划分与公式条目</td></tr>
+          <tr><td>题库</td><td>热学450题题库.pdf（138 页扫描件）</td><td>选择题节选（逐页读图转写）</td></tr>
+          <tr><td>真题</td><td>2017热学考试题.pdf（4 页，刘松芬）</td><td>2017 A 卷 13 题，全文</td></tr>
+          <tr><td>真题</td><td>2016热学（大梁回忆版）.pdf（2 页）</td><td>2015–2016 卷 9 题</td></tr>
+          <tr><td>未采用</td><td>2025-2026热学期末.pdf、热学试卷（1–3）.jpg</td><td>纯图片无文本层，未逐题转写</td></tr>
+          <tr><td>未采用</td><td>欧阳颀讲义 热学1–7、复习课（共 240 页扫描）</td><td>扫描幻灯片，文字层仅几百字，未逐页 OCR</td></tr>
+          <tr><td>未采用</td><td>练习卷.pdf、葫芦岛大学期末复习资料</td><td>练习卷字体编码损坏提取为乱码；葫芦岛卷非本课程</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">处理原则</div>
+      <div class="concept"><b>章节按公式总结的 Chapter 1–5</b>：温度、分子动理论、速率统计分布、输运、第一定律；再按 2016 卷引用的第 5–7 章补第 6 章（第二定律与熵）与第 7 章（相变）。未出现教材章名的地方不臆造。</div>
+      <div class="concept"><b>公式取公式总结</b>：52 条公式中，前五章直接对应《公式总结》的条目（状态方程 pV=νRT、最可几速率 v_p=√(2kT/m)、平均自由程 λ=1/(√2πd²n)、黏滞系数 η=ρv̄λ/3）；第六、七章按 2016/2017 卷用到的公式补齐。</div>
+      <div class="concept"><b>题目可回溯</b>：每题标注原卷题号（如「三、1」「一、2」）或题库题号（如「题库 27」），可与原始 PDF 逐页对照。</div>
+      <div class="concept"><b>题库逐页读图转写</b>：450 题库无文本层，OCR 后题干与选项混杂、公式全失，故只收录逐页看图核对过的 10 道选择题，未批量导入。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">已知局限</div>
+      <div class="concept"><b>题库只节选 10 题</b>：450 题中绝大多数含公式选项，扫描件 OCR 无法还原；若要全部收录，需人工逐页录入，工作量约 138 页。</div>
+      <div class="concept"><b>2016 卷多为教材题号</b>：第 2–6 题原卷只写「5-14」「6-14」这类章-题号，没有题干，本站如实保留题号并注明需对照教材。</div>
+      <div class="concept"><b>2025–2026 卷未收录</b>：该文件只有 1 页且为图片，无文本层。</div>
+      <div class="concept"><b>答案非官方</b>：判断与简答的「要点」为依据教材与真题整理的答题骨架；2016 卷第 7、8 题的数值与推导已核对，其余按方法给步骤。</div>
     </div>`;
     return;
   }
